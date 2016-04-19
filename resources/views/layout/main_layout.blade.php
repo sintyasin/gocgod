@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Laravel</title>
+        <title>GoC GoD</title>
 
+        <!-- css -->
         <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
+        <!-- glyphicon -->
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.css') }}">
+        <!-- fontawesomecss -->
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/font-awesome.min.css') }}">
+        <!-- style css -->
+        <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/style.css') }}">
+
+
+        <!-- fonts -->
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div class="header">
+        <div class="header_top">
             @include('include.navigation')
         </div>
         <div class="content">
