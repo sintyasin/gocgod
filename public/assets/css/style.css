@@ -340,7 +340,7 @@ li.searchbox.searchbox-open {padding-top: 0;}
 [2.2 Mainmenu ]
 --------------------------------*/
 .mobile-menu-area{display:none;}
-.mainmenu, .logo {padding: 8px 0;}
+.mainmenu, .logo {padding: 15px 0;}
 .logo a {
   padding: 8px 0;
   display: block;
