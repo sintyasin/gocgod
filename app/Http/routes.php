@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::get('home', ['uses' => 'HomeController@index']);
+sssss
