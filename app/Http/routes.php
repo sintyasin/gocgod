@@ -15,4 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('home', ['uses' => 'HomeController@index']);
+Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
+Route::get('product/', 'ProductController@getMenu');
+Route::get('register/', 'MemberController@register');
+Route::post('register/submit', 'MemberController@registerSubmit');
