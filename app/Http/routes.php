@@ -16,4 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('home', ['uses' => 'HomeController@index']);
-sssss
+Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
+Route::get('product/', 'ProductController@getMenu');
+Route::get('register/', 'MemberController@register');
+Route::post('register/submit', 'MemberController@registerSubmit');
