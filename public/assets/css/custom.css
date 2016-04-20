@@ -1,0 +1,15 @@
+
+/*
+SECTION 1. TOP
+*/
+.top_custom{
+	background: rgb(1, 117, 96) none repeat scroll 0 0;
+	height: 40px;
+}
+
+.header_line_custom{
+	padding-top: 10px;
+	/*
+	border: 1px solid #E3E3E3;
+	*/
+}

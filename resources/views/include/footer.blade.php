@@ -1,3 +1,4 @@
+
 <div class="footer_top footer-padding">
 	<div class="container">
 		<div class="row">
@@ -85,11 +86,11 @@
 			</div>
 			<div class="col-sm-6 col-xs-12">
 				<div class="copyright_icon text-right">
-					<a href="#"><img src="images/footer/paypal-1.png" alt="" /></a>
-					<a href="#"><img src="images/footer/paypal-2.png" alt="" /></a>
-					<a href="#"><img src="images/footer/paypal-3.png" alt="" /></a>
-					<a href="#"><img src="images/footer/paypal-4.png" alt="" /></a>
-					<a href="#"><img src="images/footer/paypal-5.png" alt="" /></a>
+					<a href="#"><img src="assets/images/footer/paypal-1.png" alt="" /></a>
+					<a href="#"><img src="assets/images/footer/paypal-2.png" alt="" /></a>
+					<a href="#"><img src="assets/images/footer/paypal-3.png" alt="" /></a>
+					<a href="#"><img src="assets/images/footer/paypal-4.png" alt="" /></a>
+					<a href="#"><img src="assets/images/footer/paypal-5.png" alt="" /></a>
 				</div>
 			</div>
 		</div>

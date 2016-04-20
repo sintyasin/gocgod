@@ -340,9 +340,10 @@ li.searchbox.searchbox-open {padding-top: 0;}
 [2.2 Mainmenu ]
 --------------------------------*/
 .mobile-menu-area{display:none;}
-.mainmenu, .logo {padding: 15px 0;}
+.mainmenu {padding: 15px 0;}
+.logo {padding: 5px;}
 .logo a {
-  padding: 8px 0;
+  padding: 8px 0;    
   display: block;
 }
 .mainmenu a {
@@ -370,6 +371,8 @@ li.searchbox.searchbox-open {padding-top: 0;}
 }
 .mainmenu a i {top: 0;}
 .mainmenu a:hover i {top: 5px;}
+.mainmenu a:hover{background-color:rgb(1, 130, 100);}
+.mainmenu a:hover{color:rgb(255, 255, 255);}
 .guarantee_text p {padding-bottom: 20px;}
 .footer_link li{margin-bottom: 20px;}
 /*==========================================
@@ -675,7 +678,7 @@ table tr td {
 [8.1 Footer-Top ]
 --------------------------------*/
 .footer_top {
-  background: rgb(32, 43, 48) none repeat scroll 0 0;
+  background: rgb(1, 144, 105) none repeat scroll 0 0;
   padding: 40px 0;
 }
 .newsletter h4 {
@@ -703,7 +706,7 @@ table tr td {
 /*-------------------------------
 [8.2 Footer-Middel ]
 --------------------------------*/
-.footer_middel {background: rgb(23, 29, 32) none repeat scroll 0 0;}
+.footer_middel {background: rgb(1, 117, 96) none repeat scroll 0 0;}
 .footer_link p {
   border-bottom: 1px solid #3A4B60;
   padding-bottom: 10px;
@@ -739,7 +742,7 @@ table tr td {
 /*-------------------------------
 [8.3 Footer-Bottom ]
 --------------------------------*/
-.footer_bottom {background: rgb(32, 43, 48) none repeat scroll 0 0;}
+.footer_bottom {background: rgb(1, 144, 105) none repeat scroll 0 0;}
 .copyright p,.copyright p a {
   color: rgb(255, 255, 255);
   font-size: 13px;

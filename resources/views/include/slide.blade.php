@@ -5,7 +5,7 @@
 				<!-- SLIDE-1  -->
 				<li data-transition="random" data-slotamount="7" data-masterspeed="300"  data-saveperformance="off" >
 					<!-- MAIN IMAGE -->
-					<img src="{{ URL::asset('assets/images/slider/slider_bg-2.jpg') }}"  alt="mainbanner-31"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+					<img src="{{ URL::asset('assets/images/slider/bg.jpg') }}"  alt="mainbanner-31"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
 					<!-- LAYERS -->
 					<!-- LAYER NR. 1 -->
 					<div class="tp-caption banner1 tp-fade tp-resizeme"
@@ -178,7 +178,7 @@
 				<!-- SLIDE-2 -->
 				<li data-transition="random" data-slotamount="7" data-masterspeed="300" data-title="Slide2" data-saveperformance="off" >
 					<!-- MAIN IMAGE -->
-					<img src="{{ URL::asset('assets/images/slider/slider_bg-1.jpg') }}"  alt="mainbanner-21"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+					<img src="{{ URL::asset('assets/images/slider/bg.jpg') }}"  alt="mainbanner-21"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
 					<!-- LAYERS -->
 					<!-- LAYER NR. 1 -->
 					<div class="tp-caption tp-fade"

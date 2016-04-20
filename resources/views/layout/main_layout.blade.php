@@ -15,9 +15,12 @@
     <!-- revolution banner css settings -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/settings.css') }}">
     <!-- mobilemenu css -->
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/meanmenu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/meanmenu.min.css') }}">
     <!-- responsive css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/responsive.css') }}">
+    <!-- custom css -->
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">
+
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}">
 
@@ -29,10 +32,9 @@
     @include('include.navigation')
 
     <div class="content">
-        <div class="container">
-            @yield('content')
-        </div>
+    @yield('content')
     </div>
+    
     <footer>
         @include('include.footer')
     </footer>
