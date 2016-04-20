@@ -13,13 +13,13 @@ class ProductController extends Controller
     {
     	$data['query'] = ProductModel::all();
 
-    	return view('page.productMenu', $data);
+    	return view('testing.productMenu', $data);
     }
 
     public function getMenuDetail($id)
     {
     	$data['query'] = ProductModel::find($id);
 
-    	return view('page.productDetail', $data);
+    	return view('testing.productDetail', $data);
     }
 }
