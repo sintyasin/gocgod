@@ -19,25 +19,25 @@
 				<div class="col-sm-10">
 					<div class="header_line_custom">
 					</div>
-					</div>
+				</div>
 				<div class="col-sm-1">
 				</div>
 				<div class="col-sm-9">
 					<div class="header_top_right text-right">
 						<ul>
 							<li><a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart</a></li>
-							<li><a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find an Agent</a></li>
+							<li><a href="findalocation"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find an Agent</a></li>
 							<li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Sign In</a></li>
 							<li class="searchbox">
-									<input type="search" placeholder="Search......" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
-									<input type="submit" class="searchbox-submit" value="">
-									<span class="searchbox-icon"><i class="fa fa-search"></i></span>
-								</li>
+								<input type="search" placeholder="Search......" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
+								<input type="submit" class="searchbox-submit" value="">
+								<span class="searchbox-icon"><i class="fa fa-search"></i></span>
+							</li>
 						</ul>
 					</div>
 				</div>
 				<!-- <div class="row mega_relative"> -->
-					
+				
 
 				<div class="col-sm-1">
 				</div>
