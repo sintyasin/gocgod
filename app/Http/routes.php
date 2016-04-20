@@ -21,11 +21,19 @@ Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
 Route::get('product/', 'ProductController@getMenu');
 
 //////register member/admin baru
-Route::get('register/', 'MemberController@registerMemberPage');
-Route::get('registerAdmin/', 'MemberController@registerAdminPage');
-Route::post('register/submit', 'MemberController@registerMember');
-Route::post('register/submitAdmin', 'MemberController@registerAdmin');
+Route::get('register/', 'MemberController@getRegisterMember');
+Route::get('registerAdmin/', 'MemberController@getRegisterAdmin');
+Route::post('register/submit', 'MemberController@postRegisterMember');
+Route::post('register/submitAdmin', 'MemberController@postRegisterAdmin');
 
 //////login
-Route::get('login/', 'MemberController@loginPageMember');
-Route::post('login/submit', 'MemberController@checkLoginMember');
+Route::get('login/', 'MemberController@getLoginMember');
+Route::post('login/submit', 'MemberController@postLoginMember');
+
+//login page dan register laravel
+Route::controllers([
+		'auth' => 'Auth\AuthController',
+		'password' => 'Auth\PasswordController',
+	]);
+
+Route::auth();

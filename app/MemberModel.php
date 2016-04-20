@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserModel extends Model
+class MemberModel extends Model
 {
     protected $table = 'master__member';
 	protected $primaryKey = 'id';	
