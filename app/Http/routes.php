@@ -20,15 +20,7 @@ Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
 Route::get('product/', 'ProductController@getMenu');
 
-//////register member/admin baru
-Route::get('register/', 'MemberController@registerMemberPage');
-Route::get('registerAdmin/', 'MemberController@registerAdminPage');
-Route::post('register/submit', 'MemberController@registerMember');
-Route::post('register/submitAdmin', 'MemberController@registerAdmin');
-
-//////login
-Route::get('login/', 'MemberController@loginPageMember');
-Route::post('login/submit', 'MemberController@checkLoginMember');
+Route::auth();
 
 //////tes
 Route::get('findalocation', function(){

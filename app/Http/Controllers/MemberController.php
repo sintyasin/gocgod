@@ -6,28 +6,26 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
-use App\UserModel;
+use App\MemberModel;
+use App\AdminModel;
 
 use Hash;
 
 class MemberController extends Controller
 {
-    public function registerMemberPage()
+	public function getLoginMember()
     {
-    	return view('testing.register');
+    	return view('testing.loginMember');
     }
-
-    public function registerAdminPage()
-    {
-    	return view('testing.registerAdmin');
-    }
-
-    public function checkLoginMember(LoginRequest $request)
+    
+    public function postLoginMember(LoginRequest $request)
     {
     	$email = $request->input('email');
     	$password = Hash::make($request->input('password'));
+    	
+    	$query = AdminModel::where('email', '=', $email);
 
-    	if (Hash::check('abc', $password))
+    	if (Hash::check($query->password, $password))
 		{
 		    echo "login";
 		}
@@ -37,21 +35,26 @@ class MemberController extends Controller
 		}
     }
 
-    public function loginPageMember()
+    public function getRegisterMember()
     {
-    	return view('testing.loginMember');
+    	return view('testing.registerMember');
     }
 
-    public function registerAdmin(SignUpRequest $request)
+    public function getRegisterAdmin()
+    {
+    	return view('testing.registerAdmin');
+    }
+
+    public function postRegisterAdmin(SignUpRequest $request)
     {
 		$name = $request->input('name');
+		$address = $request->input('address');
 		$cityId = $request->input('city');
 
-		$address = $request->input('address');
-		$dob = $request->input('date_of_birth');
-		$email = $request->input('address');
-		$phone = $request->input('address');
-		$password = Hash::make($request->input('address'));
+		$dob = $request->input('dob');
+		$email = $request->input('email');
+		$phone = $request->input('phone');
+		$password = Hash::make($request->input('password'));
 
 		echo $name . " " . $cityId;
 
@@ -67,32 +70,34 @@ class MemberController extends Controller
 		$user->save();*/
     }
 
-    public function registerMember(SignUpRequest $request)
+    public function postRegisterMember(SignUpRequest $request)
     {
 		$name = $request->input('name');
 		$cityId = $request->input('city');
 
 		$address = $request->input('address');
-		$dob = $request->input('date_of_birth');
-		$email = $request->input('address');
-		$phone = $request->input('address');
-		$password = Hash::make($request->input('address'));
-		$bank = $request->input('bank_account');
-		$status = $request->input('status_user');
+		$dob = $request->input('dob');
+		$email = $request->input('email');
+		$phone = $request->input('phone');
+		$password = Hash::make($request->input('password'));
+		$bank = $request->input('bank');
+		$status = $request->input('status');
 
 		echo $name . " " . $cityId;
 
-		/*
-		$user = new UserModel;
-		$user->name = $name;
+		
+		$user = new MemberModel;
+		$user->email = $email;
 		$user->city_id = $cityId;
+		$user->password = $password;
+
+		/*
+		$user->name = $name;
 		$user->address = $address;
 		$user->date_of_birth = $dob;
-		$user->email = $email;
 		$user->phone = $phone;
-		$user->password = $password;
 		$user->bank_account = $bank;
-		$user->status_user = $status;
-		$user->save();*/
+		$user->status_user = $status;*/
+		$user->save();
     }
 }

@@ -26,7 +26,7 @@ class SignUpRequest extends Request
         $this->sanitize();
 
         return [
-            'name' => 'required',
+            'email' => 'required|email',
             //'address' => 'required',
             'city' => 'required|numeric',
             
@@ -44,7 +44,7 @@ class SignUpRequest extends Request
     {
         $input = $this->all();
 
-        $input['name'] = filter_var($input['name'], FILTER_SANITIZE_STRING);
+        $input['email'] = filter_var($input['email'], FILTER_SANITIZE_STRING);
         $input['city'] = filter_var($input['city'], FILTER_SANITIZE_STRING);
 
         $this->replace($input);
