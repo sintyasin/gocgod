@@ -47,7 +47,7 @@
 					<nav>
 						<ul>
 							<li><a href="home">HOME</a></li>
-							<li><a href="#">PRODUCT DETAIL</i></a></li>
+							<!-- <li><a href="#">PRODUCT DETAIL</i></a></li> -->
 							<li><a href="#">MENU</a></li>
 							<li><a href="#">HOW TO BUY</a></li>
 							<li><a href="#">BECOME AN AGENT</a></li>
