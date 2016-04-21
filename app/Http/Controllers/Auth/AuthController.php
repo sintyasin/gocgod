@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Member;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -23,12 +24,14 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
+    private $data;
+
     /**
      * Where to redirect users after login / registration.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new authentication controller instance.
@@ -48,11 +51,13 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {    
+        $this->data = $data;
+
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:master__member',
             'password' => 'required|min:3|confirmed',
-            'city_id' => 'required|numeric',
+            'city' => 'required|numeric',
         ]);
     }
 
@@ -62,14 +67,14 @@ class AuthController extends Controller
      * @param  array  $data
      * @return User
      */
+
     protected function create(array $data)
     {
-
-        return MemberModel::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'city_id' => $data['city'],
+        return Member::create([
+            'name' => $this->data['name'],
+            'email' => $this->data['email'],
+            'password' => bcrypt($this->data['password']),
+            'city_id' => $this->data['city'],
         ]);
     }
 }

@@ -20,6 +20,7 @@ Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
 Route::get('product/', 'ProductController@getMenu');
 
+/*
 //////register member/admin baru
 Route::get('register/', 'MemberController@getRegisterMember');
 Route::get('registerAdmin/', 'MemberController@getRegisterAdmin');
@@ -31,9 +32,10 @@ Route::get('login/', 'MemberController@getLoginMember');
 Route::post('login/submit', 'MemberController@postLoginMember');
 
 //login page dan register laravel
+/*
 Route::controllers([
 		'auth' => 'Auth\AuthController',
 		'password' => 'Auth\PasswordController',
 	]);
-
+*/
 Route::auth();
