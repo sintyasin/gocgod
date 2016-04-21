@@ -40,3 +40,8 @@ Route::get('menu', function(){
         return view('page.menu');
 
 });
+
+Route::get('checkout', function(){
+        return view('page.checkout');
+
+});

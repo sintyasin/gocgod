@@ -52,7 +52,7 @@
 							<li><a href="#">HOW TO BUY</a></li>
 							<li><a href="#">BECOME AN AGENT</a></li>
 							<li><a href="#">FAQ</a></li>
-							<li><a href="#">CHECK OUT</a></li>
+							<li><a href="checkout">CHECK OUT</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -74,14 +74,14 @@
 		<div class="mobile-menu">
 			<nav id="dropdown">
 				<ul>
-					<li><a href="index.html">HOME</a></li>
-					<li><a href="#">PRODUCT DETAIL</a></li>
-					<li><a href="#">MENU</a></li>
+					<li><a href="home">HOME</a></li>
+					<!-- <li><a href="#">PRODUCT DETAIL</a></li> -->
+					<li><a href="menu">MENU</a></li>
 					<li><a href="#">HOW TO BUY</a></li>
 					<li><a href="#">BECOME AN AGENT</a></li>
 					<li><a href="#">OFFERS</a></li>
 					<li><a href="#">FAQ</a></li>
-					<li><a href="#">CHECK OUT</a></li>
+					<li><a href="checkout">CHECK OUT</a></li>
 				</ul>
 			</nav>
 		</div>
