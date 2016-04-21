@@ -2,6 +2,7 @@
 @extends('layout.main_layout')
 
 @section('content')
-@include('include.slide')
-<h1>This is Home</h1>
+<div class="container">
+	<h2>Our Menu</h2>
+</div>
 @stop

@@ -20,22 +20,20 @@ Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
 Route::get('product/', 'ProductController@getMenu');
 
-/*
-//////register member/admin baru
-Route::get('register/', 'MemberController@getRegisterMember');
-Route::get('registerAdmin/', 'MemberController@getRegisterAdmin');
-Route::post('register/submit', 'MemberController@postRegisterMember');
-Route::post('register/submitAdmin', 'MemberController@postRegisterAdmin');
-
-//////login
-Route::get('login/', 'MemberController@getLoginMember');
-Route::post('login/submit', 'MemberController@postLoginMember');
-
-//login page dan register laravel
-/*
-Route::controllers([
-		'auth' => 'Auth\AuthController',
-		'password' => 'Auth\PasswordController',
-	]);
-*/
 Route::auth();
+
+//////tes
+Route::get('findalocation', function(){
+        return view('page.findalocation');
+
+});
+
+Route::get('menu', function(){
+        return view('page.menu');
+
+});
+
+Route::get('checkout', function(){
+        return view('page.checkout');
+
+});
