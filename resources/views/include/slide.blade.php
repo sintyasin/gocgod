@@ -5,7 +5,7 @@
 				<!-- SLIDE-1  -->
 				<li data-transition="random" data-slotamount="7" data-masterspeed="300"  data-saveperformance="off" >
 					<!-- MAIN IMAGE -->
-					<img src="{{ URL::asset('assets/images/slider/slider_bg-2.jpg') }}"  alt="mainbanner-31"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+					<img src="{{ URL::asset('assets/images/slider/bg.jpg') }}"  alt="mainbanner-31"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
 					<!-- LAYERS -->
 					<!-- LAYER NR. 1 -->
 					<div class="tp-caption banner1 tp-fade tp-resizeme"
@@ -36,7 +36,7 @@
 						data-endelementdelay="0"
 						 data-end="8700"
 						data-endspeed="300"
-						style="z-index: 7;font-size:72px; font-family:nexa_blackregular;font-weight:700;color:#3a4b60;max-width: auto; max-height: auto; white-space: nowrap;">ELIXIR T-08
+						style="z-index: 7;font-size:72px; font-family:nexa_blackregular;font-weight:700;color:#3a4b60;max-width: auto; max-height: auto; white-space: nowrap;"> SOYA MILK
 					</div>
 
 					<!-- LAYER NR. 3 -->
@@ -52,7 +52,7 @@
 						data-endelementdelay="0"
 						 data-end="8700"
 						data-endspeed="300"
-						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:24px;line-height:26px;font-family:Roboto;font-weight:100; color:#ffffff;letter-spacing:8px;">FEELING YOUR IMAGINTION
+						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:24px;line-height:26px;font-family:Roboto;font-weight:100; color:#ffffff;letter-spacing:8px;"> Susu Kacang
 					</div>
 					
 					<!-- LAYER NR. 4.1 -->
@@ -69,7 +69,7 @@
 						 data-end="8700"
 						data-endspeed="300"
 						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						100% COMBED COTTON
+						Terbuat dari kacang kedelai pilihan
 					</div>
 					
 					<!-- LAYER NR. 4.2 -->
@@ -87,65 +87,13 @@
 						data-endspeed="300"
 
 						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						COLOR: BLUE
-					</div>
-					
-					<!-- LAYER NR. 4.3 -->
-					<div class="tp-caption banner21 tp-fade tp-resizeme"
-						data-x="385"
-						data-y="345" 
-						data-speed="300"
-						data-start="1100"
-						data-easing="Power3.easeInOut"
-						data-splitin="none"
-						data-splitout="none"
-						data-elementdelay="0"
-						data-endelementdelay="0"
-						 data-end="8700"
-						data-endspeed="300"
-						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						ROUND NECK & HALF SLEEVES
-					</div>
-					
-					<!-- LAYER NR. 4.4 -->
-					<div class="tp-caption banner21 tp-fade tp-resizeme"
-						data-x="385"
-						data-y="381" 
-						data-speed="300"
-						data-start="1100"
-						data-easing="Power3.easeInOut"
-						data-splitin="none"
-						data-splitout="none"
-						data-elementdelay="0"
-						data-endelementdelay="0"
-						 data-end="8700"
-						data-endspeed="300"
-
-						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						CLASSIC FIT, SLIGHTLY LONG
-					</div>
-
-					<!-- LAYER NR. 4.5 -->
-					<div class="tp-caption banner22 tp-fade tp-resizeme"
-						data-x="385"
-						data-y="418" 
-						data-speed="300"
-						data-start="1400"
-						data-easing="Power3.easeInOut"
-						data-splitin="none"
-						data-splitout="none"
-						data-elementdelay="0"
-						data-endelementdelay="0"
-						 data-end="8700"
-						data-endspeed="300"
-						style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						GSM: 160
+						Tanpa bahan pengawet dan pemanis buatan!
 					</div>
 					
 					<!-- LAYER NR. 4.6 -->
 					<div class="tp-caption banner23 tp-fade tp-resizeme"
 						data-x="385"
-						data-y="450" 
+						data-y="345" 
 						data-speed="300"
 						data-start="1700"
 						data-easing="Power3.easeInOut"
@@ -155,7 +103,7 @@
 						data-endelementdelay="0"
 						 data-end="8700"
 						data-endspeed="300"
-						style="z-index: 6; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">PRICE: $ 29.99
+						style="z-index: 6; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;"> HARGA: Rp 60.000,00
 					</div>
 						
 					<!-- LAYER NR. 4.7 -->
@@ -178,7 +126,7 @@
 				<!-- SLIDE-2 -->
 				<li data-transition="random" data-slotamount="7" data-masterspeed="300" data-title="Slide2" data-saveperformance="off" >
 					<!-- MAIN IMAGE -->
-					<img src="{{ URL::asset('assets/images/slider/slider_bg-1.jpg') }}"  alt="mainbanner-21"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
+					<img src="{{ URL::asset('assets/images/slider/bg.jpg') }}"  alt="mainbanner-21"  data-bgposition="center top" data-bgfit="cover" data-bgrepeat="no-repeat">
 					<!-- LAYERS -->
 					<!-- LAYER NR. 1 -->
 					<div class="tp-caption tp-fade"
@@ -207,7 +155,7 @@
 						data-endelementdelay="0"
 						 data-end="8700"
 						data-endspeed="300"
-						style="z-index: 7;font-size:72px; font-family:nexa_blackregular;font-weight:700;color:#3a4b60;max-width: auto; max-height: auto; white-space: nowrap;">ELIXIR T-08
+						style="z-index: 7;font-size:72px; font-family:nexa_blackregular;font-weight:700;color:#3a4b60;max-width: auto; max-height: auto; white-space: nowrap;"> FRUIT PUNCH
 					</div>
 
 					<!-- LAYER NR. 3 -->
@@ -223,7 +171,7 @@
 						data-endelementdelay="0"
 						 data-end="8700"
 						data-endspeed="300"
-						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:24px;line-height:26px;font-family:Roboto;font-weight:100; color:#ffffff;letter-spacing:8px;">FEELING YOUR IMAGINTION
+						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:24px;line-height:26px;font-family:Roboto;font-weight:100; color:#ffffff;letter-spacing:8px;"> Aneka Buah
 					</div>
 					
 					<!-- LAYER NR. 4.1 -->
@@ -240,7 +188,7 @@
 						 data-end="8700"
 						data-endspeed="300"
 						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						100% COMBED COTTON
+						Dibuat dari aneka macam buah-buahan segar
 					</div>
 					
 					<!-- LAYER NR. 4.2 -->
@@ -257,64 +205,13 @@
 						 data-end="8700"
 						data-endspeed="300"
 						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						COLOR: GRAY BLACK
-					</div>
-					
-					<!-- LAYER NR. 4.3 -->
-					<div class="tp-caption banner21 tp-fade tp-resizeme"
-						data-x="385"
-						data-y="345" 
-						data-speed="300"
-						data-start="1100"
-						data-easing="Power3.easeInOut"
-						data-splitin="none"
-						data-splitout="none"
-						data-elementdelay="0"
-						data-endelementdelay="0"
-						 data-end="8700"
-						data-endspeed="300"
-						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						ROUND NECK & HALF SLEEVES
-					</div>
-					
-					<!-- LAYER NR. 4.4 -->
-					<div class="tp-caption banner21 tp-fade tp-resizeme"
-						data-x="385"
-						data-y="381" 
-						data-speed="300"
-						data-start="1100"
-						data-easing="Power3.easeInOut"
-						data-splitin="none"
-						data-splitout="none"
-						data-elementdelay="0"
-						data-endelementdelay="0"
-						 data-end="8700"
-						data-endspeed="300"
-						style="z-index: 4; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						CLASSIC FIT, SLIGHTLY LONG
-					</div>
-
-					<!-- LAYER NR. 4.5 -->
-					<div class="tp-caption banner22 tp-fade tp-resizeme"
-						data-x="385"
-						data-y="418" 
-						data-speed="300"
-						data-start="1400"
-						data-easing="Power3.easeInOut"
-						data-splitin="none"
-						data-splitout="none"
-						data-elementdelay="0"
-						data-endelementdelay="0"
-						 data-end="8700"
-						data-endspeed="300"
-						style="z-index: 5; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">
-						GSM: 180
+						seperti melon, semangka, jeruk, biji selasih dan air soda
 					</div>
 					
 					<!-- LAYER NR. 4.6 -->
 					<div class="tp-caption banner23 tp-fade tp-resizeme"
 						data-x="385"
-						data-y="450" 
+						data-y="345" 
 						data-speed="300"
 						data-start="1700"
 						data-easing="Power3.easeInOut"
@@ -324,7 +221,7 @@
 						data-endelementdelay="0"
 						 data-end="8700"
 						data-endspeed="300"
-						style="z-index: 6; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;">PRICE: $ 35.99
+						style="z-index: 6; max-width: auto; max-height: auto; white-space: nowrap;font-size:20px;line-height:2;font-family:nexa_bookregular;color:#ffffff;"> HARGA: Rp 75.000,00
 					</div>
 					
 					<!-- LAYER NR. 4.7 -->

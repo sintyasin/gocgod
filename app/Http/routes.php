@@ -29,3 +29,19 @@ Route::post('register/submitAdmin', 'MemberController@registerAdmin');
 //////login
 Route::get('login/', 'MemberController@loginPageMember');
 Route::post('login/submit', 'MemberController@checkLoginMember');
+
+//////tes
+Route::get('findalocation', function(){
+        return view('page.findalocation');
+
+});
+
+Route::get('menu', function(){
+        return view('page.menu');
+
+});
+
+Route::get('checkout', function(){
+        return view('page.checkout');
+
+});

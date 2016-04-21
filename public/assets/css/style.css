@@ -54,7 +54,7 @@ Version: 1.0
     font-family: 'nexa_bookregular';
     src: url('fonts/nexa-book.eot');
     src: url('fonts/nexa-book.eot?#iefix') format('embedded-opentype'),
-         url('fonts/nexa-book.woff2') format('woff2'),
+         url('../fonts/nexa-book.woff2') format('woff2'),
          url('fonts/nexa-book.woff') format('woff'),
          url('fonts/nexa-book.ttf') format('truetype'),
          url('fonts/nexa-book.svg#nexa_bookregular') format('svg');
@@ -65,7 +65,7 @@ Version: 1.0
     font-family: 'nexa_regularregular';
     src: url('fonts/nexaregular.eot');
     src: url('fonts/nexaregular.eot?#iefix') format('embedded-opentype'),
-         url('fonts/nexaregular.woff2') format('woff2'),
+         url('../fonts/nexaregular.woff2') format('woff2'),
          url('fonts/nexaregular.woff') format('woff'),
          url('fonts/nexaregular.ttf') format('truetype'),
          url('fonts/nexaregular.svg#nexa_regularregular') format('svg');
@@ -76,8 +76,8 @@ Version: 1.0
     font-family: 'nexa_xboldregular';
     src: url('fonts/nexa-xbold.eot');
     src: url('fonts/nexa-xbold.eot?#iefix') format('embedded-opentype'),
-         url('fonts/nexa-xbold.woff2') format('woff2'),
-         url('fonts/nexa-xbold.woff') format('woff'),
+         url('../fonts/nexa-xbold.woff2') format('woff2'),
+         url('../fonts/nexa-xbold.woff') format('woff'),
          url('fonts/nexa-xbold.ttf') format('truetype'),
          url('fonts/nexa-xbold.svg#nexa_xboldregular') format('svg');
     font-weight: normal;
@@ -87,8 +87,8 @@ Version: 1.0
     font-family: 'nexa_blackregular';
     src: url('fonts/nexablack.eot');
     src: url('fonts/nexablack.eot?#iefix') format('embedded-opentype'),
-         url('fonts/nexablack.woff2') format('woff2'),
-         url('fonts/nexablack.woff') format('woff'),
+         url('../fonts/nexablack.woff2') format('woff2'),
+         url('../fonts/nexablack.woff') format('woff'),
          url('fonts/nexablack.ttf') format('truetype'),
          url('fonts/nexablack.svg#nexa_blackregular') format('svg');
     font-weight: normal;
@@ -153,7 +153,7 @@ h1, h2, h3, h4, h5, h6 {
   margin:0;
   padding:0;
 }
-h1, h2, h5, a, .header_top_right ul li a:hover,.mainmenu a:hover, .choose_text:hover.choose_text i, .choose_active.choose_text i, .choose_text:hover.choose_text h5 a, .choose_active.choose_text h5 a, .social_icon li a i, .review_icon i, .compare_menu ul li a,th, .features_text  h5, .disclaimer h5, .single_features i, .single_features i.flaticon-lightbulbs, .single_features i.flaticon-tshirt17, .disclaimer i, .newsletter input{
+h1, h2, h5, a, .header_top_right ul li,.mainmenu a:hover, .choose_text:hover.choose_text i, .choose_active.choose_text i, .choose_text:hover.choose_text h5 a, .choose_active.choose_text h5 a, .social_icon li a i, .review_icon i, .compare_menu ul li a,th, .features_text  h5, .disclaimer h5, .single_features i, .single_features i.flaticon-lightbulbs, .single_features i.flaticon-tshirt17, .disclaimer i, .newsletter input{
   color:#3a4b60;
 }
 .social_icon li a:hover i,.slide_btn:hover,.shop_now_btn:hover,.searchbox-open span,.choose_title h2,.choose_text h5  a,.choose_btn .shop_now_btn,.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover,.nav-tabs li a:hover,.footer_link p,#scrollUp i,.dark_product h1,.footer_link li a,.address li{
@@ -245,7 +245,7 @@ body {
 /*--------------------------------
 [2.1.1 Header-Top-Left ]
 ---------------------------------*/
-.header_top_left,.header_top_right {padding: 10px 0;}
+.header_top_left,.header_top_right {padding: 0px 0;}
 .header_top_left.float-left {
   position:relative;
   z-index:2;
@@ -281,6 +281,9 @@ body {
   color: rgb(135, 135, 135);
   font-size: 13px;
   text-transform: inherit;
+}
+.header_top_right a:hover{
+  color: rgb(229, 83, 0);
 }
 .header_top_right.text-right a,.shop_icon {margin-right: 10px;}
 .social_others a i {
@@ -340,17 +343,18 @@ li.searchbox.searchbox-open {padding-top: 0;}
 [2.2 Mainmenu ]
 --------------------------------*/
 .mobile-menu-area{display:none;}
-.mainmenu, .logo {padding: 15px 0;}
+.mainmenu {padding: 10px 0;}
+.logo {padding: 5px;}
 .logo a {
-  padding: 8px 0;
+  padding: 8px 0;    
   display: block;
 }
 .mainmenu a {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 16px;
-  padding: 10px 15px;
+  padding: 10px 25px;
   margin-left: 5px;
-  color:rgb(135, 135, 135);
+  color:rgb(57, 74, 95);
 }
 .shop_icon span {
   font-size: 10px;
@@ -370,6 +374,8 @@ li.searchbox.searchbox-open {padding-top: 0;}
 }
 .mainmenu a i {top: 0;}
 .mainmenu a:hover i {top: 5px;}
+.mainmenu a:hover{background-color:rgb(1, 130, 100);}
+.mainmenu a:hover{color:rgb(255, 255, 255);}
 .guarantee_text p {padding-bottom: 20px;}
 .footer_link li{margin-bottom: 20px;}
 /*==========================================
@@ -675,7 +681,7 @@ table tr td {
 [8.1 Footer-Top ]
 --------------------------------*/
 .footer_top {
-  background: rgb(32, 43, 48) none repeat scroll 0 0;
+  background: rgb(1, 144, 105) none repeat scroll 0 0;
   padding: 40px 0;
 }
 .newsletter h4 {
@@ -703,7 +709,7 @@ table tr td {
 /*-------------------------------
 [8.2 Footer-Middel ]
 --------------------------------*/
-.footer_middel {background: rgb(23, 29, 32) none repeat scroll 0 0;}
+.footer_middel {background: rgb(1, 117, 96) none repeat scroll 0 0;}
 .footer_link p {
   border-bottom: 1px solid #3A4B60;
   padding-bottom: 10px;
@@ -739,7 +745,7 @@ table tr td {
 /*-------------------------------
 [8.3 Footer-Bottom ]
 --------------------------------*/
-.footer_bottom {background: rgb(32, 43, 48) none repeat scroll 0 0;}
+.footer_bottom {background: rgb(1, 144, 105) none repeat scroll 0 0;}
 .copyright p,.copyright p a {
   color: rgb(255, 255, 255);
   font-size: 13px;

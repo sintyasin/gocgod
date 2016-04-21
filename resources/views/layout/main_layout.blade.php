@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GoC GoD</title>
+    <title>go C go D</title>
 
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
@@ -15,9 +15,12 @@
     <!-- revolution banner css settings -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/settings.css') }}">
     <!-- mobilemenu css -->
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/meanmenu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/meanmenu.min.css') }}">
     <!-- responsive css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/responsive.css') }}">
+    <!-- custom css -->
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">
+
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}">
 
@@ -29,10 +32,9 @@
     @include('include.navigation')
 
     <div class="content">
-        <div class="container">
-            @yield('content')
-        </div>
+    @yield('content')
     </div>
+    
     <footer>
         @include('include.footer')
     </footer>
