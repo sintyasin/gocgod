@@ -24,14 +24,12 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    private $data;
-
     /**
      * Where to redirect users after login / registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -51,8 +49,6 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {    
-        $this->data = $data;
-
         return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:master__member',
@@ -71,10 +67,10 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return Member::create([
-            'name' => $this->data['name'],
-            'email' => $this->data['email'],
-            'password' => bcrypt($this->data['password']),
-            'city_id' => $this->data['city'],
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
+            'city_id' => $data['city'],
         ]);
     }
 }
