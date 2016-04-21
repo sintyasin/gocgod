@@ -4,9 +4,9 @@
 @section('content')
 <div class="container">
 	<div class="googlemap_custom">
-			<div id="googleMap"></div>
-		</div>
-		</div>
+		<div id="googleMap"></div>
+	</div>
+</div>
 @stop
 
 <!-- Google Map js -->
@@ -23,7 +23,7 @@
 		var marker = new google.maps.Marker({
 			position: map.getCenter(),
 			animation:google.maps.Animation.BOUNCE,
-			icon: 'images/map-marker.png',
+			icon: 'assets/images/map-marker.png',
 			map: map
 		});
 	}

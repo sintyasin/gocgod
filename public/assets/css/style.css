@@ -153,7 +153,7 @@ h1, h2, h3, h4, h5, h6 {
   margin:0;
   padding:0;
 }
-h1, h2, h5, a, .header_top_right ul li a:hover,.mainmenu a:hover, .choose_text:hover.choose_text i, .choose_active.choose_text i, .choose_text:hover.choose_text h5 a, .choose_active.choose_text h5 a, .social_icon li a i, .review_icon i, .compare_menu ul li a,th, .features_text  h5, .disclaimer h5, .single_features i, .single_features i.flaticon-lightbulbs, .single_features i.flaticon-tshirt17, .disclaimer i, .newsletter input{
+h1, h2, h5, a, .header_top_right ul li,.mainmenu a:hover, .choose_text:hover.choose_text i, .choose_active.choose_text i, .choose_text:hover.choose_text h5 a, .choose_active.choose_text h5 a, .social_icon li a i, .review_icon i, .compare_menu ul li a,th, .features_text  h5, .disclaimer h5, .single_features i, .single_features i.flaticon-lightbulbs, .single_features i.flaticon-tshirt17, .disclaimer i, .newsletter input{
   color:#3a4b60;
 }
 .social_icon li a:hover i,.slide_btn:hover,.shop_now_btn:hover,.searchbox-open span,.choose_title h2,.choose_text h5  a,.choose_btn .shop_now_btn,.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover,.nav-tabs li a:hover,.footer_link p,#scrollUp i,.dark_product h1,.footer_link li a,.address li{
@@ -245,7 +245,7 @@ body {
 /*--------------------------------
 [2.1.1 Header-Top-Left ]
 ---------------------------------*/
-.header_top_left,.header_top_right {padding: 10px 0;}
+.header_top_left,.header_top_right {padding: 0px 0;}
 .header_top_left.float-left {
   position:relative;
   z-index:2;
@@ -281,6 +281,9 @@ body {
   color: rgb(135, 135, 135);
   font-size: 13px;
   text-transform: inherit;
+}
+.header_top_right a:hover{
+  color: rgb(229, 83, 0);
 }
 .header_top_right.text-right a,.shop_icon {margin-right: 10px;}
 .social_others a i {
@@ -324,6 +327,7 @@ li.searchbox.searchbox-open {padding-top: 0;}
   position: absolute;
   right: 0;
   top: 0;
+  padding: 7px;
   width:25px;
 }
 .searchbox-open {
@@ -340,18 +344,18 @@ li.searchbox.searchbox-open {padding-top: 0;}
 [2.2 Mainmenu ]
 --------------------------------*/
 .mobile-menu-area{display:none;}
-.mainmenu {padding: 15px 0;}
+.mainmenu {padding: 10px 0;}
 .logo {padding: 5px;}
 .logo a {
   padding: 8px 0;    
   display: block;
 }
 .mainmenu a {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 16px;
-  padding: 10px 15px;
+  padding: 10px 25px;
   margin-left: 5px;
-  color:rgb(135, 135, 135);
+  color:rgb(57, 74, 95);
 }
 .shop_icon span {
   font-size: 10px;

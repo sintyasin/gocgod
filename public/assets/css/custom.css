@@ -7,6 +7,12 @@ SECTION 1. TOP
 	height: 40px;
 }
 
+.container_custom{
+	padding: 10px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
 .header_line_custom{
 	padding-top: 10px;
 	/*
