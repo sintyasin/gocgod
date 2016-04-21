@@ -21,18 +21,17 @@
 		<div class="row">
 			<div class="col-sm-6 col-md-3">
 				<div class="footer_link address">
-					<p>Elixir fashion</p>
+					<p>go C go D</p>
 					<ul>
-						<li><span>Addresss: </span>ipsum 125 Pall Mall, London, England</li>
-						<li><span>Phone: </span>(0123) 345 6789</li>
-						<li><span>Email: </span>info@domain.com</li>
+						<li><span>Addresss: </span> Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk</li>
+						<li><span>WA: </span>0811-139318 (Baby)</li>
 					</ul>
 				</div>
 				<div class="footer_icon">
 					<ul>
 						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-						<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+						<li><a href="https://www.instagram.com/gocgod.id/"><i class="fa fa-instagram"></i></a></li>
 						<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
 					</ul>
 				</div>

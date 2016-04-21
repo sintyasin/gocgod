@@ -25,7 +25,7 @@
 					<ul>
 						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-						<li><a href="#"><i class="fa fa-instagram"></i></a></li>
+						<li><a href="https://www.instagram.com/gocgod.id/"><i class="fa fa-instagram"></i></a></li>
 						<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
 						<li><p> | </p> </li>
 						<li><p>  </p> </li>
@@ -48,7 +48,7 @@
 						<ul>
 							<li><a href="home">HOME</a></li>
 							<!-- <li><a href="#">PRODUCT DETAIL</i></a></li> -->
-							<li><a href="#">MENU</a></li>
+							<li><a href="menu">MENU</a></li>
 							<li><a href="#">HOW TO BUY</a></li>
 							<li><a href="#">BECOME AN AGENT</a></li>
 							<li><a href="#">FAQ</a></li>
