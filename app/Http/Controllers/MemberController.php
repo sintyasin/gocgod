@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
-use App\MemberModel;
-use App\AdminModel;
+use App\Member;
+use App\Admin;
 
 use Hash;
 
