@@ -3,6 +3,7 @@
 SECTION 1. TOP
 */
 .top_custom{
+	overflow: hidden;
 	background: rgb(1, 117, 96) none repeat scroll 0 0;
 	height: 40px;
 }
@@ -22,4 +23,15 @@ SECTION 1. TOP
 
 .googlemap_custom{
 	padding: 20px;
+}
+
+.padding_outer{
+	padding: 20px;
+}
+
+.font_padding{
+	text-align: center;
+	font-size:16px;
+  	font-family:nexa_blackregular;
+  	padding: 10px;
 }

@@ -23,6 +23,7 @@ Route::get('product/', 'ProductController@getMenu');
 Route::auth();
 
 //////tes
+
 Route::get('findalocation', function(){
         return view('page.findalocation');
 
