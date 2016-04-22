@@ -7,7 +7,7 @@
 		<div id="googleMap"></div>
 	</div>
 </div>
-@stop
+
 
 <!-- Google Map js -->
 <script src="https://maps.googleapis.com/maps/api/js"></script>
@@ -30,3 +30,4 @@
 	google.maps.event.addDomListener(window, 'load', initialize);
 </script>  
 <!-- main js -->
+@stop

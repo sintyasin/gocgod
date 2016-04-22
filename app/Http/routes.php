@@ -11,14 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::get('home', ['uses' => 'HomeController@index']);
+Route::get('/', 'HomeController@index');
 Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
-Route::get('product/', 'ProductController@getMenu');
+Route::get('menu/', 'ProductController@getMenu');
 
 Route::auth();
 
@@ -28,10 +24,11 @@ Route::get('findalocation', function(){
 
 });
 
+/*
 Route::get('menu', function(){
         return view('page.menu');
 
-});
+});*/
 
 Route::get('checkout', function(){
         return view('page.checkout');

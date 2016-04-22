@@ -4,7 +4,9 @@ SECTION 1. TOP
 */
 .top_custom{
 	background: rgb(1, 117, 96) none repeat scroll 0 0;
+	overflow: hidden;
 	height: 40px;
+	width: 100%;
 }
 
 .container_custom{
@@ -22,4 +24,18 @@ SECTION 1. TOP
 
 .googlemap_custom{
 	padding: 20px;
+}
+
+
+.dummy {
+    margin-top: 100%;
+}
+.thumbnail {
+    position: absolute;
+    top: 15px;
+    bottom: 0;
+    left: 15px;
+    right: 0;
+    text-align:center;
+    padding-top:calc(50% - 30px);
 }
