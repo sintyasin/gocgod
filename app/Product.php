@@ -8,6 +8,7 @@ class Product extends Model
 {
     protected $table = 'product__varian';
 	protected $primaryKey = 'varian_id';
+	public $incrementing = false;
 
 	public function category()
 	{

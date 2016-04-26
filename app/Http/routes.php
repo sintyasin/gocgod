@@ -18,11 +18,15 @@ Route::get('menu/', 'ProductController@getMenu');
 
 Route::auth();
 
-//////tes
+//////halaman admin
+Route::get('adminproductlist', 'AdminController@showProductList');
+Route::get('productlist/data', array('as' => 'productlist.data', 'uses' =>'AdminController@getProductList'));
+
+
+
 
 Route::get('findalocation', function(){
         return view('page.findalocation');
-
 });
 
 /*
