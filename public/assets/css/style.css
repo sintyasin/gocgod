@@ -570,7 +570,7 @@ li.searchbox.searchbox-open {padding-top: 0;}
   padding:0;
   list-style:none;
 }
-.compare_menu ul li a,th,.features_text h5,.disclaimer h5 {
+.compare_menu ul li a,.features_text h5,.disclaimer h5 {
   font-family: nexa_blackregular;
   font-size: 18px;
   font-weight: 400;
@@ -650,7 +650,7 @@ th{
 }
 table tr td {
   color: rgb(37, 51, 69);
-  font-size: 18px;
+  font-size: 14px;
   padding: 20px;
   font-family:nexa_bookregular;
   font-weight:400;

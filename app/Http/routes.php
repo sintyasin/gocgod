@@ -32,12 +32,6 @@ Route::get('findalocation', function(){
         return view('page.findalocation');
 });
 
-/*
-Route::get('menu', function(){
-        return view('page.menu');
-
-});*/
-
 Route::get('checkout', function(){
         return view('page.checkout');
 

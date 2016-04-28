@@ -7,7 +7,7 @@
 
 		<div class="col-md-3 col-xs-12">
 			<div class="labout">
-				<img src={{URL::asset("assets/images/product/". $queryCategory->category_name . "/" . $query->picture)}}>
+				<img src={{URL::asset("assets/images/product/". $queryCategory->category_name . "/" . $query->picture)}} style="height:260px;">
 			</div>
 		</div>
 
@@ -37,7 +37,7 @@
 					<hr>
 					<hr>
 					<p class="notes">*Free shipping fee for subcriber or buy more than 5</p>
-					<a href="#" class="cartBtn" target="_self">Add to cart</a> <a href="#" class="cartBtn" target="_self">Subscribe</a>
+					<a href="#" class="cartBtn" target="_self">Add to cart</a> <a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
 
 				</div>
 			</div>

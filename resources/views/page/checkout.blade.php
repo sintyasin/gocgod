@@ -16,7 +16,7 @@
          </a>
        </h4>
      </div>
-     <div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse in" id="checkoutMethod" aria-expanded="true" style="">
+     <div aria-labelledby="headingOne" role="tabpanel" class="panel-c ollapse collapse in" id="checkoutMethod" aria-expanded="true" style="">
        <div class="content-info">
         <div class="col-xs-12 col-sm-9">
          <div class="checkout-reg">
@@ -55,7 +55,7 @@
   <div id="headingTwo" role="tab" class="panel-heading">
    <h4 class="panel-title">
     <a aria-controls="billingInformation" aria-expanded="false" href="#billingInformation" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-     2. Billing Information
+     2. Choose Products (Subscriber only)
    </a>
  </h4>
 </div>
@@ -64,16 +64,76 @@
   <div class="col-xs-12">
    <div class="billing-info">
     <div class="regSaveTime commonChack">
-     <p>Select a billing address from your address book or enter a new address.</p>
+     <br> <h4><font color="black">Choose your products</font></h4> <br>
    </div>
-   <select class="form-control plx month-select">
-     <option class="plxLogin">Boot Experts, Bonosrie D- Block, Dkaka,  1201, Bangladesh</option>
-     <option class="plxLogin">Add New Address</option>
-   </select>
-   <div class="method-input-box">
-     <input type="radio"><label>Ship to this address</label><br>
-     <input type="radio"><label>Ship to different address</label>
-   </div>
+   <table id="" class="display table table-striped table-bordered dt-responsive" width="100%">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Picture</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cin Cau</td>
+          <td><img src={{ URL('assets/images/product/minuman/cin_cau.jpg') }} style='height:200px;'/></td>
+          <td>Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung . Air cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet</td>
+          <td>60000</td>
+          <td>
+            <select>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Kacang Hijau</td>
+          <td><img src={{ URL('assets/images/product/minuman/kacang_hijau.jpg') }} style='height:200px;'/></td>
+          <td>Manfaat sari kacang hijau 1.Meningkatkan penyerapan nutrisi 2. Mencegah penyakit jantung dan stroke 3.Membersihkan pencernaan 4.Mengatasi anemia 5.Menjaga berat badan 6.Membantu pertumbuhan sel organ, otot dan otak Tanpa bahan pengawet !!!!</td>
+          <td>60000</td>
+          <td>
+            <select>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Soya Milk</td>
+          <td><img src={{ URL('assets/images/product/minuman/soya_milk.jpg') }} style='height:200px;'/></td>
+          <td>Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi Tanpa bahan pengawet !!! Dan pemanis buatan Sangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin</td>
+          <td>75000</td>
+          <td>
+            <select>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p><font size="3"><b>How many weeks do you want to buy?</b></font></p>
+    <input type="number" min="1" value="1" style="width:40px; color:black;"> <br><br>
+    <p><font size="3"><b>Choose your delivery day</b></font></p>
+    <select style="color:black;">
+      <option value="1">Monday</option>
+      <option value="2">Tuesday</option>
+      <option value="3">Wednesday</option>
+      <option value="4">Thursday</option>
+      <option value="2">Friday</option>
+      <option value="3">Saturday</option>
+      <option value="4">Sunday</option>
+    </select>
+    <br><br>
    <a class="checkPageBtn" href="#">CONTINUE</a>
  </div>
 </div>
@@ -84,7 +144,7 @@
   <div id="headingThree" role="tab" class="panel-heading">
    <h4 class="panel-title">
     <a aria-controls="shippingMethod" aria-expanded="false" href="#shippingMethod" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-     3. Shipping Method
+     3. Order Details
    </a>
  </h4>
 </div>
@@ -92,8 +152,48 @@
  <div class="content-info">
   <div class="col-xs-12">
    <div class="shiping-method">
-    <p class="plxLogin"><small>Flat Rate</small></p>
-    <p class="plxLogin">Fixed $40.00</p>
+    <table id="" class="display table table-striped table-bordered dt-responsive" width="100%">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Picture</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Sub Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cin Cau</td>
+          <td><img src={{ URL('assets/images/product/minuman/cin_cau.jpg') }} style='height:200px;'/></td>
+          <td>60000</td>
+          <td align="center">
+            <input type="number" min="1" value="1" style="width:40px; color:black;"> <br><br>
+            <button type="button" class="btn btn-primary">Update</button>
+          </td>
+          <td>60000</td>
+          <td align="center">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Soya Milk</td>
+          <td><img src={{ URL('assets/images/product/minuman/soya_milk.jpg') }} style='height:200px;'/></td>
+          <td>75000</td>
+          <td align="center">
+            <input type="number" min="1" value="2" style="width:40px; color:black;"> <br><br>
+            <button type="button" class="btn btn-primary">Update</button>
+          </td>
+          <td>150000</td>
+          <td align="center">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="plxLogin"><font size="3">Total Price</font></p>
+    <p class="plxLogin"><font size="4"><b>Rp 210.000.00</b></font></p>
     <div class="block-area-button">
      <a class="checkPageBtn" href="#">Continue</a>
    </div>                                                  
@@ -189,7 +289,7 @@
   <div id="headingFive" role="tab" class="panel-heading">
    <h4 class="panel-title">
     <a aria-controls="orderReview" aria-expanded="false" href="#orderReview" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-     5. Order Review
+     5. Delivery Address
    </a>
  </h4>
 </div>
@@ -198,34 +298,27 @@
   <div class="review-bar">
    <div class="col-xs-12 col-sm-6">
     <div class="product">
-     <p class="ct-design"><strong>Blouse</strong></p>
-     <p class="plxLogin">Short-sleeved blouse with feminine draped sleeve detail.</p>
+      <form action="">
+        <font color="black">
+        <div class="form-group">
+          <label for="address">Select your delivery addres</label> <br>
+          <input type="radio" name="address" value="male" checked> Use my account's address<br>
+          <input type="radio" name="address" value="female"> Other address<br>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="phone">Enter recipient phone number</label> <br>
+          <input type="text" class="form-control" name="phone" placeholder="Phone number" />
+        </div>
+        </font>
+      </form>
+      <div class="block-area-button">
+        <a class="checkPageBtn" href="#">Done</a>
+      </div>   
    </div>
  </div>
- <div class="col-xs-12 col-sm-6">
-  <div class="product-review">
-   <label>Quality:</label>
-   <p>
-    <i class="fa fa-star"></i>
-    <i class="fa fa-star"></i>
-    <i class="fa fa-star"></i>
-    <i class="fa fa-star"></i>
-    <i class="fa fa-star"></i>
-  </p>
-  <form>
-    <div class="form-group">
-     <label for="exampleInputEmail1">Title:</label>
-     <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-   </div>
-   <div class="form-group">
-     <label>Comment:</label>
-     <textarea class="form-control" rows="3"></textarea>
-   </div>
-   <button type="submit" class="checkPageBtn">Submit</button>
- </form>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -236,4 +329,14 @@
 </div>
 </div>
 <!-- End checkout content -->
+@push('scripts')
+<script>
+
+$(document).ready(function() {
+    $('table.display').DataTable( {
+      "autoWidth": false
+    } );
+} );
+</script>
+@endpush
 @stop
