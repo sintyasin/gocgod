@@ -23,6 +23,11 @@
 					<h3 class="quick_h3">Description: </h3>
 					<p class="quick_desc"> {{$query->description}}</p>
 					<h3 class="quick_h3">Weight: <span class="color"> {{$query->weight}} kg</span></h3> 
+					<label class="quick_h3"> Quantity: </label>
+					<input type="text" class="form-control" placeholder="Qty" name="#" style="width: 25%;"> 
+					
+					<p class="notes">*Free shipping fee for subcriber or buy more than 5</p>
+					<a href="#" class="cartBtn" target="_self">Add to cart</a> <a href="#" class="cartBtn" target="_self">Subscribe</a>
 				</div>
 			</div>
 		</div>
@@ -30,16 +35,6 @@
 
 		<div class="col-md-3 col-xs-12">
 			<div class="padding_outer_menu">
-				<div class="border_outer" style="object-position: center;">
-					<h3 class="quick_h3"> Quantity: </h3>
-
-					<input type="text" class="form-control" placeholder="Qty" name="#" style="width: 25%;"> 
-					<hr>
-					<hr>
-					<p class="notes">*Free shipping fee for subcriber or buy more than 5</p>
-					<a href="#" class="cartBtn" target="_self">Add to cart</a> <a href="#" class="cartBtn" target="_self">Subscribe</a>
-
-				</div>
 			</div>
 		</div>
 
@@ -49,14 +44,14 @@
 				<div class="well">
 
 					<div class="panel sauget-accordion">
-						<div id="headingFive" role="tab" class="panel-heading">
+						<div id="headingOne" role="tab" class="panel-heading">
 							<h4 class="panel-title">
-							<a class="btn" aria-controls="orderReview" aria-expanded="false" href="#review" data-parent="#accordion" data-toggle="collapse" class="collapsed">
+							<a class="btn" aria-controls="orderReview" aria-expanded="true" href="#review" data-parent="#accordion" data-toggle="collapse" class="collapsed">
 									Leave a Review Click Here
 								</a>
 							</h4>
 						</div>
-						<div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse" id="review" aria-expanded="false">
+						<div aria-labelledby="headingOne" role="tabpanel" class="panel-collapse collapse" id="review" aria-expanded="false">
 							<div class="content-info">
 								<div class="review-bar">
 									<div class="col-xs-12 col-sm-6">
