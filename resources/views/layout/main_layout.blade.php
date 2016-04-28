@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>go C go D</title>
 
+    <!-- Datatables css -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.css') }}">
+
+
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
     <!-- fontawesomecss -->
@@ -39,7 +45,15 @@
     
     <!-- All js Files Here -->
     <!-- jquery-1.11.3 -->
-    <script src="{{ URL::asset('assets/js/jquery-1.11.3.min.js') }}"></script>
+    <!-- <script src="{{ URL::asset('assets/js/jquery-1.11.3.min.js') }}"></script> -->
+    <!-- jQuery 2.1.4 -->
+    <script src="{{ URL::asset('assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <!-- Datatables -->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script>
+    @stack('scripts')
     <!-- bootstrap js -->
     <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
     <!-- revolution js -->
@@ -55,7 +69,7 @@
     <!-- main js -->
     <script src="{{ URL::asset('assets/js/main.js') }}"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <!-- <script type="text/javascript" src="js/bootstrap/bootstrap-dropdown.js"></script> -->
     <script>
