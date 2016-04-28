@@ -8,6 +8,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -17,8 +18,6 @@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ URL::asset('assets/dist/css/skins/_all-skins.min.css') }}">
-
-
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -47,18 +46,30 @@
 
     <!-- datatables -->
     
-    <!-- App scripts -->
-    <!-- jQuery -->
-    <script src="//code.jquery.com/jquery.js"></script>
-    <!-- DataTables -->
-    <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
-    <!-- Bootstrap JavaScript -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    @stack('scripts')
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
-    
+
     <!-- jQuery 2.1.4 -->
     <script src="{{ URL::asset('assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <!-- DataTables -->
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js">
+    </script>
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script>
+
+    
+
+    <!-- Bootstrap JavaScript -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/dataTables.bootstrap.css') }}"> -->
+    @stack('scripts')
+    
+    <!-- App scripts -->
     <!-- jQuery UI 1.11.4 -->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -66,12 +77,12 @@
       $.widget.bridge('uibutton', $.ui.button);
     </script>
     <!-- Bootstrap 3.3.5 -->
-    <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script> 
 
     <!-- AdminLTE App -->
     <script src="{{ URL::asset('assets/dist/js/app.min.js')}}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ URL::asset('assets/dist/js/pages/dashboard.js')}}"></script>
+    <!-- <script src="{{ URL::asset('assets/dist/js/pages/dashboard.js')}}"></script> -->
     <!-- AdminLTE for demo purposes -->
     <script src="{{ URL::asset('assets/dist/js/demo.js')}}"></script>
 

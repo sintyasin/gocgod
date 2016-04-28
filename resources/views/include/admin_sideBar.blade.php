@@ -4,13 +4,7 @@
   <section class="sidebar">
     <!-- Sidebar user panel -->
     <div class="user-panel">
-      <div class="pull-left image">
-        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-      </div>
-      <div class="pull-left info">
-        <p>Alexander Pierce</p>
-        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-      </div>
+        <p style="color:white; padding-top:5px; padding-left:5px; margin-bottom:1px;">Alexander Pierce</p>
     </div>
     <!-- search form -->
     <form action="#" method="get" class="sidebar-form">
@@ -27,23 +21,39 @@
       <li class="header">MAIN NAVIGATION</li>
       <li class=" <?php if($active == 'productList' || $active == 'insertProduct') echo 'active'; ?> treeview">
         <a href="#">
-          <i class="fa fa-dashboard"></i> <span>Product</span> <i class="fa fa-angle-left pull-right"></i>
+          <i class="fa fa-list"></i> <span>Product</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=" <?php if($active == 'productList') echo 'active'; ?> "><a href=""><i class="fa fa-circle-o"></i> Product List</a></li>
+          <li class=" <?php if($active == 'productList') echo 'active'; ?> "><a href={{ URL('/adminproductlist/') }}><i class="fa fa-circle-o"></i> Product List</a></li>
           <li class=" <?php if($active == 'insertProduct') echo 'active'; ?> "><a href=""><i class="fa fa-circle-o"></i> Insert New</a></li>
         </ul>
       </li>
 
+      <li class=" <?php if($active == 'memberList' || $active == 'agentList') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-user"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'memberList') echo 'active'; ?> "><a href={{ URL('/admincustomerlist/') }}><i class="fa fa-circle-o"></i> Customer List</a></li>
+          <li class=" <?php if($active == 'agentList') echo 'active'; ?> "><a href= {{ URL('adminagentlist/') }} ><i class="fa fa-circle-o"></i> Agent List</a></li>
+        </ul>
+      </li>
 
+
+
+      <li class=" ">
+        <a href="">
+          <i class="fa fa-user"></i> <span>Tes</span>
+        </a>
+      </li>
 
       <li class="treeview">
         <a href="#">
           <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=""><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-          <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+          <li class=""><a href=""><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+          <li><a href=""><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
         </ul>
       </li>
       <li class="header">LABELS</li>

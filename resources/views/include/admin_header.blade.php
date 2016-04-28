@@ -2,7 +2,7 @@
 <!-- Logo -->
 <span class="logo">
   <!-- mini logo for sidebar mini 50x50 pixels -->
-  <span class="logo-mini"><b>A</b>go</span>
+  <span class="logo-mini"><b>Go</b></span>
   <!-- logo for regular state and mobile devices -->
   <span class="logo-lg"><b>Admin</b>goCgoD</span>
 </span>
@@ -31,9 +31,6 @@
             <ul class="menu">
               <li><!-- start message -->
                 <a href="#">
-                  <div class="pull-left">
-                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                  </div>
                   <h4>
                     Support Team
                     <small><i class="fa fa-clock-o"></i> 5 mins</small>
@@ -172,13 +169,11 @@
       <!-- User Account: style can be found in dropdown.less -->
       <li class="dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <img src="{{ URL::asset('assets/dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
           <span class="hidden-xs">Alexander Pierce</span>
         </a>
         <ul class="dropdown-menu">
           <!-- User image -->
           <li class="user-header">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             <p>
               Alexander Pierce - Web Developer
               <small>Member since Nov. 2012</small>
