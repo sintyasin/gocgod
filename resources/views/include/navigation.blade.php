@@ -14,7 +14,7 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-1">
 				<div class="logo head_lo">
-					<a href=""{{ url('/home') }}""><img src="{{ URL::asset('assets/images/logo/logo.png') }}" alt="Logo" /></a>
+					<a href="{{ url('/home') }}"><img src="{{ URL::asset('assets/images/logo/logo.png') }}" alt="Logo" /></a>
 				</div>
 			</div>
 			<div class="col-sm-11">
@@ -31,9 +31,29 @@
 						<li><p> | </p> </li>
 						<li><p>  </p> </li>
 						<li><p>  </p> </li>
-						<li><a href="{{ url('/cart') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart</a></li>
+						<!-- <li><a href="{{ url('/cart') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart</a></li> -->
 						<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find an Agent</a></li>
-						<li><a href="{{ url('/login') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Sign In</a></li>
+						
+
+
+	                    <!-- Authentication Links -->
+	                    @if (Auth::guest())
+	                        <li><a href="{{ url('/login') }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Sign In</a></li>
+	                    @else
+	                        <li class="dropdown">
+	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+	                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  {{ Auth::user()->name }} <span class="caret"></span>
+	                            </a>
+
+	                            <ul class="dropdown-menu" role="menu">
+	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer"><i class="fa fa-btn fa-sign-out"></i>Logout</div></a></li>
+	                            </ul>
+	                        </li>
+	                    @endif
+
+	                    <li><p>  </p> </li>
+						<li><p>  </p> </li>
+
 						<li class="searchbox">
 							<input type="search" placeholder="Search......" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
 							<input type="submit" class="searchbox-submit" value="">
@@ -53,7 +73,8 @@
 							<li><a href="{{ url('/howtobuy') }}">HOW TO BUY</a></li>
 							<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
 							<li><a href="{{ url('/faq') }}">FAQ</a></li>
-							<li><a href="{{ url('/checkout') }}">CHECK OUT</a></li>
+							<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+							<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
 						</ul>
 					</nav>
 				</div>
@@ -81,7 +102,8 @@
 					<li><a href="{{ url('/howtobuy') }}">HOW TO BUY</a></li>
 					<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
 					<li><a href="{{ url('/faq') }}">FAQ</a></li>
-					<li><a href="{{ url('/checkout') }}">CHECK OUT</a></li>
+					<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
+					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
 				</ul>
 			</nav>
 		</div>

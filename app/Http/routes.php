@@ -13,7 +13,7 @@
 
 Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('/', 'HomeController@index');
-Route::get('productDetail/{id}', 'ProductController@getMenuDetail');
+Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
 
 Route::auth();
@@ -42,3 +42,16 @@ Route::get('checkout', function(){
         return view('page.checkout');
 
 });
+
+Route::get('faq', function(){
+		return view('page.faq');
+});
+
+Route::get('becomeanagent', function(){
+		return view('page.becomeanagent');
+});
+
+Route::get('howtobuy', function(){
+		return view('page.howtobuy');
+});
+
