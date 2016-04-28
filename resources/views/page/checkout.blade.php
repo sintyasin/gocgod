@@ -22,20 +22,15 @@
          <div class="checkout-reg">
           <div class="checkReg commonChack">
            <div class="checkTitle">
-            <h6 class="ct-design">CHECKOUT AS A GUEST OR REGISTER</h6>
+            <h6 class="ct-design">CHECKOUT AS A SINGLE BUYER OR SUBCRIBER</h6>
           </div>
-          <p>Register with us forfuture convenience</p>
-          <input type="radio"><label>Checkout as Guest</label><br>
-          <input type="radio"><label>Register</label>
+          <p>Who are you?</p>
+          <input type="radio"><label>Checkout as Single Buyer</label><br>
+          <input type="radio"><label>Checkout as Subcriber</label>
         </div>
         <div class="regSaveTime commonChack">
-         <p>Register and save time<br/>
-          Register with us for future convenience</p>
+         <p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items<br/>
         </div>
-        <div class="regSaveTime commonChack">
-          <p>Fast and easy check out<br/>
-           Easy access to your order history and status</p>
-         </div>
          <a class="checkPageBtn" href="#">CONTINUE</a>
        </div>
      </div>

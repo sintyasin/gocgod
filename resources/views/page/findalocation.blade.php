@@ -3,13 +3,17 @@
 
 @section('content')
 <div class="container">
-	<div class="googlemap_custom">
+	<h2>Find Agent Location</h2>
+	<div class="">
+	</div>
+</div>
+<!-- 	<div class="googlemap_custom">
 		<div id="googleMap"></div>
 	</div>
 </div>
 
 <!-- Google Map js -->
-<script src="https://maps.googleapis.com/maps/api/js"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js"></script>
 <script>
 	function initialize() {
 		var mapOptions = {
@@ -27,6 +31,6 @@
 		});
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
-</script>  
+</script>   --> -->
 <!-- main js -->
 @stop
