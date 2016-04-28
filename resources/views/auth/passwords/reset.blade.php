@@ -1,4 +1,4 @@
-@extends('main_layouts.app')
+@extends('layout.main_layout')
 
 @section('content')
 <div class="container">
@@ -36,7 +36,7 @@
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                                    </span>s
                                 @endif
                             </div>
                         </div>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Product;
 use App\ProductCategory;
+use App\NameProduct;
 
 class ProductController extends Controller
 {
@@ -26,8 +27,9 @@ class ProductController extends Controller
 
     public function getMenuDetail($id)
     {
-    	$data['query'] = Product::find($id);
+    	$data['query'] = Product::where('varian_id', $id)->first();
+        $data['queryCategory'] = ProductCategory::find($data['query']->category_id);
 
-    	return view('testing.productDetail', $data);
+        return view('page.menu_detail', $data);
     }
 }
