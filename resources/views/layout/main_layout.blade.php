@@ -27,8 +27,10 @@
     <!-- custom css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">
 
+    
     <!-- favicon -->
     <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.png') }}">
+    <link rel="shortcut icon" href="../favicon.ico">
 
     <!-- fonts -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,500' rel='stylesheet' type='text/css'>
