@@ -6,9 +6,15 @@
     <title>Admin goCgoD</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    
+    <!-- CSS -->
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
-
+    <!-- datatables -->    
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
+    <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/dataTables.bootstrap.css') }}"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css"> -->
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -44,27 +50,17 @@
     </div>
 
 
-    <!-- datatables -->
-    
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
-
-
+    <!--SCRIPT-->
     <!-- jQuery 2.1.4 -->
     <script src="{{ URL::asset('assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
     <!-- DataTables -->
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script>
-
-    
-
+    <script src="https://cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script> 
     <!-- Bootstrap JavaScript -->
     <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.css') }}">
-    <!-- <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/dataTables.bootstrap.css') }}"> -->
+    
     @stack('scripts')
     
     <!-- App scripts -->

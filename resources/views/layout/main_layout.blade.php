@@ -48,6 +48,8 @@
     <!-- <script src="{{ URL::asset('assets/js/jquery-1.11.3.min.js') }}"></script> -->
     <!-- jQuery 2.1.4 -->
     <script src="{{ URL::asset('assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <!-- Datatables -->
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
