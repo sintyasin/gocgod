@@ -181,6 +181,17 @@ h3.quick_h3{
 	font-size: 16px;
 	color: black;
 }
+label.quick_h3{
+	font-family: nexa_xboldregular;
+	font-size: 16px;
+	color: black;
+
+}
+h3.payment_total{
+	font-size: 20px;
+	color: grey;
+	padding-top: 20px;
+}
 h3.quick_h3_stock{
 	font-size: 16px;
 	color: black;
