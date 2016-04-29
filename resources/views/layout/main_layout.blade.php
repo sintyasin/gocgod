@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.css') }}">
 
-
     <!-- bootstrap css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
     <!-- fontawesomecss -->
