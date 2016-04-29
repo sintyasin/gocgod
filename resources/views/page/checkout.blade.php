@@ -203,16 +203,55 @@
 </div>
 </div>
 <div class="panel sauget-accordion">
+  <div id="headingFive" role="tab" class="panel-heading">
+   <h4 class="panel-title">
+    <a aria-controls="orderReview" aria-expanded="false" href="#orderReview" data-parent="#accordion" data-toggle="collapse" class="collapsed">
+     4. Delivery Address
+   </a>
+ </h4>
+</div>
+<div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse" id="orderReview" aria-expanded="false">
+ <div class="content-info">
+  <div class="review-bar">
+   <div class="col-xs-12 col-sm-6">
+    <div class="product">
+      <form action="">
+        <font color="black">
+        <div class="form-group">
+          <label for="address">Select your delivery addres</label> <br>
+          <input type="radio" name="address" value="male" checked> Use my account's address<br>
+          <input type="radio" name="address" value="female"> Other address<br>
+        </div>
+        <div class="form-group">
+            <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="phone">Enter recipient phone number</label> <br>
+          <input type="text" class="form-control" name="phone" placeholder="Phone number" />
+        </div>
+        </font>
+      </form>
+      <div class="block-area-button">
+        <a class="checkPageBtn" href="#">Done</a>
+      </div>   
+   </div>
+ </div>
+</div>
+</div>
+</div>
+</div>
+<div class="panel sauget-accordion">
   <div id="headingFour" role="tab" class="panel-heading">
    <h4 class="panel-title">
     <a aria-controls="paymentInformation" aria-expanded="false" href="#paymentInformation" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-     4. Payment Information
+     5. Payment Information
    </a>
  </h4>
 </div>
 <div aria-labelledby="headingFour" role="tabpanel" class="panel-collapse collapse" id="paymentInformation" aria-expanded="false">
  <div class="content-info">
   <div class="col-xs-12">
+    <h3 class="payment_total"> Total Order + Shipping Fee = </h3>
    <div class="checkout-option">
     <div class="method-input-box">
      <p><input type="radio" name="payment" value="check"><label>Check / Money order </label></p>
@@ -285,44 +324,7 @@
 </div>
 </div>
 </div>
-<div class="panel sauget-accordion">
-  <div id="headingFive" role="tab" class="panel-heading">
-   <h4 class="panel-title">
-    <a aria-controls="orderReview" aria-expanded="false" href="#orderReview" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-     5. Delivery Address
-   </a>
- </h4>
-</div>
-<div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse" id="orderReview" aria-expanded="false">
- <div class="content-info">
-  <div class="review-bar">
-   <div class="col-xs-12 col-sm-6">
-    <div class="product">
-      <form action="">
-        <font color="black">
-        <div class="form-group">
-          <label for="address">Select your delivery addres</label> <br>
-          <input type="radio" name="address" value="male" checked> Use my account's address<br>
-          <input type="radio" name="address" value="female"> Other address<br>
-        </div>
-        <div class="form-group">
-            <textarea class="form-control" rows="3"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="phone">Enter recipient phone number</label> <br>
-          <input type="text" class="form-control" name="phone" placeholder="Phone number" />
-        </div>
-        </font>
-      </form>
-      <div class="block-area-button">
-        <a class="checkPageBtn" href="#">Done</a>
-      </div>   
-   </div>
- </div>
-</div>
-</div>
-</div>
-</div>
+
 </div>
 </div>
 </div>

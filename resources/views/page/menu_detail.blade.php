@@ -17,7 +17,10 @@
 					<h3 class="quick_h3_stock">Stock: <span class="color">{{$query->qty}}</span></h3>
 					<div class="price_single">
 						<!-- <span class="reducedfrom">$140.00</span> -->
-						<span class="actual">Rp {{$query->price}},00</span>
+						<?php 
+						$price = number_format($query->price, 2, ',', '.')
+						?>
+						<span class="actual">Rp {{$price}}</span>
 					</div>
 
 					<h3 class="quick_h3">Description: </h3>
