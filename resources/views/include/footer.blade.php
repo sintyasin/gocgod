@@ -1,5 +1,5 @@
 
-<div class="footer_top footer-padding">
+<!-- <div class="footer_top footer-padding">
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12 col-sm-6">
@@ -15,7 +15,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 <div class="footer_middel footer-padding">
 	<div class="container">
 		<div class="row">

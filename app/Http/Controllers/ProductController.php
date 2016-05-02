@@ -32,4 +32,11 @@ class ProductController extends Controller
 
         return view('page.menu_detail', $data);
     }
+
+    public function getMenuSample()
+    {
+        $data['query'] = Product::all();
+        
+        return view('page.productsample', $data);
+    }
 }

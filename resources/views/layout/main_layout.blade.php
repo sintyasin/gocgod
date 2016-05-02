@@ -58,7 +58,7 @@
     <script src="https://cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script>
     @stack('scripts')
     <!-- bootstrap js -->
-    <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script>
+    <!-- <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script> -->
     <!-- revolution js -->
     <script type="text/javascript" src="{{ URL::asset('assets/lib/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>   
     <script type="text/javascript" src="{{ URL::asset('assets/lib/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
@@ -79,6 +79,7 @@
          $(document).ready(function(){
             $('.dropdown-toggle').dropdown()
         });
+
     </script>
 </body>
 </html>

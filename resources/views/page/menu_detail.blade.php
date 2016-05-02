@@ -34,14 +34,29 @@
 		<div class="col-md-3 col-xs-12">
 			<div class="padding_outer_menu">
 				<div class="border_outer" style="object-position: center;">
-					<h3 class="quick_h3"> Quantity: </h3>
+					<div class="col-xs-5">
+					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
+					</div>
+					<div class="col-xs-5">
+						<input type="text" class="form-control" placeholder="Qty" name="#"> 
+					</div>
+					
 
-					<input type="text" class="form-control" placeholder="Qty" name="#" style="width: 25%;"> 
-					<hr>
-					<hr>
+					
+					<div class="col-xs-12">
+					<br>
 					<p class="notes">*Free shipping fee for subcriber or buy more than 5</p>
-					<a href="#" class="cartBtn" target="_self">Add to cart</a> <a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
-
+					</div>
+					<div class="position_menu">
+						<div class="col-xs-12">
+							<a href="#" class="cartBtn" target="_self">Add Cart</a> 
+							<a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
+							
+						</div>
+						<br>
+							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Request Product Sample </a></button>
+							
+					</div>
 				</div>
 			</div>
 		</div>

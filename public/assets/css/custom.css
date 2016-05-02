@@ -24,10 +24,58 @@ CUSTOM!!
 	border: 1px solid #E3E3E3;
 	*/
 }
-
+/*
 .googlemap_custom{
 	padding: 20px;
 }
+*/
+/*
+====================
+BACKGROUND MENU!!
+====================
+*/
+.boa{
+	overflow: hidden;
+	max-height: 200px;
+	width: 100%;
+	background-image: url(../images/background/untitled-1.jpg);
+	padding-top: 40px;
+	padding-bottom: 40px;
+	text-align: center;
+}
+.boa_title{
+	font-family: nexa_xboldregular;
+	font-size: 200%;
+}
+.boa_caption{
+	font-family: nexa_bookregular;
+	font-size: 150%;
+	padding-top: 20px;
+	padding-bottom: 40px;
+}
+button.boaBtn,a.boaBtn {
+  border: 2px solid white;
+  color: rgb(255, 255, 255);
+  line-height: 30px;
+  margin-bottom: 50px;
+  padding: 10px 10px;
+  transition: all 0.3s ease 0s;
+  font-family: nexa_blackregular;
+}
+button.boaBtn:hover,a.boaBtn:hover{background: rgb(229, 83, 0);}
+
+
+button.boaBtn_boa,a.boaBtn_boa {
+  border: none;
+  color: rgb(0, 0, 0);
+  line-height: 30px;
+  margin-bottom: 50px;
+  padding: 10px 10px;
+  transition: all 0.3s ease 0s;
+  font-family: nexa_blackregular;
+  font-size: 20px;
+}
+button.boaBtn_boa:hover,a.boaBtn_boa:hover{background: rgb(229, 83, 0); color:white; border:none;}
 
 /*
 ====================
@@ -36,7 +84,6 @@ PADDING!!
 */
 .padding_slider{
 	padding-top: 20px;
-	padding-bottom: 30px;
 }
 
 .padding_outer{
@@ -84,6 +131,13 @@ PADDING!!
 .font_menu a:hover{
 	color:rgb(229, 83, 0);
 }
+.position_menu{
+	text-align: center;
+}
+.padding_productsample{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
 .reviews_comment{
 	font-family: arial;
 	color: black;
@@ -92,6 +146,18 @@ PADDING!!
 p.reviews.comment{
 	font-family: nexa_blackregular;
 }
+
+.padding_menu_bottom{
+	padding-top: 20px;
+	padding-bottom: 20px;
+	font-family: nexa_xboldregular;
+	font-size: 20px;
+	color: black;
+}
+.menu_bottom_caption{
+	object-position: bottom;
+}
+
 
  /*
 ====================
@@ -103,7 +169,7 @@ BORDER!!
 	border: 2px solid black;
 }
 
- /*
+/*
 ====================
 BUTTON!!
 ====================
@@ -118,6 +184,33 @@ button.cartBtn,a.cartBtn {
   transition: all 0.3s ease 0s;
 }
 button.cartBtn:hover,a.cartBtn:hover{background: rgb(229, 83, 0);}
+
+button.cartBtnn{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-family: nexa_blackregular;
+	border: 1px solid black;
+	background: none;
+	line-height: 30px;
+	color: black;
+	padding: 10px 10px;
+}
+button.cartBtnn:hover{ border: 1px solid orange; color: orange;}
+/*
+====================
+BECOME OUR AGENT MODAL!!
+====================
+*/
+.modal_header{
+	color:black;
+	font-family: nexa_blackregular;
+	font-size: 20px;
+	padding: 20px 20px 20px 20px;
+}
+
+.ui-datepicker{
+	z-index: 9999 !important;
+}
 
  /*
 ====================
@@ -288,6 +381,7 @@ figure {
 }
 
 figcaption {
+	font-family: nexa_bookregular;
     position: absolute;
     background: black;
     background: rgba(0,0,0,0.75);
@@ -306,7 +400,12 @@ figure:hover figcaption {
 .caption
 {
 	width: 200px;
-	font-size: 20px;
+	font-size: 16px;
+}
+
+.title_cap{
+	font-family: nexa_blackregular;
+	padding-bottom: 5px;
 }
 
 .cap-left:before {
