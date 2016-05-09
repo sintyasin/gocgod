@@ -22,8 +22,8 @@
 		simplifyAll:"off",
 		
 		navigationType:"bullet",
-		navigationArrows:"none",
-		navigationStyle:"none",
+		navigationArrows:"solo",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -98,8 +98,8 @@
 		simplifyAll:"off",
 		
 		navigationType:"bullet",
-		navigationArrows:"none",
-		navigationStyle:"none",
+		navigationArrows:"solo",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -175,8 +175,8 @@
 		simplifyAll:"off",
 		
 		navigationType:"bullet",
-		navigationArrows:"none",
-		navigationStyle:"none",
+		navigationArrows:"solo",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -252,8 +252,8 @@
 		simplifyAll:"off",
 		
 		navigationType:"bullet",
-		navigationArrows:"none",
-		navigationStyle:"none",
+		navigationArrows:"solo",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -328,8 +328,8 @@
 		simplifyAll:"off",
 		
 		navigationType:"bullet",
-		navigationArrows:"none",
-		navigationStyle:"none",
+		navigationArrows:"solo",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -405,9 +405,8 @@
 		simplifyAll:"off",
 		
 		navigationType:"bullet",
-		navigationArrows:"none",
-		navigationStyle:"none",
-		
+		navigationArrows:"solo",
+		navigationStyle:"round",
 		touchenabled:"on",
 		onHoverStop:"on",
 		nextSlideOnWindowFocus:"off",

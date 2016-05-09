@@ -80,13 +80,7 @@
 									<div class="col-xs-12 col-sm-6">
 										<div class="product-review">
 											<label>Quality:</label>
-											<p>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-											</p>
+											<div class="rateyo"></div>
 											<form>
 												<div class="form-group">
 													<label for="exampleInputEmail1">Name:</label>
@@ -133,4 +127,20 @@
 
 	</div>
 </div>
+
+@push('scripts')
+<script>
+
+      $(function () {
+        $(".rateyo").rateYo({
+        	fullStar: true,
+        });
+        
+
+      });
+</script>
+@endpush
+
 @stop
+
+

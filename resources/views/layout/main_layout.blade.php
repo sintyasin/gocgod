@@ -25,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/responsive.css') }}">
     <!-- custom css -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">
+    <!-- rating -->
+    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/jquery.rateyo.min.css') }}">
 
     
     <!-- favicon -->
@@ -63,6 +65,9 @@
     <script type="text/javascript" src="{{ URL::asset('assets/lib/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>   
     <script type="text/javascript" src="{{ URL::asset('assets/lib/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
     <script src="{{ URL::asset('assets/lib/rs-plugin/rs.home.js') }}"></script>
+    <!-- rating -->
+    <!-- <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.min.js') }}"></script> -->
+    <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.rateyo.min.js') }}"></script>
     <!-- search-box js -->
     <script src="{{ URL::asset('assets/js/search-box.js') }}"></script>
     <!-- scrollUp js -->

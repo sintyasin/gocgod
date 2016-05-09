@@ -1,4 +1,3 @@
-
 <!-- <div class="footer_top footer-padding">
 	<div class="container">
 		<div class="row">
@@ -23,7 +22,7 @@
 				<div class="footer_link address">
 					<p>go C go D</p>
 					<ul>
-						<li><span>Addresss: </span> Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk</li>
+						<li><span>Address: </span> Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk</li>
 						<li><span>WA: </span>0811-139318 (Baby)</li>
 					</ul>
 				</div>
@@ -38,25 +37,18 @@
 			</div>
 			<div class="col-sm-6 col-md-3">
 				<div class="footer_link">
-					<p>My account</p>
+					<p>My Account</p>
 					<ul>
 						<li><a href="#">My Account</a></li>
-						<li><a href="cart.html">Shopping Cart</a></li>
-						<li><a href="#">My Wishlist</a></li>
-						<li><a href="#">My Credit Slip</a></li>
-						<li><a href="#">Account Information</a></li>
+						<li><a href="#">Check Out</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3">
 				<div class="footer_link res_mar">
-					<p>customer support</p>
+					<p>Customer Support</p>
 					<ul>
-						<li><a href="#">7/24 Hour Support</a></li>
-						<li><a href="#">Refound Policy</a></li>
 						<li><a href="#">Shipping Guide</a></li>
-						<li><a href="#">International Shipping</a></li>
-						<li><a href="#">Career</a></li>
 					</ul>
 				</div>
 			</div>
@@ -64,11 +56,7 @@
 				<div class="footer_link res_mar">
 					<p>information</p>
 					<ul>
-						<li><a href="#">About Our Shop</a></li>
-						<li><a href="#">Secure Shopping</a></li>
-						<li><a href="#">Delivery Information</a></li>
-						<li><a href="#">Company Site Map</a></li>
-						<li><a href="#">Privecy Policy</a></li>
+						<li><a href="#">Our Agent Location</a></li>
 					</ul>
 				</div>
 			</div>

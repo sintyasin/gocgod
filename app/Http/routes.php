@@ -16,6 +16,8 @@ Route::get('/', 'HomeController@index');
 Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
 Route::get('productsample', 'ProductController@getMenuSample');
+Route::get('myaccount/{id}', 'MemberController@readDataMember');
+
 
 Route::auth();
 

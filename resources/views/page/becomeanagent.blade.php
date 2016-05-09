@@ -207,4 +207,4 @@
 </script>
 @endpush
 
-@endsection
+@stop
