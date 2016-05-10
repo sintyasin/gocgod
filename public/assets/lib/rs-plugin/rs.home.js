@@ -23,7 +23,7 @@
 		
 		navigationType:"bullet",
 		navigationArrows:"solo",
-		navigationStyle:"preview3",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -99,7 +99,7 @@
 		
 		navigationType:"bullet",
 		navigationArrows:"solo",
-		navigationStyle:"preview1",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -176,7 +176,7 @@
 		
 		navigationType:"bullet",
 		navigationArrows:"solo",
-		navigationStyle:"preview1",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -253,7 +253,7 @@
 		
 		navigationType:"bullet",
 		navigationArrows:"solo",
-		navigationStyle:"preview1",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -329,7 +329,7 @@
 		
 		navigationType:"bullet",
 		navigationArrows:"solo",
-		navigationStyle:"preview4",
+		navigationStyle:"round",
 		
 		touchenabled:"on",
 		onHoverStop:"on",
@@ -406,8 +406,7 @@
 		
 		navigationType:"bullet",
 		navigationArrows:"solo",
-		navigationStyle:"preview3",
-		
+		navigationStyle:"round",
 		touchenabled:"on",
 		onHoverStop:"on",
 		nextSlideOnWindowFocus:"off",

@@ -16,7 +16,9 @@
 						<a><strong> {{ $item->varian_name }} </strong></a>
 						</div> -->
 						<figcaption>
-							<div class="caption"><b> {{ $item->varian_name }} </b><br><br><small> Stock &nbsp; {{ $item->qty }} </small></div>
+							<div class="caption">
+							<div class="title_cap"> <b> {{ $item->varian_name }} </b> </div>
+							<small> Stock &nbsp; {{ $item->qty }} </small></div>
 						</figcaption>
 					</figure>
 				</div>

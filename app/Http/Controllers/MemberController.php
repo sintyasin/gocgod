@@ -100,4 +100,11 @@ class MemberController extends Controller
 		$user->status_user = $status;*/
 		$user->save();
     }
+
+    public function readDataMember($id)
+    {
+    	$data['query'] = Member::find($id);
+
+    	return view('page.myaccount', $data);
+    }
 }
