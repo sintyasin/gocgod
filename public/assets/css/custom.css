@@ -139,7 +139,7 @@ PADDING!!
 	margin-bottom: 10px;
 }
 .reviews_comment{
-	font-family: arial;
+	padding-top: 10px;
 	color: black;
 	border-bottom: 1px solid black;
 }
@@ -167,6 +167,20 @@ BORDER!!
 .border_outer{
 	padding: 10px;
 	border: 2px solid black;
+}
+
+ /*
+====================
+Testimonial!!
+====================
+*/
+a.testimonial_custom{
+	color: grey;
+	font-family: nexa_blackregular;
+	font-size: 14px;
+}
+a.testimonial_custom:hover{
+	color: black;
 }
 
 /*

@@ -17,7 +17,8 @@ Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
 Route::get('productsample', 'ProductController@getMenuSample');
 Route::get('myaccount/{id}', 'MemberController@readDataMember');
-
+Route::get('review', 'ProductController@giveTestimonial');
+Route::get('checkout', 'ProductController@getAllMenu');
 
 Route::auth();
 
@@ -33,11 +34,6 @@ Route::get('agent/data', array('as' => 'agentlist.data', 'uses' =>'AdminControll
 
 Route::get('findalocation', function(){
         return view('page.findalocation');
-});
-
-Route::get('checkout', function(){
-        return view('page.checkout');
-
 });
 
 Route::get('faq', function(){

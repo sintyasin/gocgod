@@ -77,21 +77,31 @@
 						<div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse" id="review" aria-expanded="false">
 							<div class="content-info">
 								<div class="review-bar">
-									<div class="col-xs-12 col-sm-6">
-										<div class="product-review">
+									<div class="col-md-12 col-xs-12">
+										<div class="product-review"><!-- 
 											<label>Quality:</label>
 											<div class="rateyo"></div>
-											<form>
-												<div class="form-group">
-													<label for="exampleInputEmail1">Name:</label>
-													<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your Name" style="width: 100%;">
+											<form> -->
+											
+											@if (Auth::guest())
+
+						                        <a href={{ URL('/login')}} class="testimonial_custom"> Click here to login </a>
+						                    @else
+						                    	<form method="POST" action="{{ url('/review') }}">
+						                    	<input type="hidden" class="form-control" id="id" value="{{ Auth::user()->id }}">
+						                    	<input type="hidden" class="form-control" id="varian_id" value="{{ $query->varian_id }}">
+						                    	<div class="form-group">
+													<label>Name:</label>
+													<input type="text" class="form-control" id="name" value="{{ Auth::user()->name }}" style="width: 100%;" disabled> 
 												</div>
 												<div class="form-group">
 													<label>Review:</label>
-													<textarea class="form-control"  placeholder="Your Review" row="12"></textarea>
+													<textarea class="form-control" id="testimonial" placeholder="Your Review" row="12"></textarea>
 												</div>
-												<button type="submit" class="checkPageBtn">Submit</button>
-											</form>
+												<button type="submit" class="checkPageBtn" href={{ "/menu_detail/". $query->varian_id }}>Submit</button>
+												</form>
+						                    @endif
+												
 										</div>
 									</div>
 								</div>
@@ -101,23 +111,27 @@
 
 					<hr>
 
+					@foreach($query_testimonial as $testi)
 					<div class="reviews_comment">
 						<div class="row">
-
 							<div class="col-md-12">
+								<!-- <span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star-empty"></span>
-								Anonymous
-								<span class="pull-right">10 days ago</span>
-								<p>This product was great in terms of quality. I would definitely buy another!</p>
+								<span class="glyphicon glyphicon-star-empty"></span> -->
+								{{$testi->id}}
+								<span class="pull-right">{{$testi->created_at}}</span>
+								<p>{{$testi->testimonial}}</p>
+								
 							</div>
+
+							
 						</div>
 					</div>
+					@endforeach
 
-					<hr>
+					
 
 
 				</div>
