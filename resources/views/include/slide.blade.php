@@ -109,7 +109,7 @@
 					<!-- LAYER NR. 4.7 -->
 					<div class="tp-caption banner2 tp-fade tp-resizeme"
 						data-x="385"
-						data-y="530" 
+						data-y="400" 
 						data-speed="300"
 						data-start="1800"
 						data-easing="Power3.easeInOut"
@@ -227,7 +227,7 @@
 					<!-- LAYER NR. 4.7 -->
 					<div class="tp-caption banner2 tp-fade tp-resizeme"
 						data-x="385"
-						data-y="530" 
+						data-y="400" 
 						data-speed="1800"
 						data-start="500"
 						data-easing="Power3.easeInOut"

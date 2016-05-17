@@ -34,14 +34,28 @@
 		<div class="col-md-3 col-xs-12">
 			<div class="padding_outer_menu">
 				<div class="border_outer" style="object-position: center;">
-					<h3 class="quick_h3"> Quantity: </h3>
+					<div class="col-xs-5">
+					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
+					</div>
+					<div class="col-xs-5">
+						<input type="text" class="form-control" placeholder="Qty" name="#"> 
+					</div>
+					
 
-					<input type="text" class="form-control" placeholder="Qty" name="#" style="width: 25%;"> 
-					<hr>
-					<hr>
+					
+					<div class="col-xs-12">
+					<br>
 					<p class="notes">*Free shipping fee for subcriber or buy more than 5</p>
-					<a href="#" class="cartBtn" target="_self">Add to cart</a> <a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
-
+					</div>
+					<div class="position_menu">
+						<div class="col-xs-12">
+							<a href="#" class="cartBtn" target="_self">Add Cart</a> 
+							<a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
+							
+						</div>
+						<br>
+							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Request Product Sample </a></button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -62,27 +76,26 @@
 						<div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse" id="review" aria-expanded="false">
 							<div class="content-info">
 								<div class="review-bar">
-									<div class="col-xs-12 col-sm-6">
+									<div class="col-md-12 col-xs-12">
 										<div class="product-review">
-											<label>Quality:</label>
-											<p>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-												<i class="fa fa-star"></i>
-											</p>
-											<form>
-												<div class="form-group">
-													<label for="exampleInputEmail1">Name:</label>
-													<input type="text" class="form-control" id="exampleInputEmail1" placeholder="Your Name" style="width: 100%;">
+											@if (Auth::guest())
+						                        <a href={{ URL('/login')}} class="testimonial_custom"> Click here to login </a>
+						                    @else
+						                    	<form method="POST" action="{{ url('/review') }}">
+						                    	<input type="hidden" class="form-control" id="id" value="{{ Auth::user()->id }}">
+						                    	<input type="hidden" class="form-control" id="varian_id" value="{{ $query->varian_id }}">
+						                    	<div class="form-group">
+													<label>Name:</label>
+													<input type="text" class="form-control" id="name" value="{{ Auth::user()->name }}" style="width: 100%;" disabled> 
 												</div>
 												<div class="form-group">
 													<label>Review:</label>
-													<textarea class="form-control"  placeholder="Your Review" row="12"></textarea>
+													<textarea class="form-control" id="testimonial" placeholder="Your Review" row="12"></textarea>
 												</div>
 												<button type="submit" class="checkPageBtn">Submit</button>
-											</form>
+												</form>
+						                    @endif
+												
 										</div>
 									</div>
 								</div>
@@ -92,23 +105,27 @@
 
 					<hr>
 
+					@foreach($query_testimonial as $testi)
 					<div class="reviews_comment">
 						<div class="row">
-
 							<div class="col-md-12">
+								<!-- <span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star-empty"></span>
-								Anonymous
-								<span class="pull-right">10 days ago</span>
-								<p>This product was great in terms of quality. I would definitely buy another!</p>
+								<span class="glyphicon glyphicon-star-empty"></span> -->
+								{{$testi->id}}
+								<span class="pull-right">{{$testi->created_at}}</span>
+								<p>{{$testi->testimonial}}</p>
+								
 							</div>
+
+							
 						</div>
 					</div>
+					@endforeach
 
-					<hr>
+					
 
 
 				</div>
@@ -118,4 +135,20 @@
 
 	</div>
 </div>
+
+@push('scripts')
+<script>
+
+      $(function () {
+        $(".rateyo").rateYo({
+        	fullStar: true,
+        });
+        
+
+      });
+</script>
+@endpush
+
 @stop
+
+

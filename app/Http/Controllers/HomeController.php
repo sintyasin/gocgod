@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Faq;
 
 class HomeController extends Controller
 {
@@ -26,5 +27,11 @@ class HomeController extends Controller
     public function index()
     {
         return view('page.home');
+    }
+
+    public function faq_question()
+    {
+        $data['query_faq'] = faq::all();
+        return view('page.faq', $data);
     }
 }
