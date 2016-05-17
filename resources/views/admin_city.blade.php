@@ -6,12 +6,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Customer
+    City
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Customer</li>
+    <li class="active">City</li>
   </ol>
 </section>
 
@@ -19,7 +19,12 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successEdit")
+    @if($status == "successDelete")
+    <div class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Data has been deleted!</strong>
+    </div>
+    @elseif($status == 'successUpdate')
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been updated successfully!</strong>
@@ -29,13 +34,7 @@
       <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Address</th>
             <th>City</th>
-            <th>Date of birth</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Verification</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -49,25 +48,30 @@
 
 @push('scripts')
 <script>
-function editCustomer(id)
+function deleteCity(name, id) 
 {
-  window.location = "{{ URL::to('/admineditcustomer') }}" + "/" + id;
+  if (confirm("Are you sure want to delete: \n" + name + " ?") == true) 
+  {
+    window.location = "{{ URL::to('/admindeletecity') }}" + "/" + id;
+  } 
 }
+
+function editCity(id) 
+{
+  window.location = "{{ URL::to('/admineditcity') }}" + "/" + id;
+}
+
 $(function() {
     $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! route('customerlist.data') !!}',
+        ajax: '{!! route('citylist.data') !!}',
         columns: [
-            { data: 'name', name: 'name', title:'Name' },
-            { data: 'address', name: 'address', title:'Address' },
             { data: 'city_name', name: 'city_name', title:'City' },
-            { data: 'date_of_birth', name: 'date_of_birth', title:'Date of birth' },            
-            { data: 'email', name: 'email', title:'Email' },
-            { data: 'phone', name: 'phone', title:'Phone' },
-            { data: 'verification', name: 'verification', title:'Verification' },
-            {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
-              return '<a class="btn btn-warning" onclick="editCustomer(' + row.id + ')" >' + 'Edit' + '</a>';
+            {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
+              var data = "'" + row.city_name + "'";
+              return '<a class="btn btn-warning" onclick="editCity(' + row.city_id + ')" >' + 'Edit' + '</a> &nbsp;' +
+                     '<a class="btn btn-danger" onclick="deleteCity(' + data + "," + row.city_id + ')" >' + 'Delete' + '</a>';
             } }
         ]
     });
