@@ -55,7 +55,6 @@
 						</div>
 						<br>
 							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Request Product Sample </a></button>
-							
 					</div>
 				</div>
 			</div>
@@ -78,13 +77,8 @@
 							<div class="content-info">
 								<div class="review-bar">
 									<div class="col-md-12 col-xs-12">
-										<div class="product-review"><!-- 
-											<label>Quality:</label>
-											<div class="rateyo"></div>
-											<form> -->
-											
+										<div class="product-review">
 											@if (Auth::guest())
-
 						                        <a href={{ URL('/login')}} class="testimonial_custom"> Click here to login </a>
 						                    @else
 						                    	<form method="POST" action="{{ url('/review') }}">
@@ -98,7 +92,7 @@
 													<label>Review:</label>
 													<textarea class="form-control" id="testimonial" placeholder="Your Review" row="12"></textarea>
 												</div>
-												<button type="submit" class="checkPageBtn" href={{ "/menu_detail/". $query->varian_id }}>Submit</button>
+												<button type="submit" class="checkPageBtn">Submit</button>
 												</form>
 						                    @endif
 												
