@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2016 at 10:36 AM
+-- Generation Time: May 10, 2016 at 10:41 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -23,42 +23,16 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `faq__kategori`
+-- Table structure for table `faq__question`
 --
 
-CREATE TABLE IF NOT EXISTS `faq__kategori` (
-`id_kategori` int(11) NOT NULL,
-  `kategori_pertanyaan` varchar(500) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `faq__kategori`
---
-
-INSERT INTO `faq__kategori` (`id_kategori`, `kategori_pertanyaan`) VALUES
-(1, 'Pembayaran');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `faq__pertanyaan`
---
-
-CREATE TABLE IF NOT EXISTS `faq__pertanyaan` (
-`id_pertanyaan` int(11) NOT NULL,
-  `id_kategori` int(11) NOT NULL,
-  `pertanyaan` varchar(500) NOT NULL,
-  `jawaban` text NOT NULL,
+CREATE TABLE IF NOT EXISTS `faq__question` (
+`question_id` int(11) NOT NULL,
+  `question` text NOT NULL,
+  `answer` text NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `faq__pertanyaan`
---
-
-INSERT INTO `faq__pertanyaan` (`id_pertanyaan`, `id_kategori`, `pertanyaan`, `jawaban`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Nomor Rekening', 'Nomor rekening Tokopedia\r\n\r\nPastikan kamu men-transfer dana ke salah satu nomor rekening Tokopedia berikut:\r\n\r\n\r\n\r\nBCA\r\n\r\n- Cabang Permata Hijau\r\n\r\nNomor rekening: 178 303 7878\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\n- Cabang Kedoya Permai\r\n\r\nNomor rekening: 372 309 8781\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\n- Cabang Kedoya Permai\r\n\r\nNomor rekening: 372 177 3939\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\n- Cabang Kedoya Permai\r\n\r\nNomor rekening: 372 178 5066\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\nMandiri\r\n\r\n- Cabang Permata Hijau\r\n\r\nNomor rekening: 102-00-0526387-3\r\n\r\nAtas Nama: Tokopedia\r\n\r\n \r\n\r\n- Cabang Kebon Jeruk\r\n\r\nNomor rekening:  1650070070017\r\n\r\nAtas Nama: Tokopedia\r\n\r\n \r\n\r\n- Cabang Kebon Jeruk\r\n\r\nNomor rekening: 1650030073333\r\n\r\nAtas Nama: Tokopedia\r\n\r\n \r\n\r\nBNI\r\n\r\n- Cabang Kebon Jeruk\r\n\r\nNomor rekening: 800 600 6009\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\nBRI\r\n\r\n- Cabang Kebon Jeruk\r\n\r\nNomor rekening: 037 701 000 435 301\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\n- Cabang Kebon Jeruk\r\n\r\nNomor rekening: 037 701 000 692 301\r\n\r\nAtas Nama: PT. Tokopedia\r\n\r\n \r\n\r\nCIMB NIAGA\r\n\r\n- Cabang Tomang Tol\r\n\r\nNomor rekening: 1770100731002\r\n\r\nAtas Nama: PT. Tokopedia', '2016-04-22 07:31:43', '0000-00-00 00:00:00');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -117,18 +91,17 @@ CREATE TABLE IF NOT EXISTS `master__agent_rating` (
 
 CREATE TABLE IF NOT EXISTS `master__city` (
 `city_id` int(11) NOT NULL,
-  `city_name` varchar(250) NOT NULL,
+  `name` varchar(250) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__city`
 --
 
-INSERT INTO `master__city` (`city_id`, `city_name`, `created_at`, `updated_at`) VALUES
-(1, 'jakarta', '2016-04-21 10:05:46', '0000-00-00 00:00:00'),
-(2, 'tangerang', '2016-04-29 07:31:56', '0000-00-00 00:00:00');
+INSERT INTO `master__city` (`city_id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'jakarta', '2016-04-21 10:05:46', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -152,16 +125,16 @@ CREATE TABLE IF NOT EXISTS `master__member` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `remember_token` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__member`
 --
 
 INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`) VALUES
-(3, 'af', '', 1, '0000-00-00', 'a@a.com', '', '$2y$10$rqLqee3NTP9g7t7ILwnvtu6fC0MZuL9.YfaFq.pWlNLcOEja9XLny', 0, 0, 0, '', '2016-04-25 05:25:54', '2016-04-24 22:25:54', 'NcsEHOD96jvyiONfHT2vPBh1kMUUWTk2s1XQqrM9IKIZMl1WyWAl4TcuXGwT'),
-(6, 'a', 'abc', 2, '2016-04-25', 'b@b.com', '123456', '$2y$10$aakE9JDD6c1dKZyqHkwkqudVA3eQVauKaYzT7cNmDO37rWMcjhf/C', 0, 0, NULL, '999', '2016-04-29 08:32:21', '2016-04-29 01:32:21', '37WIdt5IDnZqs5RJo5XOVHaH37PuDOyWRKTAzDiaR9WxdOod8Mb2NYDvh6od'),
-(9, 'testing', 'abc', 1, '2016-04-12', 'c@c.com', '123456', '$2y$10$LJnQzXtW5CGf3eOeiRgU1u7azLZI9fGHgeZnRLRp5uNke5EjkhSWW', 1, 0, NULL, '999', '2016-04-29 08:35:40', '2016-04-29 01:35:40', 'cK6EsHSIJcrlN313fkov6ZVzyp5B6vnxNTnuxESNR0QMeIiUUAo637mptZlP');
+(3, 'af', '', 1, '0000-00-00', 'a@a.com', '', '$2y$10$rqLqee3NTP9g7t7ILwnvtu6fC0MZuL9.YfaFq.pWlNLcOEja9XLny', 0, 0, 0, '', '2016-05-09 11:37:07', '2016-05-09 04:37:07', 'jRAkIqcWFzSHkzkarBgrer8cwjnw8FHiia6xk9YpNAIlMfsfWquQMvYNyLEf'),
+(4, 'b', '', 1, '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 0, NULL, NULL, '2016-04-25 05:26:38', '2016-04-24 22:26:38', 'sSmgkT8cS7htaSlgAKrVdNgTXSANmk2mEZFjC9Eg9Z0mRmB03kMUh9FVJ1qY'),
+(5, 'Aurelia', 'Jakarta', 1, '1995-09-28', 'aureliarianto@aurelia.com', '081268248788', '$2y$10$kOataK1Xh/yd2L2GWmkcxu1gBLRgZIQbvnn1LuOMiOn/zW4ICikeK', 0, 0, NULL, '6557788', '2016-05-03 09:29:23', '2016-05-03 02:29:23', 'Spd9CbZiZxnKJUueTQivWBYGnr9r2S0r9ZfIYM6jEpVVxeBP1FdAtccOG3pm');
 
 -- --------------------------------------------------------
 
@@ -225,14 +198,24 @@ INSERT INTO `product__category` (`category_id`, `category_name`, `description`, 
 --
 
 CREATE TABLE IF NOT EXISTS `product__testimonial` (
-  `testimonial_id` int(11) NOT NULL DEFAULT '0',
+`testimonial_id` int(11) NOT NULL,
   `id` int(11) NOT NULL,
   `varian_id` int(11) NOT NULL,
   `testimonial` varchar(500) NOT NULL,
   `approval` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `product__testimonial`
+--
+
+INSERT INTO `product__testimonial` (`testimonial_id`, `id`, `varian_id`, `testimonial`, `approval`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, 'aaa', 1, '2016-05-09 04:47:29', '0000-00-00 00:00:00'),
+(2, 3, 1, 'bbb', 1, '2016-05-09 04:47:29', '0000-00-00 00:00:00'),
+(3, 4, 1, 'ccc', 1, '2016-05-09 04:51:38', '0000-00-00 00:00:00'),
+(4, 5, 2, 'asd', 1, '2016-05-09 04:51:38', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -258,7 +241,7 @@ CREATE TABLE IF NOT EXISTS `product__varian` (
 --
 
 INSERT INTO `product__varian` (`varian_id`, `category_id`, `varian_name`, `price`, `qty`, `picture`, `description`, `weight`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Soya Milk', 60000, 10, 'soya_milk.jpg', 'Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi\r\nTanpa bahan pengawet !!! Dan pemanis buatan\r\nSangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin ??????', 2, '2016-04-21 11:08:18', '0000-00-00 00:00:00'),
+(1, 1, 'Soya Milk', 60000, 10, 'soya_milk.jpg', 'Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi\r\nTanpa bahan pengawet! Dan pemanis buatan\r\nSangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin!', 2, '2016-05-02 02:26:12', '0000-00-00 00:00:00'),
 (2, 1, 'Cin Cau', 60000, 10, 'cin_cau.jpg', 'Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung .\r\nAir cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet .', 2, '2016-04-21 11:09:00', '0000-00-00 00:00:00'),
 (3, 1, 'Honey Pine', 75000, 10, 'honey_pine.jpg', 'Sari buah nanas ini sangat bermanfaat buat kecantikan karna di buat tanpa bahan pengawet dan gula, bener2 murni dan fress \r\nManfaat sari buat nanas \r\n1. Menjaga kesehatan mata\r\n2. Meningkatkan imunitas\r\n3. Membantu pencernaan\r\n5. Mencegah hipertensi\r\n6. Meredakan mual\r\n7. Menguatkan tulang\r\n8. Memperbaiki kulit kaki\r\n9. Melembabkan kulit\r\n10. Mencerna kandungan lemak pada makanan Yang kita makan', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00'),
 (4, 1, 'Guava', 75000, 10, 'guava.jpg', 'Guava adalah sari buah jambu pilihan , yg di proses secara higienis tanpa bahan pengawet dan gula, rasanya benar2 alami seperti makan buah aslinya \r\nManfaat sari guava diantaranya yaitu \r\n1. Mengandung vitamin C yg sangat di butuhkan Oleh tubuh \r\n2. Mengandung serat alami \r\n3.Melancarkan pencernaan seperti susah BAB, Sembelit serta menbuang zat-zat berbahaya di Dalam usus\r\n4.Membuat kulit lebih cerah dan lembut', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00'),
@@ -284,7 +267,8 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `ship_city_id` int(11) NOT NULL,
   `status_confirmed` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `who` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -352,16 +336,10 @@ CREATE TABLE IF NOT EXISTS `transaction__tx_shipping` (
 --
 
 --
--- Indexes for table `faq__kategori`
+-- Indexes for table `faq__question`
 --
-ALTER TABLE `faq__kategori`
- ADD PRIMARY KEY (`id_kategori`);
-
---
--- Indexes for table `faq__pertanyaan`
---
-ALTER TABLE `faq__pertanyaan`
- ADD PRIMARY KEY (`id_pertanyaan`), ADD KEY `fk_faq_id_kat` (`id_kategori`);
+ALTER TABLE `faq__question`
+ ADD PRIMARY KEY (`question_id`);
 
 --
 -- Indexes for table `master__admin`
@@ -458,15 +436,10 @@ ALTER TABLE `transaction__tx_shipping`
 --
 
 --
--- AUTO_INCREMENT for table `faq__kategori`
+-- AUTO_INCREMENT for table `faq__question`
 --
-ALTER TABLE `faq__kategori`
-MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
---
--- AUTO_INCREMENT for table `faq__pertanyaan`
---
-ALTER TABLE `faq__pertanyaan`
-MODIFY `id_pertanyaan` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+ALTER TABLE `faq__question`
+MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `master__admin`
 --
@@ -486,12 +459,12 @@ MODIFY `rating_id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `master__city`
 --
 ALTER TABLE `master__city`
-MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `master__member`
 --
 ALTER TABLE `master__member`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `master__tx_balance`
 --
@@ -502,6 +475,11 @@ MODIFY `balance_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 ALTER TABLE `product__category`
 MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `product__testimonial`
+--
+ALTER TABLE `product__testimonial`
+MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `product__varian`
 --
@@ -525,12 +503,6 @@ MODIFY `tx_shipping_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `faq__pertanyaan`
---
-ALTER TABLE `faq__pertanyaan`
-ADD CONSTRAINT `fk_faq_id_kat` FOREIGN KEY (`id_kategori`) REFERENCES `faq__kategori` (`id_kategori`);
 
 --
 -- Constraints for table `master__admin`
