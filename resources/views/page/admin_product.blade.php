@@ -19,11 +19,28 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
+    @if($status == "successDelete")
+    <div class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Data has been deleted!</strong>
+    </div>
+    @elseif($status == "failedDelete")
+    <div class="alert alert-danger fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Failed to delete the data!</strong>
+    </div>
+    @elseif($status == "successUpdate")
+    <div class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Data has been updated successfully!</strong>
+    </div>
+    @endif
     <div class="col-lg-12">
-      <table id="example" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
+      <table id="producttable" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>Name</th>
+            <th>Category</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Weight</th>
@@ -42,33 +59,50 @@
 
 @push('scripts')
 <script>
-<?php 
-  //counter buat increment $category pas mau ditampilin
-  $count = 0; 
-?>
+
+function deleteProduct(name, id) 
+{
+  if (confirm("Are you sure want to delete " + name + " ?") == true) 
+  {
+    window.location = "{{ URL::to('/admindeleteproduct') }}" + "/" + id;
+  } 
+}
+
+function editProduct(id) 
+{
+  window.location = "{{ URL::to('/admineditproduct') }}" + "/" + id;
+}
+
 $(function() {
-    $('#example').DataTable({
+    var table = $('#producttable').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('productlist.data') !!}',
         columns: [
             { data: 'varian_name', name: 'varian_name', title:'Name' },
+            { data: 'category_name', name: 'category_name', title:'Category' },
             { data: 'price', name: 'price', title:'Price' },
             { data: 'qty', name: 'qty', title:'Quantity' },
             { data: 'weight', name: 'weight', title:'Weight' },
             { data: 'picture', name: 'picture', title:'Picture', render: function(data, type, row) {
               var x = "<img src={{ URL::asset('assets/images/product/') }}";
-              x += "/" + "<?php echo $query[$count]->category->category_name . '/'; ?>" + data + " style='height:100px;' />";
+              x += "/" + row.category_name + "/" + data + " style='height:100px;' />";
 
-              <?php 
-                $count++;
-              ?>
               return x;
             } },
             { data: 'description', name: 'description', title:'Description' },
-            {data: 'actions', name: 'actions'}
+            {className: "dt-center", name: 'actions', render: function(data, type, row) {
+              var data = "'" + row.varian_name + "'";
+              return '<br> <a class="btn btn-warning" onclick="editProduct(' + row.varian_id + ')" >' + 'Edit' + '</a> <br><br>' +
+                     '<a class="btn btn-danger" onclick="deleteProduct(' + data + ', ' + row.varian_id + ')" >' + 'Delete' + '</a>';
+            } }
         ]
     });
+    /*
+    $('#example tbody').on( 'click', 'button', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        alert( data.id);
+    } );*/
 });
 </script>
 @endpush

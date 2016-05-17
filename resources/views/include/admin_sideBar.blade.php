@@ -2,47 +2,72 @@
 <aside class="main-sidebar">
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
-    <!-- Sidebar user panel -->
-    <div class="user-panel">
-        <p style="color:white; padding-top:5px; padding-left:5px; margin-bottom:1px;">Alexander Pierce</p>
-    </div>
-    <!-- search form -->
-    <form action="#" method="get" class="sidebar-form">
-      <div class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search...">
-        <span class="input-group-btn">
-          <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-        </span>
-      </div>
-    </form>
-    <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <li class="header">MAIN NAVIGATION</li>
-      <li class=" <?php if($active == 'productList' || $active == 'insertProduct') echo 'active'; ?> treeview">
+      <li class=" <?php if(stripos($active, 'product') !== false) echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-list"></i> <span>Product</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=" <?php if($active == 'productList') echo 'active'; ?> "><a href={{ URL('/adminproductlist/') }}><i class="fa fa-circle-o"></i> Product List</a></li>
-          <li class=" <?php if($active == 'insertProduct') echo 'active'; ?> "><a href=""><i class="fa fa-circle-o"></i> Insert New</a></li>
+          <li class=" <?php if($active == 'productList') echo 'active'; ?> "><a href={{ URL('/adminproductlist/new') }}><i class="fa fa-circle-o"></i> Product List</a></li>
+          <li class=" <?php if($active == 'insertProduct') echo 'active'; ?> "><a href= {{ URL('/admininsertproduct/new') }} ><i class="fa fa-circle-o"></i> Insert New Product</a></li>
+          <li class=" <?php if($active == 'productCategory') echo 'active'; ?> "><a href= {{ URL('/admincategorylist/new') }} ><i class="fa fa-circle-o"></i> Category</a></li>
+          <li class=" <?php if($active == 'productTestimonial') echo 'active'; ?> "><a href= {{ URL('/admintestimoniallist/new') }} ><i class="fa fa-circle-o"></i> Testimonial List</a></li>
+          <li class=" <?php if($active == 'productTestimonialRequest') echo 'active'; ?> "><a href= {{ URL('/admintestimonialrequest/new') }} ><i class="fa fa-circle-o"></i> Testimonial Request</a></li>
         </ul>
       </li>
 
-      <li class=" <?php if($active == 'memberList' || $active == 'agentList') echo 'active'; ?> treeview">
+      <li class=" <?php if(stripos($active, 'user') !== false) echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-user"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=" <?php if($active == 'memberList') echo 'active'; ?> "><a href={{ URL('/admincustomerlist/') }}><i class="fa fa-circle-o"></i> Customer List</a></li>
-          <li class=" <?php if($active == 'agentList') echo 'active'; ?> "><a href= {{ URL('adminagentlist/') }} ><i class="fa fa-circle-o"></i> Agent List</a></li>
+          <li class=" <?php if($active == 'userMemberList') echo 'active'; ?> "><a href={{ URL('/admincustomerlist/new') }}><i class="fa fa-circle-o"></i> Customer List</a></li>
+          <li class=" <?php if($active == 'userAgentList') echo 'active'; ?> "><a href= {{ URL('adminagentlist/new') }} ><i class="fa fa-circle-o"></i> Agent List</a></li>
+          <li class=" <?php if($active == 'userReviewAgent') echo 'active'; ?> "><a href= {{ URL('adminreviewagent/new') }} ><i class="fa fa-circle-o"></i> Review Agent List</a></li>
+          <li class=" <?php if($active == 'userReviewAgentRequest') echo 'active'; ?> "><a href= {{ URL('adminreviewagentrequest/new') }} ><i class="fa fa-circle-o"></i> Review Agent Request</a></li>
         </ul>
       </li>
 
+      <li class=" <?php if($active == 'faqList' || $active == 'insertFaq') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-user"></i> <span>FAQ</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'faqList') echo 'active'; ?> "><a href={{ URL('/adminfaqlist/new') }}><i class="fa fa-circle-o"></i> Faq List</a></li>
+          <li class=" <?php if($active == 'insertFaq') echo 'active'; ?> "><a href={{ URL('/admininsertfaq/new') }} ><i class="fa fa-circle-o"></i> Insert New</a></li>
+        </ul>
+      </li>
 
+      <li class=" <?php if($active == 'cityList' || $active == 'insertCity') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-globe"></i> <span>City</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'cityList') echo 'active'; ?> "><a href={{ URL('/admincitylist/new') }}><i class="fa fa-circle-o"></i> City List</a></li>
+          <li class=" <?php if($active == 'insertCity') echo 'active'; ?> "><a href={{ URL('/admininsertcity/new') }} ><i class="fa fa-circle-o"></i> Insert City</a></li>
+        </ul>
+      </li>
+
+      <li class=" <?php if($active == 'aboutus') echo 'active'; ?> ">
+        <a href= {{URL('adminaboutus/new')}} >
+          <i class="fa fa-file-text"></i> <span>About Us</span>
+        </a>
+      </li>
+
+      <li class=" <?php if(stripos($active, 'banner') !== false) echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-photo"></i> <span>Banner</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'bannerList') echo 'active'; ?> "><a href={{ URL('/adminbanner/new') }}><i class="fa fa-circle-o"></i> Banner List</a></li>
+          <li class=" <?php if($active == 'insertBanner') echo 'active'; ?> "><a href={{ URL('/admininsertbanner/new') }} ><i class="fa fa-circle-o"></i> Insert Banner</a></li>
+        </ul>
+      </li>
 
       <li class=" ">
-        <a href="">
+        <a href=>
           <i class="fa fa-user"></i> <span>Tes</span>
         </a>
       </li>

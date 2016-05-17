@@ -6,12 +6,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    User
+    Agent
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">User</li>
+    <li class="active">Agent</li>
   </ol>
 </section>
 
@@ -19,8 +19,14 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    <div class="col-lg-12 col-xs-3">
-      <table id="datatableUser" class="table stripe hover row-border order-column">
+    @if($status == "successEdit")
+    <div class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Data has been updated successfully!</strong>
+    </div>
+    @endif
+    <div class="col-lg-12">
+      <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
         <thead>
           <tr>
             <th>Name</th>
@@ -29,10 +35,10 @@
             <th>Date of birth</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Status User</th>
             <th>Verification</th>
             <th>Balance</th>
             <th>Bank Account</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -46,6 +52,11 @@
 @push('scripts')
 <script>
 
+function editAgent(id)
+{
+  window.location = "{{ URL::to('admineditagent') }}" + "/" + id;
+}
+
 $(function() {
     $('#datatableUser').DataTable({
         processing: true,
@@ -58,10 +69,12 @@ $(function() {
             { data: 'date_of_birth', name: 'date_of_birth', title:'Date of birth' },            
             { data: 'email', name: 'email', title:'Email' },
             { data: 'phone', name: 'phone', title:'Phone' },
-            { data: 'status_user', name: 'status_user', title:'Status User' },
             { data: 'verification', name: 'verification', title:'Verification' },
             { data: 'balance', name: 'balance', title:'Balance' },
             { data: 'bank_account', name: 'bank_account', title:'Bank Account' },
+            {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
+              return '<a class="btn btn-warning" onclick="editAgent(' + row.id + ')" >' + 'Edit' + '</a>';
+            } }
         ]
     });
 });
