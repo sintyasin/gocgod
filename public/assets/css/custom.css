@@ -53,6 +53,7 @@ BACKGROUND MENU!!
 	padding-top: 20px;
 	padding-bottom: 40px;
 }
+
 button.boaBtn,a.boaBtn {
   border: 2px solid white;
   color: rgb(255, 255, 255);
@@ -73,10 +74,27 @@ button.boaBtn_boa,a.boaBtn_boa {
   padding: 10px 10px;
   transition: all 0.3s ease 0s;
   font-family: nexa_blackregular;
-  font-size: 20px;
+  font-size: 16px;
 }
 button.boaBtn_boa:hover,a.boaBtn_boa:hover{background: rgb(229, 83, 0); color:white; border:none;}
 
+button.boaBtn_boa_pf{
+  border: none;
+  color: rgb(0, 0, 0);
+  line-height: 30px;
+  min-width: 190px;
+  margin-bottom: 10px;
+  padding: 10px 10px;
+  transition: all 0.3s ease 0s;
+  font-family: nexa_bookregular;
+  font-size: 16px;
+}
+button.boaBtn_boa_pf:hover{background: rgb(229, 83, 0); color:white; border:none;}
+
+.dropdown-menu{
+	min-width: 0px !important;
+	text-align: center;
+}
 /*
 ====================
 PADDING!!
@@ -88,6 +106,9 @@ PADDING!!
 
 .padding_outer{
 	padding: 20px;
+}
+.padding_outer_profile{
+	padding: 10px;
 }
 .padding_outer_menu{
 	padding-top: 10px;
@@ -171,7 +192,7 @@ BORDER!!
 
  /*
 ====================
-Testimonial!!
+Testimonial & FAQ!!
 ====================
 */
 a.testimonial_custom{
@@ -182,6 +203,23 @@ a.testimonial_custom{
 a.testimonial_custom:hover{
 	color: black;
 }
+
+.faq{
+	font-family: nexa_bookregular;
+	padding-bottom: 30px;
+}
+.faq_title{
+	color: black;
+	font-size: 20px;
+	font-weight: bold;
+}
+.faq_answer{
+	padding-left: 25px;
+	font-size: 16px;
+	padding-top: 5px;
+	color: grey;
+}
+
 
 /*
 ====================
@@ -477,4 +515,103 @@ figure:hover figcaption {
 
 .cap-bot:hover figcaption {
     bottom: 0;
+}
+
+
+
+
+/*
+============
+
+============
+*/
+#login-dp{
+	float: right;
+    min-width: 250px !important;
+    padding: 14px 14px 0;
+    overflow:hidden;
+    background-color:rgba(255,255,255,.8);
+    z-index: 100000 !important;
+}
+#login-dp .help-block{
+    font-size:12px    
+}
+#login-dp .bottom{
+    background-color:rgba(255,255,255,.8);
+    border-top:1px solid #ddd;
+    clear:both;
+    padding:14px;
+}
+#login-dp .form-group {
+    margin-bottom: 10px;
+}
+
+@media(max-width:768px){
+    #login-dp{
+        background-color: inherit;
+        color: #fff;
+    }
+    #login-dp .bottom{
+        background-color: inherit;
+        border-top:0 none;
+    }
+}
+
+/*
+ * Component: Box
+ * --------------
+ */
+.box {
+  position: relative;
+  border-radius: 3px;
+  background: #ffffff;
+  border-top: 3px solid #d2d6de;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+.box.box-primary {
+  border-top-color: #3c8dbc;
+}
+.box.box-info {
+  border-top-color: #00c0ef;
+}
+.box-header {
+  color: #444;
+  display: block;
+  padding: 10px;
+  position: relative;
+}
+.box-header.with-border {
+  border-bottom: 1px solid #f4f4f4;
+}
+.collapsed-box .box-header.with-border {
+  border-bottom: none;
+}
+
+/*
+ * Page: Profile
+ * -------------
+ */
+.profile-user-img {
+  margin: 0 auto;
+  width: 100px;
+  padding: 3px;
+  border: 3px solid #d2d6de;
+}
+.profile-username {
+  font-size: 21px;
+  margin-top: 5px;
+  color: black;
+  font-family: nexa_blackregular;
+}
+.list-group{
+	color:black !important;
+}
+.list-group-unbordered > .list-group-item {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
 }

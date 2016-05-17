@@ -3,72 +3,10 @@
 @section('content')
 <div class="padding_outer">
     <div class="container">
-        <h2>Sign In or Create An Account</h2>
+        <h2>Create An Account</h2>
         <div class="row">
-        <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><div class="font_padding"> Sign In Here! </div></div>
-                    <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
-                            {!! csrf_field() !!}
 
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">E-Mail Address</label>
-
-                                <div class="col-md-6">
-                                    <input type="email" class="form-control" placeholder="Input Your Email" name="email" value="{{ old('email') }}">
-
-                                    @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label">Password</label>
-
-                                <div class="col-md-6">
-                                    <input type="password" class="form-control" placeholder="Input Your Password" name="password">
-
-                                    @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-3">
-                                    <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox" name="remember"> Remember Me
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-offset-3">
-                                    <div class="font_forgot">
-                                    <button type="submit" class="checkPageBtn">
-                                        <i class="fa fa-btn fa-sign-in"></i> LOG IN
-                                    </button>
-
-                                    
-                                    <a href="{{ url('/password/reset') }}">Forgot Your Password?</a>
-                                    
-                                </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
+            <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading"><div class="font_padding"> Register Here! </div></div>
                 <div class="panel-body">
@@ -190,38 +128,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('userType') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">User</label>
-
-                            <div class="col-md-6">
-                                <select class='form-control' name='userType'>
-                                <?php
-                                    echo "<option value='0'>" . "Agent" . "</option>";
-                                    echo "<option value='1'>" . "Customer" . "</option>";
-                                ?>
-                                </select>
-                                @if ($errors->has('userType'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('userType') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('bank') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Bank Account Number</label>
-
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Input Your Bank Account Number" name="bank" value="{{ old('bank') }}">
-
-                                @if ($errors->has('bank'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('bank') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
+                       
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="checkPageBtn">

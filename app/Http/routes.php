@@ -19,6 +19,7 @@ Route::get('productsample', 'ProductController@getMenuSample');
 Route::get('myaccount/{id}', 'MemberController@readDataMember');
 Route::get('review', 'ProductController@giveTestimonial');
 Route::get('checkout', 'ProductController@getAllMenu');
+Route::get('faq', 'HomeController@faq_question');
 
 Route::auth();
 
@@ -36,10 +37,6 @@ Route::get('findalocation', function(){
         return view('page.findalocation');
 });
 
-Route::get('faq', function(){
-		return view('page.faq');
-});
-
 Route::get('becomeanagent', function(){
 		return view('page.becomeanagent');
 });
@@ -48,3 +45,10 @@ Route::get('howtobuy', function(){
 		return view('page.howtobuy');
 });
 
+Route::get('profile', function(){
+	return view('page.profile');
+});
+
+Route::get('myorder', function(){
+	return view('page.myorder');
+});
