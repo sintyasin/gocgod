@@ -173,14 +173,32 @@ $(function() {
    });
 
    // Handle click on table cells with checkboxes
-   $('#datatableUser').on('click', 'tbody td, thead th:first-child', function(e){
-      $("#tombol").click(function(){
-        alert(i);
-      }); i++;
-      if($('#tombol').data('clicked')) {
-        $(this).parent().find('input[type="checkbox"]').trigger('click');
-      }
-   });
+   /*$('#datatableUser').on('click', 'tbody td, thead th:first-child', function(e){
+      var button = $(this).parent().find(button);
+
+      if
+      // $("#tombol").click(function(){
+      //   alert(i);
+      // }); i++;
+      // if($('#tombol').data('clicked')) {
+      //   $(this).parent().find('input[type="checkbox"]').trigger('click');
+      // }
+   });*/
+    $('#datatableUser tbody').delegate("tr", "click", function(e) {
+      alert('row');
+    }); 
+
+    $('#datatableUser tbody').on( 'click', 'button', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      alert('button');
+    });
+
+
+  
+
+
+
 
    // Handle click on "Select all" control
    $('thead input[name="select_all"]', table.table().container()).on('click', function(e){
