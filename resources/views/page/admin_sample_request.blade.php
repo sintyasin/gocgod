@@ -104,6 +104,7 @@ function updateDataTableSelectAllCtrl(table){
    }
 }
 
+      var i=0;
 $(function() {
     var table = $('#datatableUser').DataTable({
         processing: true,
@@ -174,8 +175,8 @@ $(function() {
    // Handle click on table cells with checkboxes
    $('#datatableUser').on('click', 'tbody td, thead th:first-child', function(e){
       $("#tombol").click(function(){
-        alert("yes link clicked");
-      });
+        alert(i);
+      }); i++;
       if($('#tombol').data('clicked')) {
         $(this).parent().find('input[type="checkbox"]').trigger('click');
       }
@@ -198,11 +199,6 @@ $(function() {
       // Update state of "Select all" control
       updateDataTableSelectAllCtrl(table);
    });
-});
-$( document ).ajaxComplete(function() {
-  $( ".log" ).text( "Triggered ajaxComplete handler." );
-  //alert(document.getElementById('b'));
-  
 });
 
 </script>
