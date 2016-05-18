@@ -15,6 +15,7 @@
           <li class=" <?php if($active == 'productCategory') echo 'active'; ?> "><a href= {{ URL('/admincategorylist/new') }} ><i class="fa fa-circle-o"></i> Category</a></li>
           <li class=" <?php if($active == 'productTestimonial') echo 'active'; ?> "><a href= {{ URL('/admintestimoniallist/new') }} ><i class="fa fa-circle-o"></i> Testimonial List</a></li>
           <li class=" <?php if($active == 'productTestimonialRequest') echo 'active'; ?> "><a href= {{ URL('/admintestimonialrequest/new') }} ><i class="fa fa-circle-o"></i> Testimonial Request</a></li>
+          <li class=" <?php if($active == 'productSampleRequest') echo 'active'; ?> "><a href= {{ URL('/adminsamplerequest/new') }} ><i class="fa fa-circle-o"></i> Sample Request</a></li>
         </ul>
       </li>
 

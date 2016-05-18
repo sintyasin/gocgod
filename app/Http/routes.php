@@ -42,6 +42,8 @@ Route::get('admindeletetestimoni/{array}', 'AdminController@getDeleteTestimoni')
 Route::get('admintestimonialrequest/{status}', 'AdminController@getTestimonialRequest');
 Route::get('processtestimonial/data', array('as' => 'processtestimonial.data', 'uses' =>'AdminController@getProcessTestimonialData'));
 Route::get('adminprocesstestimoni/{action}/{array}', 'AdminController@getProcessTestimoni');
+Route::get('adminsamplerequest/{status}', 'AdminController@getSampleRequest');
+Route::get('samplerequest/data', array('as' => 'samplerequest.data', 'uses' => 'AdminController@getSampleData'));
 
 //FAQ
 Route::get('adminfaqlist/{status}', 'AdminController@getFaqList');
@@ -82,6 +84,9 @@ Route::post('adminposteditcity/{id}', 'AdminController@postEditCity');
 //about us
 Route::get('adminaboutus/{status}', 'AdminController@getAboutUs');
 Route::post('adminpostaboutus/{id}','AdminController@postAboutUs');
+
+//banner
+Route::get('adminbannerlist/{status}', 'AdminController@getBannerList');
 
 Route::get('findalocation', function(){
         return view('page.findalocation');

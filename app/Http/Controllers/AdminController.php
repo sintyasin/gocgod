@@ -18,9 +18,18 @@ use App\Faq;
 use App\ProductTestimonial;
 use App\AgentRating;
 use App\AboutUs;
+use App\SampleRequest;
 
 class AdminController extends Controller
 {
+  public function getBannerList($status)
+  {
+    $data['active'] = 'bannerList';
+    $data['status'] = $status;
+
+    
+  }
+
   public function getAboutUs($status)
   {
     $data['query'] = AboutUs::find(1);
@@ -411,6 +420,25 @@ class AdminController extends Controller
   }
 
   //fungsi buat product
+  public function getSampleRequest($status)
+  {
+    $data['active'] = 'productSampleRequest';
+    $data['status'] = $status;
+
+    return view('page.admin_sample_request', $data);
+  }
+
+  public function getSampleData()
+  {
+    $data['query'] = SampleRequest::leftJoin('transaction__sample_detail as d', 'd.request_id', '=', 'transaction__sample_request.request_id')
+                                    ->leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                                    ->where('approval', 0)
+                                    ->get(['transaction__sample_request.request_id', 'name', 'event_name', 'event_date', 'event_venue', 'event_description', 'request_date']);
+
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
   public function getTestimonialList($status)
   {
     $data['status'] = $status;
