@@ -14,4 +14,6 @@ class User extends Model
 	{
 		return $this->belongsTo('App\City', 'city_id', 'city_id');
 	}
+
+    
 }

@@ -7,7 +7,7 @@
     <h2> CheckOut </h2>
   
     @if (Auth::guest())
-      <a href={{ URL('/login')}} class="testimonial_custom"> Click here to login </a>
+      <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
       <hr>
       <hr>
       <hr>

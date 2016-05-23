@@ -17,7 +17,7 @@ Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
 Route::get('productsample', 'ProductController@getMenuSample');
 Route::get('myaccount/{id}', 'MemberController@readDataMember');
-Route::get('review', 'ProductController@giveTestimonial');
+Route::post('review/{id}', 'ProductController@giveTestimonial');
 Route::get('checkout', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
 

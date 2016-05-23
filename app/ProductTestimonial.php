@@ -13,3 +13,4 @@ class ProductTestimonial extends Model
     protected $primaryKey = 'testimonial_id';
     protected $dates = ['deleted_at'];
 }
+
