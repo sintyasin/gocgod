@@ -6,12 +6,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Insert City
+    Edit City
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Insert City</li>
+    <li class="active">Edit City</li>
   </ol>
 </section>
 
@@ -19,21 +19,15 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "success")
-    <div class="alert alert-success fade in">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Data has been insert successfully!</strong>
-    </div>
-    @endif
     <div class="col-lg-12">
-      <form class="form-horizontal" role="form" method="POST" action= {{ URL('adminpostcity') }} >
+      <form class="form-horizontal" role="form" method="POST" action= {{ URL('admin/post/edit/city') . '/' . $query->city_id }} >
         {!! csrf_field() !!}
 
         <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
             <label class="col-md-1 control-label">City Name</label>
 
             <div class="col-md-5">
-                <input type="text" class="form-control" placeholder="City" name="city" value="{{ old('city') }}" />
+                <input type="text" class="form-control" placeholder="City" name="city" value="{{ $query->city_name }}" />
 
                 @if ($errors->has('city'))
                 <span class="help-block">
@@ -45,7 +39,9 @@
 
         <div class="form-group">
             <div class="col-md-offset-3">
-                <button type="submit" class="btn btn-primary">Submit</button>             
+                <button type="submit" class="btn btn-primary">Submit</button>     
+                &nbsp; &nbsp;
+                <a href={{ URL('admin/city/list') }} class="btn btn-default">Cancel</a>
             </div>
         </div>
       </form>

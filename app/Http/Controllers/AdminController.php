@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 //use App\Http\Requests;
 //use Request;
 use Validator;
+use Session;
 use Yajra\Datatables\Datatables;
 //use ValidatesRequests;
 
@@ -19,21 +20,57 @@ use App\ProductTestimonial;
 use App\AgentRating;
 use App\AboutUs;
 use App\SampleRequest;
+use App\SampleDetail;
+use App\CutOffDate;
+
+class SampleDetailData
+{
+  public $name;
+  public $quantity;
+}
 
 class AdminController extends Controller
 {
-  public function getBannerList($status)
+  public function getBannerList()
   {
     $data['active'] = 'bannerList';
-    $data['status'] = $status;
-
-    
   }
 
-  public function getAboutUs($status)
+  public function getCutOffDate()
+  {
+    $data['active'] = 'cutOffDate';
+    $data['query'] = CutOffDate::find(1);
+    
+    return view('page.admin_cut_off_date', $data);
+  }
+
+  public function postCutOffDate(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'date'    => 'required|numeric',
+    ]);
+
+    if ($v->fails())
+    {
+        //dd('b');
+        return redirect('/admin/cut/off/date')->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $date = filter_var($input['date'], FILTER_SANITIZE_STRING);
+
+    $cutoff = CutOffDate::find(1);
+    $cutoff->cut_off = $date;
+    $cutoff->save();
+    Session::flash('update', 1);
+
+    return redirect('admin/cut/off/date');
+  }
+
+  public function getAboutUs()
   {
     $data['query'] = AboutUs::find(1);
-    $data['status'] = $status;
     $data['active'] = 'aboutus';
 
     return view('page.admin_aboutus', $data);
@@ -50,7 +87,7 @@ class AdminController extends Controller
     if ($v->fails())
     {
         //dd('b');
-        return redirect('/adminaboutus/new')->withErrors($v->errors())->withInput();
+        return redirect('/admin/aboutus')->withErrors($v->errors())->withInput();
     }    
 
     $input = $request->all();
@@ -63,9 +100,34 @@ class AdminController extends Controller
     $aboutus->name = $name;
     $aboutus->address = $address;
     $aboutus->phone = $phone;
+    $aboutus->save();
+    Session::flash('update', 1);
 
+    return redirect('admin/aboutus');
+  }
+  
 
-    return redirect('adminaboutus/successUpdate');
+  public function getCityList()
+  {
+    $data['active'] = "cityList";
+
+    return view('admin_city', $data);
+  }  
+
+  public function getCityData()
+  {
+    $data['query'] = City::get(['city_id', 'city_name']);
+        
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getEditCity($id)
+  {
+    $data['query'] = City::find($id);
+    $data['active'] = 'cityList';
+
+    return view('page.admin_edit_city', $data);
   }
 
   public function postEditCity(Request $request, $id)
@@ -76,7 +138,7 @@ class AdminController extends Controller
 
     if ($v->fails())
     {
-        return redirect('/admineditcity/' . $id)->withErrors($v->errors())->withInput();
+        return redirect('/admin/edit/city/' . $id)->withErrors($v->errors())->withInput();
     }    
 
     $input = $request->all();
@@ -86,16 +148,35 @@ class AdminController extends Controller
     $city = City::find($id);
     $city->city_name = $inputCity;
     $city->save();
-
-    return redirect('/admincitylist/successUpdate');
+    Session::flash('update', 1);
+    return redirect('/admin/city/list');
   }
 
-  public function getEditCity($id)
+  public function deleteCity(Request $request)
   {
-    $data['query'] = City::find($id);
-    $data['active'] = 'cityList';
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
 
-    return view('page.admin_editcity', $data);
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    City::find($id)->delete();
+    Session::flash('delete', 1);
+
+    return 1;
+  }
+
+  public function insertCity()
+  {
+    $data['active'] = "insertCity";
+
+    return view('page.admin_insert_city', $data);
   }
 
   public function postInsertCity(Request $request)
@@ -106,7 +187,7 @@ class AdminController extends Controller
 
     if ($v->fails())
     {
-        return redirect('/admininsertcity/new')->withErrors($v->errors())->withInput();
+        return redirect('/admin/insert/city')->withErrors($v->errors())->withInput();
     }    
 
     $input = $request->all();
@@ -116,39 +197,15 @@ class AdminController extends Controller
     $city = new City();
     $city->city_name = $inputCity;
     $city->save();
-
-    return redirect('/admininsertcity/success');
+    Session::flash('success', 1);
+    return redirect('/admin/insert/city');
   }
 
-  public function insertCity($status)
+  public function getReviewAgent()
   {
-    $data['active'] = "insertCity";
-    $data['status'] = $status;
+    $data['active'] = 'userReviewAgent';
 
-    return view('page.admin_insertcity', $data);
-  }
-
-  public function deleteCity($id)
-  {
-    City::where('city_id', $id)->delete();
-
-    return redirect()->to('admincitylist/successDelete');
-  }
-
-  public function getCityData()
-  {
-    $data['query'] = City::get(['city_id', 'city_name']);
-        
-    return Datatables::of($data['query'])
-    ->make(true);
-  }
-
-  public function getCityList($status)
-  {
-    $data['active'] = "cityList";
-    $data['status'] = $status;
-
-    return view('admin_city', $data);
+    return view('page.admin_review_agent', $data);
   }
 
   public function getReviewAgentList()
@@ -162,58 +219,43 @@ class AdminController extends Controller
     ->make(true);
   }
 
-  public function getProcessReviewAgent($action, $array)
+  public function getDeleteReviewAgent(Request $request)
   {
-    $data['active'] = "userReviewAgentRequest";
-    $id = explode(',', $array);
-    foreach ($id as $tmp) 
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
     {
-      $review = AgentRating::find($tmp);
-      if($action == "reject")
-        $review->delete();
-      else if($action == "approve")
+        return 0;
+    }    
+    $input = $request->all();
+
+    if(is_array($input['id']))
+    {
+      foreach ($input['id'] as $id)
       {
-        $review->approval = 1;
-        $review->save();
+        $id = filter_var($id, FILTER_SANITIZE_STRING);
+         
+        AgentRating::find($id)->delete();
+        Session::flash('delete', 1);
       }
     }
-
-    if($action == "reject")
-      $data['status'] = "successReject";
-    else if($action == "approve")
-      $data['status'] = "successApprove";
-
-    return view('page.admin_reviewagentrequest', $data);
-  }
-
-  public function getReviewAgent($status)
-  {
-    $data['active'] = 'userReviewAgent';
-    $data['status'] = $status;
-
-    return view('page.admin_reviewagent', $data);
-  }
-
-  public function getDeleteReviewAgent($array)
-  {
-    $data['active'] = 'userReviewAgent';
-    $data['status'] = 'successDelete';
-
-    $id = explode(",", $array);
-    foreach ($id as $tmp)
+    else
     {
-      AgentRating::find($tmp)->delete();
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      AgentRating::find($id)->delete();
+      Session::flash('delete', 1);
     }
 
-    return view('page.admin_reviewagent', $data);
+    return 1;
   }
 
-  public function getReviewAgentRequest($status)
+  public function getReviewAgentRequest()
   {
     $data['active'] = 'userReviewAgentRequest';
-    $data['status'] = $status;
 
-    return view('page.admin_reviewagentrequest', $data);
+    return view('page.admin_review_agent_request', $data);
   }  
 
   public function getProcessReviewAgentList()
@@ -225,6 +267,87 @@ class AdminController extends Controller
     
     return Datatables::of($data['query'])
     ->make(true);
+  }
+
+  public function getProcessReviewAgent(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required',
+        'action' => 'required|alpha'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+    $action = filter_var($input['action'], FILTER_SANITIZE_STRING);
+
+    if(is_array($input['id']))
+    {
+      foreach ($input['id'] as $id)
+      {
+        $id = filter_var($id, FILTER_SANITIZE_STRING);
+         
+        if($action == "reject")
+        {
+          AgentRating::find($id)->delete();
+          Session::flash('reject', 1);
+        }
+        else if($action == "approve")
+        {
+          $rating = AgentRating::find($id);
+          $rating->approval = 1;
+          $rating->save();
+          Session::flash('approve', 1);
+        }
+      }
+    }
+    else
+    {
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      if($action == "reject")
+      {
+        $rating = AgentRating::find($id)->delete();
+        Session::flash('reject', 1);
+      }
+      else if($action == "approve")
+      {
+        $rating = AgentRating::find($id);
+        $rating->approval = 1;
+        $rating->save();
+
+        Session::flash('approve', 1);
+      }
+    }
+
+    return 1;
+  }
+
+  public function getAgentList()
+  {
+      $data['active'] = "userAgentList";
+      Session::flash('new', 1);
+
+      return view('page.admin_agent', $data);
+  }
+
+  public function getAgentData()
+  {
+      $data['query'] = User::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+                            ->where('status_user', 0)
+                            ->get(['id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
+        
+      return Datatables::of($data['query'])
+      ->make(true);
+  }
+
+  public function getEditAgent($id)
+  {
+    $data['query'] = User::find($id);
+    $data['active'] = "userAgentList";
+
+    return view('page.admin_edit_agent', $data);
   }
 
   public function postEditAgent(Request $request, $id)
@@ -249,72 +372,16 @@ class AdminController extends Controller
     $user->verification = $verification;
     $user->save();
 
-    return redirect('/adminagentlist/successEdit');
+    Session::flash('update', 1);
+
+    return redirect('admin/agent/list');
   }
 
-  public function getEditAgent($id)
-  {
-    $data['query'] = User::find($id);
-    $data['active'] = "userAgentList";
+  
 
-    return view('page.admin_editagent', $data);
-  }
-
-  public function getAgentList($status)
-  {
-      $data['active'] = "userAgentList";
-      $data['status'] = $status;
-
-      return view('page.admin_agent', $data);
-  }
-
-  public function getAgentData()
-  {
-      $data['query'] = User::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
-                            ->where('status_user', 0)
-                            ->get(['id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
-        
-      return Datatables::of($data['query'])
-      ->make(true);
-  }
-
-  public function postEditCustomer(Request $request, $id)
-  {
-    $v = Validator::make($request->all(), [
-        'status'       => 'required|numeric',
-        'verification' => 'required|numeric',
-    ]);    
-
-    if ($v->fails())
-    {
-        return redirect('/admineditcustomer/' . $id)->withErrors($v->errors())->withInput();
-    }    
-
-    $input = $request->all();
-
-    $status = filter_var($input['status'], FILTER_SANITIZE_STRING);
-    $verification = filter_var($input['verification'], FILTER_SANITIZE_STRING);
-
-    $user = User::find($id);
-    $user->status_user = $status;
-    $user->verification = $verification;
-    $user->save();
-
-    return redirect('/admincustomerlist/successEdit');
-  }
-
-  public function getEditCustomer($id)
-  {
-    $data['active'] = "userMemberList";
-    $data['query'] = User::find($id);
-
-    return view('page.admin_editcustomer', $data);
-  }
-
-  public function getCustomerList($status)
+  public function getCustomerList()
   {
       $data['active'] = "userMemberList";
-      $data['status'] = $status;
 
       return view('page.admin_customer', $data);
   }
@@ -329,11 +396,45 @@ class AdminController extends Controller
       ->make(true);
   }
 
+  public function getEditCustomer($id)
+  {
+    $data['active'] = "userMemberList";
+    $data['query'] = User::find($id);
+
+    return view('page.admin_edit_customer', $data);
+  }
+
+  public function postEditCustomer(Request $request, $id)
+  {
+    $v = Validator::make($request->all(), [
+        'status'       => 'required|numeric',
+        'verification' => 'required|numeric',
+    ]);    
+
+    if ($v->fails())
+    {
+        return redirect('/admin/edit/customer/' . $id)->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $status = filter_var($input['status'], FILTER_SANITIZE_STRING);
+    $verification = filter_var($input['verification'], FILTER_SANITIZE_STRING);
+
+    $user = User::find($id);
+    $user->status_user = $status;
+    $user->verification = $verification;
+    $user->save();
+
+    Session::flash('update', 1);
+
+    return redirect('/admin/customer/list/');
+  }
+
   //fungsi buat FAQ
-  public function getFaqList($status)
+  public function getFaqList()
   {
       $data['active'] = "faqList";
-      $data['status'] = $status;
 
       return view('page.admin_faq', $data);
   }
@@ -344,39 +445,14 @@ class AdminController extends Controller
         
       return Datatables::of($data['query'])
       ->make(true);
-  }
-
-  public function postInsertFaq(Request $request)
-  {
-    $v = Validator::make($request->all(), [
-        'question' => 'required|max:10000',
-        'answer' => 'required|max:10000',
-    ]);    
-
-    if ($v->fails())
-    {
-        return redirect('/admininsertfaq/new')->withErrors($v->errors())->withInput();
-    }    
-
-    $input = $request->all();
-
-    $question = filter_var($input['question'], FILTER_SANITIZE_STRING);
-    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);
-
-    $faq = new Faq;
-    $faq->question = $question;
-    $faq->answer = $answer;
-    $faq->save();
-
-    return redirect('/admininsertfaq/success');
-  }
+  }  
 
   public function getEditFaq($id)
   {
     $data['query'] = Faq::find($id);
     $data['active'] = "faqList";
 
-    return view('page.admin_editfaq', $data);
+    return view('page.admin_edit_faq', $data);
   }
 
   public function postEditFaq(Request $request, $id)
@@ -388,7 +464,7 @@ class AdminController extends Controller
 
     if ($v->fails())
     {
-        return redirect('/admineditfaq/' . $id)->withErrors($v->errors())->withInput();
+        return redirect('/admin/edit/faq/' . $id)->withErrors($v->errors())->withInput();
     }    
 
     $input = $request->all();
@@ -401,37 +477,78 @@ class AdminController extends Controller
     $faq->answer = $answer;
     $faq->save();
 
-    return redirect('/adminfaqlist/successUpdate');
+    return redirect('/admin/faq/list');
   }
 
-  public function getInsertFaq($status)
+  public function getInsertFaq()
   {
     $data['active'] = 'insertFaq';
-    $data['status'] = $status;
 
-    return view ('page.admin_insertfaq', $data);
+    return view ('page.admin_insert_faq', $data);
   }
 
-  public function getDeleteFaq($id)
+  public function postInsertFaq(Request $request)
   {
-    Faq::where('question_id', $id)->delete();
-    
-    return redirect()->to('adminfaqlist/successDelete');
+    $v = Validator::make($request->all(), [
+        'question' => 'required|max:10000',
+        'answer' => 'required|max:10000',
+    ]);    
+
+    if ($v->fails())
+    {
+        return redirect('/admin/insert/faq')->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $question = filter_var($input['question'], FILTER_SANITIZE_STRING);
+    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);
+
+    $faq = new Faq;
+    $faq->question = $question;
+    $faq->answer = $answer;
+    $faq->save();
+
+    Session::flash('success', 1);
+
+    return redirect('/admin/insert/faq');
+  }
+
+  public function getDeleteFaq(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    Faq::find($id)->delete();
+    Session::flash('delete', 1);
+
+    return 1;
   }
 
   //fungsi buat product
-  public function getSampleRequest($status)
+  public function getSampleRequest()
   {
     $data['active'] = 'productSampleRequest';
-    $data['status'] = $status;
+    /*$data['query'] = SampleDetail::leftJoin('transaction__sample_request as r', 'r.request_id', '=', 'transaction__sample_detail.request_id')
+                                  ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'transaction__sample_detail.varian_id')
+                                  ->where('approval', 0)
+                                  ->get(['varian_name', 'quantity']);*/
 
     return view('page.admin_sample_request', $data);
   }
 
   public function getSampleData()
   {
-    $data['query'] = SampleRequest::leftJoin('transaction__sample_detail as d', 'd.request_id', '=', 'transaction__sample_request.request_id')
-                                    ->leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+    $data['query'] = SampleRequest::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
                                     ->where('approval', 0)
                                     ->get(['transaction__sample_request.request_id', 'name', 'event_name', 'event_date', 'event_venue', 'event_description', 'request_date']);
 
@@ -439,12 +556,118 @@ class AdminController extends Controller
     ->make(true);
   }
 
-  public function getTestimonialList($status)
+  public function tes()
   {
-    $data['status'] = $status;
+    $id = 4;
+    $x = SampleDetail::leftJoin('transaction__sample_request as r', 'r.request_id', '=', 'transaction__sample_detail.request_id')
+                                  ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'transaction__sample_detail.varian_id')
+                                  ->where('approval', 0)
+                                  ->where('transaction__sample_detail.request_id', $id)
+                                  ->get(['varian_name', 'quantity']);
+
+
+    
+  }
+
+  public function getSampleDetail(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    $x = SampleDetail::leftJoin('transaction__sample_request as r', 'r.request_id', '=', 'transaction__sample_detail.request_id')
+                                  ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'transaction__sample_detail.varian_id')
+                                  ->where('approval', 0)
+                                  ->where('transaction__sample_detail.request_id', $id)
+                                  ->get(['varian_name', 'quantity']);
+
+
+    
+    $allData;
+    $i = 0;
+    
+    foreach ($x as $tmp) {
+      $data = new SampleDetailData();
+      $data->name = $tmp->varian_name;
+      $data->quantity = $tmp->quantity;
+
+      $allData[$i] = $data;
+      $i++;
+    }
+
+    $json = json_encode($allData);
+
+    return $json;
+  }
+
+  public function getProcessSampleRequest(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required',
+        'action' => 'required|alpha'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+    $action = filter_var($input['action'], FILTER_SANITIZE_STRING);
+
+    if(is_array($input['id']))
+    {
+      foreach ($input['id'] as $id)
+      {
+        $id = filter_var($id, FILTER_SANITIZE_STRING);
+         
+        if($action == "reject")
+        {
+          $sample = SampleRequest::find($id)->delete();
+          Session::flash('reject', 1);
+        }
+        else if($action == "approve")
+        {
+          $sample = SampleRequest::find($id);
+          $sample->approval = 1;
+          $sample->save();
+          Session::flash('approve', 1);
+        }
+      }
+    }
+    else
+    {
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      if($action == "reject")
+      {
+        $sample = SampleRequest::find($id)->delete();
+        Session::flash('reject', 1);
+      }
+      else if($action == "approve")
+      {
+        $sample = SampleRequest::find($id);
+        $sample->approval = 1;
+        $sample->save();
+
+        Session::flash('approve', 1);
+      }
+    }
+
+    return 1;
+  }
+
+  public function getTestimonialList()
+  {
     $data['active'] = 'productTestimonial';
     
-    return view('page.admin_producttestimonial', $data);
+    return view('page.admin_product_testimonial', $data);
   }
 
   public function getTestimonialData()
@@ -458,25 +681,43 @@ class AdminController extends Controller
     ->make(true);
   }
 
-  public function getDeleteTestimoni($array)
+  public function getDeleteTestimoni(Request $request)
   {
-    $id = explode(',', $array);
-    foreach ($id as $tmp) 
-    {
-      ProductTestimonial::find($tmp)->delete();
-    }
-    $data['active'] = "productTestimonial";
-    $data['status'] = "successDelete";
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
 
-    return view('page.admin_producttestimonial', $data);
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    if(is_array($input['id']))
+    {
+      foreach ($input['id'] as $id)
+      {
+        $id = filter_var($id, FILTER_SANITIZE_STRING);
+         
+        ProductTestimonial::find($id)->delete();
+        Session::flash('delete', 1);
+      }
+    }
+    else
+    {
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      ProductTestimonial::find($id)->delete();
+      Session::flash('delete', 1);
+    }
+
+    return 1;
   }
 
-  public function getTestimonialRequest($status)
+  public function getTestimonialRequest()
   {
     $data['active'] = "productTestimonialRequest";
-    $data['status'] = $status;
 
-    return view('page.admin_producttestimonialrequest', $data);
+    return view('page.admin_product_testimonial_request', $data);
   }
 
   public function getProcessTestimonialData()
@@ -490,15 +731,47 @@ class AdminController extends Controller
     ->make(true);
   }
 
-  public function getProcessTestimoni($action, $array)
+  public function getProcessTestimoni(Request $request)
   {
-    $data['active'] = "productTestimonialRequest";
-    $id = explode(',', $array);
-    foreach ($id as $tmp) 
+    $v = Validator::make($request->all(), [
+        'id' => 'required',
+        'action' => 'required|alpha'
+    ]);
+
+    if ($v->fails())
     {
-      $testi = ProductTestimonial::find($tmp);
+        return 0;
+    }    
+    $input = $request->all();
+    $action = filter_var($input['action'], FILTER_SANITIZE_STRING);
+
+    if(is_array($input['id']))
+    {
+      foreach ($input['id'] as $id)
+      {
+        $id = filter_var($id, FILTER_SANITIZE_STRING);
+        
+        $testi = ProductTestimonial::find($id);
+        if($action == "reject")
+        {
+          $testi->delete(); 
+        }
+        else if($action == "approve")
+        {
+          $testi->approval = 1;
+          $testi->save();
+        }
+      }
+    }
+    else
+    {
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+
+      $testi = ProductTestimonial::find($id);
       if($action == "reject")
-        $testi->delete();
+      {
+        $testi->delete(); 
+      }
       else if($action == "approve")
       {
         $testi->approval = 1;
@@ -507,11 +780,32 @@ class AdminController extends Controller
     }
 
     if($action == "reject")
-      $data['status'] = "successReject";
+    {
+      Session::flash('reject', 1);
+    }
     else if($action == "approve")
-      $data['status'] = "successApprove";
+    {
+      Session::flash('approve', 1);
+    }
 
-    return view('page.admin_producttestimonialrequest', $data);
+    return 1;
+  }
+
+  
+
+  public function getCategoryList()
+  {
+    $data['active'] = 'productCategory';
+
+    return view('page.admin_product_category', $data);
+  }
+
+  public function getCategoryData()
+  {
+    $data['query'] = ProductCategory::get(['category_id', 'category_name', 'description']);
+
+    return Datatables::of($data['query'])
+    ->make(true);
   }
 
   public function getEditCategory($id)
@@ -519,7 +813,7 @@ class AdminController extends Controller
     $data['query'] = ProductCategory::find($id);
     $data['active'] = 'productCategory';
 
-    return view('page.admin_editcategory', $data);
+    return view('page.admin_edit_category', $data);
   }
 
   public function postEditCategory(Request $request, $id)
@@ -530,7 +824,7 @@ class AdminController extends Controller
 
     if ($v->fails())
     {
-        return redirect('/admineditcategory/' . $id)->withErrors($v->errors())->withInput();
+        return redirect('/admin/edit/category/' . $id)->withErrors($v->errors())->withInput();
     }    
 
     $input = $request->all();
@@ -540,24 +834,153 @@ class AdminController extends Controller
     $category = ProductCategory::find($id);
     $category->description = $desc;
     $category->save();
-
-    return redirect('/admincategorylist/successUpdate');
+    Session::flash('update', 1);
+    return redirect('/admin/category/list');
   }
 
-  public function getCategoryList($status)
+  public function getDeleteCategory(Request $request)
   {
-    $data['status'] = $status;
-    $data['active'] = 'productCategory';
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
 
-    return view('page.admin_productcategory', $data);
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+    
+    ProductCategory::find($id)->delete();
+    Session::flash('delete', 1);
+
+    return 1;
   }
 
-  public function getCategoryData()
+  public function getProductList()
   {
-    $data['query'] = ProductCategory::get(['category_id', 'category_name', 'description']);
+    $data['active'] = "productList";
 
-    return Datatables::of($data['query'])
-    ->make(true);
+    return view('page.admin_product', $data);
+  }
+
+  public function getProductData()
+  {
+    $data['query'] = Product::leftJoin('product__category', 'product__category.category_id', '=', 'product__varian.category_id')
+                            ->get(['category_name', 'varian_id', 'varian_name', 'price', 'qty', 'picture', 'weight', 'product__varian.description']);
+    
+      return Datatables::of($data['query'])
+      //->addColumn('actions', '<button id="a">a</button> <br> <button>b</button>')
+      ->make(true);
+  }
+
+  public function getInsertProduct()
+  {
+    $data['query'] = ProductCategory::get(['category_id', 'category_name']);
+    $data['active'] = "insertProduct";
+
+    return view('page.admin_insert_product', $data);
+  }
+
+  public function postInsertProduct(Request $request)
+  {
+    $input = $request->all();
+
+    //kalo dia insert new category
+    if($input['category'] == 0)
+    {
+      $v = Validator::make($request->all(), [
+          'name' => 'required|max:100',
+          'price' => 'required|numeric',
+          'quantity' => 'required|numeric',
+          'weight' => 'required|numeric',
+          'description' => 'required|alpha',
+          'category' => 'required|numeric',
+          'picture' => 'required|mimes:jpg,jpeg,png',
+          'newcategory' => 'required|unique:product__category,category_name|max:100',
+      ]);
+    }
+    else
+    {
+      $v = Validator::make($request->all(), [
+          'name' => 'required|max:100',
+          'price' => 'required|numeric',
+          'quantity' => 'required|numeric',
+          'weight' => 'required|numeric',
+          'description' => 'required|alpha',
+          'category' => 'required|numeric',
+          'picture' => 'required|mimes:jpg,jpeg,png',
+      ]);
+    }    
+
+    if ($v->fails())
+    {
+        return redirect('/admin/insert/product')->withErrors($v->errors())->withInput();
+    }    
+
+    $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
+    $price = filter_var($input['price'], FILTER_SANITIZE_STRING);
+    $quantity = filter_var($input['quantity'], FILTER_SANITIZE_STRING);
+    $weight = filter_var($input['weight'], FILTER_SANITIZE_STRING);
+    $description = filter_var($input['description'], FILTER_SANITIZE_STRING);
+    $category = filter_var($input['category'], FILTER_SANITIZE_STRING);
+    $picture = $input['picture'];
+    if($picture->getClientSize() > 512000)
+    {
+      return redirect('/admin/insert/product')->with('errorSize', 'The picture size cannot be larger than 500 kilobytes')->withInput();
+    }
+
+    $fileName = filter_var($picture->getClientOriginalName(), FILTER_SANITIZE_STRING);
+    $fileName = preg_replace('~[\\\\/:*?"<>|-]~', '', $fileName);
+    $fileName = str_replace(' ', '_', $fileName);
+    $fileName = time() . $fileName;
+
+    //kalo new category, berarti insert dulu category barunya
+    if($category == 0)
+    {
+      $newcategory = filter_var($input['newcategory'], FILTER_SANITIZE_STRING);
+      $newdesc = filter_var($input['newcategorydesc'], FILTER_SANITIZE_STRING);
+      
+      $data = new ProductCategory;
+      $data->category_name = $newcategory;
+      $data->description = $newdesc;
+      $data->save();
+    }
+
+    $product = new Product;
+    $product->varian_name = $name;
+    $product->price = $price;
+    $product->qty = $quantity;
+    $product->description = $description;
+    $product->weight = $weight;
+    if($category == 0) //kalo insert category baru
+      $product->category_id = $data->category_id;
+    else
+      $product->category_id = $category;
+    $product->picture = $fileName;
+    $product->save();
+
+    //cek database categorynya itu apa, buat pindahin gambar
+    if($category == 0) //kalo new category, berarti ambil category yang baru
+      $query = ProductCategory::find($data->category_id);
+    else //kalo dia pake kategori yang udah ada
+      $query = ProductCategory::find($category);
+    //pindahin gambarnya
+    $picture->move(base_path() . '/public/assets/images/product/' . $query->category_name . '/', $fileName);
+
+    Session::flash('insert', 1);
+    return redirect('admin/insert/product/');
+  }
+
+  public function getEditProduct($id)
+  {
+    $data['query'] = Product::find($id);
+    $data['category'] = ProductCategory::find($data['query']->category_id);
+    $data['allCategory'] = ProductCategory::all();
+    $data['active'] = "productList";
+
+    return view('page.admin_edit_product', $data);
   }
 
   public function postEditProduct(Request $request, $id)
@@ -593,7 +1016,7 @@ class AdminController extends Controller
 
     if ($v->fails())
     {
-        return redirect('/admineditproduct/' . $id)->withErrors($v->errors())->withInput();
+        return redirect('/admin/edit/product/' . $id)->withErrors($v->errors())->withInput();
     }    
 
     $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
@@ -610,7 +1033,7 @@ class AdminController extends Controller
 
       if($picture->getClientSize() > 512000)
       {
-        return redirect('/admineditproduct/' . $id)->with('errorSize', 'The picture size cannot be larger than 500 kilobytes')->withInput();
+        return redirect('/admin/edit/product/' . $id)->with('errorSize', 'The picture size cannot be larger than 500 kilobytes')->withInput();
       }
 
       $fileName = filter_var($picture->getClientOriginalName(), FILTER_SANITIZE_STRING);
@@ -693,142 +1116,29 @@ class AdminController extends Controller
         unlink($path);
       }
     }
-    return redirect('/adminproductlist/successUpdate');
+    Session::flash('update', 1); 
+    return redirect('/admin/');
   }
 
-  public function getEditProduct($id)
+  public function getDeleteProduct(Request $request)
   {
-    $data['query'] = Product::find($id);
-    $data['category'] = ProductCategory::find($data['query']->category_id);
-    $data['allCategory'] = ProductCategory::all();
-    $data['active'] = "productList";
-
-    return view('page.admin_editproduct', $data);
-  }
-
-  public function postInsertProduct(Request $request)
-  {
-    $input = $request->all();
-
-    //kalo dia insert new category
-    if($input['category'] == 0)
-    {
-      $v = Validator::make($request->all(), [
-          'name' => 'required|max:100',
-          'price' => 'required|numeric',
-          'quantity' => 'required|numeric',
-          'weight' => 'required|numeric',
-          'description' => 'required|alpha',
-          'category' => 'required|numeric',
-          'picture' => 'required|mimes:jpg,jpeg,png',
-          'newcategory' => 'required|unique:product__category,category_name|max:100',
-      ]);
-    }
-    else
-    {
-      $v = Validator::make($request->all(), [
-          'name' => 'required|max:100',
-          'price' => 'required|numeric',
-          'quantity' => 'required|numeric',
-          'weight' => 'required|numeric',
-          'description' => 'required|alpha',
-          'category' => 'required|numeric',
-          'picture' => 'required|mimes:jpg,jpeg,png',
-      ]);
-    }    
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
 
     if ($v->fails())
     {
-        return redirect('/admininsertproduct/new')->withErrors($v->errors())->withInput();
+        return 0;
     }    
+    $input = $request->all();
 
-    $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
-    $price = filter_var($input['price'], FILTER_SANITIZE_STRING);
-    $quantity = filter_var($input['quantity'], FILTER_SANITIZE_STRING);
-    $weight = filter_var($input['weight'], FILTER_SANITIZE_STRING);
-    $description = filter_var($input['description'], FILTER_SANITIZE_STRING);
-    $category = filter_var($input['category'], FILTER_SANITIZE_STRING);
-    $picture = $input['picture'];
-    if($picture->getClientSize() > 512000)
-    {
-      return redirect('/admininsertproduct/new')->with('errorSize', 'The picture size cannot be larger than 500 kilobytes')->withInput();
-    }
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
 
-    $fileName = filter_var($picture->getClientOriginalName(), FILTER_SANITIZE_STRING);
-    $fileName = preg_replace('~[\\\\/:*?"<>|-]~', '', $fileName);
-    $fileName = str_replace(' ', '_', $fileName);
-    $fileName = time() . $fileName;
-
-    //kalo new category, berarti insert dulu category barunya
-    if($category == 0)
-    {
-      $newcategory = filter_var($input['newcategory'], FILTER_SANITIZE_STRING);
-      $newdesc = filter_var($input['newcategorydesc'], FILTER_SANITIZE_STRING);
-      
-      $data = new ProductCategory;
-      $data->category_name = $newcategory;
-      $data->description = $newdesc;
-      $data->save();
-    }
-
-    $product = new Product;
-    $product->varian_name = $name;
-    $product->price = $price;
-    $product->qty = $quantity;
-    $product->description = $description;
-    $product->weight = $weight;
-    if($category == 0) //kalo insert category baru
-      $product->category_id = $data->category_id;
-    else
-      $product->category_id = $category;
-    $product->picture = $fileName;
-    $product->save();
-
-    //cek database categorynya itu apa, buat pindahin gambar
-    if($category == 0) //kalo new category, berarti ambil category yang baru
-      $query = ProductCategory::find($data->category_id);
-    else //kalo dia pake kategori yang udah ada
-      $query = ProductCategory::find($category);
-    //pindahin gambarnya
-    $picture->move(base_path() . '/public/assets/images/product/' . $query->category_name . '/', $fileName);
-
-    return redirect('/admininsertproduct/success');
-  }
-
-  public function getDeleteProduct($id)
-  {
-    //pake soft delete
     Product::where('varian_id', $id)->delete();
-    return redirect()->to('adminproductlist/successDelete');
+    Session::flash('delete', 1);
+
+    return 1;
   }
 
-  public function getInsertProduct($status)
-  {
-    $data['query'] = ProductCategory::get(['category_id', 'category_name']);
-    $data['active'] = "insertProduct";
-
-    if($status == "success")
-      $data['status'] = "success";
-    else
-      $data['status'] = "new";
-
-    return view('page.admin_insertproduct', $data);
-  }
-
-  public function getProductList($status)
-  {
-    $data['active'] = "productList";
-    $data['status'] = $status;
-    return view('page.admin_product', $data);
-  }
-
-  public function getProductData()
-  {
-    $data['query'] = Product::leftJoin('product__category', 'product__category.category_id', '=', 'product__varian.category_id')
-                            ->get(['category_name', 'varian_id', 'varian_name', 'price', 'qty', 'picture', 'weight', 'product__varian.description']);
-    
-      return Datatables::of($data['query'])
-      //->addColumn('actions', '<button id="a">a</button> <br> <button>b</button>')
-      ->make(true);
-  }
 }
+

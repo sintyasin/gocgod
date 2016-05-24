@@ -19,12 +19,12 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successReject")
+    @if(Session::has('reject'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Testimoni has been rejected successfully!</strong>
     </div>
-    @elseif($status == "successApprove")
+    @elseif(Session::has('approve'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Testimoni has been approved successfully!</strong>
@@ -48,30 +48,144 @@
         </tbody>
       </table>
     </div>
+
+    <div class="col-lg-12">
+      <button class="btn btn-info" onclick="approveSelected()">Approve Selected Items</button> &nbsp; &nbsp;
+      <button class="btn btn-danger" onclick="rejectSelected()">Reject Selected Items</button>
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div id="sampleDetail" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Product Detail</h4>
+          </div>
+          <div class="modal-body">
+            <div id="name" style="min-height:30px; width:80px; float:left;"></div>
+            <div id="qty" style="min-height:30px; width:80px; margin-left:80px;"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
 
 @push('scripts')
 <script>
 var rows_selected = [];
-var rows_selected = [];
-function reject() 
+
+$('#datatableUser tbody').on( 'click', '.detail', function () {
+    var id = $(this).data('id');
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/sample/request/detail') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(data)
+      {
+        var obj = JSON.parse(data);
+        var name = "";
+        var qty = "";
+        for(var i=0; i<obj.length; i++)
+        {
+          name += (obj[i].name + "<br>") ;
+          qty += ("x" + obj[i].quantity + "<br>") ;
+        }
+        $(".modal-body #name").html(name);
+        $(".modal-body #qty").html(qty);
+      }
+    });
+    $("#sampleDetail").modal();
+}); 
+
+function reject(id, name, desc) 
+{
+  if (confirm("Are you sure want to reject request for event " + name + ":\n" + desc + "?") == true) 
+  {
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/process/sample/request') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>", action:"reject"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+  }   
+}
+
+function approve(id, name, desc) 
+{
+  if (confirm("Are you sure want to approve request for event " + name + ":\n" + desc + "?") == true) 
+  {
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/process/sample/request') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>", action:"approve"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+  } 
+}
+
+function rejectSelected() 
 {
   if (confirm("Are you sure want to reject these ?") == true) 
   {
     if(rows_selected.length <= 0) alert('You haven\'t choose items to be rejected');
     else
-      window.location = "{{ URL::to('/adminprocesssamplerequest') }}" + "/reject/" + rows_selected;
+    {
+      $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/process/sample/request') }}",
+      data: {id:rows_selected, _token:"<?php echo csrf_token(); ?>", action:"reject"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+    }
   }   
 }
 
-function approve() 
+function approveSelected() 
 {
   if (confirm("Are you sure want to approve these ?") == true) 
   {
     if(rows_selected.length <= 0) alert('You haven\'t choose items to be approved');
     else
-      window.location = "{{ URL::to('/adminprocesssamplerequest') }}" + "/approve/" + rows_selected;
+    {
+      $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/process/sample/request') }}",
+      data: {id:rows_selected, _token:"<?php echo csrf_token(); ?>", action:"approve"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+    }
   } 
 }
 
@@ -131,8 +245,10 @@ $(function() {
             { data: 'event_description', name: 'event_description', title:'Description' },
             { data: 'request_date', name: 'request_date', title:'Request Date' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              return '<button class="btn btn-info" name="tombol" id="tombol" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
-                   '<button class="btn btn-danger" name="tombol2" onclick="reject()">' + 'Reject' + '</button>';
+              var data = "'" + row.request_id + "','" + row.event_name + "','" + row.event_description + "'";
+              return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
+                   '<button class="btn btn-danger" onclick="reject(' + data + ')">' + 'Reject' + '</button> <br><br>' + 
+                   '<button type="button" class="btn btn-warning detail" data-id="' + row.request_id + '" data-toggle="modal" data-target="#sampleDetail">Product Detail</button>';
             } }
         ]
     });
@@ -184,14 +300,13 @@ $(function() {
       //   $(this).parent().find('input[type="checkbox"]').trigger('click');
       // }
    });*/
-    $('#datatableUser tbody').delegate("tr", "click", function(e) {
-      alert('row');
+    $('#datatableUser tbody').delegate("td", "click", function(e) {
+      $(this).parent().find('input[type="checkbox"]').trigger('click');
     }); 
 
     $('#datatableUser tbody').on( 'click', 'button', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      alert('button');
     });
 
 

@@ -6,12 +6,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Review Agent List
+    Product Testimonial Request
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Review Agent List</li>
+    <li class="active">Product Testimonial Request</li>
   </ol>
 </section>
 
@@ -19,10 +19,15 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successDelete")
+    @if(Session::has('reject'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Review has been deleted!</strong>
+      <strong>Testimoni has been rejected successfully!</strong>
+    </div>
+    @elseif(Session::has('approve'))
+    <div class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Testimoni has been approved successfully!</strong>
     </div>
     @endif
     <div class="col-lg-12">
@@ -30,16 +35,20 @@
         <thead>
           <tr>
             <th><input name="select_all" value="1" type="checkbox" /></th>
-            <th>Agent</th>
-            <th>Customer</th>
-            <th>Rating</th>
-            <th>Comment</th>
+            <th>Member</th>
+            <th>Product</th>
+            <th>Testimonials</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
         </tbody>
       </table>
+    </div>
+
+    <div class="col-lg-12">
+      <button class="btn btn-info" onclick="approveSelected()">Approve Selected Items</button> &nbsp; &nbsp;
+      <button class="btn btn-danger" onclick="rejectSelected()">Reject Selected Items</button>
     </div>
   </div><!-- /.row -->
 
@@ -48,13 +57,83 @@
 @push('scripts')
 <script>
 var rows_selected = [];
-function deleteReview() 
+function reject(id, name, testi) 
 {
-  if (confirm("Are you sure want to delete these ?") == true) 
+  if (confirm("Are you sure want to reject " + name + ":\n" + testi + " ?") == true) 
   {
-    if(rows_selected.length <= 0) alert('You haven\'t choose items to be deleted');
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/process/testimoni') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>", action:"reject"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+  } 
+}
+
+function approve(id, name, testi) 
+{
+  if (confirm("Are you sure want to approve " + name + ":\n" + testi + " ?") == true) 
+  {
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/process/testimoni') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>", action:"approve"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+  } 
+}
+
+function rejectSelected() 
+{
+  if (confirm("Are you sure want to reject these ?") == true) 
+  {
+    if(rows_selected.length <= 0) alert('You haven\'t choose items to be rejected');
     else
-      window.location = "{{ URL::to('/admindeletereviewagent/') }}" + "/" + rows_selected;
+    {
+      $.ajax({
+        type: "POST",
+        url: "{{ URL::to('/admin/process/testimoni') }}",
+        data: {id:rows_selected, _token:"<?php echo csrf_token(); ?>", action:"reject"},
+        success:
+        function(success)
+        {
+          if(success) location.reload();
+          else alert('Failed');
+        }
+      });
+    }
+  }   
+}
+
+function approveSelected() 
+{
+  if (confirm("Are you sure want to approve these ?") == true) 
+  {
+    if(rows_selected.length <= 0) alert('You haven\'t choose items to be approved');
+    else
+    {
+      $.ajax({
+        type: "POST",
+        url: "{{ URL::to('/admin/process/testimoni') }}",
+        data: {id:rows_selected, _token:"<?php echo csrf_token(); ?>", action:"approve"},
+        success:
+        function(success)
+        {
+          if(success) location.reload();
+          else alert('Failed');
+        }
+      });
+    }
   } 
 }
 
@@ -88,10 +167,10 @@ function updateDataTableSelectAllCtrl(table){
 }
 
 $(function() {
-    var table = $('#datatableUser').DataTable({
-        processing: true,
-        serverSide: true,
-        rowCallback: function(row, data, dataIndex){
+  var table = $('#datatableUser').DataTable({
+      processing: true,
+      serverSide: true,
+      rowCallback: function(row, data, dataIndex){
          // Get row ID
          var rowId = data[0];
 
@@ -101,22 +180,23 @@ $(function() {
             $(row).addClass('selected');
          }
       },
-        ajax: '{!! route('reviewagent.data') !!}',
-        columns: [
-            { className: "dt-center", width:"8%", orderable: false, name: 'checkbox', render: function (data, type, full, meta){
-               return '<input type="checkbox">';
-            }},
-            { data: 'agent', name: 'agent', title:'Agent' },
-            { data: 'customer', name: 'customer', title:'Customer' },
-            { data: 'rating', name: 'rating', title:'Rating' },
-            { data: 'comment', name: 'comment', title:'Comment' },
-            {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              return '<a class="btn btn-danger" onclick="deleteReview()" >' + 'Delete' + '</a>';
-            } }
-        ]
-    });
+      ajax: '{!! route('processtestimonial.data') !!}',
+      columns: [
+          { className: "dt-center", width:"8%", orderable: false, name: 'checkbox', render: function (data, type, full, meta){
+             return '<input type="checkbox">';
+          }},
+          { data: 'name', name: 'name', title:'Member' },
+          { data: 'varian_name', name: 'varian_name', title:'Product' },
+          { data: 'testimonial', name: 'testimonial', title:'Testimonials' },
+          {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
+            var data = "'" + row.testimonial_id + "','" + row.varian_name + "','" + row.testimonial + "'";
+            return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
+                   '<button class="btn btn-danger" onclick="reject(' + data + ')">' + 'Reject' + '</button>';
+          } }
+      ]
+  });
 
-    // Handle click on checkbox
+  // Handle click on checkbox
    $('#datatableUser tbody').on('click', 'input[type="checkbox"]', function(e){
       var $row = $(this).closest('tr');
 
@@ -124,7 +204,7 @@ $(function() {
       var data = table.row($row).data();
 
       // Get row ID
-      var rowId = data['rating_id'];
+      var rowId = data['testimonial_id'];
 
       // Determine whether row ID is in the list of selected row IDs 
       var index = $.inArray(rowId, rows_selected);
@@ -152,9 +232,14 @@ $(function() {
    });
 
    // Handle click on table cells with checkboxes
-   $('#datatableUser').on('click', 'tbody td, thead th:first-child', function(e){
+   $('#datatableUser tbody').delegate("td", "click", function(e) {
       $(this).parent().find('input[type="checkbox"]').trigger('click');
-   });
+    }); 
+
+    $('#datatableUser tbody').on( 'click', 'button', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    });
 
    // Handle click on "Select all" control
    $('thead input[name="select_all"]', table.table().container()).on('click', function(e){
@@ -177,4 +262,3 @@ $(function() {
 </script>
 @endpush
 @stop
-
