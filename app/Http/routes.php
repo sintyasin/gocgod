@@ -20,6 +20,7 @@ Route::get('myaccount/{id}', 'MemberController@readDataMember');
 Route::post('review/{id}', 'ProductController@giveTestimonial');
 Route::get('checkout', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
+Route::get('findalocation', 'MemberController@readAgent');
 
 Route::auth();
 
@@ -83,9 +84,7 @@ Route::post('adminposteditcity/{id}', 'AdminController@postEditCity');
 Route::get('adminaboutus/{status}', 'AdminController@getAboutUs');
 Route::post('adminpostaboutus/{id}','AdminController@postAboutUs');
 
-Route::get('findalocation', function(){
-        return view('page.findalocation');
-});
+
 
 Route::get('becomeanagent', function(){
 		return view('page.becomeanagent');

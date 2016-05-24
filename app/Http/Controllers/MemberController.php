@@ -8,6 +8,7 @@ use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
 use App\Member;
 use App\Admin;
+use App\City;
 
 use Hash;
 
@@ -106,5 +107,22 @@ class MemberController extends Controller
     	$data['query'] = Member::find($id);
 
     	return view('page.myaccount', $data);
+    }
+
+    public function readAgent()
+    {
+    	$data['queryAgent'] = Member::where('status_user', 0)
+    								->get();
+    	$i=0;
+    	foreach($data['queryAgent'] as $tmp)
+    	{
+    		$data['queryCity'][$i] = City::find($tmp->city_id); 
+			// \DB::table('master__city')->where('city_id', 1)->first();
+            $i++;
+    	}
+    	// dd($data);
+    	return view('page.findalocation', $data);
+
+
     }
 }

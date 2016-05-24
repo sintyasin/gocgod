@@ -32,4 +32,9 @@ class Member extends Authenticatable
     {
         return $this->belongsTo('App\ProductTestimonial', 'id', 'id');
     }
+
+    public function city()
+    {
+        return $this->belongsTo('App\City', 'city_id', 'city_id');
+    }
 }

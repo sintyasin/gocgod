@@ -11,10 +11,10 @@ class City extends Model
 
     protected $table = 'master__city';
 	protected $primaryKey = 'city_id';
-	protected $dates = ['deleted_at'];
+	// protected $dates = ['deleted_at'];
 
-	public function user()
-	{
-		return $this->hasMany('App\User', 'city_id', 'city_id');
-	}
+	// public function user()
+	// {
+	// 	return $this->hasMany('App\Member', 'city_id', 'city_id');
+	// }
 }
