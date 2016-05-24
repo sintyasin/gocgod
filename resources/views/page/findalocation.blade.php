@@ -4,33 +4,23 @@
 @section('content')
 <div class="container">
 	<h2>Find Agent Location</h2>
-	<div class="">
+	<div class="col-md-6" style="padding-bottom: 50px;">
+	<?php $i=0; ?>
+		@foreach($queryAgent as $agent)
+			<div class="find_location">
+			
+				<div class="title_location"> {{$agent->name}} </div>
+				<div class="data_location" style="padding-left: 10px;">
+					 
+					 {{$agent->address}} <br>
+					 {{$queryCity[$i]->city_name}} <br>
+					 {{$agent->phone}} <br>
+					 {{$agent->email}}
+					
+				</div>
+				<?php $i++; ?>
+			</div>
+		@endforeach
 	</div>
 </div>
-<!-- 	<div class="googlemap_custom">
-		<div id="googleMap"></div>
-	</div>
-</div>
-
-<!-- Google Map js -->
-<!-- <script src="https://maps.googleapis.com/maps/api/js"></script>
-<script>
-	function initialize() {
-		var mapOptions = {
-			zoom: 15,
-			scrollwheel: false,
-			center: new google.maps.LatLng(40.663293, -73.956351)
-		};
-		var map = new google.maps.Map(document.getElementById('googleMap'),
-			mapOptions);
-		var marker = new google.maps.Marker({
-			position: map.getCenter(),
-			animation:google.maps.Animation.BOUNCE,
-			icon: 'assets/images/map-marker.png',
-			map: map
-		});
-	}
-	google.maps.event.addDomListener(window, 'load', initialize);
-</script>   --> -->
-<!-- main js -->
 @stop

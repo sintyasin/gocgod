@@ -17,9 +17,10 @@ Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
 Route::get('productsample', 'ProductController@getMenuSample');
 Route::get('myaccount/{id}', 'MemberController@readDataMember');
-Route::get('review', 'ProductController@giveTestimonial');
+Route::post('review/{id}', 'ProductController@giveTestimonial');
 Route::get('checkout', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
+Route::get('findalocation', 'MemberController@readAgent');
 
 Route::auth();
 
@@ -241,9 +242,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 
-Route::get('findalocation', function(){
-        return view('page.findalocation');
-});
+
 
 Route::get('becomeanagent', function(){
 		return view('page.becomeanagent');

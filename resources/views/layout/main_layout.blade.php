@@ -76,6 +76,9 @@
     <script src="{{ URL::asset('assets/js/jquery.meanmenu.js') }}"></script>
     <!-- main js -->
     <script src="{{ URL::asset('assets/js/main.js') }}"></script>
+    <!-- stepper -->
+    <script src="{{ URL::asset('assets/js/sliding.form.js')}}"></script>
+    <script src="{{ URL::asset('assets/js/slidingco.form.js')}}"></script>
 
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

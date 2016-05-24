@@ -12,9 +12,17 @@
 	<div class="container">
 		<div class="padding_outer">
 			<!-- Button trigger modal -->
-			<button type="button" class="boaBtn_boa" data-toggle="modal" data-target="#myModal">
+            @if(Auth::guest())
+            <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+			@elseif(Auth::user()->status_user == 0)
+            <button type="button" class="boaBtn_boa" data-toggle="modal" data-target="#myModal" disabled="disabled">
 			  Become Our Agent
 			</button>
+            @else
+            <button type="button" class="boaBtn_boa" data-toggle="modal" data-target="#myModal">
+              Become Our Agent
+            </button>
+            @endif
 
 			<!-- Modal -->
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
