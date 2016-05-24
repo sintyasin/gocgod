@@ -19,17 +19,12 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successDelete")
+    @if(Session::has('delete'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been deleted!</strong>
     </div>
-    @elseif($status == "failedDelete")
-    <div class="alert alert-danger fade in">
-      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Failed to delete the data!</strong>
-    </div>
-    @elseif($status == "successUpdate")
+    @elseif(Session::has('update'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been updated successfully!</strong>
@@ -64,13 +59,24 @@ function deleteProduct(name, id)
 {
   if (confirm("Are you sure want to delete " + name + " ?") == true) 
   {
-    window.location = "{{ URL::to('/admindeleteproduct') }}" + "/" + id;
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/delete/product') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+    //window.location = "{{ URL::to('/admin/delete/product') }}" + "/" + id;
   } 
 }
 
 function editProduct(id) 
 {
-  window.location = "{{ URL::to('/admineditproduct') }}" + "/" + id;
+  window.location = "{{ URL::to('/admin/edit/product') }}" + "/" + id;
 }
 
 $(function() {

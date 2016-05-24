@@ -20,7 +20,7 @@
   <!-- Small boxes (Stat box) -->
   <div class="row">
     <div class="col-lg-12">
-      <form class="form-horizontal" role="form" method="POST" action= {{ URL('adminposteditagent')  . '/' . $query->id }} >
+      <form class="form-horizontal" role="form" method="POST" action= {{ URL('admin/post/edit/agent')  . '/' . $query->id }} >
         {!! csrf_field() !!}
 
         <div class="form-group">
@@ -83,7 +83,7 @@
             <div class="col-md-offset-3">
                 <button type="submit" class="btn btn-primary">Submit</button> 
                 &nbsp; &nbsp;
-                <a href="{{ URL::to('adminagentlist', array('status' => 'new')) }}" class="btn btn-default">Cancel</a>                              
+                <a href="{{ URL::to('admin/agent/list') }}" class="btn btn-default">Cancel</a>                              
             </div>
         </div>
       </form>

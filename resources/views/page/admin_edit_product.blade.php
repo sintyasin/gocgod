@@ -20,7 +20,7 @@
   <!-- Small boxes (Stat box) -->
   <div class="row">
     <div class="col-lg-12">
-      <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action= {{ URL('adminposteditproduct') . '/' . $query->varian_id}} >
+      <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action= {{ URL('admin/post/edit/product') . '/' . $query->varian_id}} >
         {!! csrf_field() !!}
 
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -150,7 +150,7 @@
             <div class="col-md-offset-3">
                 <button type="submit" class="btn btn-primary">Submit</button> 
                 &nbsp; &nbsp;
-                <a href="{{ URL::to('adminproductlist', array('status' => 'new')) }}" class="btn btn-default">Cancel</a>                         
+                <a href="{{ URL::to('/admin/') }}" class="btn btn-default">Cancel</a>                         
             </div>
         </div>
       </form>

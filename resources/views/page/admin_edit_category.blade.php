@@ -20,7 +20,7 @@
   <!-- Small boxes (Stat box) -->
   <div class="row">
     <div class="col-lg-12">
-      <form class="form-horizontal" role="form" method="POST" action= {{ URL('adminpostcategory') . '/' . $query->category_id }} >
+      <form class="form-horizontal" role="form" method="POST" action= {{ URL('admin/post/category') . '/' . $query->category_id }} >
         {!! csrf_field() !!}
 
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
@@ -55,7 +55,7 @@
             <div class="col-md-offset-3">
                 <button type="submit" class="btn btn-primary">Submit</button>
                 &nbsp; &nbsp;
-                <a href="{{ URL::to('admincategorylist', array('status' => 'new')) }}" class="btn btn-default">Cancel</a>
+                <a href="{{ URL::to('admin/category/list') }}" class="btn btn-default">Cancel</a>
             </div>
         </div>
       </form>
