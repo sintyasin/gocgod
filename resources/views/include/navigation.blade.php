@@ -45,18 +45,25 @@
 															 <label class="sr-only" for="inputemail">Email address</label>
 															 <input type="email" class="form-control" id="inputemail" name="email" placeholder="Input Your Email" value="{{ old('email') }}" required>
 															 @if ($errors->has('email'))
-						                                    <span class="help-block">
+ 						                                    <script type="text/javascript">
+																alert('False Email or Password');
+															</script>
+<!-- 						                                    <span class="help-block">
 						                                        <strong>{{ $errors->first('email') }}</strong>
+						                                     	window.alert("False Email or Password");
 						                                    </span>
-						                                    @endif
+ -->						                                    @endif
 														</div>
 														<div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 															 <label class="sr-only" for="inputpassword">Password</label>
 															 <input type="password" class="form-control" id="inputpassword" placeholder="Password" name="password" required>
 															 @if ($errors->has('password'))
-						                                    <span class="help-block">
+						                                    <script type="text/javascript">
+																alert('False Email or Password');
+															</script>
+						                                    <!-- <span class="help-block">
 						                                        <strong>{{ $errors->first('password') }}</strong>
-						                                    </span>
+						                                    </span> -->
 						                                    @endif
 
 						                                    <div class="checkbox">

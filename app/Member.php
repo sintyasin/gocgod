@@ -27,4 +27,14 @@ class Member extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function member_testi()
+    {
+        return $this->belongsTo('App\ProductTestimonial', 'id', 'id');
+    }
+
+    public function city()
+    {
+        return $this->belongsTo('App\City', 'city_id', 'city_id');
+    }
 }

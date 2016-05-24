@@ -33,12 +33,12 @@
 
 		<div class="col-md-3 col-xs-12">
 			<div class="padding_outer_menu">
-				<div class="border_outer" style="object-position: center;">
+				<div class="border_outer">
 					<div class="col-xs-5">
 					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
 					</div>
 					<div class="col-xs-5">
-						<input type="text" class="form-control" placeholder="Qty" name="#"> 
+						<input type="text" class="form-control" placeholder="Qty" name="#" style="width: 100px;"> 
 					</div>
 					
 
@@ -54,7 +54,13 @@
 							
 						</div>
 						<br>
+							@if (Auth::guest())
+							<br>
+							@elseif (Auth::user()->status_user == 0)
 							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Request Product Sample </a></button>
+							@else
+							<br>
+							@endif
 					</div>
 				</div>
 			</div>
@@ -79,20 +85,25 @@
 									<div class="col-md-12 col-xs-12">
 										<div class="product-review">
 											@if (Auth::guest())
-						                        <a href={{ URL('/login')}} class="testimonial_custom"> Click here to login </a>
+						                        <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
 						                    @else
-						                    	<form method="POST" action="{{ url('/review') }}">
-						                    	<input type="hidden" class="form-control" id="id" value="{{ Auth::user()->id }}">
-						                    	<input type="hidden" class="form-control" id="varian_id" value="{{ $query->varian_id }}">
-						                    	<div class="form-group">
-													<label>Name:</label>
-													<input type="text" class="form-control" id="name" value="{{ Auth::user()->name }}" style="width: 100%;" disabled> 
-												</div>
-												<div class="form-group">
-													<label>Review:</label>
-													<textarea class="form-control" id="testimonial" placeholder="Your Review" row="12"></textarea>
-												</div>
-												<button type="submit" class="checkPageBtn">Submit</button>
+						                    	<form method="POST" action="{{ url('/review/'. $query->varian_id) }}">
+						                    		{!! csrf_field() !!}
+							                    	<!-- <input type="hidden" class="form-control" name="varian_id" value="{{ $query->varian_id }}"> -->
+							                    	<div class="form-group">
+														<label>Name:</label>
+														<input type="text" class="form-control" id="name" value="{{ Auth::user()->name }}" style="width: 100%;" disabled> 
+													</div>
+													<div class="form-group">
+														<label>Review:</label>
+														<textarea class="form-control" name="testimonial" placeholder="Your Review" row="12"></textarea>
+														@if ($errors->has('testimonial'))
+											            <span class="help-block">
+											                <strong>{{ $errors->first('testimonial') }}</strong>
+											            </span>
+											            @endif
+													</div>
+													<button type="submit" class="checkPageBtn">Submit</button>
 												</form>
 						                    @endif
 												
@@ -105,8 +116,10 @@
 
 					<hr>
 
+					<?php $i=0; ?>
 					@foreach($query_testimonial as $testi)
 					<div class="reviews_comment">
+
 						<div class="row">
 							<div class="col-md-12">
 								<!-- <span class="glyphicon glyphicon-star"></span>
@@ -114,14 +127,15 @@
 								<span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star"></span>
 								<span class="glyphicon glyphicon-star-empty"></span> -->
-								{{$testi->id}}
+								
+								
+								{{$query_member[$i]->name}}
 								<span class="pull-right">{{$testi->created_at}}</span>
 								<p>{{$testi->testimonial}}</p>
 								
 							</div>
-
-							
 						</div>
+						<?php $i++; ?>
 					</div>
 					@endforeach
 

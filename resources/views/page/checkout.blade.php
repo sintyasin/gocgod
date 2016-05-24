@@ -7,11 +7,64 @@
     <h2> CheckOut </h2>
   
     @if (Auth::guest())
-      <a href={{ URL('/login')}} class="testimonial_custom"> Click here to login </a>
+      <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
       <hr>
       <hr>
       <hr>
     @else
+
+    <div class="stepper">
+            <div id="wrapper">
+              <br>
+              <div class="col-md-12 col-xs-12">
+                  <span class='baricon'>1</span>
+                  <span id="bar1" class='progress_bar'></span>
+                  <span class='baricon'>2</span>
+                  <span id="bar2" class='progress_bar'></span>
+                  <span class='baricon'>3</span>
+                  <span id="bar3" class='progress_bar'></span>
+                  <span class='baricon'>4</span>
+                  <span id="bar4" class='progress_bar'></span>
+                  <span class='baricon'>5</span>
+              </div>
+
+              <br>
+              <br>
+            
+              <form class="form-horizontal" role="form" method="POST" action="{{ url('productsample') }}">
+                {!! csrf_field() !!}
+                  <div id="checkout_method">
+                    <p class='form_head'>Checkout Method</p>
+                    <p>Who are you?</p>
+                    <input type="radio" name="buyer" value=0><label>Single Buyer</label><br>
+                    <input type="radio" name="buyer" value=1><label>Subcriber</label>
+                    
+
+                    <input type="button" value="Next" onclick="show_next('checkout_method','choose_products','bar1');">
+                  </div>
+                        
+                  <div id="product_details">
+                    <p class='form_head'>Request Product Sample</p>
+                    <p>Product</p>
+                    <select  name='product'>
+                    <!--  -->
+                    </select>
+                    <p>Quantity</p>
+                    <select  name='quantity'>
+                        <option value="10"> 10 </option> 
+                        <option value="15"> 15 </option>
+                        <option value="20"> 20 </option>
+                    </select>
+                    <br>
+                    <input type="button" value="Previous" onclick="show_prev('account_details','bar1');">
+                    <input type="Submit" value="Submit">
+                  </div>
+              </form>
+            </div>
+        </div>
+
+
+
 <!--     <div class="checkout-content-area page-section-padding"> -->
       <div class="container">
        <div class="row">
