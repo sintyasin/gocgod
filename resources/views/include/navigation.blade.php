@@ -95,6 +95,9 @@
 	                            <ul class="dropdown-menu" role="menu">
 	                            	<li><a href="{{ url('/profile') }}"><div class="padding_outer_profile">Profile</div></a></li>
 	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">My Order</div></a></li>
+	                            	@if(Auth::user()->status_user == 0)
+	                            	<li><a href="#"><div class="padding_outer_profile">My Balance</div></a></li>
+	                            	@endif
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
 	                            </ul>
 	                        </li>
@@ -120,9 +123,15 @@
 							<!-- <li><a href="#">PRODUCT DETAIL</i></a></li> -->
 							<li><a href="{{ url('/menu') }}">MENU</a></li>
 							<li><a href="{{ url('/howtobuy') }}">HOW TO BUY</a></li>
+							@if(!Auth::guest() && Auth::user()->status_user == 1)
 							<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
+							@endif
 							<li><a href="{{ url('/faq') }}">FAQ</a></li>
+							@if(!Auth::guest() && Auth::user()->status_user == 0)
+							<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
+							@endif	
 							<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+													
 							<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
 						</ul>
 					</nav>
@@ -145,14 +154,20 @@
 		<div class="mobile-menu">
 			<nav id="dropdown">
 				<ul>
-					<li><a href=""{{ url('/home') }}"">HOME</a></li>
+					<li><a href="{{ url('/home') }}">HOME</a></li>
 					<!-- <li><a href="#">PRODUCT DETAIL</a></li> -->
 					<li><a href="{{ url('/menu') }}">MENU</a></li>
 					<li><a href="{{ url('/howtobuy') }}">HOW TO BUY</a></li>
+					@if(!Auth::guest() && Auth::user()->status_user == 1)
 					<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
+					@endif
 					<li><a href="{{ url('/faq') }}">FAQ</a></li>
 					<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
+					@if(!Auth::guest() && Auth::user()->status_user == 0)
+					<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
+					@endif
 					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+					
 				</ul>
 			</nav>
 		</div>

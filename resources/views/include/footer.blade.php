@@ -39,8 +39,8 @@
 				<div class="footer_link">
 					<p>My Account</p>
 					<ul>
-						<li><a href="#">My Account</a></li>
-						<li><a href="#">Check Out</a></li>
+						<li><a href="{{ url('/profile') }}">My Account</a></li>
+						<li><a href="{{ url('/checkout') }}">Check Out</a></li>
 					</ul>
 				</div>
 			</div>
@@ -48,7 +48,7 @@
 				<div class="footer_link res_mar">
 					<p>Customer Support</p>
 					<ul>
-						<li><a href="#">Shipping Guide</a></li>
+						<li><a href="{{ url('/howtobuy') }}">Shipping Guide</a></li>
 					</ul>
 				</div>
 			</div>
@@ -56,7 +56,7 @@
 				<div class="footer_link res_mar">
 					<p>information</p>
 					<ul>
-						<li><a href="#">Our Agent Location</a></li>
+						<li><a href="{{ url('/findalocation') }}">Our Agent Location</a></li>
 					</ul>
 				</div>
 			</div>
@@ -67,9 +67,6 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6 col-xs-12">
-				<div class="copyright">
-					<p>Copyright 2015 <a href="http://designscrazed.org/">Allie</a> All rights reserved</p>
-				</div>
 			</div>
 			<div class="col-sm-6 col-xs-12">
 				<div class="copyright_icon text-right">

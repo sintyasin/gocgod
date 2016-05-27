@@ -21,6 +21,7 @@ Route::post('review/{id}', 'ProductController@giveTestimonial');
 Route::get('checkout', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
+Route::post('orderall', 'TransactionController@transactionAll');
 
 Route::auth();
 
@@ -100,4 +101,8 @@ Route::get('profile', function(){
 
 Route::get('myorder', function(){
 	return view('page.myorder');
+});
+
+Route::get('customerorder', function(){
+	return view('page.customerorder');
 });
