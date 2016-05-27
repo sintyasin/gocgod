@@ -19,14 +19,14 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "success")
+    @if(Session::has('insert'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been insert successfully!</strong>
     </div>
     @endif
     <div class="col-lg-12">
-      <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action= {{ URL('adminpostproduct') }} >
+      <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action= {{ URL('admin/post/product') }} >
         {!! csrf_field() !!}
 
         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">

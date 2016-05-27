@@ -19,12 +19,12 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successDelete")
+    @if(Session::has('delete'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been deleted!</strong>
     </div>
-    @elseif($status == 'successUpdate')
+    @elseif(Session::has('update'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been updated successfully!</strong>
@@ -53,13 +53,24 @@ function deleteCategory(name, id)
 {
   if (confirm("Are you sure want to delete: \n" + name + " ?") == true) 
   {
-    window.location = "{{ URL::to('/admindeletecategory') }}" + "/" + id;
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/delete/category') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
+    //window.location = "{{ URL::to('/admin/delete/category') }}" + "/" + id;
   } 
 }
 
 function editCategory(id) 
 {
-  window.location = "{{ URL::to('/admineditcategory') }}" + "/" + id;
+  window.location = "{{ URL::to('/admin/edit/category') }}" + "/" + id;
 }
 
 $(function() {

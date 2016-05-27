@@ -19,7 +19,7 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successEdit")
+    @if(Session::has('update'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been updated successfully!</strong>
@@ -54,7 +54,7 @@
 
 function editAgent(id)
 {
-  window.location = "{{ URL::to('admineditagent') }}" + "/" + id;
+  window.location = "{{ URL::to('admin/edit/agent') }}" + "/" + id;
 }
 
 $(function() {

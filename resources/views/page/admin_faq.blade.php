@@ -19,12 +19,12 @@
 <section class="content">
   <!-- Small boxes (Stat box) -->
   <div class="row">
-    @if($status == "successDelete")
+    @if(Session::has('delete'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been deleted!</strong>
     </div>
-    @elseif($status == 'successUpdate')
+    @elseif(Session::has('update'))
     <div class="alert alert-success fade in">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
       <strong>Data has been updated successfully!</strong>
@@ -53,13 +53,23 @@ function deleteFaq(name, id)
 {
   if (confirm("Are you sure want to delete question: \n" + name + " ?") == true) 
   {
-    window.location = "{{ URL::to('/admindeletefaq') }}" + "/" + id;
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('admin/delete/faq') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(success)
+      {
+        if(success) location.reload();
+        else alert('Failed');
+      }
+    });
   } 
 }
 
 function editFaq(id) 
 {
-  window.location = "{{ URL::to('/admineditfaq') }}" + "/" + id;
+  window.location = "{{ URL::to('/admin/edit/faq') }}" + "/" + id;
 }
 
 $(function() {
