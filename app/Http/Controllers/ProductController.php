@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Validator;
+use Cart;
 use Auth;
 use App\Http\Requests;
 use App\Product;
@@ -12,6 +13,7 @@ use App\ProductCategory;
 use App\NameProduct;
 use App\ProductTestimonial;
 use App\Member;
+use App\TransactionController;
 
 class ProductController extends Controller
 {
@@ -89,6 +91,16 @@ class ProductController extends Controller
             $data['queryCategory'][$i] = ProductCategory::find($tmp->category_id);
             $i++;
         }
+
+        $data['cart_content'] = Cart::content();
+        $j = 0;
+        // //musti dijoin 3 table
+        // foreach($data['cart_content'] as $temp)
+        // {
+        //     $data['query_content'][$j] = ProductCategory::find($temp->);
+        // }
+         
+        // dd($data['cart_content']);
 
         return view('page.checkout', $data);
     }

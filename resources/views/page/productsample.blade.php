@@ -24,12 +24,14 @@
         @else
         <div class="stepper">
             <div id="wrapper">
+            <div id="wrapper_progress">
               <br>
               <div class="col-md-12 col-xs-12">
                   <span class='baricon'>1</span>
                   <span id="bar1" class='progress_bar'></span>
                   <span class='baricon'>2</span>
               </div>
+            </div>
             
 
 

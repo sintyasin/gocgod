@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Faq;
+use Auth;
 
 class HomeController extends Controller
 {
