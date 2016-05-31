@@ -46,7 +46,7 @@
             <br>
             <p class='form_head'>Checkout Method</p>
             <p>Who are you?</p>
-            <input type="radio" name="buyer" id="single" value="single"><label> &nbsp; Single Buyer</label><br>
+            <input type="radio" name="buyer" id="single" value="single" checked="checked"><label> &nbsp; Single Buyer</label><br>
             <input type="radio" name="buyer" id="subcribe" value="subscribe"><label> &nbsp; Subcriber</label>
             <br><br><p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
             <input type="button" value="Next" onclick="show_next1('checkout_method');">
@@ -65,7 +65,7 @@
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Picture</th>
+<!--                   <th>Picture</th> -->
                   <th>Description</th>
                   <th>Price</th>
                   <th>Quantity</th>
@@ -77,7 +77,7 @@
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
-                    <td> <img src = {{URL::asset("assets/images/product/". $queryCategory[$i]->category_name . "/" . $items->picture)}} /> </td>
+<!--                     <td> <img src = {{URL::asset("assets/images/product/". $queryCategory[$i]->category_name . "/" . $items->picture)}} /> </td> -->
                     <td style="text-align: justify"> {{$items->description}} </td>
                     <td> Rp{{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
@@ -119,7 +119,7 @@
                 <thead>
                   <tr>
                     <th>Product</th>
-                    <th>Picture</th>
+                    <th>rowid</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Sub Total</th>
@@ -127,32 +127,25 @@
                   </tr>
                 </thead>
                 <tbody>
+                  @foreach($cart_content as $row)
                   <tr>
-                    <td>Cin Cau</td>
-                    <td><img src={{ URL('assets/images/product/minuman/cin_cau.jpg') }} style='height:200px;'/></td>
-                    <td>60000</td>
+                    <td>{{$row->name}}</td>
+                    <td>{{$row->rowid}}</td>
+                    <td>{{$row->price}}</td>
                     <td align="center">
-                      <input type="number" min="1" value="1" style="width:40px; color:black;"> <br><br>
-                      <button type="button" class="btn btn-primary">Update</button>
+                      <input type="hidden" id="id" value="{{$row->rowid}}">
+                      <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;">
+<!--                       <input type="number" min="1" maxlength="2" id="qty" value="{{$row->qty}}" data-row="{{ $row->rowid }}" style="width:60px; color:black;"> <br><br>
+                      <button type="button" class="btn btn-primary" onclick="updatecart()"> Update</button> -->
                     </td>
-                    <td>60000</td>
+                    <?php $a = $row->price * $row->qty?>
+                    
+                    <td>{{$a}}</td>
                     <td align="center">
-                      <button type="button" class="btn btn-danger">Delete</button>
+                      <button type="button" onclick="deletecart()" class="btn btn-danger">Delete</button>
                     </td>
                   </tr>
-                  <tr>
-                    <td>Soya Milk</td>
-                    <td><img src={{ URL('assets/images/product/minuman/soya_milk.jpg') }} style='height:200px;'/></td>
-                    <td>75000</td>
-                    <td align="center">
-                      <input type="number" min="1" value="2" style="width:40px; color:black;"> <br><br>
-                      <button type="button" class="btn btn-primary">Update</button>
-                    </td>
-                    <td>150000</td>
-                    <td align="center">
-                      <button type="button" class="btn btn-danger">Delete</button>
-                    </td>
-                  </tr>
+                  @endforeach
                 </tbody>
               </table>
               <p class="plxLogin"><font size="3">Total Price</font></p>
@@ -171,10 +164,13 @@
               <label for="address">Select your delivery addres</label> <br>
               <input type="radio" name="address" value="male" checked> Use my account's address<br>
               <input type="radio" name="address" value="female"> Other address<br>    
-              <textarea class="form-control" rows="3"></textarea>
+              <div class="col-md-6">
+              <textarea class="form-control" rows="3"  style="display:block; margin-left: auto; margin-right: auto;"></textarea>
+              </div>
               <br>
               <label for="phone">Enter recipient phone number</label> <br>
               <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}" />
+              
             <br>
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
             <input type="button" value="Next" onclick="show_next('delivery_address', 'choose_agent', 'bar4');">
@@ -284,6 +280,83 @@
         "autoWidth": false
       } );
   } );
+
+
+  $(document).ready(function(){
+    $('.qty-box').on('input propertychange paste', function(e) {
+      var rowId = $(this).data('row');
+      var kode  = $(this).data('kode');
+      var elem  = $(this);
+      var line  = $(this).data('line');
+
+      if(elem.val() > 0){
+        $.ajax({
+          type: 'post',
+          url: '{{ URL("/updatecart")}}',
+          dataType: 'json',
+          data: {rowId:rowId, qty:elem.val(), kode:kode},
+          success: function (data) {
+            if (data.success) {
+              $('#'+line+'-subtotal').html(data.success.data.subtotal);
+              $('#total-cart').html(data.success.data.total);
+              $('#cart-counter').html(data.success.data.count);
+            } else if (data.error) {
+              Materialize.toast(data.error.message.warning, 3000)
+              elem.val('');
+            }
+          }
+        });
+      }
+      e.preventDefault();
+      });
+  });
+
+
+
+  // function updatecart()
+  // {
+
+  //   var rowId = $('#id').val();
+  //   var quantity = $('#qty').val();
+
+  //   $.ajax({
+  //     url: '{{URL("/updatecart")}}',
+  //     type:'POST',
+  //     data: {rowId:rowId, qty: quantity},
+  //     beforeSend: function(request){
+  //           return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+  //         },
+  //   })
+  //   .done(function(){
+  //     alert("Update Data berhasil!");
+  //   })
+  //   .fail(function(){
+  //     alert('error');
+  //   })
+  // }
+
+  function deletecart()
+  {
+
+    var rowId = $('#id').val();
+    var quantity = $('#qty').val();
+
+    $.ajax({
+      url: '{{URL("/deletecart")}}',
+      type:'POST',
+      data: {rowId:rowId, qty: quantity},
+      beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+    })
+    .done(function(){
+      alert("Delete Data berhasil!");
+    })
+    .fail(function(){
+      alert('error');
+    })
+  }
+
 </script>
 @endpush
 @stop

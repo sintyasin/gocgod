@@ -22,6 +22,9 @@ Route::get('checkout', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
 Route::post('orderall', 'TransactionController@transactionAll');
+Route::post('addtocart/', 'TransactionController@addcart');
+Route::post('updatecart/', 'TransactionController@updatecart');
+Route::post('deletecart/', 'TransactionController@deletecart');
 
 Route::auth();
 

@@ -38,9 +38,12 @@
 					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
 					</div>
 					<div class="col-xs-5">
-						<input type="text" class="form-control" placeholder="Qty" name="#" style="width: 100px;"> 
+						<input type="text" min="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
+						<input type="hidden" id="name" value="{{ $query->varian_name }}">
+						<input type="hidden" id="price" value="{{ $query->price }}">
+						<input type="hidden" id="category" value="{{$queryCategory->category_name}}">
+						<input type="hidden" id="picture" value="{{ $query->picture }}">
 					</div>
-					
 
 					
 					<div class="col-xs-12">
@@ -49,7 +52,7 @@
 					</div>
 					<div class="position_menu">
 						<div class="col-xs-12">
-							<a href="#" class="cartBtn" target="_self">Add Cart</a> 
+							<a href="#" class="cartBtn" onclick="addtocart({{$query->varian_id}})"><i class="fa fa-shopping-cart" ></i> Add Cart</a> 
 							<a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
 							
 						</div>
@@ -153,13 +156,36 @@
 @push('scripts')
 <script>
 
-      $(function () {
-        $(".rateyo").rateYo({
-        	fullStar: true,
-        });
+      // $(function () {
+      //   $(".rateyo").rateYo({
+      //   	fullStar: true,
+      //   });
         
 
-      });
+      // });
+
+      function addtocart(id){
+      	var quantity = $('#qty').val();
+      	var name = $('#name').val();
+      	var price = $('#price').val();
+      	var category = $('#category').val();
+      	var picture = $('#picture').val();
+      	$.ajax({
+      		url: '{{ URL("/addtocart")}}',
+      		type: 'POST',
+      		data: {id: id, qty: quantity, name: name, price: price, category: category, picture: picture},
+      		beforeSend: function(request){
+      			return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      		},
+      	})
+      	.done(function(){
+      		window.location.replace('{{URL("/menu_detail")}}'+ '/' + id);
+      	})
+      	.fail(function(){
+      		alert('error');
+      	})
+
+      }
 </script>
 @endpush
 

@@ -4,11 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_token" content="{{ csrf_token()}}"/>
     <title>go C go D</title>
 
     <!-- Datatables css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
+<!--     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css"> -->
     <link rel="stylesheet" href="{{ URL::asset('assets/plugins/datatables/jquery.dataTables.min.css') }}">
 
     <!-- bootstrap css -->
