@@ -27,9 +27,16 @@ Route::auth();
 //////halaman admin
 //product
 Route::group(['prefix' => 'admin'], function () {
-	
-	//PRODUCT
 	Route::get('/',
+		'Auth\AdminAuthController@getLogin'
+	);
+	Route::post('/login',
+		'Auth\AdminAuthController@postLogin'
+	);
+
+
+	//PRODUCT
+	Route::get('/product/list',
 			'AdminController@getProductList'
 	);
 	Route::get('productlist/data', 
@@ -107,9 +114,6 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('sample/request/detail', 
 		'AdminController@getSampleDetail'
 	);
-	/*Route::get('sample/request/detail', 
-		'AdminController@tes'
-	);*/
 
 	//USER
 	//customer
@@ -119,6 +123,16 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::get('customer/data', 
 		array('as' => 'customerlist.data', 
 			'uses' =>'AdminController@getCustomerData')
+	);
+	Route::get('customer/tx/data', 
+		array('as' => 'customertx.data', 
+			'uses' =>'AdminController@getCustomerTxData')
+	);
+	Route::get('edit/customer/tx/{id}',
+		'AdminController@getEditCustomerTx'
+	);
+	Route::post('post/edit/customer/tx/{Oid}/{CId}',
+		'AdminController@postEditCustomerTx'
 	);
 	Route::get('edit/customer/{id}', 
 		'AdminController@getEditCustomer'
@@ -160,6 +174,16 @@ Route::group(['prefix' => 'admin'], function () {
 	);
 	Route::post('process/review/agent', 
 		'AdminController@getProcessReviewAgent'
+	);
+	Route::get('agent/tx/data', 
+		array('as' => 'agenttx.data', 
+			'uses' =>'AdminController@getAgentTxData')
+	);
+	Route::get('edit/agent/tx/{id}', 
+		'AdminController@getEditAgentTx'
+	);
+	Route::post('post/edit/agent/tx/{OId}/{AId}', 
+		'AdminController@postEditAgentTx'
 	);
 
 
@@ -234,12 +258,51 @@ Route::group(['prefix' => 'admin'], function () {
 	Route::post('post/cut/off/date', 
 		'AdminController@postCutOffDate'
 	);
+
+
+	//TRANSACTION
+	//order
+	Route::get('order', 
+		'AdminController@getOrderList'
+	);
+	Route::get('order/data', 
+		array('as' => 'orderlist.data', 
+			'uses' =>'AdminController@getOrderData')
+	);
+	Route::get('edit/order/{id}', 
+		'AdminController@getEditOrder'
+	);
+	Route::post('post/edit/order/{id}', 
+		'AdminController@postEditOrder'
+	);
+	Route::post('product/order', 
+		'AdminController@getProductOrder'
+	);
+	//shipping
+	Route::get('ship', 
+		'AdminController@getShipList'
+	);
+	Route::get('ship/data', 
+		array('as' => 'shiplist.data', 
+			'uses' =>'AdminController@getShipData')
+	);
+	Route::get('edit/ship/{id}', 
+		'AdminController@getEditShip'
+	);
+	Route::post('post/edit/ship/{id}', 
+		'AdminController@postEditShip'
+	);
+	Route::post('product/ship', 
+		'AdminController@getProductShip'
+	);
 });
 
 
 
 
-
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 
 

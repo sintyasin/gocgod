@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Member;
 use Validator;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Support\Facades\Redirect;
+use Session;
 use Illuminate\Http\Request;
 
-class AuthController extends Controller
+class AdminAuthController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -29,8 +32,9 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
-    
+    protected $redirectTo = '/admin/product/list';
+    //protected $loginPath = '/login';
+
     /**
      * Create a new authentication controller instance.
      *
@@ -49,7 +53,7 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {    
-        return Validator::make($data, [
+        /*return Validator::make($data, [
             'name' => 'required|max:255',
             'address' => 'required|max:500',
             'dob' => 'required|max:10',
@@ -59,7 +63,7 @@ class AuthController extends Controller
             'city' => 'required|numeric',
             'userType' => 'required|numeric',
             'bank' => 'required|numeric',
-        ]);
+        ]);*/
     }
 
     /**
@@ -71,7 +75,7 @@ class AuthController extends Controller
 
     protected function create(array $data)
     {
-        return Member::create([
+        /*return Member::create([
             'name' => $data['name'],
             'address' => $data['address'],
             'date_of_birth' => $data['dob'],
@@ -81,6 +85,57 @@ class AuthController extends Controller
             'city_id' => $data['city'],
             'status_user' => $data['userType'],
             'bank_account' => $data['bank'],
-        ]);
+        ]);*/
+    }
+
+    public function getLogin()
+    {
+        return view('page.admin_login');
+    }
+
+    public function postLogin(Request $request)
+    {
+        // validate the info, create rules for the inputs
+        $rules = array(
+            'email'    => 'required|email', // make sure the email is an actual email
+            'password' => 'required|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+        );
+
+        // run the validation rules on the inputs from the form
+        $validator = Validator::make($request->all(), $rules);
+
+        // if the validator fails, redirect back to the form
+        if ($validator->fails()) {
+            return redirect('/admin')->withErrors($validator->errors())->withInput();
+        } else {
+
+            // create our user data for the authentication
+            $input = $request->all();
+
+            $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
+            $password = filter_var($input['password'], FILTER_SANITIZE_STRING);
+            
+            $userdata = array(
+                'email'     => $email,
+                'password'  => $password
+            );
+
+            // attempt to do the login
+            if (Auth::attempt($userdata)) {
+
+                // validation successful!
+                // redirect them to the secure section or whatever
+                // return Redirect::to('secure');
+                // for now we'll just echo success (even though echoing in a controller is bad)
+                echo 'SUCCESS!';
+
+            } else {        
+                Session::flash('failed', 1);
+                // validation not successful, send back to form 
+                return Redirect::to('/admin');
+
+            }
+
+        }
     }
 }
