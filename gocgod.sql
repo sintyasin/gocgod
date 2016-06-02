@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2016 at 01:50 PM
+-- Generation Time: Jun 02, 2016 at 11:15 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `about__us` (
 --
 
 INSERT INTO `about__us` (`id`, `name`, `address`, `phone`, `created_at`, `updated_at`) VALUES
-(1, 'Baby', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', '0811139318', '2016-05-18 09:22:35', '0000-00-00 00:00:00');
+(1, 'Baby', '  Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk  ', '0811139318', '2016-05-24 03:52:22', '2016-05-23 20:52:22');
 
 -- --------------------------------------------------------
 
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `faq__question` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `faq__question`
@@ -80,8 +80,9 @@ CREATE TABLE IF NOT EXISTS `faq__question` (
 
 INSERT INTO `faq__question` (`question_id`, `question`, `answer`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'halo', 'bandung', '2016-05-10 10:18:51', '2016-05-10 03:18:51', NULL),
-(5, 'a', 'asdfsadfasdfasdf', '2016-05-17 08:10:56', '2016-05-17 01:10:56', NULL),
-(6, 'a', '1213', '2016-05-13 07:56:34', '2016-05-13 00:56:34', '2016-05-13 00:56:34');
+(5, 'ab', 'asdfsadfasdfasdf', '2016-05-24 03:31:09', '2016-05-23 20:30:57', NULL),
+(6, 'a', '1213', '2016-05-24 03:31:20', '2016-05-13 00:56:34', NULL),
+(8, 'tes', 'tes', '2016-05-23 20:34:14', '2016-05-23 20:34:14', NULL);
 
 -- --------------------------------------------------------
 
@@ -139,8 +140,8 @@ CREATE TABLE IF NOT EXISTS `master__agent_rating` (
 --
 
 INSERT INTO `master__agent_rating` (`agent_id`, `customer_id`, `rating`, `comment`, `approval`, `rating_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(3, 4, 1, 'abc', 0, 1, '2016-05-17 07:50:02', '2016-05-17 00:49:46', NULL),
-(5, 3, 5, 'bbbbb', 0, 2, '2016-05-17 07:50:09', '2016-05-17 00:49:46', NULL);
+(3, 4, 1, 'abc', 0, 1, '2016-05-24 03:20:20', '2016-05-23 20:20:12', NULL),
+(5, 3, 5, 'bbbbb', 0, 2, '2016-05-24 03:20:38', '2016-05-23 20:20:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -154,18 +155,36 @@ CREATE TABLE IF NOT EXISTS `master__city` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__city`
 --
 
 INSERT INTO `master__city` (`city_id`, `city_name`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 'jakarta', '2016-04-21 10:05:46', '0000-00-00 00:00:00', NULL),
-(3, 'bandung', '2016-05-12 10:46:58', '0000-00-00 00:00:00', NULL),
-(7, '123', '2016-05-13 07:59:35', '2016-05-13 00:59:35', '2016-05-13 00:59:35'),
-(8, '123', '2016-05-13 08:35:17', '2016-05-13 01:35:17', '2016-05-13 01:35:17'),
-(9, 'aaa', '2016-05-17 10:42:29', '2016-05-17 03:42:29', '2016-05-17 03:42:29');
+(1, 'jakarta', '2016-05-24 03:46:28', '2016-05-23 20:46:28', NULL),
+(3, 'bandung', '2016-05-24 03:44:49', '2016-05-23 20:44:34', '0000-00-00 00:00:00'),
+(10, '1', '2016-05-24 03:49:18', '2016-05-23 20:49:18', '2016-05-23 20:49:18');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `master__cut_off_date`
+--
+
+CREATE TABLE IF NOT EXISTS `master__cut_off_date` (
+`id` int(11) NOT NULL,
+  `cut_off` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `master__cut_off_date`
+--
+
+INSERT INTO `master__cut_off_date` (`id`, `cut_off`, `created_at`, `updated_at`) VALUES
+(1, 4, '2016-05-24 04:21:27', '2016-05-23 21:21:27');
 
 -- --------------------------------------------------------
 
@@ -196,9 +215,9 @@ CREATE TABLE IF NOT EXISTS `master__member` (
 --
 
 INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`) VALUES
-(3, 'af', '', 1, '0000-00-00', 'a@a.com', '', '$2y$10$rqLqee3NTP9g7t7ILwnvtu6fC0MZuL9.YfaFq.pWlNLcOEja9XLny', 0, 0, 0, '', '2016-05-09 11:37:07', '2016-05-09 04:37:07', 'jRAkIqcWFzSHkzkarBgrer8cwjnw8FHiia6xk9YpNAIlMfsfWquQMvYNyLEf'),
-(4, 'b', '', 1, '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 1, 0, NULL, NULL, '2016-05-12 08:57:06', '2016-05-12 01:57:06', 'sSmgkT8cS7htaSlgAKrVdNgTXSANmk2mEZFjC9Eg9Z0mRmB03kMUh9FVJ1qY'),
-(5, 'Aurelia', 'Jakarta', 1, '1995-09-28', 'aureliarianto@aurelia.com', '081268248788', '$2y$10$kOataK1Xh/yd2L2GWmkcxu1gBLRgZIQbvnn1LuOMiOn/zW4ICikeK', 1, 1, NULL, '6557788', '2016-05-12 09:23:38', '2016-05-12 02:23:38', 'Spd9CbZiZxnKJUueTQivWBYGnr9r2S0r9ZfIYM6jEpVVxeBP1FdAtccOG3pm');
+(3, 'af', '', 1, '0000-00-00', 'a@a.com', '', '$2y$10$rqLqee3NTP9g7t7ILwnvtu6fC0MZuL9.YfaFq.pWlNLcOEja9XLny', 0, 0, 0, '', '2016-05-24 02:45:33', '2016-05-23 19:45:33', 'jRAkIqcWFzSHkzkarBgrer8cwjnw8FHiia6xk9YpNAIlMfsfWquQMvYNyLEf'),
+(4, 'b', '', 1, '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 1, 0, NULL, NULL, '2016-05-20 09:35:58', '2016-05-20 02:35:58', 'sSmgkT8cS7htaSlgAKrVdNgTXSANmk2mEZFjC9Eg9Z0mRmB03kMUh9FVJ1qY'),
+(5, 'Aurelia', 'Jakarta', 1, '1995-09-28', 'aureliarianto@aurelia.com', '081268248788', '$2y$10$kOataK1Xh/yd2L2GWmkcxu1gBLRgZIQbvnn1LuOMiOn/zW4ICikeK', 1, 0, NULL, '6557788', '2016-05-31 05:22:07', '2016-05-30 22:22:07', 'Spd9CbZiZxnKJUueTQivWBYGnr9r2S0r9ZfIYM6jEpVVxeBP1FdAtccOG3pm');
 
 -- --------------------------------------------------------
 
@@ -247,7 +266,7 @@ CREATE TABLE IF NOT EXISTS `product__category` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product__category`
@@ -255,7 +274,8 @@ CREATE TABLE IF NOT EXISTS `product__category` (
 
 INSERT INTO `product__category` (`category_id`, `category_name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'minuman', '', '2016-05-13 08:55:19', '2016-05-13 01:55:19', NULL),
-(2, 'makanan', '', '2016-05-13 00:14:02', '2016-05-13 00:14:02', NULL);
+(2, 'makanan', '', '2016-05-19 10:04:35', '2016-05-19 03:04:35', NULL),
+(3, 'qqqqq', '', '2016-05-20 09:25:16', '2016-05-20 02:25:16', '2016-05-20 02:25:16');
 
 -- --------------------------------------------------------
 
@@ -279,10 +299,10 @@ CREATE TABLE IF NOT EXISTS `product__testimonial` (
 --
 
 INSERT INTO `product__testimonial` (`testimonial_id`, `id`, `varian_id`, `testimonial`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 1, 'aaa', 0, '2016-05-17 06:40:37', '2016-05-16 23:40:13', NULL),
-(2, 3, 1, 'bbb', 0, '2016-05-17 04:23:20', '2016-05-16 21:22:52', NULL),
-(3, 4, 1, 'ccc', 0, '2016-05-17 06:34:29', '2016-05-16 21:22:57', NULL),
-(4, 5, 2, 'asd', 1, '2016-05-17 06:39:58', '2016-05-16 23:39:50', NULL);
+(1, 3, 1, 'aaa', 0, '2016-05-24 05:48:15', '2016-05-20 02:05:52', NULL),
+(2, 3, 1, 'bbb', 0, '2016-05-24 05:48:18', '2016-05-23 22:47:45', NULL),
+(3, 4, 1, 'ccc', 1, '2016-05-24 05:47:56', '2016-05-23 22:47:56', NULL),
+(4, 5, 2, 'asd', 1, '2016-05-20 09:06:07', '2016-05-20 02:05:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -302,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `product__varian` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product__varian`
@@ -310,17 +330,14 @@ CREATE TABLE IF NOT EXISTS `product__varian` (
 
 INSERT INTO `product__varian` (`varian_id`, `category_id`, `varian_name`, `price`, `qty`, `picture`, `description`, `weight`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 1, 'Soya Milk', 60000, 10, 'soya_milk.jpg', 'Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi\r\nTanpa bahan pengawet! Dan pemanis buatan\r\nSangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin!', 2, '2016-05-02 02:26:12', '0000-00-00 00:00:00', NULL),
-(2, 1, 'Cin Cau', 60000, 10, 'cin_cau.jpg', 'Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung .\r\nAir cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet .', 2, '2016-04-21 11:09:00', '0000-00-00 00:00:00', NULL),
+(2, 1, 'Cin Cau', 60000, 10, 'cin_cau.jpg', 'Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung .\r\nAir cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet .', 2, '2016-05-19 09:04:44', '2016-05-19 02:04:44', NULL),
 (3, 1, 'Honey Pine', 75000, 10, 'honey_pine.jpg', 'Sari buah nanas ini sangat bermanfaat buat kecantikan karna di buat tanpa bahan pengawet dan gula, bener2 murni dan fress \r\nManfaat sari buat nanas \r\n1. Menjaga kesehatan mata\r\n2. Meningkatkan imunitas\r\n3. Membantu pencernaan\r\n5. Mencegah hipertensi\r\n6. Meredakan mual\r\n7. Menguatkan tulang\r\n8. Memperbaiki kulit kaki\r\n9. Melembabkan kulit\r\n10. Mencerna kandungan lemak pada makanan Yang kita makan', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00', NULL),
 (4, 1, 'Guava', 75000, 10, 'guava.jpg', 'Guava adalah sari buah jambu pilihan , yg di proses secara higienis tanpa bahan pengawet dan gula, rasanya benar2 alami seperti makan buah aslinya \r\nManfaat sari guava diantaranya yaitu \r\n1. Mengandung vitamin C yg sangat di butuhkan Oleh tubuh \r\n2. Mengandung serat alami \r\n3.Melancarkan pencernaan seperti susah BAB, Sembelit serta menbuang zat-zat berbahaya di Dalam usus\r\n4.Membuat kulit lebih cerah dan lembut', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00', NULL),
 (5, 1, 'Fruit Punch', 75000, 10, 'fruit_punch.jpg', 'Fruit Punch Aneka Buah adalah minuman yang dibuat dari aneka macam buah-buahan segar seperti melon, semangka, jeruk, biji selasih dan air soda. Buah-buahan memanglah sangat dianjurkan untuk dikonsumsi tubuh karena memiliki sejuta manfaat yang beragam bagi kesehatan. Seperti buah semangka yang memiliki manfaat menjaga kesehatan jantung, mata dan tulang, menangkal radikal bebas, meningkatkan sistem kekebalan tubuh, membantu meningkatkan aliran urine dan mengurangi lemak pada tubuh. Selain semangka, biji selasih yang turut digunakan sebagai bahan pelengkpnya juga memiliki manfaat bagi tubuh antara lain dapat mengobati radang lambung, menyembuhkan sakit gigi, baik untuk menghaluskan kulit wajah, sebagai obat sakit kepala dan lain sebagainya.', 2, '2016-04-21 11:13:34', '0000-00-00 00:00:00', NULL),
 (6, 1, 'Sirsak', 60000, 10, 'sirsak.jpg', '\r\nManfaat jus sirsak sangat luar biasa bagi kesehatan seperti untuk diet, kulit, kanker, dan banyak lagi yang harus Anda ketahui. Buah sirsak merupakan jenis buah yang banyak disukai karena rasanya yang nikmat dan menyegarkan. Selain rasanya yang nikmat dan segar, buah sirsak mengandung manfaat yang sangat berkhasiat dalam mengatasi berbagai masalah kesehatan. Buah sirsak dapat dikonsumsi langsung buahnya atau dijadikan minuman jus yang lebih mudah diserap tubuh, sehingga sangat baik untuk saluran pencernaan.\r\n\r\n', 1, '2016-04-21 11:13:34', '0000-00-00 00:00:00', NULL),
 (7, 1, 'Kacang Hijau', 60000, 10, 'kacang_hijau.jpg', 'Manfaat sari kacang hijau \r\n1.Meningkatkan penyerapan nutrisi\r\n2. Mencegah penyakit jantung & stroke\r\n3.Membersihkan pencernaan\r\n4.Mengatasi anemia\r\n5.Menjaga berat badan\r\n6.Membantu pertumbuhan sel organ, otot & otak\r\nTampa bahan pengawet !!!!', 2, '2016-04-21 11:16:07', '0000-00-00 00:00:00', NULL),
 (8, 1, 'Liang Teh', 75000, 10, 'liang_teh.jpg', '\r\nLiang teh merupakan minuman yang mempunyai manfaat serta khasiat yang banyak bagi kesehatan tubuh. Selain itu, liang teh mempunyai rasa yang enak dan banyak digemari oleh semua kalangan baik anak – anak, remaja dan orang tua. Liang teh merupakan jenis minuman yang dapat disajikan dalam keadaan hangat maupun dingin. Kandungan didalamnya dapat meredakan panas dalam dan mengatasi masalah sistem pencernaan tubuh. Minuman herbal yang berasal dari China ini memiliki jenis warna dan rasa yang sangat bervariatif sesuai dengan jenis tanaman yang digunakan sebagai bahan pembuat liang teh.\r\n\r\n', 2, '2016-04-21 11:16:07', '0000-00-00 00:00:00', NULL),
-(9, 1, 'Lime Watz', 75000, 10, 'lime_watz.jpg', 'Membantu menurunkan berat badan\r\nSari lemon kerap disertakan dalam diet penurunan berat badan. Biasanya, sari lemon dicampurkan dengan air hangat dan madu. Tak hanya sehat, lemon juga rendah kalori, bahkan termasuk yang terendah di antara buah citrus lainnya. Sekitar 100 g lemon hanya mengandung 29 kalori. Lemon pun bebas kolesterol, lemak jenuh, dan memiliki indeks glikemik rendah. Lemon juga kaya serat pangan sehingga baik dikonsumsi Anda yang ingin memangkas berat badan.\r\nLime Watz itu campuran Lemon , madu , kiwi dan Semangka kuning.', 2, '2016-04-21 11:17:42', '0000-00-00 00:00:00', NULL),
-(13, 2, 'afd', 12, 15, '1463124631tes.jpg', 'a', 7, '2016-05-13 07:38:02', '2016-05-13 00:38:02', '2016-05-13 00:38:02'),
-(14, 2, 'afd', 12, 15, '1463125300tes.jpg', 'ab', 7, '2016-05-13 08:21:10', '2016-05-13 01:21:10', '2016-05-13 01:21:10'),
-(15, 1, 'af', 12, 15, '1463128776tes.jpg', 'a', 7, '2016-05-13 08:39:42', '2016-05-13 01:39:42', '2016-05-13 01:39:42');
+(9, 1, 'Lime Watz', 75000, 10, 'lime_watz.jpg', 'Membantu menurunkan berat badan\r\nSari lemon kerap disertakan dalam diet penurunan berat badan. Biasanya, sari lemon dicampurkan dengan air hangat dan madu. Tak hanya sehat, lemon juga rendah kalori, bahkan termasuk yang terendah di antara buah citrus lainnya. Sekitar 100 g lemon hanya mengandung 29 kalori. Lemon pun bebas kolesterol, lemak jenuh, dan memiliki indeks glikemik rendah. Lemon juga kaya serat pangan sehingga baik dikonsumsi Anda yang ingin memangkas berat badan.\r\nLime Watz itu campuran Lemon , madu , kiwi dan Semangka kuning.', 2, '2016-04-21 11:17:42', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -333,14 +350,22 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `customer_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL,
   `order_date` date NOT NULL,
-  `status_payment` int(11) NOT NULL,
+  `status_payment` int(11) NOT NULL DEFAULT '0',
   `ship_address` varchar(500) NOT NULL,
   `ship_city_id` int(11) NOT NULL,
-  `status_confirmed` int(11) NOT NULL,
+  `status_confirmed` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `who` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `who` varchar(50) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transaction__order`
+--
+
+INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_date`, `status_payment`, `ship_address`, `ship_city_id`, `status_confirmed`, `created_at`, `updated_at`, `who`) VALUES
+(1, 5, 3, '2016-05-25', 0, 'sunrise', 1, 0, '2016-06-01 11:53:00', '2016-06-01 04:53:00', 'single'),
+(2, 4, 3, '2016-05-30', 0, 'green garden', 3, 0, '2016-05-31 09:05:14', '2016-05-31 02:05:14', 'subscribe');
 
 -- --------------------------------------------------------
 
@@ -357,6 +382,14 @@ CREATE TABLE IF NOT EXISTS `transaction__order_detail` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `transaction__order_detail`
+--
+
+INSERT INTO `transaction__order_detail` (`order_id`, `varian_id`, `varian_price`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 2, 60000, 2, '2016-05-24 10:20:11', '0000-00-00 00:00:00'),
+(1, 4, 75000, 6, '2016-05-24 10:20:11', '0000-00-00 00:00:00');
+
 -- --------------------------------------------------------
 
 --
@@ -370,6 +403,15 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_detail` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transaction__sample_detail`
+--
+
+INSERT INTO `transaction__sample_detail` (`request_id`, `varian_id`, `quantity`, `created_at`, `updated_at`) VALUES
+(1, 3, 1, '2016-05-24 10:15:00', '2016-05-10 17:00:00'),
+(4, 1, 10, '2016-05-24 04:49:32', '0000-00-00 00:00:00'),
+(4, 2, 3, '2016-05-24 04:49:32', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -387,15 +429,17 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
   `request_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `approval` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaction__sample_request`
 --
 
-INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `approval`, `created_at`, `updated_at`) VALUES
-(1, 3, 'iseng aja', '2016-05-20', 'alsut', 'rame', '2016-05-18 10:27:22', 0, '2016-05-18 10:27:22', '0000-00-00 00:00:00');
+INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, 'iseng aja', '2016-05-20', 'alsut', 'rame', '2016-05-18 10:27:22', 0, '2016-05-24 07:56:39', '2016-05-24 00:56:22', NULL),
+(4, 3, '', '0000-00-00', '', '', '2016-05-20 08:37:01', 0, '2016-05-24 04:38:06', '2016-05-23 21:37:59', NULL);
 
 -- --------------------------------------------------------
 
@@ -407,11 +451,42 @@ CREATE TABLE IF NOT EXISTS `transaction__shipping` (
 `shipping_id` int(11) NOT NULL,
   `order_id` int(11) NOT NULL,
   `start_date` date NOT NULL,
-  `day_time` datetime NOT NULL,
+  `day` int(11) NOT NULL,
   `total_week` int(11) NOT NULL,
+  `finish` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transaction__shipping`
+--
+
+INSERT INTO `transaction__shipping` (`shipping_id`, `order_id`, `start_date`, `day`, `total_week`, `finish`, `created_at`, `updated_at`) VALUES
+(1, 1, '2016-05-26', 4, 4, 0, '2016-05-31 07:12:12', '2016-05-31 00:12:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaction__shipping_detail`
+--
+
+CREATE TABLE IF NOT EXISTS `transaction__shipping_detail` (
+  `shipping_id` int(11) NOT NULL,
+`tx_shipping_id` int(11) NOT NULL,
+  `agent_id` int(11) NOT NULL,
+  `date_shipping` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transaction__shipping_detail`
+--
+
+INSERT INTO `transaction__shipping_detail` (`shipping_id`, `tx_shipping_id`, `agent_id`, `date_shipping`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, '2016-06-02', '2016-05-26 05:37:37', '0000-00-00 00:00:00'),
+(1, 2, 3, '2016-06-09', '2016-05-26 05:37:37', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -427,20 +502,15 @@ CREATE TABLE IF NOT EXISTS `transaction__shipping_product` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `transaction__tx_shipping`
+-- Dumping data for table `transaction__shipping_product`
 --
 
-CREATE TABLE IF NOT EXISTS `transaction__tx_shipping` (
-  `shipping_id` int(11) NOT NULL,
-`tx_shipping_id` int(11) NOT NULL,
-  `agent_id` int(11) NOT NULL,
-  `date_shipping` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `transaction__shipping_product` (`tx_shipping_id`, `varian_id`, `qty`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2016-05-26 05:38:04', '0000-00-00 00:00:00'),
+(1, 4, 2, '2016-05-26 05:38:04', '0000-00-00 00:00:00'),
+(2, 1, 1, '2016-05-26 05:38:40', '0000-00-00 00:00:00'),
+(2, 4, 2, '2016-05-26 05:38:40', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -489,6 +559,12 @@ ALTER TABLE `master__city`
  ADD PRIMARY KEY (`city_id`);
 
 --
+-- Indexes for table `master__cut_off_date`
+--
+ALTER TABLE `master__cut_off_date`
+ ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `master__member`
 --
 ALTER TABLE `master__member`
@@ -534,19 +610,19 @@ ALTER TABLE `transaction__order`
 -- Indexes for table `transaction__order_detail`
 --
 ALTER TABLE `transaction__order_detail`
- ADD KEY `fk_orde_or_id` (`order_id`), ADD KEY `fk_orde_var_id` (`varian_id`);
+ ADD PRIMARY KEY (`order_id`,`varian_id`), ADD KEY `fk_orde_or_id` (`order_id`), ADD KEY `fk_orde_var_id` (`varian_id`);
 
 --
 -- Indexes for table `transaction__sample_detail`
 --
 ALTER TABLE `transaction__sample_detail`
- ADD KEY `fk_orde_or_id` (`request_id`), ADD KEY `fk_orde_var_id` (`varian_id`);
+ ADD PRIMARY KEY (`request_id`,`varian_id`), ADD KEY `fk_orde_or_id` (`request_id`), ADD KEY `fk_orde_var_id` (`varian_id`);
 
 --
 -- Indexes for table `transaction__sample_request`
 --
 ALTER TABLE `transaction__sample_request`
- ADD PRIMARY KEY (`request_id`), ADD UNIQUE KEY `fk_sample_agent_id` (`agent_id`);
+ ADD PRIMARY KEY (`request_id`), ADD KEY `fk_sample_agent_id` (`agent_id`);
 
 --
 -- Indexes for table `transaction__shipping`
@@ -555,16 +631,16 @@ ALTER TABLE `transaction__shipping`
  ADD PRIMARY KEY (`shipping_id`), ADD KEY `fk_ship_or_id` (`order_id`);
 
 --
+-- Indexes for table `transaction__shipping_detail`
+--
+ALTER TABLE `transaction__shipping_detail`
+ ADD PRIMARY KEY (`tx_shipping_id`), ADD KEY `fk_tx_ship_id` (`shipping_id`), ADD KEY `fk_tx_ag_id` (`agent_id`);
+
+--
 -- Indexes for table `transaction__shipping_product`
 --
 ALTER TABLE `transaction__shipping_product`
- ADD KEY `fk_shippro_txship_id` (`tx_shipping_id`), ADD KEY `fk_shippro_var_id` (`varian_id`);
-
---
--- Indexes for table `transaction__tx_shipping`
---
-ALTER TABLE `transaction__tx_shipping`
- ADD PRIMARY KEY (`tx_shipping_id`), ADD KEY `fk_tx_ship_id` (`shipping_id`), ADD KEY `fk_tx_ag_id` (`agent_id`);
+ ADD PRIMARY KEY (`tx_shipping_id`,`varian_id`), ADD KEY `fk_shippro_txship_id` (`tx_shipping_id`), ADD KEY `fk_shippro_var_id` (`varian_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -584,7 +660,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `faq__question`
 --
 ALTER TABLE `faq__question`
-MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `master__admin`
 --
@@ -604,7 +680,12 @@ MODIFY `rating_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `master__city`
 --
 ALTER TABLE `master__city`
-MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `city_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+--
+-- AUTO_INCREMENT for table `master__cut_off_date`
+--
+ALTER TABLE `master__cut_off_date`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `master__member`
 --
@@ -619,7 +700,7 @@ MODIFY `balance_id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `product__category`
 --
 ALTER TABLE `product__category`
-MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `product__testimonial`
 --
@@ -629,27 +710,27 @@ MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `product__varian`
 --
 ALTER TABLE `product__varian`
-MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `transaction__order`
 --
 ALTER TABLE `transaction__order`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `transaction__sample_request`
 --
 ALTER TABLE `transaction__sample_request`
-MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `transaction__shipping`
 --
 ALTER TABLE `transaction__shipping`
-MODIFY `shipping_id` int(11) NOT NULL AUTO_INCREMENT;
+MODIFY `shipping_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
--- AUTO_INCREMENT for table `transaction__tx_shipping`
+-- AUTO_INCREMENT for table `transaction__shipping_detail`
 --
-ALTER TABLE `transaction__tx_shipping`
-MODIFY `tx_shipping_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `transaction__shipping_detail`
+MODIFY `tx_shipping_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- Constraints for dumped tables
 --
@@ -733,18 +814,18 @@ ALTER TABLE `transaction__shipping`
 ADD CONSTRAINT `fk_ship_or_id` FOREIGN KEY (`order_id`) REFERENCES `transaction__order` (`order_id`);
 
 --
+-- Constraints for table `transaction__shipping_detail`
+--
+ALTER TABLE `transaction__shipping_detail`
+ADD CONSTRAINT `fk_tx_ag_id` FOREIGN KEY (`agent_id`) REFERENCES `master__member` (`id`),
+ADD CONSTRAINT `fk_tx_ship_id` FOREIGN KEY (`shipping_id`) REFERENCES `transaction__shipping` (`shipping_id`);
+
+--
 -- Constraints for table `transaction__shipping_product`
 --
 ALTER TABLE `transaction__shipping_product`
-ADD CONSTRAINT `fk_shippro_txship_id` FOREIGN KEY (`tx_shipping_id`) REFERENCES `transaction__tx_shipping` (`tx_shipping_id`),
+ADD CONSTRAINT `fk_shippro_txship_id` FOREIGN KEY (`tx_shipping_id`) REFERENCES `transaction__shipping_detail` (`tx_shipping_id`),
 ADD CONSTRAINT `fk_shippro_var_id` FOREIGN KEY (`varian_id`) REFERENCES `product__varian` (`varian_id`);
-
---
--- Constraints for table `transaction__tx_shipping`
---
-ALTER TABLE `transaction__tx_shipping`
-ADD CONSTRAINT `fk_tx_ag_id` FOREIGN KEY (`agent_id`) REFERENCES `master__member` (`id`),
-ADD CONSTRAINT `fk_tx_ship_id` FOREIGN KEY (`shipping_id`) REFERENCES `transaction__shipping` (`shipping_id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
