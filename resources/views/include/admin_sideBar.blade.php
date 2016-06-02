@@ -10,7 +10,7 @@
           <i class="fa fa-list"></i> <span>Product</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=" <?php if($active == 'productList') echo 'active'; ?> "><a href={{ URL('/admin/') }}><i class="fa fa-circle-o"></i> Product List</a></li>
+          <li class=" <?php if($active == 'productList') echo 'active'; ?> "><a href={{ URL('/admin/product/list/') }}><i class="fa fa-circle-o"></i> Product List</a></li>
           <li class=" <?php if($active == 'insertProduct') echo 'active'; ?> "><a href= {{ URL('/admin/insert/product/') }} ><i class="fa fa-circle-o"></i> Insert New Product</a></li>
           <li class=" <?php if($active == 'productCategory') echo 'active'; ?> "><a href= {{ URL('/admin/category/list/') }} ><i class="fa fa-circle-o"></i> Category</a></li>
           <li class=" <?php if($active == 'productTestimonial') echo 'active'; ?> "><a href= {{ URL('/admin/testimonial/list') }} ><i class="fa fa-circle-o"></i> Testimonial List</a></li>
@@ -48,6 +48,16 @@
         <ul class="treeview-menu">
           <li class=" <?php if($active == 'cityList') echo 'active'; ?> "><a href={{ URL('/admin/city/list') }}><i class="fa fa-circle-o"></i> City List</a></li>
           <li class=" <?php if($active == 'insertCity') echo 'active'; ?> "><a href={{ URL('/admin/insert/city') }} ><i class="fa fa-circle-o"></i> Insert City</a></li>
+        </ul>
+      </li>
+
+      <li class=" <?php if($active == 'txOrder' || $active == 'txShipping') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-folder-o"></i> <span>Transaction</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'txOrder') echo 'active'; ?> "><a href={{ URL('/admin/order') }}><i class="fa fa-circle-o"></i> Order Transaction</a></li>
+          <li class=" <?php if($active == 'txShipping') echo 'active'; ?> "><a href={{ URL('/admin/ship') }} ><i class="fa fa-circle-o"></i> Shipping Transaction</a></li>
         </ul>
       </li>
 
