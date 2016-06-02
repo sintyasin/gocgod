@@ -16,6 +16,12 @@ use App\Member;
 
 class TransactionController extends Controller
 {
+    // protected $locale;
+
+    // public function __construct()
+    // {
+    //     $this->locale = App::getLocale();
+    // }
     // public function getMenu()
     // {
     // 	$data['query'] = Product::all();
@@ -71,84 +77,84 @@ class TransactionController extends Controller
             ]);
     }
 
-    // public function updatecart(Request $data)
-    // {
-    //     dd($data->rowId, $data->qty);
-    //     $v = Validator::make($data->all(),[
-    //         'qty' =>'required|numeric',
-    //         ]);
-    //     if($v->fails())
-    //     {
-    //         return "Not completed data";
-    //     }
-
-    //     Cart::update($data->rowId, ['qty' => $data->qty]);
-    // }
-
-    public function updateCart()
+    public function updatecart(Request $data)
     {
-        if (Request::wantsJson()) {
-            $validator = Validator::make(Input::only('kode', 'rowId', 'qty'),
-                array(
-                    'kode'  => 'required|numeric',
-                    'rowId' => 'required',
-                    'qty'   => 'required|integer|min:1')
-                );
+        dd($data->rowId, $data->qty);
+        $v = Validator::make($data->all(),[
+            'qty' =>'required|numeric',
+            ]);
+        if($v->fails())
+        {
+            return "Not completed data";
+        }
 
-            if ($validator->fails()) {
-                $error = array(
-                    'type'    => 'validation_fail',
-                    'code'    => 'ERR-CART-401',
-                    'message' => $validator->messages());
+        Cart::update($data->rowId, ['qty' => $data->qty]);
+    }
 
-                return Response::json(compact('error'));
-            } else {
-                $row_id       = Input::get('rowId');
-                $product_qty  = Input::get('qty');
-                $product_code = Input::get('kode');
+    // public function updateCart()
+    // {
+    //     if (Request::wantsJson()) {
+    //         $validator = Validator::make(Input::only('kode', 'rowId', 'qty'),
+    //             array(
+    //                 'kode'  => 'required|numeric',
+    //                 'rowId' => 'required',
+    //                 'qty'   => 'required|integer|min:1')
+    //             );
 
-                if ($product_qty > 0) {
-                    //validasi qty stock!!!
-                    $detail = DB::table('product__varian')->where('varian__id', $product_code)->first();
+    //         if ($validator->fails()) {
+    //             $error = array(
+    //                 'type'    => 'validation_fail',
+    //                 'code'    => 'ERR-CART-401',
+    //                 'message' => $validator->messages());
 
-                    if ($product_qty > $detail->stock) {
-                        $error = array(
-                            'type'    => 'invalid_stock',
-                            'code'    => 'ERR-CART-402',
-                            'message' => ['warning' => trans('shop.invalid-stock')]);
+    //             return Response::json(compact('error'));
+    //         } else {
+    //             $row_id       = Input::get('rowId');
+    //             $product_qty  = Input::get('qty');
+    //             $product_code = Input::get('kode');
 
-                        return Response::json(compact('error'));
-                    } else {
-                        //if price don't have discount!!!
+    //             if ($product_qty > 0) {
+    //                 //validasi qty stock!!!
+    //                 $detail = DB::table('product__varian')->where('varian__id', $product_code)->first();
+
+    //                 if ($product_qty > $detail->stock) {
+    //                     $error = array(
+    //                         'type'    => 'invalid_stock',
+    //                         'code'    => 'ERR-CART-402',
+    //                         'message' => ['warning' => trans('shop.invalid-stock')]);
+
+    //                     return Response::json(compact('error'));
+    //                 } else {
+    //                     //if price don't have discount!!!
                         
 
-                        Cart::update($row_id, $product_qty);
+    //                     Cart::update($row_id, $product_qty);
 
-                        $success = array(
-                            'type'    => 'success_update_cart',
-                            'code'    => 'OK-CART-200',
-                            'data' => [
-                                'subtotal' => Localization::money(Cart::get($row_id)->subtotal),
-                                'total'    => Localization::money(Cart::total()),
-                                'count'    => Cart::count()
-                                ]);
+    //                     // $success = array(
+    //                     //     'type'    => 'success_update_cart',
+    //                     //     'code'    => 'OK-CART-200',
+    //                     //     'data' => [
+    //                     //         'subtotal' => Localization::money(Cart::get($row_id)->subtotal),
+    //                     //         'total'    => Localization::money(Cart::total()),
+    //                     //         'count'    => Cart::count()
+    //                     //         ]);
 
-                        return Response::json(compact('success'));
-                    }
-                } else {
-                    $error = array(
-                        'type'    => 'invalid_stock',
-                        'code'    => 'ERR-TOPUP-402',
-                        'message' => ['warning' => trans('shop.invalid-stock')]
-                        );
+    //                     return Response::json(compact('success'));
+    //                 }
+    //             } else {
+    //                 $error = array(
+    //                     'type'    => 'invalid_stock',
+    //                     'code'    => 'ERR-TOPUP-402',
+    //                     'message' => ['warning' => trans('shop.invalid-stock')]
+    //                     );
 
-                    return Response::json(compact('error'));
-                }
-            }
-        } else {
-            return 'Invalid Request';
-        }
-    }
+    //                 return Response::json(compact('error'));
+    //             }
+    //         }
+    //     } else {
+    //         return 'Invalid Request';
+    //     }
+    // }
 
     public function deletecart(Request $data)
     {

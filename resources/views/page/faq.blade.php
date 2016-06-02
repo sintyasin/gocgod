@@ -5,6 +5,7 @@
 	<div class="padding_outer">
 		<h2>Frequent Asked Question</h2>
 
+		<div class="clicktoregister">
 		<div class="col-md-12 col-xs-12">
 		@foreach($query_faq as $faq)
 			<div class="faq">
@@ -17,6 +18,8 @@
 			</div>
 		@endforeach
 		</div>
+		</div>
+		
 	</div>
 </div>
 @stop

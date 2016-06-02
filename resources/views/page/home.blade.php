@@ -15,6 +15,7 @@
 	<a href={{ URL('/login') }} class="boaBtn" target="_self">Become Our Member</a> <a href={{ URL('/menu') }} class="boaBtn" target="_self">Subscribe Our Product</a>
 </div>
 
+<!-- <div class="clicktoregister">
 <div class="container">
 	<div class="padding_menu_bottom">
 		<div class="col-md-3 col-xs-12">
@@ -25,4 +26,5 @@
 		</div>
 	</div>
 </div>
+</div> -->
 @stop

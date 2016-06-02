@@ -6,11 +6,11 @@
   <div class="padding_outer">
     <h2> CheckOut </h2>
   
+
     @if (Auth::guest())
-      <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
-      <br>
-      <br>
-      <br>
+      <div class="clicktoregister">
+        <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+      </div>
     @else
 
     <div class="stepper">
@@ -127,20 +127,20 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($cart_content as $row)
+                  @foreach(Cart::content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
                     <td>{{$row->rowid}}</td>
                     <td>{{$row->price}}</td>
                     <td align="center">
                       <input type="hidden" id="id" value="{{$row->rowid}}">
-                      <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;">
-<!--                       <input type="number" min="1" maxlength="2" id="qty" value="{{$row->qty}}" data-row="{{ $row->rowid }}" style="width:60px; color:black;"> <br><br>
-                      <button type="button" class="btn btn-primary" onclick="updatecart()"> Update</button> -->
+                      <!-- <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;"> -->
+                      <input type="number" min="1" maxlength="2" id="qty" value="{{$row->qty}}" data-row="{{ $row->rowid }}" style="width:60px; color:black;"> <br><br>
+                      <button type="button" class="btn btn-primary" onclick="updatecart()"> Update</button>
                     </td>
                     <?php $a = $row->price * $row->qty?>
                     
-                    <td>{{$a}}</td>
+                    <td>{{$row->Subtotal}}</td>
                     <td align="center">
                       <button type="button" onclick="deletecart()" class="btn btn-danger">Delete</button>
                     </td>
@@ -282,6 +282,15 @@
   } );
 
 
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+  
   $(document).ready(function(){
     $('.qty-box').on('input propertychange paste', function(e) {
       var rowId = $(this).data('row');
@@ -289,18 +298,20 @@
       var elem  = $(this);
       var line  = $(this).data('line');
 
+
       if(elem.val() > 0){
         $.ajax({
           type: 'post',
-          url: '{{ URL("/updatecart")}}',
+          url: '{{URL("/updateCart")}}',
           dataType: 'json',
           data: {rowId:rowId, qty:elem.val(), kode:kode},
           success: function (data) {
-            if (data.success) {
-              $('#'+line+'-subtotal').html(data.success.data.subtotal);
-              $('#total-cart').html(data.success.data.total);
-              $('#cart-counter').html(data.success.data.count);
-            } else if (data.error) {
+            // if (data.success) {
+            //   $('#'+line+'-subtotal').html(data.success.data.subtotal);
+            //   $('#total-cart').html(data.success.data.total);
+            //   $('#cart-counter').html(data.success.data.count);
+            // } else if 
+            if (data.error) {
               Materialize.toast(data.error.message.warning, 3000)
               elem.val('');
             }
@@ -308,32 +319,84 @@
         });
       }
       e.preventDefault();
+    });
+
+    $('[data-action="removeCart"]').click(function(e) {
+      var produk = $(this).data('product');
+      var kode = $(this).data('kode');
+      var nama = $(this).data('nama');
+      var ctn  = $('#notes').val();
+      var element = this;
+
+      //tempNotes(ctn);
+
+      $.ajax({
+        type: 'post',
+        dataType: 'json',
+        url: '{{ URL::to("shop/cart/remove/") }}',
+        data: {produk:produk, kode:kode},
+        success: function (data) {
+          $(element).closest ('tr').replaceWith('<tr><td colspan="6"><i>Product <a href="/shop/item/'+data.success.data.item+'">'+nama+'</a> removed from cart</i></td></tr>');
+          $('#total-cart').html(data.success.data.total);
+          $('#cart-counter').html(data.success.data.count);
+        },
       });
+      e.preventDefault();
+    });
   });
 
+  // $(document).ready(function(){
+  //   $('.qty-box').on('input propertychange paste', function(e) {
+  //     var rowId = $(this).data('row');
+  //     var kode  = $(this).data('kode');
+  //     var elem  = $(this);
+  //     var line  = $(this).data('line');
+
+  //     if(elem.val() > 0){
+  //       $.ajax({
+  //         type: 'post',
+  //         url: '{{ URL("/updatecart")}}',
+  //         dataType: 'json',
+  //         data: {rowId:rowId, qty:elem.val(), kode:kode},
+  //         success: function (data) {
+  //           if (data.success) {
+  //             $('#'+line+'-subtotal').html(data.success.data.subtotal);
+  //             $('#total-cart').html(data.success.data.total);
+  //             $('#cart-counter').html(data.success.data.count);
+  //           } else if (data.error) {
+  //             Materialize.toast(data.error.message.warning, 3000)
+  //             elem.val('');
+  //           }
+  //         }
+  //       });
+  //     }
+  //     e.preventDefault();
+  //     });
+  // });
 
 
-  // function updatecart()
-  // {
 
-  //   var rowId = $('#id').val();
-  //   var quantity = $('#qty').val();
+  function updatecart()
+  {
 
-  //   $.ajax({
-  //     url: '{{URL("/updatecart")}}',
-  //     type:'POST',
-  //     data: {rowId:rowId, qty: quantity},
-  //     beforeSend: function(request){
-  //           return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-  //         },
-  //   })
-  //   .done(function(){
-  //     alert("Update Data berhasil!");
-  //   })
-  //   .fail(function(){
-  //     alert('error');
-  //   })
-  // }
+    var rowId = $('#id').val();
+    var quantity = $('#qty').val();
+
+    $.ajax({
+      url: '{{URL("/updatecart")}}',
+      type:'POST',
+      data: {rowId:rowId, qty: quantity},
+      beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+    })
+    .done(function(){
+      alert("Update Data berhasil!");
+    })
+    .fail(function(){
+      alert('error');
+    })
+  }
 
   function deletecart()
   {
