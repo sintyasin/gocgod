@@ -79,16 +79,34 @@ class TransactionController extends Controller
 
     public function updatecart(Request $data)
     {
-        dd($data->rowId, $data->qty);
         $v = Validator::make($data->all(),[
             'qty' =>'required|numeric',
+            'id' =>'required',
             ]);
+
         if($v->fails())
         {
             return "Not completed data";
         }
 
-        Cart::update($data->rowId, ['qty' => $data->qty]);
+        $qty = $data->qty;
+        $rowid = $data->rowId; 
+        $id = $data->id; 
+
+        if ($qty <= 0) {
+            return 'Qty tidak valid';
+        }else {
+            $product = \DB::table('product__varian')->where('varian_id', $id)->first();
+            Cart::update($data->rowId, $qty);
+            $subtotal = $product->price * $qty;
+            $total = Cart::total();
+
+            $response = array(
+                'subtotal' => $subtotal,
+                'total' => $total);
+
+            return response()->json(compact('response'));
+        }
     }
 
     // public function updateCart()
