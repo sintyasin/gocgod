@@ -95,9 +95,6 @@
 	                            <ul class="dropdown-menu" role="menu">
 	                            	<li><a href="{{ url('/profile') }}"><div class="padding_outer_profile">Profile</div></a></li>
 	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">My Order</div></a></li>
-	                            	@if(Auth::user()->status_user == 0)
-	                            	<li><a href="#"><div class="padding_outer_profile">My Balance</div></a></li>
-	                            	@endif
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
 	                            </ul>
 	                        </li>
