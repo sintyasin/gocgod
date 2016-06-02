@@ -127,20 +127,20 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <?php $i = 0; ?>
                   @foreach(Cart::content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
                     <td>{{$row->rowid}}</td>
                     <td>{{$row->price}}</td>
                     <td align="center">
-                      <input type="hidden" id="id" value="{{$row->rowid}}">
+                      <input type="hidden" id="{{ $i.'-rowid' }}" value="{{$row->rowid}}">
+                      <input type="hidden" id="{{ $i.'-id' }}" value="{{$row->id}}">
                       <!-- <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;"> -->
-                      <input type="number" min="1" maxlength="2" id="qty" value="{{$row->qty}}" data-row="{{ $row->rowid }}" style="width:60px; color:black;"> <br><br>
-                      <button type="button" class="btn btn-primary" onclick="updatecart()"> Update</button>
+                      <input type="number" min="1" maxlength="2" id="{{ $i.'-qty' }}" value="{{$row->qty}}" style="width:60px; color:black;"> <br><br>
+                      <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Update</button>
                     </td>
-                    <?php $a = $row->price * $row->qty?>
-                    
-                    <td>{{$row->Subtotal}}</td>
+                    <td><span id="{{ $i.'-subtotal' }}">{{$row->subtotal}}</span></td>
                     <td align="center">
                       <button type="button" onclick="deletecart()" class="btn btn-danger">Delete</button>
                     </td>
@@ -149,7 +149,7 @@
                 </tbody>
               </table>
               <p class="plxLogin"><font size="3">Total Price</font></p>
-              <p class="plxLogin"><font size="4"><b>Rp 210.000.00</b></font></p>                                             
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart">{{ Cart::total() }}</span></b></font></p>                                             
             </div>
             <br>
             <input type="button" value="Previous" onclick="show_prev('subcriber','bar2');">
@@ -376,21 +376,24 @@ function isNumber(evt) {
 
 
 
-  function updatecart()
+  function updatecart(x)
   {
 
-    var rowId = $('#id').val();
-    var quantity = $('#qty').val();
+    var rowId = $('#'+x+'-rowid').val();
+    var id = $('#'+x+'-id').val();
+    var quantity = $('#'+x+'-qty').val();
 
     $.ajax({
       url: '{{URL("/updatecart")}}',
       type:'POST',
-      data: {rowId:rowId, qty: quantity},
+      data: {rowId:rowId, qty: quantity, id:id},
       beforeSend: function(request){
             return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
           },
     })
-    .done(function(){
+    .success(function(data){
+      $('#'+x+'-subtotal').html(data.response.subtotal);
+      $('#total-cart').html(data.response.total);
       alert("Update Data berhasil!");
     })
     .fail(function(){
