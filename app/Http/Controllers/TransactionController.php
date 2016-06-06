@@ -53,12 +53,13 @@ class TransactionController extends Controller
             ]);
 
         $total = Cart::total();
-        
+
         $response = array(
             'id' => $data->id,
             'qty' => $data->qty,
             'name' => $data->name,
-            'price' => $data->price
+            'price' => $data->price,
+            'total' => $total
             );
 
         
