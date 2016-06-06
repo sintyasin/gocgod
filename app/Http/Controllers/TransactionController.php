@@ -52,6 +52,8 @@ class TransactionController extends Controller
             'price' => $data->price,
             ]);
 
+        //$rowId = Cart::search(array('id' => $data->id));
+
         $total = Cart::total();
 
         $response = array(
@@ -60,9 +62,8 @@ class TransactionController extends Controller
             'name' => $data->name,
             'price' => $data->price,
             'total' => $total
+            //'rowId' => $rowId
             );
-
-        
 
         return response()->json(compact('response'));
     }
