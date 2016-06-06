@@ -28,18 +28,6 @@
     <div class="col-lg-12">
       <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
         <thead>
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>City</th>
-            <th>Date of birth</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Verification</th>
-            <th>Balance</th>
-            <th>Bank Account</th>
-            <th>Action</th>
-          </tr>
         </thead>
         <tbody>
         </tbody>
@@ -63,6 +51,7 @@ $(function() {
         serverSide: true,
         ajax: '{!! route('agentlist.data') !!}',
         columns: [
+            { data: 'id', name: 'id', title:'Agent Id' },
             { data: 'name', name: 'name', title:'Name' },
             { data: 'address', name: 'address', title:'Address' },
             { data: 'city_name', name: 'city_name', title:'City' },

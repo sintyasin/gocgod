@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 //use Request;
 use Validator;
 use Session;
+use Auth;
 use Yajra\Datatables\Datatables;
 //use ValidatesRequests;
 
 use DB;
+use Hash;
 use App\Product;
 use App\ProductCategory;
 use App\User;
@@ -26,6 +28,8 @@ use App\TxOrder;
 use App\TxOrderDetail;
 use App\TxShipDetail;
 use App\TxShip;
+use App\Admin;
+use App\AdminInfo;
 
 class SampleDetailData
 {
@@ -42,11 +46,185 @@ class ProductData
 
 class AdminController extends Controller
 {
+  public function getConfirmTx()
+  {
+    $today = new \DateTime(NULL);
+    date_add($today,date_interval_create_from_date_string("-8 days"));
+    $date = date_format($today,"Y-m-d");
+    //dd($date);
+    //WHERE status_confirmed = 0 AND order_date < ?', [$date]);
+    /*DB::update('UPDATE transaction__order 
+                SET status_confirmed = 1 
+                WHERE status_confirmed = 0 AND
+                (SELECT order_id, shipping_id
+                  FROM transaction__shipping s
+                  WHERE s.order_id = order_id AND
+                  (SELECT shipping_id
+                    FROM transaction__shipping_detail d
+                    WHERE d.shipping_id = s.shipping_id)) ');*/
+    DB::update('UPDATE transaction__order
+                SET status_confirmed = 1 
+                WHERE status_confirmed = 0 AND ? > 
+                (SELECT date_shipping
+                  FROM transaction__shipping s
+                  LEFT JOIN transaction__shipping_detail d
+                  USING(shipping_id)
+                  WHERE s.order_id = transaction__order.order_id)', [$date]);
+  }
+
   public function getBannerList()
   {
     $data['active'] = 'bannerList';
   }
 
+
+  //NEW ADMIN
+  public function getAdminList()
+  {
+    $data['active'] = 'adminList';
+
+    return view('page.admin_admin_list', $data);
+  }
+
+  public function getAdminData()
+  {
+    $data['query'] = Admin::leftJoin('master__admin_information as i', 'i.admin_id', '=', 'id')
+                            ->get(['id', 'name', 'email', 'phone', 'super', 'information']);
+
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getAddAdmin()
+  {
+    $data['active'] = 'addAdmin';
+    $data['city'] = City::all();
+
+    return view('page.admin_add_admin', $data);
+  }
+
+  public function postAddAdmin(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'name' => 'required|max:100',
+        'password' => 'required|min:3|confirmed',
+        'dob' => 'required',
+        'city' => 'required|numeric',
+        'address' => 'required|max:500',
+        'phone' => 'numeric',
+        'email' => 'required|email|unique:master__admin,email',
+        'super' => 'required|digits_between:0,1|integer'
+    ]);
+
+    if ($v->fails())
+    {
+        return redirect('/admin/add')->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
+    $pass = Hash::make($input['password']);
+    $dob = filter_var($input['dob'], FILTER_SANITIZE_STRING);
+    $city = filter_var($input['city'], FILTER_SANITIZE_STRING);
+    $address = filter_var($input['address'], FILTER_SANITIZE_STRING);
+    $phone = filter_var($input['phone'], FILTER_SANITIZE_STRING);
+    $super = filter_var($input['super'], FILTER_SANITIZE_STRING);
+    $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
+    $info = filter_var($input['info'], FILTER_SANITIZE_STRING);
+
+    //kalo new city, berarti insert dulu city barunya
+    if($city == 0)
+    {
+      $newcity = filter_var($input['newcity'], FILTER_SANITIZE_STRING);
+      
+      $data = new City;
+      $data->city_name = $newcity;
+      $data->save();
+    }
+
+    $admin = new Admin();
+    $admin->name = $name;
+    $admin->password = $pass;
+    $admin->email = $email;
+    $admin->date_of_birth = $dob;
+    $admin->address = $address;
+    $admin->phone = $phone;
+    $admin->super = $super;
+    if($city == 0)
+        $admin->city_id = $data->city_id;
+    else
+        $admin->city_id = $city;
+    $admin->save();
+
+    $data = new AdminInfo();
+    $data->information = $info;
+    $data->admin_id = $admin->id;
+    $data->save();
+
+    Session::flash('success', 1);
+    return redirect('/admin/add');
+  }
+
+  public function getEditAdmin($id)
+  {
+    $data['active'] = 'adminList';
+    $data['query'] = Admin::leftJoin('master__admin_information as i', 'i.admin_id', '=', 'id')
+                          ->where('id', $id)
+                          ->get(['id', 'name', 'email', 'phone', 'super', 'information']);
+
+    return view('page.admin_edit_admin', $data);
+  }
+
+  public function postEditAdmin(Request $request, $id)
+  {
+    $v = Validator::make($request->all(), [
+        'super' => 'required|digits_between:0,1|integer'
+    ]);
+
+    if ($v->fails())
+    {
+        return redirect('/admin/edit/' . $id)->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $super = filter_var($input['super'], FILTER_SANITIZE_STRING);
+    $info = filter_var($input['info'], FILTER_SANITIZE_STRING);
+
+    $admin = Admin::find($id);
+    $admin->super = $super;
+    $admin->save();
+
+    $data = AdminInfo::where('admin_id', $id)->first();
+    $data->information = $info;
+    $data->save();
+
+    Session::flash('update', 1);
+    return redirect('/admin/list');
+  }
+
+  public function deleteAdmin(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+    
+    AdminInfo::where('admin_id', $id)->forceDelete();
+
+    Admin::find($id)->forceDelete();
+    Session::flash('delete', 1);
+
+    return 1;
+  }
 
 
   //TRANSACTION
@@ -91,6 +269,13 @@ class AdminController extends Controller
                 if ($request->has('agent')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                         if(stripos($row['agent'], $request->agent) !== false) return true;
+                        return false;
+                    });
+                }
+
+                if ($request->has('id')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['order_id'], $request->id) !== false) return true;
                         return false;
                     });
                 }
@@ -230,6 +415,12 @@ class AdminController extends Controller
                 if ($request->has('agent')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                         if(stripos($row['agent'], $request->agent) !== false) return true;
+                        return false;
+                    });
+                }
+                if ($request->has('id')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['tx_shipping_id'], $request->id) !== false) return true;
                         return false;
                     });
                 }
@@ -1519,4 +1710,5 @@ class AdminController extends Controller
   }
 
 }
+
 

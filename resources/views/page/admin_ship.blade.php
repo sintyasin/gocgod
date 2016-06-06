@@ -27,45 +27,75 @@
   <div class="row">
     <form method="POST" id="search-form" class="form-inline" role="form">
 
-    <div class="col-lg-12">
-     Order Date Between
-    </div>
+      <div class="col-lg-3">
+        <div class="col-lg-12">
+          Between
+        </div>
 
-    <div class="col-lg-2" id="baseDateControl">
-      <div class='input-group date' id='datetimepicker1'>
-          <input type='text' name="dateStart" id="dateStart" class="datepicker form-control" placeholder="Start Date"/>
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-calendar"></span>
-          </span>
+        <div class="col-lg-12" id="baseDateControl">
+          <div class='input-group date' id='datetimepicker1'>
+              <input type='text' name="dateStart" id="dateStart" class="datepicker form-control" placeholder="Start Date"/>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          And
+        </div>
+
+        <div class="col-lg-12">
+          <div class='input-group date' id='datetimepicker1'>
+              <input type='text' name="dateEnd" id="dateEnd" class="datepicker form-control" placeholder="End Date"/>
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+        </div>
+
       </div>
-    </div>
 
-    <div class="col-lg-12">
-      And
-    </div>
 
-    <div class="col-lg-2">
-      <div class='input-group date' id='datetimepicker1'>
-          <input type='text' name="dateEnd" id="dateEnd" class="datepicker form-control" placeholder="End Date"/>
-          <span class="input-group-addon">
-              <span class="glyphicon glyphicon-calendar"></span>
-          </span>
+      <div class="col-lg-3">
+        <div class="col-lg-12">
+          Shipping Id
+        </div>
+
+        <div class="col-lg-5">
+          <div class='form-group'>
+              <input type='text' name="id" id="id" class="form-control" placeholder="Shipping Id"/>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="col-lg-2">
-      <div class='form-group'>
-          <input type='text' name="customer" id="customer" class="form-control" placeholder="Customer"/>
+      <div class="col-lg-3">
+        
+        <div class="col-lg-12">
+          Customer Name
+        </div>
+
+        <div class="col-lg-12">
+          <div class='form-group'>
+              <input type='text' name="customer" id="customer" class="form-control" placeholder="Customer"/>
+          </div>
+        </div>
+
       </div>
-    </div>
+      <div class="col-lg-3">
+        <div class="col-lg-12">
+          Agent Name
+        </div>
 
-    <div class="col-lg-2">
-      <div class='form-group'>
-          <input type='text' name="agent" id="agent" class="form-control" placeholder="Agent"/>
+        <div class="col-lg-12">
+          <div class='form-group'>
+              <input type='text' name="agent" id="agent" class="form-control" placeholder="Agent"/>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="col-lg-2">
+    <div class="col-lg-offset-5 col-lg-5">
+      <br>
       <input class="btn btn-primary" type="submit" value="Submit" />
     </div>
 
@@ -89,6 +119,7 @@
       <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
         <thead>
           <tr>
+            <th>Shipping Id</th>
             <th>Customer</th>
             <th>Agent</th>
             <th>Order Date</th>
@@ -200,6 +231,7 @@ $(function() {
                 d.dateEnd = $('input[name=dateEnd]').val();
                 d.customer = $('input[name=customer]').val();
                 d.agent = $('input[name=agent]').val();
+                d.id = $('input[name=id]').val();
             }
         },
         dom: 'Bfrtip',
@@ -207,6 +239,7 @@ $(function() {
             'copy', 'csv', 'excel', 'pdf', 'print',
         ],
         columns: [
+            { data: 'tx_shipping_id', name: 'tx_shipping_id', title:'Shipping Id' },
             { data: 'customer', name: 'customer', title:'Customer' },
             { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'order_date', name: 'order_date', title:'Order Date' },

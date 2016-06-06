@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Redirect;
 use Session;
 use Illuminate\Http\Request;
 
+use App\City;
+use App\Admin;
+use Hash;
+
 class AdminAuthController extends Controller
 {
     /*
@@ -32,7 +36,7 @@ class AdminAuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/product/list';
+    //protected $redirectTo = '/admin/product/list';
     //protected $loginPath = '/login';
 
     /**
@@ -40,9 +44,11 @@ class AdminAuthController extends Controller
      *
      * @return void
      */
+    protected $redirectTo = '/admin/product/list';
+
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        //$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
     /**
@@ -90,7 +96,12 @@ class AdminAuthController extends Controller
 
     public function getLogin()
     {
-        return view('page.admin_login');
+        if (auth('admin')->check())
+        {
+            return redirect('admin/product/list');
+        }
+        else
+            return view('page.admin_login');
     }
 
     public function postLogin(Request $request)
@@ -120,22 +131,122 @@ class AdminAuthController extends Controller
                 'password'  => $password
             );
 
+            
             // attempt to do the login
-            if (Auth::attempt($userdata)) {
-
+            if (Auth::guard('admin')->attempt($userdata)) {
                 // validation successful!
                 // redirect them to the secure section or whatever
                 // return Redirect::to('secure');
                 // for now we'll just echo success (even though echoing in a controller is bad)
-                echo 'SUCCESS!';
+                return redirect()->intended($this->redirectPath());
 
-            } else {        
+            } else {
                 Session::flash('failed', 1);
                 // validation not successful, send back to form 
-                return Redirect::to('/admin');
+                return Redirect::to('/general/log/in');
 
             }
 
         }
+    }
+
+    public function getLogout()
+    {
+        if(auth('admin')->check())
+        {
+            auth('admin')->logout();
+            return Redirect::to('/general/log/in');
+        }
+    }
+
+    public function getEditProfile()
+    {
+        $data['query'] = auth('admin')->user();
+        $data['city'] = City::all();
+        
+        return view('page.admin_edit_profile', $data);
+    }
+
+    public function postEditProfile(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'dob' => 'required',
+            'city' => 'required|numeric',
+            'address' => 'required|max:500',
+            'phone' => 'numeric',
+            'email' => 'required|email',
+        ]);
+
+        if ($v->fails())
+        {
+            return redirect('/admin/edit/profile')->withErrors($v->errors())->withInput();
+        }    
+
+        $input = $request->all();
+
+        $dob = filter_var($input['dob'], FILTER_SANITIZE_STRING);
+        $city = filter_var($input['city'], FILTER_SANITIZE_STRING);
+        $address = filter_var($input['address'], FILTER_SANITIZE_STRING);
+        $phone = filter_var($input['phone'], FILTER_SANITIZE_STRING);
+        $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
+        
+
+        //kalo new city, berarti insert dulu city barunya
+        if($city == 0)
+        {
+          $newcity = filter_var($input['newcity'], FILTER_SANITIZE_STRING);
+          
+          $data = new City;
+          $data->city_name = $newcity;
+          $data->save();
+        }
+
+
+        $admin = Admin::find(auth('admin')->user()->id);
+        $admin->date_of_birth = $dob;
+
+        if($city == 0)
+            $admin->city_id = $data->city_id;
+        else
+            $admin->city_id = $city;
+        $admin->address = $address;
+        $admin->phone = $phone;
+        $admin->email = $email;
+        $admin->save();
+
+        Session::flash('update', 1);
+        return redirect('/admin/edit/profile');
+    }
+
+    public function postChangePassword(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'pass' => 'required',
+            'newpassword' => 'required|min:3|confirmed',
+            'newpassword_confirmation' => 'required',
+        ]);
+
+        $pass = $request->pass;
+
+        $v->after(function($v) use ($request) {
+            if (!Hash::check($request->pass, auth('admin')->user()->password))
+            {
+                $v->errors()->add('pass', 'Wrong Password!');
+            }
+        });
+
+        if ($v->fails())
+        {
+            return redirect('/admin/edit/profile')->withErrors($v->errors())->withInput();
+        }    
+
+        $input = $request->all();
+
+        $admin = Admin::find(auth('admin')->user()->id);
+        $admin->password = Hash::make($request->newpass);
+        $admin->save();
+
+        Session::flash('password', 1);
+        return redirect('/admin/edit/profile');
     }
 }

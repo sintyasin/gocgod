@@ -29,13 +29,56 @@ Route::post('deletecart/', 'TransactionController@deletecart');
 Route::auth();
 
 //////halaman admin
-//product
-Route::group(['prefix' => 'admin'], function () {
-	Route::get('/',
-		'Auth\AdminAuthController@getLogin'
+//auto update konfirmasi terima barang
+Route::get('confirm/tx',
+	'AdminController@getConfirmTx'
+);
+
+//LOGIN
+Route::get('/general/log/in',
+	'Auth\AdminAuthController@getLogin'
+);
+Route::post('/admin/login',
+	'Auth\AdminAuthController@postLogin'
+);
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
+	//logout
+	Route::get('/logout',
+		'Auth\AdminAuthController@getLogout'
 	);
-	Route::post('/login',
-		'Auth\AdminAuthController@postLogin'
+	//admin profile
+	Route::get('/edit/profile',
+		'Auth\AdminAuthController@getEditProfile'
+	);
+	Route::post('/post/edit/profile',
+		'Auth\AdminAuthController@postEditProfile'
+	);
+	Route::post('/change/password',
+		'Auth\AdminAuthController@postChangePassword'
+	);
+
+	//new admin
+	Route::get('list',
+		'AdminController@getAdminList'
+	);
+	Route::get('admin/data', 
+		array('as' => 'admin.data', 
+			'uses' =>'AdminController@getAdminData')
+	);
+	Route::post('/delete/admin',
+		'AdminController@deleteAdmin'
+	);
+	Route::get('add',
+		'AdminController@getAddAdmin'
+	);
+	Route::post('/post/add/admin',
+		'AdminController@postAddAdmin'
+	);
+	Route::get('edit/{id}',
+		'AdminController@getEditAdmin'
+	);
+	Route::post('/post/edit/admin/{id}',
+		'AdminController@postEditAdmin'
 	);
 
 

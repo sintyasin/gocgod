@@ -103,6 +103,7 @@
         <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
           <thead>
             <tr>
+              <th>Order Id</th>
               <th>Customer</th>
               <th>Agent</th>
               <th>Order Date</th>
@@ -205,6 +206,7 @@ $(function() {
             }
         },
         columns: [
+            { data: 'order_id', name: 'order_id', title:'Order Id' },
             { data: 'customer', name: 'customer', title:'Customer' },
             { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
