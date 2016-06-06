@@ -18,11 +18,11 @@ Route::get('menu/', 'ProductController@getMenu');
 Route::get('productsample', 'ProductController@getMenuSample');
 Route::get('myaccount/{id}', 'MemberController@readDataMember');
 Route::post('review/{id}', 'ProductController@giveTestimonial');
-Route::get('checkout', 'ProductController@getAllMenu');
+Route::get('checkout_subcriber', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
 Route::post('orderall', 'TransactionController@transactionAll');
-Route::post('addtocart/', 'TransactionController@addcart');
+Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
 Route::post('updatecart/', 'TransactionController@updatecart');
 Route::post('deletecart/', 'TransactionController@deletecart');
 

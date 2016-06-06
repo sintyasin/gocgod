@@ -1,4 +1,4 @@
-@extends('layout.main_layout')
+  @extends('layout.main_layout')
 
 @section('content')
 <!-- Start checkout content -->
@@ -6,11 +6,11 @@
   <div class="padding_outer">
     <h2> CheckOut </h2>
   
+
     @if (Auth::guest())
-      <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
-      <br>
-      <br>
-      <br>
+      <div class="clicktoregister">
+        <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+      </div>
     @else
 
     <div class="stepper">
@@ -26,8 +26,8 @@
           <span class='baricon'>4</span>
           <span id="bar4" class='progress_bar'></span>
           <span class='baricon'>5</span>
-          <span id="bar5" class='progress_bar'></span>
-          <span class='baricon'>6</span>
+          <!-- <span id="bar5" class='progress_bar'></span>
+          <span class='baricon'>6</span> -->
         </div>
         <br>
         <br>
@@ -38,11 +38,12 @@
       </div>
             
       <form class="form-horizontal" role="form" method="POST" action="{{ url('orderall') }}">
-        <div id="wrapper">
-          {!! csrf_field() !!}
+      {!! csrf_field() !!}
+        <!-- <div id="wrapper"> -->
+          
         <!-- ================================================================================================ -->
         <!-- ================================================================================================ -->
-          <div id="checkout_method">
+          <!-- <div id="checkout_method">
             <br>
             <p class='form_head'>Checkout Method</p>
             <p>Who are you?</p>
@@ -53,7 +54,7 @@
             <br>
             <br>
           </div>
-        </div>
+        </div> -->
         
         <!-- ================================================================================================ -->
         <!-- ================================================================================================ -->
@@ -69,7 +70,8 @@
                   <th>Description</th>
                   <th>Price</th>
                   <th>Quantity</th>
-                  <th>Day</th>
+                  <th></th>
+                  <!-- <th>Day</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -79,17 +81,17 @@
                     <td> {{$items->varian_name}} </td>
 <!--                     <td> <img src = {{URL::asset("assets/images/product/". $queryCategory[$i]->category_name . "/" . $items->picture)}} /> </td> -->
                     <td style="text-align: justify"> {{$items->description}} </td>
-                    <td> Rp{{number_format($items->price, 2, ',', '.')}} </td>
+                    <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
-                      <select>
-                        <option value="">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                      </select>
+                      <input type="hidden" value="{{$items->varian_name}}" id = "{{ $i.'-name' }}">
+                      <input type="hidden" value="{{$items->varian_id}}" id = "{{ $i.'-id' }}">
+                      <input type="hidden" value="{{$items->price}}" id = "{{ $i.'-price' }}">
+                      <input type="number" maxlength="2" id="{{ $i.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
                     </td>
                     <td>
+                    <button type="button" id="button_{{$i}}" class="btn btn-primary" onclick="addtosubcriber({{ $i }})"> Add to Cart</button>
+                    </td>
+                    <!-- <td>
                       <select style="color:black;">
                         <option value="1">Monday</option>
                         <option value="2">Tuesday</option>
@@ -99,15 +101,16 @@
                         <option value="3">Saturday</option>
                         <option value="4">Sunday</option>
                       </select>
-                    </td>
+                    </td> -->
                   </tr>
                   <?php $i++?>
                 @endforeach
               </tbody>
             </table>
             <br>
-            <input type="button" value="Previous" onclick="show_prev('checkout_method', 'bar1');">
-            <input type="button" value="Next" onclick="show_next('subcriber', 'product_details' ,'bar2');">
+            <!-- <input type="button" value="Previous" onclick="show_prev('checkout_method', 'bar1');"> -->
+
+            <input type="button" value="Next" onclick="show_next('subcriber', 'product_details' ,'bar1');">
           </div>
         
         <!-- ================================================================================================ -->
@@ -119,7 +122,6 @@
                 <thead>
                   <tr>
                     <th>Product</th>
-                    <th>rowid</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Sub Total</th>
@@ -127,33 +129,34 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach($cart_content as $row)
+                  <?php $i = 0; ?>
+                  @foreach(Cart::content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
-                    <td>{{$row->rowid}}</td>
-                    <td>{{$row->price}}</td>
+                    <td>Rp {{number_format($row->price, 2, ',', '.')}}</td>
                     <td align="center">
-                      <input type="hidden" id="id" value="{{$row->rowid}}">
-                      <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;">
-<!--                       <input type="number" min="1" maxlength="2" id="qty" value="{{$row->qty}}" data-row="{{ $row->rowid }}" style="width:60px; color:black;"> <br><br>
-                      <button type="button" class="btn btn-primary" onclick="updatecart()"> Update</button> -->
+                      <input type="hidden" id="{{ $i.'-rowid' }}" value="{{$row->rowid}}">
+                      <input type="hidden" id="{{ $i.'-id' }}" value="{{$row->id}}">
+                      <!-- <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;"> -->
+                      <input type="number" maxlength="2" id="{{ $i.'-qty' }}" value="{{$row->qty}}" style="width:60px; color:black; text-align: center;s">
+                      
                     </td>
-                    <?php $a = $row->price * $row->qty?>
-                    
-                    <td>{{$a}}</td>
+                    <td><span id="{{ $i.'-subtotal' }}">Rp {{number_format($row->subtotal, 2, ',', '.')}}</span></td>
                     <td align="center">
-                      <button type="button" onclick="deletecart()" class="btn btn-danger">Delete</button>
+                      <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Update</button>
+                      <button type="button" onclick="deletecart({{ $i }})" class="btn btn-danger">Delete</button>
                     </td>
                   </tr>
+                  <?php $i++; ?>
                   @endforeach
                 </tbody>
               </table>
               <p class="plxLogin"><font size="3">Total Price</font></p>
-              <p class="plxLogin"><font size="4"><b>Rp 210.000.00</b></font></p>                                             
+              <p class="plxLogin"><font size="4"><b><span id="total-cart">Rp {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-            <input type="button" value="Previous" onclick="show_prev('subcriber','bar2');">
-            <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar3');">
+            <!-- <input type="button" value="Previous" onclick="show_prev('subcriber','bar2');">
+ -->            <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
           </div>
         </div>
         <div id="wrapper">
@@ -173,7 +176,7 @@
               
             <br>
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
-            <input type="button" value="Next" onclick="show_next('delivery_address', 'choose_agent', 'bar4');">
+            <input type="button" value="Next" onclick="show_next('delivery_address', 'choose_agent', 'bar3');">
           </div>
 
         <!-- ================================================================================================ -->
@@ -192,7 +195,7 @@
             </select>
             <br>
             <input type="button" value="Previous" onclick="show_prev('delivery_address','bar4');">
-            <input type="button" value="Next" onclick="show_next('choose_agent', 'payment','bar5');">
+            <input type="button" value="Next" onclick="show_next('choose_agent', 'payment','bar4');">
           </div>
 
         <!-- ================================================================================================ -->
@@ -263,7 +266,7 @@
                 </div>                                             
               </div>
             </div>
-            <input type="button" value="Previous" onclick="show_prev('choose_agent','bar5');">
+            <input type="button" value="Previous" onclick="show_prev('choose_agent','bar4');">
             <input type="Submit" value="Submit">
           </div>
           </div>
@@ -281,65 +284,71 @@
       } );
   } );
 
-
-  $(document).ready(function(){
-    $('.qty-box').on('input propertychange paste', function(e) {
-      var rowId = $(this).data('row');
-      var kode  = $(this).data('kode');
-      var elem  = $(this);
-      var line  = $(this).data('line');
-
-      if(elem.val() > 0){
-        $.ajax({
-          type: 'post',
-          url: '{{ URL("/updatecart")}}',
-          dataType: 'json',
-          data: {rowId:rowId, qty:elem.val(), kode:kode},
-          success: function (data) {
-            if (data.success) {
-              $('#'+line+'-subtotal').html(data.success.data.subtotal);
-              $('#total-cart').html(data.success.data.total);
-              $('#cart-counter').html(data.success.data.count);
-            } else if (data.error) {
-              Materialize.toast(data.error.message.warning, 3000)
-              elem.val('');
-            }
-          }
-        });
-      }
-      e.preventDefault();
-      });
-  });
-
-
-
-  // function updatecart()
-  // {
-
-  //   var rowId = $('#id').val();
-  //   var quantity = $('#qty').val();
-
-  //   $.ajax({
-  //     url: '{{URL("/updatecart")}}',
-  //     type:'POST',
-  //     data: {rowId:rowId, qty: quantity},
-  //     beforeSend: function(request){
-  //           return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-  //         },
-  //   })
-  //   .done(function(){
-  //     alert("Update Data berhasil!");
-  //   })
-  //   .fail(function(){
-  //     alert('error');
-  //   })
-  // }
-
-  function deletecart()
+  function addtosubcriber(x)
   {
+    var quantity = $('#'+x+'-qty_subcriber').val();
+    var name = $('#'+x+'-name').val();
+    var price = $('#'+x+'-price').val();
+    var id = $('#'+x+'-id').val();
+    
+    if ($('#'+x+'qty_subcriber').val() == 0) alert('Quantity product still blank...');
+    else{
 
-    var rowId = $('#id').val();
-    var quantity = $('#qty').val();
+    $.ajax({
+      url: '{{ URL("/addtocartsubcriber")}}',
+      type: 'POST',
+      data: {id: id, qty: quantity, name: name, price: price},
+      beforeSend: function(request){
+        return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      },
+  //    headers: {
+    //     'X-CSRF-Token': $('meta[name="token"]').attr('content')
+    // }
+    })
+    .done(function(){
+      $("#button_"+x).prop("disabled",true);
+      // $('input[type="button"]').attr('disabled','disabled');
+      alert('Added to cart!');
+      $('#'+x+'-subtotal').html(data.response.id);
+      $('#total-cart').html(data.response.qty);
+      $('#total-cart').html(data.response.name);
+      $('#total-cart').html(data.response.price);
+    })
+    .fail(function(){
+      alert('error');
+    })
+    }
+  }
+
+  function updatecart(x)
+  {
+    var rowId = $('#'+x+'-rowid').val();
+    var id = $('#'+x+'-id').val();
+    var quantity = $('#'+x+'-qty').val();
+
+    $.ajax({
+      url: '{{URL("/updatecart")}}',
+      type:'POST',
+      data: {rowId:rowId, qty: quantity, id:id},
+      beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+    })
+    .success(function(data){
+      $('#'+x+'-subtotal').html(data.response.subtotal);
+      $('#total-cart').html(data.response.total);
+      alert("Update Data berhasil!");
+    })
+    .fail(function(){
+      alert('error');
+    })
+  }
+
+  function deletecart(x)
+  {
+    var rowId = $('#'+x+'-rowid').val();
+    var id = $('#'+x+'-id').val();
+    var quantity = $('#'+x+'-qty').val();
 
     $.ajax({
       url: '{{URL("/deletecart")}}',

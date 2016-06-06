@@ -92,8 +92,6 @@ class ProductController extends Controller
             $i++;
         }
 
-        $data['cart_content'] = Cart::content();
-        $j = 0;
         // //musti dijoin 3 table
         // foreach($data['cart_content'] as $temp)
         // {
@@ -102,6 +100,6 @@ class ProductController extends Controller
          
         // dd($data['cart_content']);
 
-        return view('page.checkout', $data);
+        return view('page.checkout_subcriber', $data);
     }
 }

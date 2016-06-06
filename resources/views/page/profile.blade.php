@@ -135,9 +135,14 @@
           </div>
         </div>
 
-
+        @if(Auth::user()->status == 0)
+        <button type="button" class="boaBtn_boa_pf" onclick="show_next('balance')">
+          My Balance
+        </button>
+        @endif
     	</div>
 
+      <div id="profile">
     	<div class = "col-md-6">
        		<div class="box box-primary" >
                 <div class="box-body box-profile">
@@ -175,6 +180,48 @@
                     </ul>
                 </div>
             </div>
+        </div>
+        </div>
+
+      <div id="balance">
+      <div class = "col-md-6">
+          <div class="box box-primary" >
+                <div class="box-body box-profile">
+                  
+                  <h3 class="profile-username text-center"> {{Auth::user()->name}} - Balance </h3>
+                    <p class="text-muted text-center"> 
+                    @if (Auth::user()->status_user == 1)
+                      Customer
+                    @else
+                        Agent
+                    @endif
+                    </p>
+
+                    <ul class="list-group list-group-unbordered">
+                      <li class="list-group-item">
+                        Address: &nbsp;<b> {{Auth::user()->address}}</b>
+                      </li>
+                      <li class="list-group-item">
+                        Date of Birth: &nbsp;<b> {{Auth::user()->date_of_birth}}</b>
+                      </li>
+                      <li class="list-group-item">
+                        Telephone:&nbsp;<b> {{Auth::user()->phone}}</b>
+                      </li>
+                      <li class="list-group-item">
+                        Email: &nbsp;<b> {{Auth::user()->email}}</b>
+                      </li>
+                      @if(Auth::user()->status_user==0)
+                        <li class="list-group-item">
+                        Bank Account: &nbsp;<b> {{Auth::user()->bank_account}}</b>
+                        </li>
+                        <li class="list-group-item">
+                        Balance: &nbsp;<b> {{Auth::user()->balance}}</b>
+                        </li>
+                      @endif
+                    </ul>
+                </div>
+            </div>
+        </div>
         </div>
 
 

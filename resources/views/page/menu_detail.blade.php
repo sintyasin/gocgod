@@ -14,7 +14,7 @@
 		<div class="col-md-6 col-xs-12">
 			<div class="padding_outer_menu">
 				<div class="cont1 simpleCart_shelfItem">
-					<h3 class="quick_h3_stock">Stock: <span class="color">{{$query->qty}}</span></h3>
+					<!-- <h3 class="quick_h3_stock">Stock: <span class="color">{{$query->qty}}</span></h3> -->
 					<div class="price_single">
 						<!-- <span class="reducedfrom">$140.00</span> -->
 						<?php 
@@ -41,8 +41,6 @@
 						<input type="text" min="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
 						<input type="hidden" id="name" value="{{ $query->varian_name }}">
 						<input type="hidden" id="price" value="{{ $query->price }}">
-						<input type="hidden" id="category" value="{{$queryCategory->category_name}}">
-						<input type="hidden" id="picture" value="{{ $query->picture }}">
 					</div>
 
 					
@@ -168,23 +166,28 @@
       	var quantity = $('#qty').val();
       	var name = $('#name').val();
       	var price = $('#price').val();
-      	var category = $('#category').val();
-      	var picture = $('#picture').val();
+      	
+      	if ($('#qty').val() == 0) alert('Quantity product still blank...');
+      	else{
       	$.ajax({
       		url: '{{ URL("/addtocart")}}',
       		type: 'POST',
-      		data: {id: id, qty: quantity, name: name, price: price, category: category, picture: picture},
+      		data: {id: id, qty: quantity, name: name, price: price},
       		beforeSend: function(request){
       			return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
       		},
+      // 		headers: {
+		    //     'X-CSRF-Token': $('meta[name="token"]').attr('content')
+		    // }
       	})
       	.done(function(){
+      		alert('Added to cart!');
       		window.location.replace('{{URL("/menu_detail")}}'+ '/' + id);
       	})
       	.fail(function(){
       		alert('error');
       	})
-
+      	}
       }
 </script>
 @endpush

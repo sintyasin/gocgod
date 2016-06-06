@@ -4,6 +4,13 @@
 CUSTOM!!
 ====================
 */
+.container_modal{
+  z-index: 10000 !important;
+}
+.clicktoregister{
+  padding-bottom:150px;
+}
+
 .top_custom{
 	overflow: hidden;
 	background: rgb(1, 117, 96) none repeat scroll 0 0;
@@ -772,7 +779,7 @@ figure:hover figcaption {
   margin-top:10px;
 }
 
-#product_details, #subcriber, #finish, #delivery_address, #choose_agent, #payment
+#product_details, #finish, #delivery_address, #choose_agent, #payment
 {
   display:none;
 }
