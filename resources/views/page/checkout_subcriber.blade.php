@@ -295,10 +295,8 @@
           "<button type='button' class='btn btn-primary' onclick='updatecart({{ $i }})'> Update </button> <button type='button' onclick='deletecart({{ $i }})' class='btn btn-danger'>Delete</button>",
       ] ).draw( false );
 
-      $('#total-cart').html(data.response.price);
+      $('#total-cart').html(data.response.total);
 
-      $('')
-       
       alert('Added to cart!');
       // $('#'+x+'-subtotal').html(data.response.id);
       // $('#total-cart').html(data.response.qty);
