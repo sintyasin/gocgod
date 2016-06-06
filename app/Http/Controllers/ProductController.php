@@ -100,6 +100,6 @@ class ProductController extends Controller
          
         // dd($data['cart_content']);
 
-        return view('page.checkout', $data);
+        return view('page.checkout_subcriber', $data);
     }
 }

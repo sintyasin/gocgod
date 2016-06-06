@@ -105,47 +105,6 @@
 	                    <li><p>  </p> </li>
 						<li><p>  </p> </li>
 
-<!-- 						<li class="searchbox">
-=======
-						                                    	<label>
-						                                    		<input type="checkbox" name="remember"> Remember Me
-						                                    	</label>
-						                                    </div>
-
-
-						                                    <div class="help-block text-right"><a href="{{ url('/password/reset') }}">Forget the password ?</a></div>
-						                                </div>
-						                                <div class="form-group">
-						                                	<button type="submit" class="btn btn-primary btn-block">Sign in</button>
-						                                </div>
-						                            </form>
-						                        </div>
-						                        <div class="bottom text-center">
-						                        	New here ? <a href="{{ url('/login') }}"><b>Join Us</b></a>
-						                        </div>
-						                    </div>
-						                </li>
-						            </ul>
-						            @else
-						            <li class="dropdown">
-						            	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-						            		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>  {{ Auth::user()->name }} <span class="caret"></span>
-						            	</a>
-
-						            	<ul class="dropdown-menu" role="menu">
-						            		<li><a href="{{ url('/profile') }}"><div class="padding_outer_profile">Profile</div></a></li>
-						            		<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">My Order</div></a></li>
-						            		@if(Auth::user()->status_user == 0)
-						            		<li><a href="#"><div class="padding_outer_profile">My Balance</div></a></li>
-						            		@endif
-						            		<li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
-						            	</ul>
-						            </li>
-						            @endif
-
-						            <li><p>  </p> </li>
-						            <li><p>  </p> </li>
-
 						<!-- 						
 							li class="searchbox">
 >>>>>>> origin/frontend
@@ -172,7 +131,8 @@
 							@if(!Auth::guest() && Auth::user()->status_user == 0)
 							<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
 							@endif	
-							<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+							<!-- <li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
 
 							<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
 						</ul>
@@ -208,7 +168,8 @@
 					@if(!Auth::guest() && Auth::user()->status_user == 0)
 					<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
 					@endif
-					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+<!-- 					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
 					
 				</ul>
 			</nav>
@@ -216,3 +177,31 @@
 	</div>
 </div>
 <!-- mobile-menu-area end -->
+
+
+<div class="container_modal">
+	<div class="modal fade" id="checkout" tabindex="-1" role="dialog" aira-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal_header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        	<center>Who are you?</center>
+		      </div>
+
+		      <div class="modal-body">
+		      <center>
+		      <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_singlebuyer')}}">
+	            I am Single Buyer
+	          </a>
+	          </button>
+	          <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_subcriber')}}">
+	            I am Subcriber
+	           </a>
+	          </button>
+	            <br><br><p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
+		      </div>
+		      </center>
+	      	</div>
+	    </div>
+	</div>
+</div>

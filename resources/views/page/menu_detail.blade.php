@@ -14,7 +14,7 @@
 		<div class="col-md-6 col-xs-12">
 			<div class="padding_outer_menu">
 				<div class="cont1 simpleCart_shelfItem">
-					<h3 class="quick_h3_stock">Stock: <span class="color">{{$query->qty}}</span></h3>
+					<!-- <h3 class="quick_h3_stock">Stock: <span class="color">{{$query->qty}}</span></h3> -->
 					<div class="price_single">
 						<!-- <span class="reducedfrom">$140.00</span> -->
 						<?php 
