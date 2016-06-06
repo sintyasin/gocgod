@@ -5,6 +5,19 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu">
       <li class="header">MAIN NAVIGATION</li>
+      
+      @if(auth('admin')->user()->super == 1)
+      <li class=" <?php if($active == 'adminList' || $active == 'addAdmin') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-user-plus"></i> <span>Admin</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'adminList') echo 'active'; ?> "><a href={{ URL('/admin/list') }}><i class="fa fa-circle-o"></i> Admin List</a></li>
+          <li class=" <?php if($active == 'addAdmin') echo 'active'; ?> "><a href={{ URL('/admin/add') }} ><i class="fa fa-circle-o"></i> Add New Admin</a></li>
+        </ul>
+      </li>
+      @endif
+
       <li class=" <?php if(stripos($active, 'product') !== false) echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-list"></i> <span>Product</span> <i class="fa fa-angle-left pull-right"></i>
@@ -33,7 +46,7 @@
 
       <li class=" <?php if($active == 'faqList' || $active == 'insertFaq') echo 'active'; ?> treeview">
         <a href="#">
-          <i class="fa fa-user"></i> <span>FAQ</span> <i class="fa fa-angle-left pull-right"></i>
+          <i class="fa fa-question"></i> <span>FAQ</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
           <li class=" <?php if($active == 'faqList') echo 'active'; ?> "><a href={{ URL('/admin/faq/list') }}><i class="fa fa-circle-o"></i> Faq List</a></li>
@@ -98,10 +111,6 @@
           <li><a href=""><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
         </ul>
       </li>
-      <li class="header">LABELS</li>
-      <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
-      <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>
-      <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>Information</span></a></li>
     </ul>
   </section>
   <!-- /.sidebar -->

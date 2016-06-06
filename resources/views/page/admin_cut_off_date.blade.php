@@ -34,7 +34,7 @@
 
             <div class="col-md-5">
                 <select name="date" class="form-control">
-                    @for ($i = 1; $i <= 7; $i++)
+                    @for ($i = 0; $i <= 7; $i++)
                         @if($query->cut_off == $i)
                             <option value={{$i}} selected>{{$i}}</option>
                         @else

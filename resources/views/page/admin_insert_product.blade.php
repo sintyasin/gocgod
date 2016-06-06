@@ -119,7 +119,7 @@
             <label class="col-md-1 control-label">Description</label>
 
             <div class="col-md-5">
-                <input type="text" class="form-control" placeholder="Description" name="description" value="{{ old('description') }}">
+                <textarea class="form-control" placeholder="Description" name="description" rows="5"></textarea>
 
                 @if ($errors->has('description'))
                 <span class="help-block">
