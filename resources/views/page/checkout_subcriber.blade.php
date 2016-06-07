@@ -6,7 +6,7 @@
   <div class="padding_outer">
     <h2> CheckOut </h2>
   
-
+    <?php $i=0?>
     @if (Auth::guest())
       <div class="clicktoregister">
         <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
@@ -56,7 +56,7 @@
                 </tr>
               </thead>
               <tbody>
-                <?php $i=0;?>
+                <?php $a=0;?>
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
@@ -64,13 +64,13 @@
                     <td style="text-align: justify"> {{$items->description}} </td>
                     <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
-                      <input type="hidden" value="{{$items->varian_name}}" id = "{{ $i.'-name' }}">
-                      <input type="hidden" value="{{$items->varian_id}}" id = "{{ $i.'-id' }}">
-                      <input type="hidden" value="{{$items->price}}" id = "{{ $i.'-price' }}">
-                      <input type="number" min="0" maxlength="2" id="{{ $i.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
+                      <input type="hidden" value="{{$items->varian_name}}" id = "{{ $a.'-name' }}">
+                      <input type="hidden" value="{{$items->varian_id}}" id = "{{ $a.'-id' }}">
+                      <input type="hidden" value="{{$items->price}}" id = "{{ $a.'-price' }}">
+                      <input type="number" min="0" maxlength="2" id="{{ $a.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
                     </td>
                     <td>
-                    <button type="button" id="button_{{$i}}" class="btn btn-primary" onclick="addtosubcriber({{ $i }})"> Add to Cart</button>
+                    <button type="button" id="button_{{$a}}" class="btn btn-primary" onclick="addtosubcriber({{ $a }})"> Add to Cart</button>
                     </td>
                     <!-- <td>
                       <select style="color:black;">
@@ -84,7 +84,7 @@
                       </select>
                     </td> -->
                   </tr>
-                  <?php $i++?>
+                  <?php $a++?>
                 @endforeach
               </tbody>
             </table>
@@ -110,7 +110,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                    <?php $i=0?>
                     @foreach(Cart::content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
