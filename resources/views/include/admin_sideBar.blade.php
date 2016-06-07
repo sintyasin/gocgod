@@ -64,13 +64,25 @@
         </ul>
       </li>
 
-      <li class=" <?php if($active == 'txOrder' || $active == 'txShipping') echo 'active'; ?> treeview">
+      <li class=" <?php if($active == 'txOrder') echo 'active'; ?> ">
+        <a href= {{URL('admin/order')}} >
+          <i class="fa fa-folder-o"></i> <span>Order Transaction</span>
+        </a>
+      </li>
+
+      <li class=" <?php if($active == 'purchase') echo 'active'; ?> ">
+        <a href= {{URL('admin/purchase?dateStart=&dateEnd=')}} >
+          <i class="fa fa-tasks"></i> <span>Purchase Order</span>
+        </a>
+      </li>
+
+      <li class=" <?php if($active == 'productReport' || $active == 'txReport') echo 'active'; ?> treeview">
         <a href="#">
-          <i class="fa fa-folder-o"></i> <span>Transaction</span> <i class="fa fa-angle-left pull-right"></i>
+          <i class="fa fa-file-excel-o"></i> <span>Report</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=" <?php if($active == 'txOrder') echo 'active'; ?> "><a href={{ URL('/admin/order') }}><i class="fa fa-circle-o"></i> Order Transaction</a></li>
-          <li class=" <?php if($active == 'txShipping') echo 'active'; ?> "><a href={{ URL('/admin/ship') }} ><i class="fa fa-circle-o"></i> Shipping Transaction</a></li>
+          <li class=" <?php if($active == 'txReport') echo 'active'; ?> "><a href={{ URL('/admin/report/tx') }}><i class="fa fa-circle-o"></i> Transaction Report</a></li>
+          <li class=" <?php if($active == 'productReport') echo 'active'; ?> "><a href={{ URL('/admin/report/product') }} ><i class="fa fa-circle-o"></i> Product Report</a></li>
         </ul>
       </li>
 
@@ -93,22 +105,6 @@
         <ul class="treeview-menu">
           <li class=" <?php if($active == 'bannerList') echo 'active'; ?> "><a href={{ URL('/admin/banner/list') }}><i class="fa fa-circle-o"></i> Banner List</a></li>
           <li class=" <?php if($active == 'insertBanner') echo 'active'; ?> "><a href={{ URL('/admin/insert/banner') }} ><i class="fa fa-circle-o"></i> Insert Banner</a></li>
-        </ul>
-      </li>
-
-      <li class=" ">
-        <a href=>
-          <i class="fa fa-user"></i> <span>Tes</span>
-        </a>
-      </li>
-
-      <li class="treeview">
-        <a href="#">
-          <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <li class=""><a href=""><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-          <li><a href=""><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
         </ul>
       </li>
     </ul>

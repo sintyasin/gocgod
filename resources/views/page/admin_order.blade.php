@@ -30,7 +30,7 @@
 
       <div class="col-lg-3">
         <div class="col-lg-12">
-          Between
+         Order Date Between
         </div>
 
         <div class="col-lg-12" id="baseDateControl">
@@ -68,10 +68,29 @@
               <input type='text' name="id" id="id" class="form-control" placeholder="Order Id"/>
           </div>
         </div>
+
+        <div class="col-lg-12">
+          Group Id
+        </div>
+
+        <div class="col-lg-5">
+          <div class='form-group'>
+              <input type='text' name="gId" id="gId" class="form-control" placeholder="Group Id"/>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          Type
+        </div>
+
+        <div class="col-lg-5">
+          <div class='form-group'>
+              <input type='text' name="type" id="type" class="form-control" placeholder="Type"/>
+          </div>
+        </div>
       </div>
 
-      <div class="col-lg-3">
-        
+      <div class="col-lg-3">        
         <div class="col-lg-12">
           Customer Name
         </div>
@@ -82,8 +101,6 @@
           </div>
         </div>
 
-      </div>
-      <div class="col-lg-3">
         <div class="col-lg-12">
           Agent Name
         </div>
@@ -91,6 +108,38 @@
         <div class="col-lg-12">
           <div class='form-group'>
               <input type='text' name="agent" id="agent" class="form-control" placeholder="Agent"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="col-lg-12">
+          Payment Status
+        </div>
+
+        <div class="col-lg-12">
+          <div class='form-group'>
+              <input type='text' name="payment" id="payment" class="form-control" placeholder="0 / 1"/>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          Customer Confirmation
+        </div>
+
+        <div class="col-lg-12">
+          <div class='form-group'>
+              <input type='text' name="confirm" id="confirm" class="form-control" placeholder="0 / 1"/>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          Shipping Confirmation
+        </div>
+
+        <div class="col-lg-12">
+          <div class='form-group'>
+              <input type='text' name="ship" id="ship" class="form-control" placeholder="0 / 1"/>
           </div>
         </div>
       </div>
@@ -105,6 +154,12 @@
 
   <div class="row">
     <div class="col-lg-12">
+      <br>
+      <h4><b>
+      Notes : <br>
+      0 = Unconfirmed / Unpaid <br>
+      1 = Confirmed / Paid <br>
+      </b></h4>
       <br><br>
     </div>
   </div>
@@ -119,18 +174,6 @@
     <div class="col-lg-12">
       <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
         <thead>
-          <tr>
-            <th>Order Id</th>
-            <th>Customer</th>
-            <th>Agent</th>
-            <th>Order Date</th>
-            <th>Ship Address</th>
-            <th>City</th>
-            <th>Type</th>
-            <th>Payment Status</th>
-            <th>Confirmed Status</th>
-            <th>Action</th>
-          </tr>
         </thead>
         <tbody>
         </tbody>
@@ -203,7 +246,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
             qty += ("x" + obj[i].quantity + "<br>") ;
             price += ("@Rp" + obj[i].price + "<br>");
 
-            total += obj[i].price;
+            total += (obj[i].price * obj[i].quantity);
           }
           price += ("<hr style='border-color:black;'> Total : Rp" + total);
           $(".modal-body #name").html(name);
@@ -239,6 +282,11 @@ $(function() {
                 d.customer = $('input[name=customer]').val();
                 d.agent = $('input[name=agent]').val();
                 d.id = $('input[name=id]').val();
+                d.gId = $('input[name=gId]').val();
+                d.payment = $('input[name=payment]').val();
+                d.confirm = $('input[name=confirm]').val();
+                d.ship = $('input[name=ship]').val();
+                d.type = $('input[name=type]').val();
             }
         },
         dom: 'Bfrtip',
@@ -250,15 +298,20 @@ $(function() {
             { data: 'customer', name: 'customer', title:'Customer' },
             { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
-            { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
-            { data: 'city_name', name: 'city_name', title:'City' },            
-            { data: 'who', name: 'who', title:'Type' },
+            { data: 'group_id', name: 'group_id', title:'Group Id' },
+            { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date' },
+            { data: 'shipping_fee', name: 'shipping_fee', title:'Shipping Fee' },
+            { data: 'total', name: 'total', title:'Total' },
             { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
-            { data: 'status_confirmed', name: 'status_confirmed', title:'Confirmed Status' },
-            {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
-              return '<a class="btn btn-warning" onclick="editOrder(' + row.order_id + ')" >' + 'Edit' + '</a> <br><br>' + 
+            { data: 'status_confirmed', name: 'status_confirmed', title:'Customer Confirmation' },
+            { data: 'status_shipping', name: 'status_shipping', title:'Shipping Confirmation' },
+            {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
+              return '<br><a class="btn btn-warning" onclick="editOrder(' + row.order_id + ')" >' + 'Edit' + '</a> <br><br>' + 
                     '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
-            } }
+            } },         
+            { data: 'who', name: 'who', title:'Type' },
+            { data: 'city_name', name: 'city_name', title:'City' },   
+            { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
         ],
     });
 
