@@ -6,12 +6,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Review Agent Request
+    Comment Request
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Review Agent Request</li>
+    <li class="active">Comment Request</li>
   </ol>
 </section>
 

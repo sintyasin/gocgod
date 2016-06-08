@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Validator;
 use Session;
 use Auth;
+use Excel;
 use Yajra\Datatables\Datatables;
 //use ValidatesRequests;
 
@@ -48,6 +49,7 @@ class ProductData
 class PO
 {
   public $name;
+  public $id;
   public $varian;
   public $quantity;
   public $price;
@@ -113,7 +115,7 @@ class AdminController extends Controller
     $data['active'] = 'purchase';
 
     $query = DB::table('transaction__order')
-            ->select('m.name as name', 'p.varian_name as varian', DB::raw('SUM(d.quantity) as qty'), 'd.varian_price as price')
+            ->select('m.name as name', 'p.varian_name as varian', DB::raw('SUM(d.quantity) as qty'), DB::raw('(d.varian_price * SUM(d.quantity)) as price'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
@@ -124,166 +126,160 @@ class AdminController extends Controller
 
     if(!empty($query))
     {
-      $array;
-      $i = 0; $j = 0;
-      $namaLama;
-      $awal = 1;
-      foreach ($query as $tmpdata) {
-        if($awal == 1)
-        {
-          $tmp = new PO();
-          $tmp->name = $namaLama = $tmpdata->name;
-          $tmp->varian = $tmpdata->varian;
-          $tmp->quantity = $tmpdata->qty;
-          $tmp->price = $tmpdata->price * $tmpdata->qty;
+      $data['query'] = $query;
+      
+      $queryProduct = DB::table('transaction__order')
+              ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
+              ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+              ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+              ->where('shipping_date', '>=', $monday)
+              ->where('shipping_date', '<=', $sunday)
+              ->groupBy('name')
+              ->get();
 
-          $array[$i][$j] = $tmp;
-          $j++;
-          $awal = 0;
-        }
-        else
-        {
-          if($namaLama == $tmpdata->name)
-          {
-            $tmp = new PO();
-            $tmp->name = $tmpdata->name;
-            $tmp->varian = $tmpdata->varian;
-            $tmp->quantity = $tmpdata->qty;
-            $tmp->price = $tmpdata->price * $tmpdata->qty;
-
-            $array[$i][$j] = $tmp;
-            $j++;
-          }
-          else
-          {
-            $i++;
-            $j = 0;
-            $tmp = new PO();
-            $tmp->name = $namaLama = $tmpdata->name;
-            $tmp->varian = $tmpdata->varian;
-            $tmp->quantity = $tmpdata->qty;
-            $tmp->price = $tmpdata->price * $tmpdata->qty;
-
-            $array[$i][$j] = $tmp;
-            $j++;
-          }
-        }
+      if(!empty($queryProduct))
+      {
+        $data['product'] = $queryProduct;
       }
-
-      $data['query'] = $array;
-
-
-      $queryProduct = TxOrder::leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
-                      ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
-                      ->where('shipping_date', '>=', $monday)
-                      ->where('shipping_date', '<=', $sunday)
-                      ->get(['p.varian_name as name', 'd.varian_price as price', 'd.quantity as qty']);
-
-
-      $product;
-      $i = 0;
-      foreach ($queryProduct as $tmpdata) {
-        if($i == 0)
-        {
-          $tmp = new ProductData();
-          $tmp->name = $tmpdata->name;
-          $tmp->quantity = $tmpdata->qty;
-          $tmp->price = $tmpdata->price * $tmpdata->qty;
-
-          $product[$i] = $tmp;
-        }
-        else
-        {
-          $found = 0;
-          foreach ($product as $tmp) {
-            if(stripos($tmpdata->name, $tmp->name) !== false)
-            {
-              $tmp->quantity += $tmpdata->qty;
-              $tmp->price += ($tmpdata->price * $tmpdata->qty);
-              $found = 1;
-              break;
-            }
-          }
-
-          if(!$found)
-          {
-            $tmp = new ProductData();
-            $tmp->name = $tmpdata->name;
-            $tmp->quantity = $tmpdata->qty;
-            $tmp->price = $tmpdata->price * $tmpdata->qty;
-
-            $product[$i] = $tmp;
-          }
-        }
-        $i++;
+      else
+      {
+        $data['product'] = 0;
       }
-
-      $data['product'] = $product;
     }
     else
     {
       $data['query'] = 0;
       $data['product'] = 0;
-      //dd($data['query']);
     }
     
     return view('page.admin_purchase_list', $data);
   }
 
-  public function getPurchaseData()
+  //REPORT
+  public function getProductReport(Request $request)
   {
-    $monday = date("Y-m-d", strtotime( "next monday" ));
-    //dd($monday);
+    $input = $request->all();
 
-    $query = TxOrder::leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
-                    ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
-                    ->get(['p.varian_name as name', 'd.varian_price as price', 'd.quantity as qty']);
-
-
-    $array;
-    $i = 0;
-    foreach ($query as $tmpdata) {
-      if($i == 0)
-      {
-        $tmp = new ProductData();
-        $tmp->name = $tmpdata->name;
-        $tmp->quantity = $tmpdata->qty;
-        $tmp->price = $tmpdata->price * $tmpdata->qty;
-
-        $array[$i] = $tmp;
-      }
-      else
-      {
-        $found = 0;
-        foreach ($array as $tmp) {
-          if(stripos($tmpdata->name, $tmp->name) !== false)
-          {
-            $tmp->quantity += $tmpdata->qty;
-            $tmp->price += ($tmpdata->price * $tmpdata->qty);
-            $found = 1;
-            break;
-          }
-        }
-
-        if(!$found)
-        {
-          $tmp = new ProductData();
-          $tmp->name = $tmpdata->name;
-          $tmp->quantity = $tmpdata->qty;
-          $tmp->price = $tmpdata->price * $tmpdata->qty;
-
-          $array[$i] = $tmp;
-        }
-      }
-      $i++;
+    $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
+    $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
+    
+    $first; $last;
+    if($start == "" || $end == "")
+    {
+      $first = date("Y-m-d", strtotime( "first day of this month"));
+      $last = date("Y-m-d", strtotime( "last day of this month"));
     }
-    $collection = collect($array);
+    else
+    {
+      $first = $start;
+      $last = $end;
+    }
+    
+    $data['start'] = $first;
+    $data['end'] = $last;
 
-    $data['query'] = $collection;
+    $data['active'] = 'productReport';
 
-    return Datatables::of($data['query'])
-    ->make(true);
+    $query = DB::table('transaction__order')
+            ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
+            ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+            ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
+            ->groupBy(DB::raw('name WITH ROLLUP'))
+            ->get();
+
+    if(!empty($query))
+    {
+      $data['product'] = $query;
+    }
+    else
+    {
+      $data['product'] = 0;
+    }
+
+    if($export == 1)
+    {
+      $array = json_decode(json_encode($query), true);    
+
+      $size = count($array) - 1;
+      $array[$size]['name'] = "GRAND TOTAL";
+
+      $filename = "Product Report " . $first . " - " . $last;
+
+      return Excel::create($filename, function($excel) use ($array) {
+        $excel->sheet('Sheet1', function($sheet) use ($array)
+        {
+          $sheet->fromArray($array);
+        });
+      })->download('xlsx');
+    }
+    
+    return view('page.admin_report_product', $data);
   }
+
+  public function getTxReport(Request $request)
+  {
+    $input = $request->all();
+
+    $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
+    $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
+    
+    $first; $last;
+    if($start == "" || $end == "")
+    {
+      $first = date("Y-m-d", strtotime( "first day of this month"));
+      $last = date("Y-m-d", strtotime( "last day of this month"));
+    }
+    else
+    {
+      $first = $start;
+      $last = $end;
+    }
+    
+    $data['start'] = $first;
+    $data['end'] = $last;
+
+    $data['active'] = 'txReport';
+
+    $query = DB::table('transaction__order')
+            ->select('m.name as Agent', 'd.order_id as Id', 'p.varian_name as Product', DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(d.varian_price * SUM(d.quantity)) as Price'))
+            ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+            ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+            ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
+            ->groupBy('Agent', 'Id', 'Quantity', 'Product')
+            ->get();
+
+  if(!empty($query))
+  {
+    $data['query'] = $query;
+  }
+  else
+  {
+    $data['query'] = 0; 
+  }
+
+  if($export == 1)
+  {
+    $array = json_decode(json_encode($query), true);    
+
+    $filename = "Transaction Report " . $first . " - " . $last;
+
+    return Excel::create($filename, function($excel) use ($array) {
+      $excel->sheet('Sheet1', function($sheet) use ($array)
+      {
+        $sheet->fromArray($array);
+      });
+    })->download('xlsx');
+  }
+    
+    return view('page.admin_report_tx', $data);
+  }
+  
 
   //NEW ADMIN
   public function getAdminList()
@@ -916,7 +912,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'userReviewAgent';
 
-    return view('page.admin_review_agent', $data);
+    return view('page.admin_review_comment', $data);
   }
 
   public function getReviewAgentList()
@@ -966,7 +962,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'userReviewAgentRequest';
 
-    return view('page.admin_review_agent_request', $data);
+    return view('page.admin_review_comment_request', $data);
   }  
 
   public function getProcessReviewAgentList()
