@@ -13,11 +13,12 @@ use App\ProductCategory;
 use App\NameProduct;
 use App\ProductTestimonial;
 use App\Member;
+use App\Balance;
 
 class TransactionController extends Controller
 {
     
-    public function addcart(Request $data)
+    public function addtocart(Request $data)
     {
         $v = Validator::make($data->all(),[
             'qty' =>'required|numeric',
@@ -44,25 +45,29 @@ class TransactionController extends Controller
         {
             return "Not completed data";
         }
+        $rowid = Cart::search(array('id' => $data->id));
 
+        if($rowid){
+            $item = Cart::get($rowid[0]);
+            dd($data->qty);
+
+            Cart::update($rowid[0], $item->qty + $data->qty);
+        }
+        else{
         Cart::add([
             'id'=> $data->id, 
             'qty' => $data->qty,
             'name' => $data->name,
             'price' => $data->price,
             ]);
-
-        //$rowId = Cart::search(array('id' => $data->id));
-
+        }
         $total = Cart::total();
-
         $response = array(
             'id' => $data->id,
             'qty' => $data->qty,
             'name' => $data->name,
             'price' => $data->price,
             'total' => $total
-            //'rowId' => $rowId
             );
 
         return response()->json(compact('response'));
@@ -112,5 +117,5 @@ class TransactionController extends Controller
 
         Cart::remove($data->rowId);
     }
-   
+
 }

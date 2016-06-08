@@ -9,7 +9,7 @@
     <?php $i=0?>
     @if (Auth::guest())
       <div class="clicktoregister">
-        <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
       </div>
     @else
     <div class="stepper">
@@ -47,12 +47,10 @@
               <thead>
                 <tr>
                   <th>Product</th>
-<!--                   <th>Picture</th> -->
                   <th>Description</th>
                   <th>Price</th>
                   <th>Quantity</th>
                   <th></th>
-                  <!-- <th>Day</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -60,7 +58,6 @@
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
-<!--                     <td> <img src = {{URL::asset("assets/images/product/". $queryCategory[$i]->category_name . "/" . $items->picture)}} /> </td> -->
                     <td style="text-align: justify"> {{$items->description}} </td>
                     <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
@@ -72,25 +69,12 @@
                     <td>
                     <button type="button" id="button_{{$a}}" class="btn btn-primary" onclick="addtosubcriber({{ $a }})"> Add to Cart</button>
                     </td>
-                    <!-- <td>
-                      <select style="color:black;">
-                        <option value="1">Monday</option>
-                        <option value="2">Tuesday</option>
-                        <option value="3">Wednesday</option>
-                        <option value="4">Thursday</option>
-                        <option value="2">Friday</option>
-                        <option value="3">Saturday</option>
-                        <option value="4">Sunday</option>
-                      </select>
-                    </td> -->
                   </tr>
                   <?php $a++?>
                 @endforeach
               </tbody>
             </table>
             <br>
-            <!-- <input type="button" value="Previous" onclick="show_prev('checkout_method', 'bar1');"> -->
-
             <input type="button" value="Next" onclick="show_next('subcriber', 'product_details' ,'bar1');">
           </div>
         
@@ -134,8 +118,7 @@
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-            <!-- <input type="button" value="Previous" onclick="show_prev('subcriber','bar2');">
- -->            <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
+             <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
           </div>
         </div>
         <div id="wrapper">
@@ -187,7 +170,6 @@
                 <p><input type="radio" name="payment" value="card" checked><label>Credit Card (saved) </label></p>               
               </div>
               <div class="master-card-info">
-              <!-- <form action="#"> -->
                 <div class="form-group">
                   <label>Name on Card</label>
                   <input type="text" class="form-control">            
@@ -258,9 +240,18 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
-      $('table.display').DataTable( {
-        "autoWidth": false
-      } );
+      var table = $('table.display').DataTable( {
+                    "autoWidth": false
+                  } );
+
+
+      $('#order_details').on('click', 'tr', function(e){
+        var $row = $(this).closest('tr');
+
+        //var data = table.row($row).id(); 
+        //var rowId = data.id();
+        //alert(table.row(false).id());
+      })
   } );
 
   function addtosubcriber(x)
@@ -270,14 +261,13 @@
     var price = $('#'+x+'-price').val();
     var id = $('#'+x+'-id').val();
     
-    if (quantity < 1) alert('You are still not purchase this product!s');
+    if (quantity < 1) alert('You are still not purchase this products!');
     else{
-
     $.ajax({
       url: '{{ URL("/addtocartsubcriber")}}',
       type: 'POST',
       data: {id: id, qty: quantity, name: name, price: price},
-      beforeSend: function(request){
+      beforeSend: function(request)
         return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
       },
     })
@@ -285,7 +275,8 @@
       $("#button_"+x).prop("disabled",true);
       // $('input[type="button"]').attr('disabled','disabled');
       var t = $('#order_details').DataTable();
-                
+      var info = t.page.info();
+      alert(info.recordsTotal);
       t.row.add( [
           data.response.name,
           "Rp " + data.response.price,
@@ -293,7 +284,7 @@
           "Rp " + data.response.qty * data.response.price,
           "<button type='button' class='btn btn-primary' onclick='updatecart({{ $i }})'> Update </button> <button type='button' onclick='deletecart({{ $i }})' class='btn btn-danger'>Delete</button>",
       ] ).draw( false );
-
+      
       $('#total-cart').html(data.response.total);
 
       alert('Added to cart!');

@@ -32,27 +32,28 @@
                   <span class='baricon'>2</span>
               </div>
             </div>
-              <form class="form-horizontal" role="form" method="POST" action="{{ url('eventsample') }}">
+              <form class="form-horizontal" role="form" method="POST" action="{{ url('productsample') }}">
                 {!! csrf_field() !!}
-                  <div id="event_details">
-                    <center>
-                    <p class='form_head'>Event Details</p>
-                    <p>Event Name</p>
-                    <input type="text" name='event_name' placeholder='Event Name'>
-                    <p>Event Date</p>
-                    <input type="text" name='event_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
-                    <p>Event Venue</p>
-                    <input type="text" name='event_venue' placeholder='Event Venue'>
-                    <p>Event Description</p>
-                    <input type="text" name='event_description' placeholder='Event Description'>
-                    <p>Request Date</p>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type="text" name='request_date' class="form-control" placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>
-                    </div>
-                    
+                  <div id="sample_details">
+                    <p class='form_head'>Request Product Sample</p>
+                    <p>Product</p>
+                <select  name='product'>
+                    <?php $i = 1; ?>
+                    @foreach ($query as $item)
+                    <?php
+                        echo "<option value= ". $i . ">" . $item->varian_name . "</option>";
+                        $i++;
+                    ?>
+                    @endforeach
+                    </select>
+                    <p>Quantity</p>
+                    <select  name='quantity'>
+                        <option value="10"> 10 </option> 
+                        <option value="15"> 15 </option>
+                        <option value="20"> 20 </option>
+                    </select>
                     <br>
-                    <input type="button" value="Next" onclick="show_next('account_details','product_details','bar1');">
-                  </center>
+                    <input type="Submit" value="Submit">
                   </div>
               </form>
             </div>

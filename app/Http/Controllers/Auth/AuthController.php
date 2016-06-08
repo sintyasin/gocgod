@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
+use App\City;
 
 class AuthController extends Controller
 {
@@ -48,6 +49,40 @@ class AuthController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
+
+    public function getRegister()
+    {
+        return $this->showRegistrationForm();
+    }
+
+    /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        if (property_exists($this, 'registerView')) {
+            return view($this->registerView);
+        }
+
+        $data['city'] = City::all();
+
+        return view('auth.register', $data);
+    }
+    // public function showLoginForm()
+    // {
+    //     $view = property_exists($this, 'registerView')
+    //                 ? $this->loginView : 'auth.authenticate';
+
+    //     if (view()->exists($view)) {
+    //         return view($view);
+    //     }
+
+    //     return view('auth.register');
+    // }
+
+
     protected function validator(array $data)
     {    
         return Validator::make($data, [
@@ -58,8 +93,8 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:master__member',
             'password' => 'required|min:3|confirmed',
             'city' => 'required|numeric',
-            'userType' => 'required|numeric',
-            'bank' => 'required|numeric',
+            // 'userType' => 'required|numeric',
+            // 'bank' => 'required|numeric',
         ]);
     }
 
@@ -72,16 +107,39 @@ class AuthController extends Controller
 
     protected function create(array $data)
     {
-        return Member::create([
-            'name' => $data['name'],
-            'address' => $data['address'],
-            'date_of_birth' => $data['dob'],
-            'phone' => $data['phone'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'city_id' => $data['city'],
-            'status_user' => $data['userType'],
-            'bank_account' => $data['bank'],
-        ]);
+        if($data['city'] == 0)
+        {
+            $newcity = filter_var($data['newcity'], FILTER_SANITIZE_STRING);
+
+            $city = new City;
+            $city->city_name = $newcity;
+            $city->save();
+
+            return Member::create([
+                'name' => $data['name'],
+                'address' => $data['address'],
+                'date_of_birth' => $data['dob'],
+                'phone' => $data['phone'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'city_id' => $city->city_id,
+                // 'status_user' => $data['userType'],
+                // 'bank_account' => $data['bank'],
+            ]);
+        }
+        else
+        {
+            return Member::create([
+                'name' => $data['name'],
+                'address' => $data['address'],
+                'date_of_birth' => $data['dob'],
+                'phone' => $data['phone'],
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
+                'city_id' => $data['city'],
+                // 'status_user' => $data['userType'],
+                // 'bank_account' => $data['bank'],
+            ]);
+        }
     }
 }

@@ -83,7 +83,7 @@
 												 </form>
 											</div>
 											<div class="bottom text-center">
-												New here ? <a href="{{ url('/login') }}"><b>Join Us</b></a>
+												New here ? <a href="{{ url('/register') }}"><b>Join Us</b></a>
 											</div>
 									</div>
 								</li>
@@ -95,7 +95,7 @@
 	                            </a>
 
 	                            <ul class="dropdown-menu" role="menu">
-	                            	<li><a href="{{ url('/profile') }}"><div class="padding_outer_profile">Profile</div></a></li>
+	                            	<li><a href="{{ url('/profile/'.Auth::user()->id) }}"><div class="padding_outer_profile">Profile</div></a></li>
 	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">My Order</div></a></li>
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
 	                            </ul>
