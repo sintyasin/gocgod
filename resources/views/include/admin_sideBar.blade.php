@@ -18,7 +18,7 @@
       </li>
       @endif
 
-      <li class=" <?php if(stripos($active, 'product') !== false) echo 'active'; ?> treeview">
+      <li class=" <?php if($active != 'productReport' && stripos($active, 'product') !== false) echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-list"></i> <span>Product</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
@@ -39,8 +39,8 @@
         <ul class="treeview-menu">
           <li class=" <?php if($active == 'userMemberList') echo 'active'; ?> "><a href={{ URL('/admin/customer/list') }}><i class="fa fa-circle-o"></i> Customer List</a></li>
           <li class=" <?php if($active == 'userAgentList') echo 'active'; ?> "><a href= {{ URL('admin/agent/list') }} ><i class="fa fa-circle-o"></i> Agent List</a></li>
-          <li class=" <?php if($active == 'userReviewAgent') echo 'active'; ?> "><a href= {{ URL('admin/review/agent') }} ><i class="fa fa-circle-o"></i> Review Agent List</a></li>
-          <li class=" <?php if($active == 'userReviewAgentRequest') echo 'active'; ?> "><a href= {{ URL('admin/review/agent/request') }} ><i class="fa fa-circle-o"></i> Review Agent Request</a></li>
+          <li class=" <?php if($active == 'userReviewAgent') echo 'active'; ?> "><a href= {{ URL('admin/review/agent') }} ><i class="fa fa-circle-o"></i> Comment List</a></li>
+          <li class=" <?php if($active == 'userReviewAgentRequest') echo 'active'; ?> "><a href= {{ URL('admin/review/agent/request') }} ><i class="fa fa-circle-o"></i> Comment Request</a></li>
         </ul>
       </li>
 
@@ -81,8 +81,8 @@
           <i class="fa fa-file-excel-o"></i> <span>Report</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
-          <li class=" <?php if($active == 'txReport') echo 'active'; ?> "><a href={{ URL('/admin/report/tx') }}><i class="fa fa-circle-o"></i> Transaction Report</a></li>
-          <li class=" <?php if($active == 'productReport') echo 'active'; ?> "><a href={{ URL('/admin/report/product') }} ><i class="fa fa-circle-o"></i> Product Report</a></li>
+          <li class=" <?php if($active == 'txReport') echo 'active'; ?> "><a href={{ URL('/admin/report/tx?dateStart=&dateEnd=&export=0') }}><i class="fa fa-circle-o"></i> Transaction Report</a></li>
+          <li class=" <?php if($active == 'productReport') echo 'active'; ?> "><a href={{ URL('/admin/report/product?dateStart=&dateEnd=&export=0') }} ><i class="fa fa-circle-o"></i> Product Report</a></li>
         </ul>
       </li>
 

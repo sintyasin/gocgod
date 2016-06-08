@@ -347,6 +347,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::get('purchase', 
 		'AdminController@getPurchaseList'
 	);
+
+	//REPORT
+	Route::get('report/tx', 
+		'AdminController@getTxReport'
+	);
+	Route::get('report/product', 
+		'AdminController@getProductReport'
+	);
 });
 
 

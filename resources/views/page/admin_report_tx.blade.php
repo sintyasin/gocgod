@@ -6,12 +6,12 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
   <h1>
-    Purchase Order
+    Transaction Report
     <small>Control panel</small>
   </h1>
   <ol class="breadcrumb">
     <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-    <li class="active">Purchase Order</li>
+    <li class="active">Transaction Report</li>
   </ol>
 </section>
 
@@ -20,7 +20,7 @@
   <!-- Small boxes (Stat box) -->
   <div class="row">
     <div class="col-lg-6">
-      <form method="GET" class="form-inline" role="form" action={{URL('admin/purchase')}}>
+      <form method="GET" class="form-inline" id="report" role="form" action={{URL('admin/report/tx')}}>
         <div class="col-lg-12">
          <b>Notes:<br>
          You have to fill both start and end date to filter the data
@@ -30,7 +30,7 @@
 
         <div class="col-lg-12">
           <br>
-         Purchase Order Between
+         Transaction Report Between
         </div>
 
         <div class="col-lg-12" id="baseDateControl">
@@ -59,30 +59,32 @@
           <br>
           <input class="btn btn-primary" type="submit" value="Submit" />
         </div>
-
+        <input type="hidden" id="export" name="export" value="0" />
       </form>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-12 text-center">
-        <h3><b>Purchase Order from {{$start}} to {{$end}}</b></h3>
+        <h3><b>Transaction Report from {{$start}} to {{$end}}</b></h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+        <button onclick="download()" class="btn btn-warning">Export to excel</button>
     </div>
   </div>
 
 
   <div class="row">
-    <div class="col-lg-6">
-      <div class="col-lg-12 text-center">
-        <br>
-        <h4><b>Purchase Order per Agent</b></h4>
-      </div>
+    <div class="col-lg-12">
       <div class="col-lg-12">
-        <br>
         <table class="paginated">
           <thead>
             <tr>
               <th scope="col" class="text-center">Agent</th>
+              <th scope="col" class="text-center">Order Id</th>
               <th scope="col" class="text-center">Product</th>
               <th scope="col" class="text-center">Quantity</th>
               <th scope="col" class="text-center">Total Price</th>
@@ -94,57 +96,33 @@
               @foreach($query as $data)
                 @if($i == 0)
                   <tr>
-                    <td> {{$data->name}} </td>
-                    <td> {{$data->varian}} </td>
-                    <td> {{$data->qty}} </td>
-                    <td> {{number_format($data->price, 0, ',', '.')}} </td>
+                    <td> {{$data->Agent}} </td>
+                    <td> {{$data->Id}} </td>
+                    <td> {{$data->Product}} </td>
+                    <td> {{$data->Quantity}} </td>
+                    <td> {{number_format($data->Price, 0, ',', '.')}} </td>
                   </tr>
-                  <?php $i++; $namaLama = $data->name;?>
+                  <?php $i++; $namaLama = $data->Agent;?>
                 @else
-                  @if($data->name == $namaLama)
-                    <td></td>
-                    <td> {{$data->varian}} </td>
-                    <td> {{$data->qty}} </td>
-                    <td> {{number_format($data->price, 0, ',', '.')}} </td>
+                  @if($data->Agent == $namaLama)
+                    <tr>
+                      <td></td>
+                      <td> {{$data->Id}} </td>
+                      <td> {{$data->Product}} </td>
+                      <td> {{$data->Quantity}} </td>
+                      <td> {{number_format($data->Price, 0, ',', '.')}} </td>
+                    </tr>
                   @else
                     <tr>
-                      <td> {{$data->name}} </td>
-                      <td> {{$data->varian}} </td>
-                      <td> {{$data->qty}} </td>
-                      <td> {{number_format($data->price, 0, ',', '.')}} </td>
+                      <td> {{$data->Agent}} </td>
+                      <td> {{$data->Id}} </td>
+                      <td> {{$data->Product}} </td>
+                      <td> {{$data->Quantity}} </td>
+                      <td> {{number_format($data->Price, 0, ',', '.')}} </td>
                     </tr>
-                  <?php $namaLama = $data->name;?>
+                  <?php $namaLama = $data->Agent;?>
                   @endif
                 @endif 
-              @endforeach
-            @endif
-        </table> 
-      </div>
-    </div>
-
-    <div class="col-lg-6">
-      <div class="col-lg-12 text-center">
-        <br>
-        <h4><b>Purchase Order per Product</b></h4>
-      </div>
-      <div class="col-lg-12">
-        <br>
-        <table class="paginated">
-          <thead>
-            <tr>
-              <th scope="col" class="text-center">Product</th>
-              <th scope="col" class="text-center">Quantity</th>
-              <th scope="col" class="text-center">Total Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            @if($query != 0)
-              @foreach($product as $data)
-                <tr>
-                  <td> {{$data->name}} </td>
-                  <td> {{$data->quantity}} </td>
-                  <td> {{number_format($data->price, 0, ',', '.')}} </td>
-                </tr>
               @endforeach
             @endif
         </table> 
@@ -158,6 +136,12 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <script>
+function download()
+{
+  document.getElementById('export').value = 1;
+  document.getElementById('report').submit();
+}
+
 $(function() {
     var date = $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
 
