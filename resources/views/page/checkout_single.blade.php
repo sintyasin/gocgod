@@ -9,7 +9,7 @@
 
     @if (Auth::guest())
       <div class="clicktoregister">
-        <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
       </div>
     @else
 

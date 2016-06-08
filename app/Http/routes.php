@@ -22,9 +22,17 @@ Route::get('checkout_subcriber', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
 Route::post('orderall', 'TransactionController@transactionAll');
+Route::post('addtocart', 'TransactionController@addtocart');
 Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
 Route::post('updatecart/', 'TransactionController@updatecart');
 Route::post('deletecart/', 'TransactionController@deletecart');
+Route::get('profile/{id}', 'MemberController@showbalance');
+Route::post('withdrawMoney', 'MemberController@withdrawMoney');
+Route::post('edit_profile', 'MemberController@edit_profile');
+Route::post('edit_password', 'MemberController@edit_password');
+Route::get('becomeanagent', 'MemberController@bank');
+Route::post('request_agent', 'MemberController@request_agent');
+
 
 Route::auth();
 
@@ -248,17 +256,12 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 
-Route::get('becomeanagent', function(){
-		return view('page.becomeanagent');
-});
+
 
 Route::get('howtobuy', function(){
 		return view('page.howtobuy');
 });
 
-Route::get('profile', function(){
-	return view('page.profile');
-});
 
 Route::get('myorder', function(){
 	return view('page.myorder');

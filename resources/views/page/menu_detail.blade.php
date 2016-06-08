@@ -86,7 +86,7 @@
 									<div class="col-md-12 col-xs-12">
 										<div class="product-review">
 											@if (Auth::guest())
-						                        <a href={{ URL('/login')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+						                        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
 						                    @else
 						                    	<form method="POST" action="{{ url('/review/'. $query->varian_id) }}">
 						                    		{!! csrf_field() !!}

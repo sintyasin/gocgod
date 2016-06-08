@@ -72,6 +72,16 @@ button.boaBtn,a.boaBtn {
 }
 button.boaBtn:hover,a.boaBtn:hover{background: rgb(229, 83, 0);}
 
+button.boaBtnProfile,a.boaBtnProfile {
+  border: none;
+  line-height: 20px;
+  padding: 10px 10px;
+/*  transition: all 0.3s ease 0s;*/
+  font-family: nexa_bookregular;
+  background-color: #2A71FF;
+}
+button.boaBtnProfile:hover,a.boaBtnProfile:hover{background: rgb(229, 83, 0);}
+
 
 button.boaBtn_boa,a.boaBtn_boa {
   border: none;
@@ -644,6 +654,9 @@ figure:hover figcaption {
   border-radius: 0;
   padding-left: 0;
   padding-right: 0;
+}
+#balance{
+  display:none;
 }
 
 
