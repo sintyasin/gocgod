@@ -94,20 +94,28 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
       success:
       function(data)
       {
-        var obj = JSON.parse(data);
-        var name = "";
-        var qty = "";
-        for(var i=0; i<obj.length; i++)
+        if(data != 0)
         {
-          name += (obj[i].name + "<br>") ;
-          qty += ("x" + obj[i].quantity + "<br>") ;
+          var obj = JSON.parse(data);
+          var name = "";
+          var qty = "";
+          for(var i=0; i<obj.length; i++)
+          {
+            name += (obj[i].name + "<br>") ;
+            qty += ("x" + obj[i].quantity + "<br>") ;
+          }
+          $(".modal-body #name").html(name);
+          $(".modal-body #qty").html(qty);
         }
-        $(".modal-body #name").html(name);
-        $(".modal-body #qty").html(qty);
       }
     });
     $("#sampleDetail").modal();
 }); 
+
+$('#productDetail').on('hidden.bs.modal', function (e) {
+  $(".modal-body #name").html("");
+  $(".modal-body #qty").html("");
+})
 
 function reject(id, name, desc) 
 {

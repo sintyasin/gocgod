@@ -128,6 +128,7 @@ return [
          */
         \Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
         Illuminate\Auth\AuthServiceProvider::class,
+        //Kbwebs\MultiAuth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
         Illuminate\Cache\CacheServiceProvider::class,
