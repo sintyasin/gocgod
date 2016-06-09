@@ -44,7 +44,7 @@ class AdminAuthController extends Controller
      *
      * @return void
      */
-    protected $redirectTo = '/admin/product/list';
+    protected $redirectTo = '/admin/order';
 
     public function __construct()
     {
@@ -57,20 +57,6 @@ class AdminAuthController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {    
-        /*return Validator::make($data, [
-            'name' => 'required|max:255',
-            'address' => 'required|max:500',
-            'dob' => 'required|max:10',
-            'phone' => 'required|numeric',
-            'email' => 'required|email|max:255|unique:master__member',
-            'password' => 'required|min:3|confirmed',
-            'city' => 'required|numeric',
-            'userType' => 'required|numeric',
-            'bank' => 'required|numeric',
-        ]);*/
-    }
 
     /**
      * Create a new user instance after a valid registration.
@@ -79,29 +65,14 @@ class AdminAuthController extends Controller
      * @return User
      */
 
-    protected function create(array $data)
-    {
-        /*return Member::create([
-            'name' => $data['name'],
-            'address' => $data['address'],
-            'date_of_birth' => $data['dob'],
-            'phone' => $data['phone'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'city_id' => $data['city'],
-            'status_user' => $data['userType'],
-            'bank_account' => $data['bank'],
-        ]);*/
-    }
-
     public function getLogin()
     {
         if (auth('admin')->check())
         {
-            return redirect('admin/product/list');
+            return redirect('admin/order');
         }
         else
-            return view('page.admin_login');
+            return view('admin.admin_login');
     }
 
     public function postLogin(Request $request)
@@ -117,7 +88,7 @@ class AdminAuthController extends Controller
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {
-            return redirect('/admin')->withErrors($validator->errors())->withInput();
+            return redirect('/general/log/in')->withErrors($validator->errors())->withInput();
         } else {
 
             // create our user data for the authentication
@@ -131,9 +102,12 @@ class AdminAuthController extends Controller
                 'password'  => $password
             );
 
-            
+            $remember;
+            if($request->has('remember')) $remember = true;
+            else $remember = false;
+
             // attempt to do the login
-            if (Auth::guard('admin')->attempt($userdata)) {
+            if (Auth::guard('admin')->attempt($userdata, $remember)) {
                 // validation successful!
                 // redirect them to the secure section or whatever
                 // return Redirect::to('secure');
@@ -164,7 +138,7 @@ class AdminAuthController extends Controller
         $data['query'] = auth('admin')->user();
         $data['city'] = City::all();
         
-        return view('page.admin_edit_profile', $data);
+        return view('admin.admin_edit_profile', $data);
     }
 
     public function postEditProfile(Request $request)

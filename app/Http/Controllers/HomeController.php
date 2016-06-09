@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Faq;
 use Auth;
+use App\Banner;
 
 class HomeController extends Controller
 {
@@ -27,7 +28,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('page.home');
+        $data['query'] = Banner::all();
+
+        return view('page.home', $data);
     }
 
     public function faq_question()

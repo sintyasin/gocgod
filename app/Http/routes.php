@@ -250,7 +250,40 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('post/edit/agent/tx/{OId}/{AId}', 
 		'AdminController@postEditAgentTx'
 	);
+	Route::get('agent/request/list', 
+		'AdminController@getAgentRequestList'
+	);
+	Route::get('agent/request/data', 
+		array('as' => 'agentrequest.data', 
+			'uses' =>'AdminController@getAgentRequestData')
+	);
+	Route::post('process/agent/request', 
+		'AdminController@getProcessAgentRequest'
+	);
 
+	//BANK
+	Route::get('bank/list', 
+		'AdminController@getBankList'
+	);
+	Route::get('bank/data', 
+		array('as' => 'bank.data', 
+			'uses' =>'AdminController@getBankData')
+	);
+	Route::post('delete/bank', 
+		'AdminController@deleteBank'
+	);	
+	Route::get('insert/bank', 
+		'AdminController@insertBank'
+	);
+	Route::post('post/bank', 
+		'AdminController@postInsertBank'
+	);
+	Route::get('edit/bank/{id}', 
+		'AdminController@getEditBank'
+	);
+	Route::post('post/edit/bank/{id}', 
+		'AdminController@postEditBank'
+	);
 
 	//FAQ
 	Route::get('faq/list', 
