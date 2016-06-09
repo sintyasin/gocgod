@@ -38,20 +38,18 @@
                     <center>
                     <p class='form_head'>Event Details</p>
                     <p>Event Name</p>
-                    <input type="text" name='event_name' placeholder='Event Name'>
+                    <input type="text" name='event_name' placeholder='Event Name'/>
                     <p>Event Date</p>
                     <input type="text" name='event_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
                     <p>Event Venue</p>
-                    <input type="text" name='event_venue' placeholder='Event Venue'>
+                    <input type="text" name='event_venue' placeholder='Event Venue'/>
                     <p>Event Description</p>
-                    <input type="text" name='event_description' placeholder='Event Description'>
+                    <input type="text" name='event_description' placeholder='Event Description'/>
                     <p>Request Date</p>
-                    <div class='input-group date' id='datetimepicker1'>
-                        <input type="text" name='request_date' class="form-control" placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>
-                    </div>
+                    <input type="text" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
                     
                     <br>
-                    <input type="button" value="Next" onclick="show_next('account_details','product_details','bar1');">
+                    <input type="submit" value="Next">
                   </center>
                   </div>
               </form>
@@ -63,6 +61,7 @@
 </div>
 
 @push('scripts')
+
 <script type="text/javascript">
     $(function() {
         var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();

@@ -28,31 +28,42 @@
               <br>
               <div class="col-md-12 col-xs-12">
                   <span class='baricon'>1</span>
-                  <span id="bar1" class='progress_bar'></span>
+                  <span id="bar1" class='progress_bar' style="background-color:#38610B"></span>
                   <span class='baricon'>2</span>
               </div>
             </div>
               <form class="form-horizontal" role="form" method="POST" action="{{ url('productsample') }}">
                 {!! csrf_field() !!}
                   <div id="sample_details">
+                    <div class="col-md-12">
                     <p class='form_head'>Request Product Sample</p>
                     <p>Product</p>
-                <select  name='product'>
+                    <select  name='product'>
                     <?php $i = 1; ?>
                     @foreach ($query as $item)
                     <?php
-                        echo "<option value= ". $i . ">" . $item->varian_name . "</option>";
+                        echo "<option value= ". $item->varian_id . ">" . $item->varian_name . "</option>";
                         $i++;
                     ?>
                     @endforeach
                     </select>
+                    @if ($errors->has('product'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('product') }}</strong>
+                        </span>
+                    @endif
+                    </div>
+                    <div class="col-md-12">
                     <p>Quantity</p>
-                    <select  name='quantity'>
-                        <option value="10"> 10 </option> 
-                        <option value="15"> 15 </option>
-                        <option value="20"> 20 </option>
-                    </select>
-                    <br>
+                    <input type="number" min="1" name="qty"/>
+                    @if ($errors->has('qty'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('qty') }}</strong>
+                        </span>
+                    @endif
+                    </div>
+                    <input type="hidden" name="id" value="{{$request_data->request_id}}"/>
+                    
                     <input type="Submit" value="Submit">
                   </div>
               </form>
