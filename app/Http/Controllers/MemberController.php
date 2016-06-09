@@ -207,7 +207,7 @@ class MemberController extends Controller
         $member = Member::find(Auth()->user()->id);
         $member->password = Hash::make($request->newpassword);
         $member->save();
-        dd($request->newpassword);
+        // dd($request->newpassword);
         return redirect('/profile/'.Auth::user()->id);
     }
 

@@ -15,8 +15,13 @@ Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('/', 'HomeController@index');
 Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
-Route::get('productsample', 'ProductController@getMenuSample');
 Route::get('myaccount/{id}', 'MemberController@readDataMember');
+
+Route::get('productsample', 'ProductController@getMenuSample');
+Route::post('eventsample', 'ProductController@eventsample');
+Route::get('productsample/{id}', 'ProductController@productsample');
+Route::post('productsample', 'ProductController@productsampledata');
+
 Route::post('review/{id}', 'ProductController@giveTestimonial');
 Route::get('checkout_subcriber', 'ProductController@getAllMenu');
 Route::get('faq', 'HomeController@faq_question');
@@ -33,6 +38,11 @@ Route::post('edit_password', 'MemberController@edit_password');
 Route::get('becomeanagent', 'MemberController@bank');
 Route::post('request_agent', 'MemberController@request_agent');
 
+Route::get('customerorder', 'TransactionController@getOrderList');
+Route::get('customerorder/data', array('as' => 'customerorderlist.data', 
+		'uses' =>'TransactionController@getOrderData'));
+Route::post('dataorderproduct', 'TransactionController@getProductOrder');
+Route::post('sending', 'TransactionController@sending');
 
 Route::auth();
 
@@ -439,8 +449,4 @@ Route::get('howtobuy', function(){
 
 Route::get('myorder', function(){
 	return view('page.myorder');
-});
-
-Route::get('customerorder', function(){
-	return view('page.customerorder');
 });

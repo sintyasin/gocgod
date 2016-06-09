@@ -14,6 +14,9 @@ use App\NameProduct;
 use App\ProductTestimonial;
 use App\Member;
 use App\TransactionController;
+use App\SampleDetail;
+use App\SampleRequest;
+
 
 class ProductController extends Controller
 {
@@ -53,6 +56,78 @@ class ProductController extends Controller
         $data['query'] = Product::all();
         
         return view('page.productsample', $data);
+    }
+
+    public function productSample($id)
+    {
+        $data['request_data'] = SampleRequest::where('request_id', $id)->first();
+        //dd($data['request_data']);
+        $data['query'] = Product::all();
+
+        return view('page.productsample_1', $data);
+    }
+
+    public function productsampledata(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'product' => 'required|numeric',
+            'qty' => 'required|numeric',
+            ]);
+
+        if ($v->fails())
+        {
+            return redirect('productsample/'.$request->id)->withErrors($v->errors())->withInput();
+        }
+
+        $input = $request->all();
+
+        $request_id = filter_var($input['id'], FILTER_SANITIZE_STRING);;
+        $varian_id = filter_var($input['product'], FILTER_SANITIZE_STRING);
+        $quantity = filter_var($input['qty'], FILTER_SANITIZE_STRING);
+
+        $sample = new SampleDetail;
+        $sample->request_id = $request_id;
+        $sample->varian_id = $varian_id;
+        $sample->quantity = $quantity;
+        $sample->save();
+
+        return redirect('/home');
+    }
+
+    public function eventsample(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+            'event_name' => 'required|max:100',
+            'event_date' => 'required|max:10',
+            'event_venue' => 'required|max:100',
+            'event_description' => 'required|max:1000',
+            'request_date' => 'required|max:10',
+            ]);
+
+        if ($v->fails())
+        {
+            return redirect('productsample')->withErrors($v->errors())->withInput();
+        }
+
+        $input = $request->all();
+
+        $id = Auth::user()->id;
+        $event_name = filter_var($input['event_name'], FILTER_SANITIZE_STRING);
+        $event_date = filter_var($input['event_date'], FILTER_SANITIZE_STRING);
+        $event_venue = filter_var($input['event_venue'], FILTER_SANITIZE_STRING);
+        $event_description = filter_var($input['event_description'], FILTER_SANITIZE_STRING);
+        $request_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
+
+        $event = new SampleRequest;
+        $event->agent_id = $id;
+        $event->event_name = $event_name;
+        $event->event_date = $event_date;
+        $event->event_venue = $event_venue;
+        $event->event_description = $event_description;
+        $event->request_date = $request_date;
+        $event->save();
+
+        return redirect('/productsample/'.$event->request_id);
     }
 
     public function giveTestimonial(Request $data_testimonial, $idd)
@@ -102,4 +177,6 @@ class ProductController extends Controller
 
         return view('page.checkout_subcriber', $data);
     }
+
+
 }

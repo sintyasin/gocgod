@@ -78,7 +78,6 @@
     <!-- main js -->
     <script src="{{ URL::asset('assets/js/main.js') }}"></script>
     <!-- stepper -->
-    <script src="{{ URL::asset('assets/js/sliding.form.js')}}"></script>
     <script src="{{ URL::asset('assets/js/slidingco.form.js')}}"></script>
     <script src="{{ URL::asset('assets/js/slidingprofile.js')}}"></script>
 
