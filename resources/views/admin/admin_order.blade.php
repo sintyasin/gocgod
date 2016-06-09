@@ -35,7 +35,7 @@
 
         <div class="col-lg-12" id="baseDateControl">
           <div class='input-group date' id='datetimepicker1'>
-              <input type='text' name="dateStart" id="dateStart" class="datepicker form-control" placeholder="Start Date"/>
+              <input type='text' name="dateStart" id="dateStart" class="datepicker form-control" placeholder={{$first}} />
               <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
               </span>
@@ -48,7 +48,7 @@
 
         <div class="col-lg-12">
           <div class='input-group date' id='datetimepicker1'>
-              <input type='text' name="dateEnd" id="dateEnd" class="datepicker form-control" placeholder="End Date"/>
+              <input type='text' name="dateEnd" id="dateEnd" class="datepicker form-control" placeholder={{$last}} />
               <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
               </span>
@@ -163,7 +163,7 @@
       <br><br>
     </div>
   </div>
-
+  
   <div class="row">
     @if(Session::has('update'))
     <div class="alert alert-success fade in">

@@ -150,7 +150,7 @@
             <div class="col-md-offset-3">
                 <button type="submit" class="btn btn-primary">Submit</button> 
                 &nbsp; &nbsp;
-                <a href="{{ URL::to('/admin/') }}" class="btn btn-default">Cancel</a>                         
+                <a href="{{ URL::to('/admin/product/list') }}" class="btn btn-default">Cancel</a>                         
             </div>
         </div>
       </form>

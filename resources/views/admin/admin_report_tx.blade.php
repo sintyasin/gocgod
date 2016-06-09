@@ -25,7 +25,7 @@
          <b>Notes:<br>
          You have to fill both start and end date to filter the data
          <br>or<br>
-         Leave and submit both field empty to show next week data</b>
+         Leave and submit both field empty to show this month's data</b>
         </div>
 
         <div class="col-lg-12">
@@ -71,18 +71,11 @@
 
   <div class="row">
     <div class="col-lg-12">
-        <button onclick="download()" class="btn btn-warning">Export to excel</button>
-    </div>
-  </div>
-
-
-  <div class="row">
-    <div class="col-lg-12">
       <div class="col-lg-12">
         <table class="paginated">
           <thead>
             <tr>
-              <th scope="col" class="text-center">Agent</th>
+              <th scope="col" class="text-center">Order Date</th>
               <th scope="col" class="text-center">Total Order</th>
               <th scope="col" class="text-center">Quantity</th>
               <th scope="col" class="text-center">Omzet Gross</th>
@@ -92,15 +85,38 @@
           </thead>
           <tbody>
             @if($query != 0)
+              <?php $count = count($query); $i = 0; ?>
               @foreach($query as $data)
+                @if($i == $count - 1)
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
+                  <tr>
+                    <td><b>{{$data['Date']}}</b></td>
+                    <td><b>{{number_format($data['Total_Order'], 0, ',', '.')}}</b> </td>
+                    <td><b>{{number_format($data['Quantity'], 0, ',', '.')}} </b></td>
+                    <td><b> {{number_format($data['Omzet'], 0, ',', '.')}} </b></td>
+                    <td><b> {{number_format($data['Shipping'], 0, ',', '.')}} </b></td>
+                    <td><b> {{number_format($data['Net'], 0, ',', '.')}}</b> </td>
+                  </tr>
+                  <?php break; ?>
+                @endif
                 <tr>
-                  <td>{{$data->Agent}}</td>
-                  <td>{{number_format($data->Total_Order, 0, ',', '.')}} </td>
-                  <td>{{number_format($data->Quantity, 0, ',', '.')}} </td>
-                  <td> {{number_format($data->Omzet, 0, ',', '.')}} </td>
-                  <td> {{number_format($data->Shipping, 0, ',', '.')}} </td>
-                  <td> {{number_format($data->Net, 0, ',', '.')}} </td>
+                  <td>{{$data['Date']}}</td>
+                  <td>{{number_format($data['Total_Order'], 0, ',', '.')}} </td>
+                  <td>{{number_format($data['Quantity'], 0, ',', '.')}} </td>
+                  <td> {{number_format($data['Omzet'], 0, ',', '.')}} </td>
+                  <td> {{number_format($data['Shipping'], 0, ',', '.')}} </td>
+                  <td> {{number_format($data['Net'], 0, ',', '.')}} </td>
                 </tr>
+
+                <?php $i++; ?>
               @endforeach
             @endif
         </table> 
@@ -114,12 +130,6 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <script>
-function download()
-{
-  document.getElementById('export').value = 1;
-  document.getElementById('report').submit();
-}
-
 $(function() {
     var date = $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
 
