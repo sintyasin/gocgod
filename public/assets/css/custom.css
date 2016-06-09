@@ -751,7 +751,7 @@ figure:hover figcaption {
   padding-bottom: 20px;
   border-bottom: 2px solid black;
 }
-#wrapper div input[type="text"], #wrapper_table div input[type="text"]
+#wrapper div input[type="number"], #wrapper div input[type="text"], #wrapper_table div input[type="text"]
 {
   width:50%;
   height:40px;

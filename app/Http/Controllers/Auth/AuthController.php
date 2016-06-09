@@ -39,8 +39,8 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware($this->guestMiddleware(), ['except' => 'logout']);
-        $this->middleware('admin', ['except' => 'logout']);
+        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        //$this->middleware('admin', ['except' => 'logout']);
     }
 
     /**
@@ -70,17 +70,17 @@ class AuthController extends Controller
 
         return view('auth.register', $data);
     }
-    // public function showLoginForm()
-    // {
-    //     $view = property_exists($this, 'registerView')
-    //                 ? $this->loginView : 'auth.authenticate';
+    public function showLoginForm()
+    {
+        $view = property_exists($this, 'loginView')
+                    ? $this->loginView : 'auth.authenticate';
 
-    //     if (view()->exists($view)) {
-    //         return view($view);
-    //     }
+        if (view()->exists($view)) {
+            return view($view);
+        }
 
-    //     return view('auth.register');
-    // }
+        return view('auth.login');
+    }
 
 
     protected function validator(array $data)

@@ -267,7 +267,7 @@
       url: '{{ URL("/addtocartsubcriber")}}',
       type: 'POST',
       data: {id: id, qty: quantity, name: name, price: price},
-      beforeSend: function(request)
+      beforeSend: function(request){
         return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
       },
     })
