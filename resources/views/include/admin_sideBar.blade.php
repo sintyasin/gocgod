@@ -82,18 +82,19 @@
       </li>
 
       <li class=" <?php if($active == 'purchase') echo 'active'; ?> ">
-        <a href= {{URL('admin/purchase?dateStart=&dateEnd=')}} >
+        <a href= {{URL('admin/purchase?dateStart=&dateEnd=&export=0')}} >
           <i class="fa fa-tasks"></i> <span>Purchase Order</span>
         </a>
       </li>
 
-      <li class=" <?php if($active == 'productReport' || $active == 'txReport') echo 'active'; ?> treeview">
+      <li class=" <?php if($active == 'productReport' || $active == 'txReport' || $active == 'agentReport') echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-file-excel-o"></i> <span>Report</span> <i class="fa fa-angle-left pull-right"></i>
         </a>
         <ul class="treeview-menu">
           <li class=" <?php if($active == 'txReport') echo 'active'; ?> "><a href={{ URL('/admin/report/tx?dateStart=&dateEnd=') }}><i class="fa fa-circle-o"></i> Transaction Report</a></li>
           <li class=" <?php if($active == 'productReport') echo 'active'; ?> "><a href={{ URL('/admin/report/product?dateStart=&dateEnd=') }} ><i class="fa fa-circle-o"></i> Product Report</a></li>
+          <li class=" <?php if($active == 'agentReport') echo 'active'; ?> "><a href={{ URL('/admin/report/agent?dateStart=&dateEnd=') }} ><i class="fa fa-circle-o"></i> Agent Report</a></li>
         </ul>
       </li>
 
