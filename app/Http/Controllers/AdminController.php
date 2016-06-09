@@ -32,6 +32,9 @@ use App\TxShipDetail;
 use App\TxShip;
 use App\Admin;
 use App\AdminInfo;
+use App\Req_agent;
+use App\Bank;
+use App\Member;
 
 class SampleDetailData
 {
@@ -88,6 +91,102 @@ class AdminController extends Controller
     $data['active'] = 'bannerList';
   }
 
+
+  //BANK
+  public function getBankList()
+  {
+    $data['active'] = 'bankList';
+
+    return view('admin.admin_bank_list', $data);
+  }
+
+  public function getBankData()
+  {
+    $data['query'] = Bank::get(['bank_id', 'bank_name']);
+        
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function insertBank()
+  {
+    $data['active'] = "insertBank";
+
+    return view('admin.admin_insert_bank', $data);
+  }
+
+  public function postInsertBank(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'bank'       => 'required|max:20',
+    ]);
+
+    if ($v->fails())
+    {
+        return redirect('/admin/insert/bank')->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $inputBank = filter_var($input['bank'], FILTER_SANITIZE_STRING);
+
+    $bank = new Bank();
+    $bank->bank_name = $inputBank;
+    $bank->save();
+    Session::flash('success', 1);
+    return redirect('/admin/insert/bank');
+  }
+
+  public function getEditBank($id)
+  {
+    $data['query'] = Bank::find($id);
+    $data['active'] = 'bankList';
+
+    return view('admin.admin_edit_bank', $data);
+  }
+
+  public function postEditBank(Request $request, $id)
+  {
+    $v = Validator::make($request->all(), [
+        'bank'       => 'required|max:250',
+    ]);
+
+    if ($v->fails())
+    {
+        return redirect('/admin/edit/bank/' . $id)->withErrors($v->errors())->withInput();
+    }    
+
+    $input = $request->all();
+
+    $inputBank = filter_var($input['bank'], FILTER_SANITIZE_STRING);
+
+    $bank = Bank::find($id);
+    $bank->bank_name = $inputBank;
+    $bank->save();
+    Session::flash('update', 1);
+
+    return redirect('/admin/bank/list');
+  }
+
+  public function deleteBank(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    Bank::find($id)->delete();
+    Session::flash('delete', 1);
+
+    return 1;
+  }
 
   //PURCHASE ORDER
   public function getPurchaseList(Request $request)
@@ -152,7 +251,7 @@ class AdminController extends Controller
       $data['product'] = 0;
     }
     
-    return view('page.admin_purchase_list', $data);
+    return view('admin.admin_purchase_list', $data);
   }
 
   //REPORT
@@ -216,7 +315,7 @@ class AdminController extends Controller
       })->download('xlsx');
     }
     
-    return view('page.admin_report_product', $data);
+    return view('admin.admin_report_product', $data);
   }
 
   public function getTxReport(Request $request)
@@ -225,7 +324,6 @@ class AdminController extends Controller
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
     $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
-    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
     
     $first; $last;
     if($start == "" || $end == "")
@@ -245,39 +343,25 @@ class AdminController extends Controller
     $data['active'] = 'txReport';
 
     $query = DB::table('transaction__order')
-            ->select('m.name as Agent', 'd.order_id as Id', 'p.varian_name as Product', DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(d.varian_price * SUM(d.quantity)) as Price'))
+            ->select('m.name as Agent', DB::raw('COUNT(transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + shipping_fee) as Omzet'), 'shipping_fee as Shipping', DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('order_date', '>=', $first)
             ->where('order_date', '<=', $last)
-            ->groupBy('Agent', 'Id', 'Quantity', 'Product')
+            ->groupBy(DB::raw('Agent WITH ROLLUP'))
             ->get();
-
-  if(!empty($query))
-  {
-    $data['query'] = $query;
-  }
-  else
-  {
-    $data['query'] = 0; 
-  }
-
-  if($export == 1)
-  {
-    $array = json_decode(json_encode($query), true);    
-
-    $filename = "Transaction Report " . $first . " - " . $last;
-
-    return Excel::create($filename, function($excel) use ($array) {
-      $excel->sheet('Sheet1', function($sheet) use ($array)
-      {
-        $sheet->fromArray($array);
-      });
-    })->download('xlsx');
-  }
+//dd($query);
+    if(!empty($query))
+    {
+      $data['query'] = $query;      
+    }
+    else
+    {
+      $data['query'] = 0; 
+    }
     
-    return view('page.admin_report_tx', $data);
+    return view('admin.admin_report_tx', $data);
   }
   
 
@@ -286,7 +370,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'adminList';
 
-    return view('page.admin_admin_list', $data);
+    return view('admin.admin_admin_list', $data);
   }
 
   public function getAdminData()
@@ -303,7 +387,7 @@ class AdminController extends Controller
     $data['active'] = 'addAdmin';
     $data['city'] = City::all();
 
-    return view('page.admin_add_admin', $data);
+    return view('admin.admin_add_admin', $data);
   }
 
   public function postAddAdmin(Request $request)
@@ -376,7 +460,7 @@ class AdminController extends Controller
                           ->where('id', $id)
                           ->get(['id', 'name', 'email', 'phone', 'super', 'information']);
 
-    return view('page.admin_edit_admin', $data);
+    return view('admin.admin_edit_admin', $data);
   }
 
   public function postEditAdmin(Request $request, $id)
@@ -435,7 +519,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'txOrder';
     
-    return view('page.admin_order', $data);
+    return view('admin.admin_order', $data);
   }
 
   public function getOrderData(Request $request)
@@ -529,11 +613,11 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->where('order_id', $id)
-                            ->get(['order_id', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
+                            ->get(['status_shipping' ,'order_id', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
     
     $data['active'] = 'txOrder';
 
-    return view('page.admin_edit_order', $data);
+    return view('admin.admin_edit_order', $data);
   }
 
   public function postEditOrder(Request $request, $id)
@@ -542,6 +626,7 @@ class AdminController extends Controller
     $v = Validator::make($request->all(), [
         'payment'    => 'required|numeric',
         'confirmed'    => 'required|numeric',
+        'ship'    => 'required|numeric',
     ]);
 
     if ($v->fails())
@@ -552,10 +637,12 @@ class AdminController extends Controller
     $input = $request->all();
     $confirmed = filter_var($input['confirmed'], FILTER_SANITIZE_STRING);
     $payment = filter_var($input['payment'], FILTER_SANITIZE_STRING);
+    $ship = filter_var($input['ship'], FILTER_SANITIZE_STRING);
 
     $order = TxOrder::find($id);
     $order->status_confirmed = $confirmed;
     $order->status_payment = $payment;
+    $order->status_shipping = $ship;
     $order->save();
     Session::flash('update', 1);
 
@@ -609,7 +696,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'txShipping';
 
-    return view('page.admin_ship', $data);
+    return view('admin.admin_ship', $data);
   }
 
   public function getShipData(Request $request)
@@ -677,7 +764,7 @@ class AdminController extends Controller
     
     $data['active'] = 'txShipping';
 
-    return view('page.admin_edit_ship', $data);      
+    return view('admin.admin_edit_ship', $data);      
   }
 
   public function postEditShip(Request $request, $id)
@@ -750,7 +837,7 @@ class AdminController extends Controller
     $data['active'] = 'cutOffDate';
     $data['query'] = CutOffDate::find(1);
     
-    return view('page.admin_cut_off_date', $data);
+    return view('admin.admin_cut_off_date', $data);
   }
 
   public function postCutOffDate(Request $request)
@@ -781,7 +868,7 @@ class AdminController extends Controller
     $data['query'] = AboutUs::find(1);
     $data['active'] = 'aboutus';
 
-    return view('page.admin_aboutus', $data);
+    return view('admin.admin_aboutus', $data);
   }
 
   public function postAboutUs(Request $request, $id)
@@ -834,7 +921,7 @@ class AdminController extends Controller
     $data['query'] = City::find($id);
     $data['active'] = 'cityList';
 
-    return view('page.admin_edit_city', $data);
+    return view('admin.admin_edit_city', $data);
   }
 
   public function postEditCity(Request $request, $id)
@@ -883,7 +970,7 @@ class AdminController extends Controller
   {
     $data['active'] = "insertCity";
 
-    return view('page.admin_insert_city', $data);
+    return view('admin.admin_insert_city', $data);
   }
 
   public function postInsertCity(Request $request)
@@ -912,7 +999,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'userReviewAgent';
 
-    return view('page.admin_review_comment', $data);
+    return view('admin.admin_review_comment', $data);
   }
 
   public function getReviewAgentList()
@@ -962,7 +1049,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'userReviewAgentRequest';
 
-    return view('page.admin_review_comment_request', $data);
+    return view('admin.admin_review_comment_request', $data);
   }  
 
   public function getProcessReviewAgentList()
@@ -1031,19 +1118,112 @@ class AdminController extends Controller
     return 1;
   }
 
+  public function getAgentRequestList()
+  {
+      $data['active'] = "userAgentRequest";
+
+      return view('admin.admin_agent_request', $data);
+  }
+
+  public function getAgentRequestData()
+  {
+      $data['query'] = Req_agent::leftJoin('master__member', 'member_id', '=', 'master__member.id')
+                                ->leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+                                ->leftJoin('master__bank', 'master__bank.bank_id', '=', 'master__member.bank_id')
+                                ->where('status_confirm', 0)
+                                ->get(['reqagent_id', 'name', 'date_of_birth', 'city_name', 'address', 'phone', 'email', 'bank_name', 'master__req_agent.bank_account as accno']);
+        
+      return Datatables::of($data['query'])
+      ->make(true);
+  }
+
+  public function getProcessAgentRequest(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required',
+        'action' => 'required|alpha'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+    $action = filter_var($input['action'], FILTER_SANITIZE_STRING);
+
+    if(is_array($input['id']))
+    {
+      foreach ($input['id'] as $id)
+      {
+        $id = filter_var($id, FILTER_SANITIZE_STRING);
+         
+        if($action == "reject")
+        {
+          Req_agent::find($id)->delete();
+          Session::flash('reject', 1);
+        }
+        else if($action == "approve")
+        {
+          $request = Req_agent::find($id);
+          $request->status_confirm = 1;
+
+          $agentId = $request->member_id;
+          $agent = Member::find($agentId);
+          $agent->status_user = 0;
+          $agent->bank_id = $request->bank_id;
+          $agent->bank_account = $request->bank_account;
+          $agent->balance = 0;
+
+          $agent->save();
+          $request->save();
+
+          Session::flash('approve', 1);
+        }
+      }
+    }
+    else
+    {
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      if($action == "reject")
+      {
+        Req_agent::find($id)->delete();
+        Session::flash('reject', 1);
+      }
+      else if($action == "approve")
+      {
+        $request = Req_agent::find($id);
+        $request->status_confirm = 1;
+
+        $agentId = $request->member_id;
+        $agent = Member::find($agentId);
+        $agent->status_user = 0;
+        $agent->bank_id = $request->bank_id;
+        $agent->bank_account = $request->bank_account;
+        $agent->balance = 0;
+
+        $agent->save();
+        $request->save();
+
+        Session::flash('approve', 1);
+      }
+    }
+
+    return 1;
+  }  
+
   public function getAgentList()
   {
       $data['active'] = "userAgentList";
-      Session::flash('new', 1);
 
-      return view('page.admin_agent', $data);
+      return view('admin.admin_agent', $data);
   }
 
   public function getAgentData()
   {
-      $data['query'] = User::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+      $data['query'] = Member::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+                            ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
                             ->where('status_user', 0)
-                            ->get(['id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
+                            ->get(['bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
         
       return Datatables::of($data['query'])
       ->make(true);
@@ -1051,10 +1231,10 @@ class AdminController extends Controller
 
   public function getEditAgent($id)
   {
-    $data['query'] = User::find($id);
+    $data['query'] = Member::find($id);
     $data['active'] = "userAgentList";
 
-    return view('page.admin_edit_agent', $data);
+    return view('admin.admin_edit_agent', $data);
   }
 
   public function postEditAgent(Request $request, $id)
@@ -1074,7 +1254,7 @@ class AdminController extends Controller
     $status = filter_var($input['status'], FILTER_SANITIZE_STRING);
     $verification = filter_var($input['verification'], FILTER_SANITIZE_STRING);
 
-    $user = User::find($id);
+    $user = Member::find($id);
     $user->status_user = $status;
     $user->verification = $verification;
     $user->save();
@@ -1106,7 +1286,7 @@ class AdminController extends Controller
                             ->where('order_id', $id)
                             ->get(['order_id', 'a.id as AId', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
 
-    return view('page.admin_edit_agent_tx', $data);
+    return view('admin.admin_edit_agent_tx', $data);
   }
 
 
@@ -1141,12 +1321,12 @@ class AdminController extends Controller
   {
       $data['active'] = "userMemberList";
 
-      return view('page.admin_customer', $data);
+      return view('admin.admin_customer', $data);
   }
 
   public function getCustomerData()
   {
-      $data['query'] = User::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+      $data['query'] = Member::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
                             ->where('status_user', 1)
                             ->get(['id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'city_name']);
         
@@ -1157,9 +1337,9 @@ class AdminController extends Controller
   public function getEditCustomer($id)
   {
     $data['active'] = "userMemberList";
-    $data['query'] = User::find($id);
+    $data['query'] = Member::find($id);
 
-    return view('page.admin_edit_customer', $data);
+    return view('admin.admin_edit_customer', $data);
   }
 
   public function postEditCustomer(Request $request, $id)
@@ -1179,7 +1359,7 @@ class AdminController extends Controller
     $status = filter_var($input['status'], FILTER_SANITIZE_STRING);
     $verification = filter_var($input['verification'], FILTER_SANITIZE_STRING);
 
-    $user = User::find($id);
+    $user = Member::find($id);
     $user->status_user = $status;
     $user->verification = $verification;
     $user->save();
@@ -1211,7 +1391,7 @@ class AdminController extends Controller
                             ->where('order_id', $id)
                             ->get(['order_id', 'c.id as CId', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
 
-    return view('page.admin_edit_customer_tx', $data);
+    return view('admin.admin_edit_customer_tx', $data);
   }
 
   public function postEditCustomerTx(Request $request, $orderId, $CId)
@@ -1246,7 +1426,7 @@ class AdminController extends Controller
   {
       $data['active'] = "faqList";
 
-      return view('page.admin_faq', $data);
+      return view('admin.admin_faq', $data);
   }
 
   public function getFaqData()
@@ -1262,7 +1442,7 @@ class AdminController extends Controller
     $data['query'] = Faq::find($id);
     $data['active'] = "faqList";
 
-    return view('page.admin_edit_faq', $data);
+    return view('admin.admin_edit_faq', $data);
   }
 
   public function postEditFaq(Request $request, $id)
@@ -1294,7 +1474,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'insertFaq';
 
-    return view ('page.admin_insert_faq', $data);
+    return view ('admin.admin_insert_faq', $data);
   }
 
   public function postInsertFaq(Request $request)
@@ -1353,7 +1533,7 @@ class AdminController extends Controller
                                   ->where('approval', 0)
                                   ->get(['varian_name', 'quantity']);*/
 
-    return view('page.admin_sample_request', $data);
+    return view('admin.admin_sample_request', $data);
   }
 
   public function getSampleData()
@@ -1468,7 +1648,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'productTestimonial';
     
-    return view('page.admin_product_testimonial', $data);
+    return view('admin.admin_product_testimonial', $data);
   }
 
   public function getTestimonialData()
@@ -1518,7 +1698,7 @@ class AdminController extends Controller
   {
     $data['active'] = "productTestimonialRequest";
 
-    return view('page.admin_product_testimonial_request', $data);
+    return view('admin.admin_product_testimonial_request', $data);
   }
 
   public function getProcessTestimonialData()
@@ -1598,7 +1778,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'productCategory';
 
-    return view('page.admin_product_category', $data);
+    return view('admin.admin_product_category', $data);
   }
 
   public function getCategoryData()
@@ -1614,7 +1794,7 @@ class AdminController extends Controller
     $data['query'] = ProductCategory::find($id);
     $data['active'] = 'productCategory';
 
-    return view('page.admin_edit_category', $data);
+    return view('admin.admin_edit_category', $data);
   }
 
   public function postEditCategory(Request $request, $id)
@@ -1663,7 +1843,7 @@ class AdminController extends Controller
   {
     $data['active'] = "productList";
 
-    return view('page.admin_product', $data);
+    return view('admin.admin_product', $data);
   }
 
   public function getProductData()
@@ -1681,7 +1861,7 @@ class AdminController extends Controller
     $data['query'] = ProductCategory::get(['category_id', 'category_name']);
     $data['active'] = "insertProduct";
 
-    return view('page.admin_insert_product', $data);
+    return view('admin.admin_insert_product', $data);
   }
 
   public function postInsertProduct(Request $request)
@@ -1781,7 +1961,7 @@ class AdminController extends Controller
     $data['allCategory'] = ProductCategory::all();
     $data['active'] = "productList";
 
-    return view('page.admin_edit_product', $data);
+    return view('admin.admin_edit_product', $data);
   }
 
   public function postEditProduct(Request $request, $id)

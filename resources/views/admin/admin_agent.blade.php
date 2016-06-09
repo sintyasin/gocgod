@@ -60,7 +60,8 @@ $(function() {
             { data: 'phone', name: 'phone', title:'Phone' },
             { data: 'verification', name: 'verification', title:'Verification' },
             { data: 'balance', name: 'balance', title:'Balance' },
-            { data: 'bank_account', name: 'bank_account', title:'Bank Account' },
+            { data: 'bank_name', name: 'bank_name', title:'Bank' },
+            { data: 'bank_account', name: 'bank_account', title:'Account Number' },
             {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
               return '<a class="btn btn-warning" onclick="editAgent(' + row.id + ')" >' + 'Edit' + '</a>';
             } }

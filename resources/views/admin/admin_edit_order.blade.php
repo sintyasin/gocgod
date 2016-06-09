@@ -91,7 +91,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('confirmed') ? ' has-error' : '' }}">
-            <label class="col-md-1 control-label">Confirmed Status</label>
+            <label class="col-md-1 control-label">Customer Confirmation</label>
 
             <div class="col-md-5">
                 <select class="form-control" name="confirmed">
@@ -107,6 +107,28 @@
                 @if ($errors->has('confirmed'))
                 <span class="help-block">
                     <strong>{{ $errors->first('confirmed') }}</strong>
+                </span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group{{ $errors->has('ship') ? ' has-error' : '' }}">
+            <label class="col-md-1 control-label">Shipping Confirmation</label>
+
+            <div class="col-md-5">
+                <select class="form-control" name="ship">
+                    @if($query[0]->status_shipping == 0)
+                        <option value="0" selected>Unconfirmed</option>
+                        <option value="1">Confirmed</option>
+                    @elseif($query[0]->status_shipping == 1)
+                        <option value="0">Unconfirmed</option>
+                        <option value="1" selected>Confirmed</option>
+                    @endif
+                </select>
+
+                @if ($errors->has('ship'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('ship') }}</strong>
                 </span>
                 @endif
             </div>
