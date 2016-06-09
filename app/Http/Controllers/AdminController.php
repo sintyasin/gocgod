@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 //use App\Http\Requests;
 //use Request;
 use Validator;
 use Session;
 use Auth;
+use Excel;
 use Yajra\Datatables\Datatables;
 //use ValidatesRequests;
 
@@ -40,6 +42,15 @@ class SampleDetailData
 class ProductData
 {
   public $name;
+  public $quantity;
+  public $price;
+}
+
+class PO
+{
+  public $name;
+  public $id;
+  public $varian;
   public $quantity;
   public $price;
 }
@@ -77,6 +88,198 @@ class AdminController extends Controller
     $data['active'] = 'bannerList';
   }
 
+
+  //PURCHASE ORDER
+  public function getPurchaseList(Request $request)
+  {
+    $input = $request->all();
+
+    $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
+    $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    
+    $monday; $sunday;
+    if($start == "" || $end == "")
+    {
+      $monday = date("Y-m-d", strtotime( "next monday"));
+      $sunday = date("Y-m-d", strtotime( "next monday +6 day"));
+    }
+    else
+    {
+      $monday = $start;
+      $sunday = $end;
+    }
+    
+    $data['start'] = $monday;
+    $data['end'] = $sunday;
+
+    $data['active'] = 'purchase';
+
+    $query = DB::table('transaction__order')
+            ->select('m.name as name', 'p.varian_name as varian', DB::raw('SUM(d.quantity) as qty'), DB::raw('(d.varian_price * SUM(d.quantity)) as price'))
+            ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+            ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+            ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
+            ->where('shipping_date', '>=', $monday)
+            ->where('shipping_date', '<=', $sunday)
+            ->groupBy('name', 'varian')
+            ->get();
+
+    if(!empty($query))
+    {
+      $data['query'] = $query;
+      
+      $queryProduct = DB::table('transaction__order')
+              ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
+              ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+              ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+              ->where('shipping_date', '>=', $monday)
+              ->where('shipping_date', '<=', $sunday)
+              ->groupBy('name')
+              ->get();
+
+      if(!empty($queryProduct))
+      {
+        $data['product'] = $queryProduct;
+      }
+      else
+      {
+        $data['product'] = 0;
+      }
+    }
+    else
+    {
+      $data['query'] = 0;
+      $data['product'] = 0;
+    }
+    
+    return view('page.admin_purchase_list', $data);
+  }
+
+  //REPORT
+  public function getProductReport(Request $request)
+  {
+    $input = $request->all();
+
+    $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
+    $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
+    
+    $first; $last;
+    if($start == "" || $end == "")
+    {
+      $first = date("Y-m-d", strtotime( "first day of this month"));
+      $last = date("Y-m-d", strtotime( "last day of this month"));
+    }
+    else
+    {
+      $first = $start;
+      $last = $end;
+    }
+    
+    $data['start'] = $first;
+    $data['end'] = $last;
+
+    $data['active'] = 'productReport';
+
+    $query = DB::table('transaction__order')
+            ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
+            ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+            ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
+            ->groupBy(DB::raw('name WITH ROLLUP'))
+            ->get();
+
+    if(!empty($query))
+    {
+      $data['product'] = $query;
+    }
+    else
+    {
+      $data['product'] = 0;
+    }
+
+    if($export == 1)
+    {
+      $array = json_decode(json_encode($query), true);    
+
+      $size = count($array) - 1;
+      $array[$size]['name'] = "GRAND TOTAL";
+
+      $filename = "Product Report " . $first . " - " . $last;
+
+      return Excel::create($filename, function($excel) use ($array) {
+        $excel->sheet('Sheet1', function($sheet) use ($array)
+        {
+          $sheet->fromArray($array);
+        });
+      })->download('xlsx');
+    }
+    
+    return view('page.admin_report_product', $data);
+  }
+
+  public function getTxReport(Request $request)
+  {
+    $input = $request->all();
+
+    $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
+    $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
+    
+    $first; $last;
+    if($start == "" || $end == "")
+    {
+      $first = date("Y-m-d", strtotime( "first day of this month"));
+      $last = date("Y-m-d", strtotime( "last day of this month"));
+    }
+    else
+    {
+      $first = $start;
+      $last = $end;
+    }
+    
+    $data['start'] = $first;
+    $data['end'] = $last;
+
+    $data['active'] = 'txReport';
+
+    $query = DB::table('transaction__order')
+            ->select('m.name as Agent', 'd.order_id as Id', 'p.varian_name as Product', DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(d.varian_price * SUM(d.quantity)) as Price'))
+            ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+            ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+            ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
+            ->groupBy('Agent', 'Id', 'Quantity', 'Product')
+            ->get();
+
+  if(!empty($query))
+  {
+    $data['query'] = $query;
+  }
+  else
+  {
+    $data['query'] = 0; 
+  }
+
+  if($export == 1)
+  {
+    $array = json_decode(json_encode($query), true);    
+
+    $filename = "Transaction Report " . $first . " - " . $last;
+
+    return Excel::create($filename, function($excel) use ($array) {
+      $excel->sheet('Sheet1', function($sheet) use ($array)
+      {
+        $sheet->fromArray($array);
+      });
+    })->download('xlsx');
+  }
+    
+    return view('page.admin_report_tx', $data);
+  }
+  
 
   //NEW ADMIN
   public function getAdminList()
@@ -240,7 +443,7 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
-                            ->get(['order_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
         
 
     return Datatables::of($data['query'])
@@ -279,15 +482,44 @@ class AdminController extends Controller
                         return false;
                     });
                 }
+
+                //buat group id
+                if ($request->has('gId')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['group_id'], $request->gId) !== false) return true;
+                        return false;
+                    });
+                }
+
+                if ($request->has('payment')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['status_payment'], $request->payment) !== false) return true;
+                        return false;
+                    });
+                }
+
+                //kofirmasi penerimaan barang
+                if ($request->has('confirm')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['status_confirmed'], $request->confirm) !== false) return true;
+                        return false;
+                    });
+                }
+
+                if ($request->has('ship')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['status_shipping'], $request->ship) !== false) return true;
+                        return false;
+                    });
+                }
+
+                if ($request->has('type')) {
+                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
+                        if(stripos($row['who'], $request->type) !== false) return true;
+                        return false;
+                    });
+                }
             })
-    ->editColumn('status_payment', function($data){ 
-        if($data->status_payment == 0) return "Unpaid";
-        else if($data->status_payment == 1) return "Paid";
-    })
-    ->editColumn('status_confirmed', function($data){ 
-        if($data->status_confirmed == 0) return "Unconfirmed";
-        else if($data->status_confirmed == 1) return "Confirmed";
-    })
     ->make(true);
   }
 
@@ -680,7 +912,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'userReviewAgent';
 
-    return view('page.admin_review_agent', $data);
+    return view('page.admin_review_comment', $data);
   }
 
   public function getReviewAgentList()
@@ -730,7 +962,7 @@ class AdminController extends Controller
   {
     $data['active'] = 'userReviewAgentRequest';
 
-    return view('page.admin_review_agent_request', $data);
+    return view('page.admin_review_comment_request', $data);
   }  
 
   public function getProcessReviewAgentList()

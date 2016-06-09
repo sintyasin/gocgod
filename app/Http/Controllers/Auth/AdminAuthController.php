@@ -243,7 +243,7 @@ class AdminAuthController extends Controller
         $input = $request->all();
 
         $admin = Admin::find(auth('admin')->user()->id);
-        $admin->password = Hash::make($request->newpass);
+        $admin->password = Hash::make($request->newpassword);
         $admin->save();
 
         Session::flash('password', 1);
