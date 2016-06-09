@@ -59,7 +59,6 @@
           <br>
           <input class="btn btn-primary" type="submit" value="Submit" />
         </div>
-        <input type="hidden" id="export" name="export" value="0" />
       </form>
     </div>
   </div>
@@ -84,45 +83,24 @@
           <thead>
             <tr>
               <th scope="col" class="text-center">Agent</th>
-              <th scope="col" class="text-center">Order Id</th>
-              <th scope="col" class="text-center">Product</th>
+              <th scope="col" class="text-center">Total Order</th>
               <th scope="col" class="text-center">Quantity</th>
-              <th scope="col" class="text-center">Total Price</th>
+              <th scope="col" class="text-center">Omzet Gross</th>
+              <th scope="col" class="text-center">Shipping Fee</th>
+              <th scope="col" class="text-center">Omzet Net</th>
             </tr>
           </thead>
           <tbody>
             @if($query != 0)
-              <?php $i = 0; $namaLama = "";?>
               @foreach($query as $data)
-                @if($i == 0)
-                  <tr>
-                    <td> {{$data->Agent}} </td>
-                    <td> {{$data->Id}} </td>
-                    <td> {{$data->Product}} </td>
-                    <td> {{$data->Quantity}} </td>
-                    <td> {{number_format($data->Price, 0, ',', '.')}} </td>
-                  </tr>
-                  <?php $i++; $namaLama = $data->Agent;?>
-                @else
-                  @if($data->Agent == $namaLama)
-                    <tr>
-                      <td></td>
-                      <td> {{$data->Id}} </td>
-                      <td> {{$data->Product}} </td>
-                      <td> {{$data->Quantity}} </td>
-                      <td> {{number_format($data->Price, 0, ',', '.')}} </td>
-                    </tr>
-                  @else
-                    <tr>
-                      <td> {{$data->Agent}} </td>
-                      <td> {{$data->Id}} </td>
-                      <td> {{$data->Product}} </td>
-                      <td> {{$data->Quantity}} </td>
-                      <td> {{number_format($data->Price, 0, ',', '.')}} </td>
-                    </tr>
-                  <?php $namaLama = $data->Agent;?>
-                  @endif
-                @endif 
+                <tr>
+                  <td>{{$data->Agent}}</td>
+                  <td>{{number_format($data->Total_Order, 0, ',', '.')}} </td>
+                  <td>{{number_format($data->Quantity, 0, ',', '.')}} </td>
+                  <td> {{number_format($data->Omzet, 0, ',', '.')}} </td>
+                  <td> {{number_format($data->Shipping, 0, ',', '.')}} </td>
+                  <td> {{number_format($data->Net, 0, ',', '.')}} </td>
+                </tr>
               @endforeach
             @endif
         </table> 

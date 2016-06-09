@@ -5,11 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Bank extends Model
+class Banner extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-    protected $table = 'master__bank';
-	protected $primaryKey = 'bank_id';
+    protected $table = 'banner';
+    protected $primaryKey = 'id';
 	protected $dates = ['deleted_at'];
+
 }

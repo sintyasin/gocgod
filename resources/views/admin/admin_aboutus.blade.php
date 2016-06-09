@@ -47,7 +47,7 @@
             <label class="col-md-1 control-label">Address</label>
 
             <div class="col-md-5">
-                <textarea type="text" rows="4" class="form-control" name="address"  /> {{ $query->address }} </textarea>
+                <textarea type="text" rows="4" class="form-control" name="address"  />{{ $query->address }}</textarea>
 
                 @if ($errors->has('address'))
                 <span class="help-block">
