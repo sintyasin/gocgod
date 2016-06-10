@@ -3,7 +3,7 @@
 @section('content')
 <div class="padding_outer">
     <div class="container">
-        <h2>My Order</h2>
+        <h2>My Order History</h2>
         <div class="row">
           <div class="col-lg-12">
             <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
@@ -102,13 +102,13 @@ $(function() {
             { data: 'order_id', name: 'order_id', title:'Order Id' },
             { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
+            { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date', sType: 'date' },
             { data: 'shipping_fee', name: 'shipping_fee', title:'Shipping Fee' },
             { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
             { data: 'status_shipping', name: 'status_shipping', title:'Shipping Confirmation' },
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
-              return '<br><a class="btn btn-warning" onclick="editOrder(' + row.order_id + ')" >' + 'Edit' + '</a> <br><br>' + 
-                    '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
+              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
             } },         
             
         ],

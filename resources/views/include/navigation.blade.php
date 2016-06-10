@@ -97,6 +97,7 @@
 	                            <ul class="dropdown-menu" role="menu">
 	                            	<li><a href="{{ url('/profile/'.Auth::user()->id) }}"><div class="padding_outer_profile">Profile</div></a></li>
 	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">My Order</div></a></li>
+	                            	<li><a href="{{ url('/historymyorder') }}"><div class="padding_outer_profile">History Order</div></a></li>
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
 	                            </ul>
 	                        </li>

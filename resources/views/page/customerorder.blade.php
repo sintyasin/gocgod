@@ -104,10 +104,9 @@
 	  })
 	  .success(function(data)
 	  {
-	  	// window.location = "{{ URL::to('/customerorder') }}";
-	  	$("#sending").prop("disabled", true);
-	  	$("#sending").text("Sended");
-	  	$("#Sending").css("background-color", "red");
+	  	$("#"+id+"sending").prop("disabled", true);
+	  	$("#"+id+"sending").text("Sent");
+	  	$("#"+id+"sending").css("background-color", "red");
 	  })
 	  .fail(function(){
 	  	alert('error');
@@ -115,7 +114,6 @@
 	}
 
   $(function() {
-    
     var table = $('#customerDatatable').DataTable({
         processing: true,
         serverSide: true,
@@ -128,13 +126,24 @@
             { data: 'order_id', name: 'order_id', title:'Order Id' },
             { data: 'customer', name: 'customer', title:'Customer' },
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
+            { data: 'phone', name: 'phone', title:'Phone' },
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
             { data: 'city_name', name: 'city_name', title:'City' },            
             { data: 'who', name: 'who', title:'Type' },
             { data: 'status_confirmed', name: 'status_confirmed', title:'Confirmed Status' },
             {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
-              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' + '<button class="btn btn-warning" id="sending" onclick="sending(' + row.order_id + ')" >' + 'Sending' + '</button>';
-            } }
+
+            if(row.status_shipping == 0){
+
+              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Sending' + '</button>';
+            }
+            else
+            {
+            	return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button disabled class="btn btn-warning" style="background-color:red" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Sent' + '</button>';
+            } 
+            }
+        }
+
         ],
     });
   });

@@ -144,7 +144,7 @@ class TransactionController extends Controller
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
                             ->where('a.id', Auth::user()->id)
-                            ->get(['order_id', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'c.name as customer', 'order_date', 'ship_address', 'c.phone as phone','city_name', 'status_confirmed', 'status_shipping' ,'who']);
         
 
 
@@ -216,6 +216,129 @@ class TransactionController extends Controller
     return redirect('customerorder');
 
 
+  }
+
+
+  //================================== MY ORDER - CUSTOMER
+  public function getOrderListCustomer()
+  {
+    $data['active'] = 'txOrder';
+   
+    return view('page.myorder', $data);
+  }
+
+  public function getOrderDataCustomer(Request $request)
+  {
+
+    $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
+                            ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
+                            ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            ->where('c.id', Auth::user()->id)
+                            ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+        
+
+
+    return Datatables::of($data['query'])
+    ->editColumn('status_payment', function($data){ 
+        if($data->status_payment == 0) return "Unpaid";
+        else if($data->status_payment == 1) return "Paid";
+    })
+    ->editColumn('status_shipping', function($data){ 
+        if($data->status_shipping == 0) return "Processed";
+        else if($data->status_shipping == 1) return "Sent";
+    })
+    ->make(true);
+  }
+
+  public function getProductOrderCustomer(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    $x = TxOrderDetail::leftJoin('transaction__order as tx', 'tx.order_id', '=', 'transaction__order_detail.order_id')
+                ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'transaction__order_detail.varian_id')
+                ->where('transaction__order_detail.order_id', $id)
+                ->get(['varian_name', 'quantity', 'varian_price']);
+
+    
+    $allData;
+    $i = 0;
+    
+    foreach ($x as $tmp) {
+      $data = new ProductData();
+      $data->name = $tmp->varian_name;
+      $data->quantity = $tmp->quantity;
+      $data->price = $tmp->varian_price;
+
+      $allData[$i] = $data;
+      $i++;
+    }
+
+    if(isset($allData))
+    {
+      $json = json_encode($allData);
+
+      return $json;
+    }
+    else return 0;
+    
+  }
+
+  // public function sending(Request $request)
+  // {
+  //   $input = $request->all();
+  //   $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+  //   //dd($id);
+
+  //   $order = Txorder::find($id);
+  //   $order->status_shipping = 1;
+  //   $order->save();
+
+  //   return redirect('customerorder');
+
+
+  // }
+
+
+//=========================== HISTORY ORDER
+  public function getOrderListHistoryCustomer()
+  {
+    $data['active'] = 'txOrder';
+   
+    return view('page.historymyorder', $data);
+  }
+
+  public function getOrderDataHistoryCustomer(Request $request)
+  {
+
+    $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
+                            ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
+                            ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            ->where('status_confirmed', 1)
+                            ->where('status_shipping', 1)
+                            ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+        
+
+
+    return Datatables::of($data['query'])
+    ->editColumn('status_payment', function($data){ 
+        if($data->status_payment == 0) return "Unpaid";
+        else if($data->status_payment == 1) return "Paid";
+    })
+    ->editColumn('status_shipping', function($data){ 
+        if($data->status_shipping == 0) return "Processed";
+        else if($data->status_shipping == 1) return "Sent";
+    })
+    ->make(true);
   }
 
 }

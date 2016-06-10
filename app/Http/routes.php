@@ -44,6 +44,15 @@ Route::get('customerorder/data', array('as' => 'customerorderlist.data',
 Route::post('dataorderproduct', 'TransactionController@getProductOrder');
 Route::post('sending', 'TransactionController@sending');
 
+Route::get('myorder', 'TransactionController@getOrderListCustomer');
+Route::get('myorder/data', array('as' => 'orderlistCustomer.data', 
+	'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
+Route::get('edit/order/{id}', 'AdminController@getEditOrder');
+Route::post('post/edit/order/{id}', 'AdminController@postEditOrder');
+Route::post('product/order', 'AdminController@getProductOrder');
+
+Route::get('historymyorder', 'TransactionController@getOrderListHistoryCustomer');
+
 Route::auth();
 
 //////halaman admin
