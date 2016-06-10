@@ -35,6 +35,8 @@ use App\AdminInfo;
 use App\Req_agent;
 use App\Bank;
 use App\Member;
+use App\Banner;
+use App\Balance;
 
 class SampleDetailData
 {
@@ -65,32 +67,303 @@ class AdminController extends Controller
     $today = new \DateTime(NULL);
     date_add($today,date_interval_create_from_date_string("-8 days"));
     $date = date_format($today,"Y-m-d");
-    //dd($date);
-    //WHERE status_confirmed = 0 AND order_date < ?', [$date]);
-    /*DB::update('UPDATE transaction__order 
-                SET status_confirmed = 1 
-                WHERE status_confirmed = 0 AND
-                (SELECT order_id, shipping_id
-                  FROM transaction__shipping s
-                  WHERE s.order_id = order_id AND
-                  (SELECT shipping_id
-                    FROM transaction__shipping_detail d
-                    WHERE d.shipping_id = s.shipping_id)) ');*/
-    DB::update('UPDATE transaction__order
-                SET status_confirmed = 1 
-                WHERE status_confirmed = 0 AND ? > 
-                (SELECT date_shipping
-                  FROM transaction__shipping s
-                  LEFT JOIN transaction__shipping_detail d
-                  USING(shipping_id)
-                  WHERE s.order_id = transaction__order.order_id)', [$date]);
+
+    DB::transaction(function() use ($date)
+    {
+      //AMBIL ORDER ID DARI DATA YG MAU DI UPDATE
+      $query = TxOrder::where('status_confirmed', 0)
+                      ->where('status_shipping', 1)
+                      ->where('status_payment', 1)
+                      ->where('shipping_date', '<=', $date)
+                      ->get(['order_id', 'agent_id', 'total']);
+
+      //UPDATE KONFIRMASI USER
+      DB::update('UPDATE transaction__order
+                  SET status_confirmed = 1 
+                  WHERE status_confirmed = 0 
+                  AND status_shipping = 1 
+                  AND status_payment = 1 
+                  AND shipping_date <= ?', [$date]);
+
+      //INSERT DATA KE TX BALANCE
+      foreach ($query as $data) {
+        $balance = new Balance;
+        $balance->agent_id = $data->agent_id;
+        $balance->amountMoney = $data->total;
+        $balance->balance_type = 1;
+        $balance->order_id = $data->order_id;
+        $balance->statusTransfer = 0;
+        $balance->save();
+      }
+    });
   }
 
+  //DEPOSTI WITHDRAWAL
+  public function getDeposit()
+  {
+    $data['active'] = 'deposit';
+
+    return view('admin.admin_deposit', $data);
+  }
+
+  public function getDepositAll()
+  {
+    return view('admin.admin_deposit_all');
+  }
+
+  public function getDepositData()
+  {
+    $data['query'] = Balance::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                            ->get(['balance_id', 'm.name as name', 'amountMoney', 'balance_type', 'order_id', 'statusTransfer']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getDepositFinish()
+  {
+    return view('admin.admin_deposit_finish');
+  }
+
+  public function getDepositFinishData()
+  {
+    $data['query'] = Balance::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                            ->where('statusTransfer', 1)
+                            ->where('balance_type', 0)
+                            ->get(['balance_id', 'm.name as name', 'amountMoney', 'balance_type', 'order_id', 'statusTransfer']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getDepositUnfinish()
+  {
+    return view('admin.admin_deposit_unfinish');
+  }
+
+  public function getDepositUnfinishData()
+  {
+    $data['query'] = Balance::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                            ->where('statusTransfer', 0)
+                            ->where('balance_type', 0)
+                            ->whereNull('order_id')
+                            ->get(['balance_id', 'm.name as name', 'amountMoney', 'balance_type', 'statusTransfer']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getProcessBalance(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    $deposit = Balance::find($id);
+    $deposit->statusTransfer = 1;
+    $deposit->balance_type = 0;
+    $deposit->save();
+
+    return 1;
+  }
+
+  //BANNER
   public function getBannerList()
   {
     $data['active'] = 'bannerList';
+
+    return view('admin.admin_banner', $data);
   }
 
+  public function getBannerData()
+  {
+    $data['query'] = Banner::get(['id', 'name', 'alias', 'description1', 'description2', 'price', 'picture']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getInsertBanner()
+  {
+    $data['active'] = "insertBanner";
+
+    return view('admin.admin_insert_banner', $data);
+  }
+
+  public function postInsertBanner(Request $request)
+  {
+    $input = $request->all();
+
+    $v = Validator::make($request->all(), [
+        'name' => 'required|max:50',
+        'alias' => 'max:50',
+        'desc1' => 'max:50',
+        'desc2' => 'max:50',
+        'price' => 'numeric',
+        'picture' => 'mimes:png',
+    ]);
+
+    if ($v->fails())
+    {
+        return redirect('/admin/insert/banner')->withErrors($v->errors())->withInput();
+    }    
+
+    $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
+    $alias = filter_var($input['alias'], FILTER_SANITIZE_STRING);
+    $desc1 = filter_var($input['desc1'], FILTER_SANITIZE_STRING);
+    $desc2 = filter_var($input['desc2'], FILTER_SANITIZE_STRING);
+    $price = filter_var($input['price'], FILTER_SANITIZE_STRING);
+    $picture = $input['picture'];
+    list($width, $height) = getimagesize($picture);
+    
+    if($picture->getClientSize() > 512000)
+    {
+      return redirect('/admin/insert/banner')->with('errorSize', 'The picture size cannot be larger than 500 kilobytes')->withInput();
+    }
+    else if($width > 633 || $height > 761)
+    {
+      return redirect('/admin/insert/banner')->with('errorSize', 'The picture dimension cannot be larger than 633x761')->withInput();
+    }
+
+
+    $fileName = filter_var($picture->getClientOriginalName(), FILTER_SANITIZE_STRING);
+    $fileName = preg_replace('~[\\\\/:*?"<>|-]~', '', $fileName);
+    $fileName = str_replace(' ', '_', $fileName);
+    $fileName = time() . $fileName;
+
+    $banner = new Banner;
+    $banner->name = $name;
+    $banner->alias = $alias;
+    $banner->description1 = $desc1;
+    $banner->description2 = $desc2;
+    $banner->price = $price;
+    $banner->picture = $fileName;
+    $banner->save();
+
+    //pindahin gambarnya
+    $picture->move(base_path() . '/public/assets/images/slider/' , $fileName);
+
+    Session::flash('insert', 1);
+    return redirect('admin/insert/banner/');
+  }
+
+  public function getEditBanner($id)
+  {
+    $data['query'] = Banner::find($id);
+    $data['active'] = "bannerList";
+
+    return view('admin.admin_edit_banner', $data);
+  }
+
+  public function postEditBanner(Request $request, $id)
+  {
+    $input = $request->all();
+
+    //kalo dia insert new category
+    $v = Validator::make($request->all(), [
+        'name' => 'required|max:50',
+        'alias' => 'max:50',
+        'desc1' => 'max:50',
+        'desc2' => 'max:50',
+        'price' => 'numeric',
+        'picture' => 'mimes:png',
+    ]);    
+
+    if ($v->fails())
+    {
+        return redirect('/admin/edit/banner/' . $id)->withErrors($v->errors())->withInput();
+    }    
+
+    $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
+    $alias = filter_var($input['alias'], FILTER_SANITIZE_STRING);
+    $desc1 = filter_var($input['desc1'], FILTER_SANITIZE_STRING);
+    $desc2 = filter_var($input['desc2'], FILTER_SANITIZE_STRING);
+    $price = filter_var($input['price'], FILTER_SANITIZE_STRING);
+    $picture = $input['picture'];
+    list($width, $height) = getimagesize($picture);
+    
+    
+    //kalo upload file baru
+    if($_FILES["picture"]["error"] != 4) 
+    {
+      $picture = $input['picture'];
+
+      if($picture->getClientSize() > 512000)
+      {
+        return redirect('/admin/insert/banner')->with('errorSize', 'The picture size cannot be larger than 500 kilobytes')->withInput();
+      }
+      else if($width > 633 || $height > 761)
+      {
+        return redirect('/admin/insert/banner')->with('errorSize', 'The picture dimension cannot be larger than 633x761')->withInput();
+      }
+
+      $fileName = filter_var($picture->getClientOriginalName(), FILTER_SANITIZE_STRING);
+      $fileName = preg_replace('~[\\\\/:*?"<>|-]~', '', $fileName);
+      $fileName = str_replace(' ', '_', $fileName);
+      $fileName = time() . $fileName;
+    }
+    else //kalo ga upload file baru
+    {
+      $picture = null;
+    }
+
+    $banner = Banner::find($id);
+    //ambil data picture lama, untuk di delete gambarnya
+    $oldPicture = $banner->picture;
+
+    $banner->name = $name;
+    $banner->alias = $alias;
+    $banner->description1 = $desc1;
+    $banner->description2 = $desc2;
+    $banner->price = $price;
+    if($picture != null)
+      $banner->picture = $fileName;
+    $banner->save();
+
+    if($picture != null)
+    {
+      //pindahin gambarnya
+      $picture->move(base_path() . '/public/assets/images/slider/' . '/', $fileName);
+    
+      $path = base_path() . "/public/assets/images/slider/" . $oldPicture;
+      $fileExist = file_exists($path);
+      if($fileExist)
+      {
+        unlink($path);
+      }
+    }
+
+    Session::flash('update', 1); 
+    return redirect('/admin/banner/list');
+  }
+
+  public function deleteBanner(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    Banner::find($id)->delete();
+    Session::flash('delete', 1);
+
+    return 1;
+  }
 
   //BANK
   public function getBankList()
@@ -195,6 +468,7 @@ class AdminController extends Controller
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
     $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
     
     $monday; $sunday;
     if($start == "" || $end == "")
@@ -214,13 +488,13 @@ class AdminController extends Controller
     $data['active'] = 'purchase';
 
     $query = DB::table('transaction__order')
-            ->select('m.name as name', 'p.varian_name as varian', DB::raw('SUM(d.quantity) as qty'), DB::raw('(d.varian_price * SUM(d.quantity)) as price'))
+            ->select('m.name as Agent', 'p.varian_name as Product', DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(d.varian_price * SUM(d.quantity)) as Total'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('shipping_date', '>=', $monday)
             ->where('shipping_date', '<=', $sunday)
-            ->groupBy('name', 'varian')
+            ->groupBy('Agent', 'Product')
             ->get();
 
     if(!empty($query))
@@ -228,12 +502,12 @@ class AdminController extends Controller
       $data['query'] = $query;
       
       $queryProduct = DB::table('transaction__order')
-              ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
+              ->select('p.varian_name as Product', DB::raw('SUM(d.quantity) as Quantity'), DB::raw('SUM(d.varian_price * d.quantity) as Total'))
               ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
               ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
               ->where('shipping_date', '>=', $monday)
               ->where('shipping_date', '<=', $sunday)
-              ->groupBy('name')
+              ->groupBy('Product')
               ->get();
 
       if(!empty($queryProduct))
@@ -244,13 +518,34 @@ class AdminController extends Controller
       {
         $data['product'] = 0;
       }
+
+
+      if($export == 1)
+      {
+        $arrayAgent = json_decode(json_encode($query), true);        
+        $arrayProduct = json_decode(json_encode($queryProduct), true);
+
+        $filename = "Purchase Order " . $monday . " - " . $sunday;
+
+        return Excel::create($filename, function($excel) use ($arrayAgent, $arrayProduct) {
+          $excel->sheet('PO per agent', function($sheet) use ($arrayAgent)
+          {
+            $sheet->fromArray($arrayAgent);
+          });
+
+          $excel->sheet('PO per Product', function($sheet) use ($arrayProduct)
+          {
+            $sheet->fromArray($arrayProduct);
+          });
+        })->download('xlsx');
+      }
     }
     else
     {
       $data['query'] = 0;
       $data['product'] = 0;
     }
-    
+
     return view('admin.admin_purchase_list', $data);
   }
 
@@ -261,7 +556,6 @@ class AdminController extends Controller
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
     $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
-    $export = filter_var($input['export'], FILTER_SANITIZE_STRING);
     
     $first; $last;
     if($start == "" || $end == "")
@@ -297,23 +591,6 @@ class AdminController extends Controller
     {
       $data['product'] = 0;
     }
-
-    if($export == 1)
-    {
-      $array = json_decode(json_encode($query), true);    
-
-      $size = count($array) - 1;
-      $array[$size]['name'] = "GRAND TOTAL";
-
-      $filename = "Product Report " . $first . " - " . $last;
-
-      return Excel::create($filename, function($excel) use ($array) {
-        $excel->sheet('Sheet1', function($sheet) use ($array)
-        {
-          $sheet->fromArray($array);
-        });
-      })->download('xlsx');
-    }
     
     return view('admin.admin_report_product', $data);
   }
@@ -343,18 +620,32 @@ class AdminController extends Controller
     $data['active'] = 'txReport';
 
     $query = DB::table('transaction__order')
-            ->select('m.name as Agent', DB::raw('COUNT(transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + shipping_fee) as Omzet'), 'shipping_fee as Shipping', DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select('order_date as Date' , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + shipping_fee) as Omzet'), 'shipping_fee as Shipping', DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('order_date', '>=', $first)
             ->where('order_date', '<=', $last)
-            ->groupBy(DB::raw('Agent WITH ROLLUP'))
+            ->groupBy('Date')
+            ->orderBy('Date')
             ->get();
-//dd($query);
+
+    $order = 0; $qty = 0; $omzet = 0; $shipping = 0; $net = 0;
     if(!empty($query))
     {
-      $data['query'] = $query;      
+      $array = json_decode(json_encode($query), true);
+      foreach ($array as $tmp) {
+        $order += $tmp['Total_Order'];
+        $qty += $tmp['Quantity'];
+        $omzet += $tmp['Omzet'];
+        $shipping += $tmp['Shipping'];
+        $net += $tmp['Net'];
+      }
+
+      $insert = array('Date' => 'TOTAL', 'Total_Order' => $order, 'Quantity' => $qty, 'Omzet' => $omzet, 'Shipping' => $shipping, 'Net' => $net);
+      array_push($array, $insert);
+
+      $data['query'] = $array;
     }
     else
     {
@@ -364,6 +655,65 @@ class AdminController extends Controller
     return view('admin.admin_report_tx', $data);
   }
   
+  public function getAgentReport(Request $request)
+  {
+    $input = $request->all();
+
+    $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
+    $end = filter_var($input['dateEnd'], FILTER_SANITIZE_STRING);
+    
+    $first; $last;
+    if($start == "" || $end == "")
+    {
+      $first = date("Y-m-d", strtotime( "first day of this month"));
+      $last = date("Y-m-d", strtotime( "last day of this month"));
+    }
+    else
+    {
+      $first = $start;
+      $last = $end;
+    }
+    
+    $data['start'] = $first;
+    $data['end'] = $last;
+
+    $data['active'] = 'agentReport';
+
+    $query = DB::table('transaction__order')
+            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + shipping_fee) as Omzet'), 'shipping_fee as Shipping', DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
+            ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
+            ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
+            ->groupBy('Agent')
+            ->orderBy('Agent')
+            ->get();
+
+    $order = 0; $qty = 0; $omzet = 0; $shipping = 0; $net = 0;
+    if(!empty($query))
+    {
+      $array = json_decode(json_encode($query), true);
+      foreach ($array as $tmp) {
+        $order += $tmp['Total_Order'];
+        $qty += $tmp['Quantity'];
+        $omzet += $tmp['Omzet'];
+        $shipping += $tmp['Shipping'];
+        $net += $tmp['Net'];
+      }
+
+      $insert = array('Agent' => 'TOTAL', 'Total_Order' => $order, 'Quantity' => $qty, 'Omzet' => $omzet, 'Shipping' => $shipping, 'Net' => $net);
+      array_push($array, $insert);
+
+      $data['query'] = $array;
+    }
+    else
+    {
+      $data['query'] = 0; 
+    }
+    
+    return view('admin.admin_report_agent', $data);
+  }
 
   //NEW ADMIN
   public function getAdminList()
@@ -518,12 +868,17 @@ class AdminController extends Controller
   public function getOrderList()
   {
     $data['active'] = 'txOrder';
+    $data['first'] = date("Y-m-d", strtotime( "first day of this month"));
+    $data['last'] = date("Y-m-d", strtotime( "last day of this month"));
     
     return view('admin.admin_order', $data);
   }
 
   public function getOrderData(Request $request)
   {
+    $first = date("Y-m-d", strtotime( "first day of this month"));
+    $last = date("Y-m-d", strtotime( "last day of this month"));
+
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
@@ -531,12 +886,19 @@ class AdminController extends Controller
         
 
     return Datatables::of($data['query'])
-    ->filter(function ($instance) use ($request) {
+    ->filter(function ($instance) use ($request, $first, $last) {
                 if ($request->has('dateStart')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
                         if($row['order_date'] >= $request->dateStart) return true;
                         return false;
                     });
+                }
+                else
+                {
+                  $instance->collection = $instance->collection->filter(function ($row) use ($first) {
+                      if($row['order_date'] >= $first) return true;
+                      return false;
+                  });
                 }
 
                 if ($request->has('dateEnd')) {
@@ -544,6 +906,13 @@ class AdminController extends Controller
                         if($row['order_date'] <= $request->dateEnd) return true;
                         return false;
                     });
+                }
+                else
+                {
+                  $instance->collection = $instance->collection->filter(function ($row) use ($last) {
+                      if($row['order_date'] <= $last) return true;
+                      return false;
+                  });
                 }
 
                 if ($request->has('customer')) {
@@ -1851,9 +2220,8 @@ class AdminController extends Controller
     $data['query'] = Product::leftJoin('product__category', 'product__category.category_id', '=', 'product__varian.category_id')
                             ->get(['category_name', 'varian_id', 'varian_name', 'price', 'qty', 'picture', 'weight', 'product__varian.description']);
     
-      return Datatables::of($data['query'])
-      //->addColumn('actions', '<button id="a">a</button> <br> <button>b</button>')
-      ->make(true);
+    return Datatables::of($data['query'])
+    ->make(true);
   }
 
   public function getInsertProduct()
@@ -2098,7 +2466,7 @@ class AdminController extends Controller
       }
     }
     Session::flash('update', 1); 
-    return redirect('/admin/');
+    return redirect('/admin/product/list');
   }
 
   public function getDeleteProduct(Request $request)

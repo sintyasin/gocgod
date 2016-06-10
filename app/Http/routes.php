@@ -364,7 +364,26 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::get('banner/list', 
 		'AdminController@getBannerList'
 	);
+	Route::get('banner/data', 
+		array('as' => 'banner.data', 
+			'uses' =>'AdminController@getBannerData')
+	);
+	Route::get('insert/banner', 
+		'AdminController@getInsertBanner'
+	);
+	Route::post('post/insert/banner', 
+		'AdminController@postInsertBanner'
+	);
+	Route::get('edit/banner/{id}', 
+		'AdminController@getEditBanner'
+	);
+	Route::post('post/edit/banner/{id}', 
+		'AdminController@postEditBanner'
+	);
 
+	Route::post('delete/banner', 
+		'AdminController@deleteBanner'
+	);
 
 	//CUT OFF DATE
 	Route::get('cut/off/date', 
@@ -422,6 +441,42 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	);
 	Route::get('report/product', 
 		'AdminController@getProductReport'
+	);
+	Route::get('report/agent', 
+		'AdminController@getAgentReport'
+	);
+
+	//DEPOSIT WITHDRAWAL
+	Route::get('deposit', 
+		'AdminController@getDeposit'
+	);
+
+	Route::get('deposit/all', 
+		'AdminController@getDepositAll'
+	);
+
+	Route::get('deposit/data', 
+		array('as' => 'deposit.data', 
+			'uses' =>'AdminController@getDepositData')
+	);
+
+	Route::get('deposit/finish', 
+		'AdminController@getDepositFinish'
+	);
+	Route::get('depositfinish/data', 
+		array('as' => 'depositfinish.data', 
+			'uses' =>'AdminController@getDepositFinishData')
+	);
+
+	Route::get('deposit/unfinish', 
+		'AdminController@getDepositUnfinish'
+	);
+	Route::get('depositunfinish/data', 
+		array('as' => 'depositunfinish.data', 
+			'uses' =>'AdminController@getDepositUnfinishData')
+	);
+	Route::post('process/balance', 
+		'AdminController@getProcessBalance'
 	);
 });
 

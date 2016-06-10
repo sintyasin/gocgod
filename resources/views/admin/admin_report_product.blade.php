@@ -25,7 +25,7 @@
          <b>Notes:<br>
          You have to fill both start and end date to filter the data
          <br>or<br>
-         Leave and submit both field empty to show next week data</b>
+         Leave and submit both field empty to show this month's data</b>
         </div>
 
         <div class="col-lg-12">
@@ -55,11 +55,6 @@
           </div>
         </div>
 
-        <div class="col-lg-12">
-          <br>
-          <input class="btn btn-primary" type="submit" value="Submit" />
-        </div>
-        <input type="hidden" id="export" name="export" value="0" />
       </form>
     </div>
   </div>
@@ -69,13 +64,6 @@
         <h3><b>Product Report from {{$start}} to {{$end}}</b></h3>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-lg-12">
-        <button onclick="download()" class="btn btn-warning">Export to excel</button>
-    </div>
-  </div>
-
 
   <div class="row">
     <div class="col-lg-12">
@@ -92,6 +80,12 @@
             @if($product != 0)
               @foreach($product as $data)
                 @if($data->name == "")
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+
                   <tr>
                     <td><b> GRAND TOTAL </b></td>
                     <td><b> {{$data->quantity}} </b></td>
@@ -118,12 +112,6 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
 <script>
-function download()
-{
-  document.getElementById('export').value = 1;
-  document.getElementById('report').submit();
-}
-
 $(function() {
     var date = $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
 
