@@ -6,19 +6,17 @@
   <div class="padding_outer">
     <h2> CheckOut </h2>
   
-
     @if (Auth::guest())
       <div class="clicktoregister">
         <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
       </div>
     @else
-
     <div class="stepper">
       <div id="wrapper_progress">
         <br>
         <div class="col-md-12 col-xs-12">
           <span class='baricon'>1</span>
-          <span id="bar1" class='progress_bar'></span>
+          <span id="bar1" class='progress_bar' style="background-color:#38610B"></span>
           <span class='baricon'>2</span>
           <span id="bar2" class='progress_bar'></span>
           <span class='baricon'>3</span>
@@ -39,11 +37,11 @@
             
       <form class="form-horizontal" role="form" method="POST" action="{{ url('orderall') }}">
       {!! csrf_field() !!}
-        
+        <div id="wrapper_table">
           <div id="product_details">
             <p class='form_head'>Order Details</p>
             <div class="shiping-method">
-              <table id="" class="display table table-striped table-bordered dt-responsive" width="100%">
+              <table id="order_details" class="display table table-striped table-bordered dt-responsive" width="100%">
                 <thead>
                   <tr>
                     <th>Product</th>
@@ -54,19 +52,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php $i = 0; ?>
+                  <?php $i=0?>
                   @foreach(Cart::content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
-                    <td>Rp {{number_format($row->price, 2, ',', '.')}}</td>
+                    <td>Rp {{$row->price}}</td>
                     <td align="center">
                       <input type="hidden" id="{{ $i.'-rowid' }}" value="{{$row->rowid}}">
                       <input type="hidden" id="{{ $i.'-id' }}" value="{{$row->id}}">
-                      <!-- <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;"> -->
-                      <input type="number" maxlength="2" id="{{ $i.'-qty' }}" value="{{$row->qty}}" style="width:60px; color:black; text-align: center;s">
+                      <input type="number" min="1" maxlength="2" id="{{ $i.'-qty_subcriber' }}" value="{{$row->qty}}" style="width:60px; color:black; text-align: center;">
                       
                     </td>
-                    <td><span id="{{ $i.'-subtotal' }}">Rp {{number_format($row->subtotal, 2, ',', '.')}}</span></td>
+                    <td><span id="{{ $i.'-subtotal' }}">Rp {{$row->subtotal}}</span></td>
                     <td align="center">
                       <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Update</button>
                       <button type="button" onclick="deletecart({{ $i }})" class="btn btn-danger">Delete</button>
@@ -77,11 +74,10 @@
                 </tbody>
               </table>
               <p class="plxLogin"><font size="3">Total Price</font></p>
-              <p class="plxLogin"><font size="4"><b><span id="total-cart">Rp {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-            <!-- <input type="button" value="Previous" onclick="show_prev('subcriber','bar2');">
- -->            <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
+             <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
           </div>
         </div>
         <div id="wrapper">
@@ -133,7 +129,6 @@
                 <p><input type="radio" name="payment" value="card" checked><label>Credit Card (saved) </label></p>               
               </div>
               <div class="master-card-info">
-              <!-- <form action="#"> -->
                 <div class="form-group">
                   <label>Name on Card</label>
                   <input type="text" class="form-control">            
@@ -204,52 +199,16 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
-      $('table.display').DataTable( {
+      var table = $('table.display').DataTable( {
         "autoWidth": false
       } );
   } );
-
-  function addtosubcriber(x)
-  {
-    var quantity = $('#'+x+'-qty_subcriber').val();
-    var name = $('#'+x+'-name').val();
-    var price = $('#'+x+'-price').val();
-    var id = $('#'+x+'-id').val();
-    
-    if ($('#'+x+'qty_subcriber').val() == 0) alert('Quantity product still blank...');
-    else{
-
-    $.ajax({
-      url: '{{ URL("/addtocartsubcriber")}}',
-      type: 'POST',
-      data: {id: id, qty: quantity, name: name, price: price},
-      beforeSend: function(request){
-        return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-      },
-  //    headers: {
-    //     'X-CSRF-Token': $('meta[name="token"]').attr('content')
-    // }
-    })
-    .done(function(){
-      $("#button_"+x).prop("disabled",true);
-      // $('input[type="button"]').attr('disabled','disabled');
-      alert('Added to cart!');
-      $('#'+x+'-subtotal').html(data.response.id);
-      $('#total-cart').html(data.response.qty);
-      $('#total-cart').html(data.response.name);
-      $('#total-cart').html(data.response.price);
-    })
-    .fail(function(){
-      alert('error');
-    })
-    }
-  }
 
   function updatecart(x)
   {
     var rowId = $('#'+x+'-rowid').val();
     var id = $('#'+x+'-id').val();
-    var quantity = $('#'+x+'-qty').val();
+    var quantity = $('#'+x+'-qty_subcriber').val();
 
     $.ajax({
       url: '{{URL("/updatecart")}}',
@@ -273,7 +232,7 @@
   {
     var rowId = $('#'+x+'-rowid').val();
     var id = $('#'+x+'-id').val();
-    var quantity = $('#'+x+'-qty').val();
+    var quantity = $('#'+x+'-qty_subcriber').val();
 
     $.ajax({
       url: '{{URL("/deletecart")}}',
@@ -284,6 +243,8 @@
           },
     })
     .done(function(){
+      var t = $('#order_details').DataTable();
+      t.row(x).remove().draw(false);
       alert("Delete Data berhasil!");
     })
     .fail(function(){
