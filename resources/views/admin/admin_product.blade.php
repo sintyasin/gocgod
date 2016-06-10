@@ -104,11 +104,6 @@ $(function() {
             } }
         ]
     });
-    /*
-    $('#example tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        alert( data.id);
-    } );*/
 });
 </script>
 @endpush
