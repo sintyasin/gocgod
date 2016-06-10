@@ -45,6 +45,12 @@
         </ul>
       </li>
 
+      <li class=" <?php if($active == 'deposit') echo 'active'; ?> ">
+        <a href= {{URL('admin/deposit')}} >
+          <i class="fa fa-money"></i> <span>Deposit Withdrawal</span>
+        </a>
+      </li>
+
       <li class=" <?php if($active == 'bankList' || $active == 'insertBank') echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-bank"></i> <span>Bank</span> <i class="fa fa-angle-left pull-right"></i>

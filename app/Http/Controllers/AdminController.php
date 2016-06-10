@@ -36,6 +36,7 @@ use App\Req_agent;
 use App\Bank;
 use App\Member;
 use App\Banner;
+use App\Balance;
 
 class SampleDetailData
 {
@@ -67,14 +68,114 @@ class AdminController extends Controller
     date_add($today,date_interval_create_from_date_string("-8 days"));
     $date = date_format($today,"Y-m-d");
 
-    DB::update('UPDATE transaction__order
-                SET status_confirmed = 1 
-                WHERE status_confirmed = 0 
-                AND status_shipping = 1 
-                AND status_payment = 1 
-                AND shipping_date <= ?', [$date]);
+    DB::transaction(function() use ($date)
+    {
+      //AMBIL ORDER ID DARI DATA YG MAU DI UPDATE
+      $query = TxOrder::where('status_confirmed', 0)
+                      ->where('status_shipping', 1)
+                      ->where('status_payment', 1)
+                      ->where('shipping_date', '<=', $date)
+                      ->get(['order_id', 'agent_id', 'total']);
+
+      //UPDATE KONFIRMASI USER
+      DB::update('UPDATE transaction__order
+                  SET status_confirmed = 1 
+                  WHERE status_confirmed = 0 
+                  AND status_shipping = 1 
+                  AND status_payment = 1 
+                  AND shipping_date <= ?', [$date]);
+
+      //INSERT DATA KE TX BALANCE
+      foreach ($query as $data) {
+        $balance = new Balance;
+        $balance->agent_id = $data->agent_id;
+        $balance->amountMoney = $data->total;
+        $balance->balance_type = 1;
+        $balance->order_id = $data->order_id;
+        $balance->statusTransfer = 0;
+        $balance->save();
+      }
+    });
   }
 
+  //DEPOSTI WITHDRAWAL
+  public function getDeposit()
+  {
+    $data['active'] = 'deposit';
+
+    return view('admin.admin_deposit', $data);
+  }
+
+  public function getDepositAll()
+  {
+    return view('admin.admin_deposit_all');
+  }
+
+  public function getDepositData()
+  {
+    $data['query'] = Balance::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                            ->get(['balance_id', 'm.name as name', 'amountMoney', 'balance_type', 'order_id', 'statusTransfer']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getDepositFinish()
+  {
+    return view('admin.admin_deposit_finish');
+  }
+
+  public function getDepositFinishData()
+  {
+    $data['query'] = Balance::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                            ->where('statusTransfer', 1)
+                            ->where('balance_type', 0)
+                            ->get(['balance_id', 'm.name as name', 'amountMoney', 'balance_type', 'order_id', 'statusTransfer']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getDepositUnfinish()
+  {
+    return view('admin.admin_deposit_unfinish');
+  }
+
+  public function getDepositUnfinishData()
+  {
+    $data['query'] = Balance::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
+                            ->where('statusTransfer', 0)
+                            ->where('balance_type', 0)
+                            ->whereNull('order_id')
+                            ->get(['balance_id', 'm.name as name', 'amountMoney', 'balance_type', 'statusTransfer']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getProcessBalance(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    $deposit = Balance::find($id);
+    $deposit->statusTransfer = 1;
+    $deposit->balance_type = 0;
+    $deposit->save();
+
+    return 1;
+  }
+
+  //BANNER
   public function getBannerList()
   {
     $data['active'] = 'bannerList';
