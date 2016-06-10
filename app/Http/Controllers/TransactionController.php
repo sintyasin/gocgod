@@ -117,6 +117,7 @@ class TransactionController extends Controller
 
     public function deletecart(Request $data)
     {
+
         $v = Validator::make($data->all(),[
             'qty' =>'required|numeric',
             ]);
@@ -124,7 +125,6 @@ class TransactionController extends Controller
         {
             return "Not completed data";
         }
-
         Cart::remove($data->rowId);
     }
 
@@ -233,7 +233,9 @@ class TransactionController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            // ->leftJoin('transaction__order_detail as order', 'order_id', '=', 'order.order_id')
                             ->where('c.id', Auth::user()->id)
+                            ->where('status_confirmed', 0)
                             ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
         
 
@@ -293,20 +295,20 @@ class TransactionController extends Controller
     
   }
 
-  // public function sending(Request $request)
-  // {
-  //   $input = $request->all();
-  //   $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-  //   //dd($id);
+  public function receive(Request $request)
+  {
+    $input = $request->all();
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+    //dd($id);
 
-  //   $order = Txorder::find($id);
-  //   $order->status_shipping = 1;
-  //   $order->save();
+    $order = Txorder::find($id);
+    $order->status_confirmed = 1;
+    $order->save();
 
-  //   return redirect('customerorder');
+    return redirect('customerorder');
 
 
-  // }
+  }
 
 
 //=========================== HISTORY ORDER
@@ -325,7 +327,7 @@ class TransactionController extends Controller
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
                             ->where('status_confirmed', 1)
                             ->where('status_shipping', 1)
-                            ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who', 'total']);
         
 
 
@@ -339,6 +341,71 @@ class TransactionController extends Controller
         else if($data->status_shipping == 1) return "Sent";
     })
     ->make(true);
+  }
+
+  public function getProductOrderHistoryCustomer(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+         
+    $x = TxOrderDetail::leftJoin('transaction__order as tx', 'tx.order_id', '=', 'transaction__order_detail.order_id')
+                ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'transaction__order_detail.varian_id')
+                ->where('transaction__order_detail.order_id', $id)
+                ->get(['varian_name', 'quantity', 'varian_price']);
+
+    
+    $allData;
+    $i = 0;
+    
+    foreach ($x as $tmp) {
+      $data = new ProductData();
+      $data->name = $tmp->varian_name;
+      $data->quantity = $tmp->quantity;
+      $data->price = $tmp->varian_price;
+
+      $allData[$i] = $data;
+      $i++;
+    }
+
+    if(isset($allData))
+    {
+      $json = json_encode($allData);
+
+      return $json;
+    }
+    else return 0;
+    
+  }
+
+  public function order_details()
+  {
+     $data['query_menu'] = Product::all();
+        $i = 0;
+        //masukkin data kategori ke array
+        foreach($data['query_menu'] as $tmp)
+        {
+            $data['queryCategory'][$i] = ProductCategory::find($tmp->category_id);
+            $i++;
+        }
+
+        // //musti dijoin 3 table
+        // foreach($data['cart_content'] as $temp)
+        // {
+        //     $data['query_content'][$j] = ProductCategory::find($temp->);
+        // }
+         
+        // dd($data['cart_content']);
+
+        return view('page.checkout_subcriber_2', $data);
   }
 
 }

@@ -23,10 +23,13 @@ Route::get('productsample/{id}', 'ProductController@productsample');
 Route::post('productsample', 'ProductController@productsampledata');
 
 Route::post('review/{id}', 'ProductController@giveTestimonial');
-Route::get('checkout_subcriber', 'ProductController@getAllMenu');
+
+
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
-Route::post('orderall', 'TransactionController@transactionAll');
+
+Route::get('checkout_subcriber', 'ProductController@getAllMenu');
+Route::get('orderall_checkout', 'TransactionController@order_details');
 Route::post('addtocart', 'TransactionController@addtocart');
 Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
 Route::post('updatecart/', 'TransactionController@updatecart');
@@ -46,12 +49,17 @@ Route::post('sending', 'TransactionController@sending');
 
 Route::get('myorder', 'TransactionController@getOrderListCustomer');
 Route::get('myorder/data', array('as' => 'orderlistCustomer.data', 
-	'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
+	'uses' =>'TransactionController@getOrderDataCustomer'));
 Route::get('edit/order/{id}', 'AdminController@getEditOrder');
+Route::post('receive', 'TransactionController@receive');
 Route::post('post/edit/order/{id}', 'AdminController@postEditOrder');
 Route::post('product/order', 'AdminController@getProductOrder');
 
 Route::get('historymyorder', 'TransactionController@getOrderListHistoryCustomer');
+Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
+	'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
+Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryCustomer');
+
 
 Route::auth();
 

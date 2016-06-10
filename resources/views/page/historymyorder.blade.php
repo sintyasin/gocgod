@@ -24,9 +24,9 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Product Detail</h4>
+                  <h4 class="modal-title" style="color:black;">Product Detail</h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="color:black;">
                   <div id="name" style="min-height:30px; width:80px; float:left;"></div>
                   <div id="qty" style="min-height:30px; width:80px; margin-left:80px; float:left;"></div>
                   <div id="price" style="min-height:30px; width:150px; margin-left:240px;"></div>
@@ -48,7 +48,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
     var id = $(this).data('id');
     $.ajax({
       type: "POST",
-      url: "{{ URL::to('/admin/product/order') }}",
+      url: "{{ URL::to('/historydatamyorder') }}",
       data: {id:id, _token:"<?php echo csrf_token(); ?>"},
       success:
       function(data)
@@ -69,7 +69,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
             total += (obj[i].price * obj[i].quantity);
           }
           price += ("<hr style='border-color:black;'> Total : Rp" + total);
-          $(".modal-body #name").html(name);
+          $(".modal-body #name").html(name);  
           $(".modal-body #qty").html(qty);
           $(".modal-body #price").html(price);
         }
@@ -84,10 +84,6 @@ $('#productDetail').on('hidden.bs.modal', function (e) {
   $(".modal-body #price").html("");
 })
 
-function editOrder(id)
-{
-  window.location = "{{ URL::to('/admin/edit/order') }}" + "/" + id;
-}
 
 $(function() {
     var table = $('#datatableUser').DataTable({
@@ -95,24 +91,23 @@ $(function() {
         serverSide: true,
         bFilter : false,
         ajax: {
-            url: '{!! route('orderlistCustomer.data') !!}',
+            url: '{!! route('orderlistHistoryCustomer.data') !!}',
         },
         dom: 'Bfrtip',
         columns: [
-            { data: 'order_id', name: 'order_id', title:'Order Id' },
-            { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
+            { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date', sType: 'date' },
             { data: 'shipping_fee', name: 'shipping_fee', title:'Shipping Fee' },
             { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
             { data: 'status_shipping', name: 'status_shipping', title:'Shipping Confirmation' },
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
-            {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
+            {className: "dt-center", width:"10%", name: 'actions', title:'Product', render: function(data, type, row) {
               return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
-            } },         
-            
+            } },
         ],
     });
+
 });
 
 </script>

@@ -780,7 +780,7 @@ figure:hover figcaption {
   margin:5px;
   margin-top:10px;
 }
-#wrapper_table input[type="button"], input [type="submit"]
+#wrapper_table input[type="button"], input[type="submit"]
 {
   width:80px;
   height:40px;
@@ -792,7 +792,7 @@ figure:hover figcaption {
   margin-top:10px;
 }
 
-#product_details, #finish, #delivery_address, #choose_agent, #payment
+#finish, #delivery_address, #choose_agent, #payment
 {
   display:none;
 }

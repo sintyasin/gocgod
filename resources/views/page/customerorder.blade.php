@@ -135,7 +135,7 @@
 
             if(row.status_shipping == 0){
 
-              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Sending' + '</button>';
+              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Send' + '</button>';
             }
             else
             {
