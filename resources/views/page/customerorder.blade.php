@@ -3,21 +3,15 @@
 @section('content')
 <div class="container">
 	<h2>Customer Order</h2>
+	@if (Auth::guest())
+      <div class="clicktoregister">
+        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+      </div>
+    @else
 	<div class="row">
 	<div class="col-md-12" style="padding-bottom: 50px;">
 		<table id="customerDatatable" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
-          <thead><!-- 
-	          <tr>
-	            <th>Customer</th>
-	            <th>Order Date</th>
-	            <th>Address</th>
-	            <th>Email</th>
-	            <th>Phone</th>
-	            <th>Product</th>
-	            <th>Quantity</th>
-	            <th>Confirmed Status</th>
-	            <th>Action</th>
-	          </tr> -->
+          <thead>
 	        </thead>
 	        <tbody>
 	        </tbody>
@@ -48,6 +42,7 @@
       </div>
     </div>
 	</div>
+	@endif
 </div>
 
 @push('scripts')

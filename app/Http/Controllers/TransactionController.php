@@ -18,7 +18,7 @@ use App\TxOrder;
 use App\TxOrderDetail;
 use Yajra\Datatables\Datatables;
 
-class ProductData
+class ProductDataOrder
 {
   public $name;
   public $quantity;
@@ -55,23 +55,21 @@ class TransactionController extends Controller
         {
             return "Not completed data";
         }
-        $rowid = Cart::search(array('id' => $data->id));
+        $rowid = Cart::instance('subcriber')->search(array('id' => $data->id));
 
         if($rowid){
-            $item = Cart::get($rowid[0]);
-            dd($data->qty);
-
-            Cart::update($rowid[0], $item->qty + $data->qty);
+            $item = Cart::instance('subcriber')->get($rowid[0]);
+            Cart::instance('subcriber')->update($rowid[0], $item->qty + $data->qty);
         }
         else{
-        Cart::add([
+        Cart::instance('subcriber')->add([
             'id'=> $data->id, 
             'qty' => $data->qty,
             'name' => $data->name,
             'price' => $data->price,
             ]);
         }
-        $total = Cart::total();
+        $total = Cart::instance('subcriber')->total();
         $response = array(
             'id' => $data->id,
             'qty' => $data->qty,
@@ -103,9 +101,9 @@ class TransactionController extends Controller
             return 'Quantity not valid';
         }else {
             $product = \DB::table('product__varian')->where('varian_id', $id)->first();
-            Cart::update($data->rowId, $qty);
+            Cart::instance('subcriber')->update($data->rowId, $qty);
             $subtotal = $product->price * $qty;
-            $total = Cart::total();
+            $total = Cart::instance('subcriber')->total();
 
             $response = array(
                 'subtotal' => $subtotal,
@@ -125,7 +123,13 @@ class TransactionController extends Controller
         {
             return "Not completed data";
         }
-        Cart::remove($data->rowId);
+        Cart::instance('subcriber')->remove($data->rowId);
+        $total = Cart::instance('subcriber')->total();
+
+        $response = array(
+            'total' => $total);
+
+        return response()->json(compact('response'));
     }
 
 
@@ -184,7 +188,7 @@ class TransactionController extends Controller
     $i = 0;
     
     foreach ($x as $tmp) {
-      $data = new ProductData();
+      $data = new ProductDataOrder();
       $data->name = $tmp->varian_name;
       $data->quantity = $tmp->quantity;
       $data->price = $tmp->varian_price;
@@ -276,7 +280,7 @@ class TransactionController extends Controller
     $i = 0;
     
     foreach ($x as $tmp) {
-      $data = new ProductData();
+      $data = new ProductDataOrder();
       $data->name = $tmp->varian_name;
       $data->quantity = $tmp->quantity;
       $data->price = $tmp->varian_price;
@@ -367,7 +371,7 @@ class TransactionController extends Controller
     $i = 0;
     
     foreach ($x as $tmp) {
-      $data = new ProductData();
+      $data = new ProductDataOrder();
       $data->name = $tmp->varian_name;
       $data->quantity = $tmp->quantity;
       $data->price = $tmp->varian_price;

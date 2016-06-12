@@ -18,7 +18,7 @@
           <span class='baricon'>1</span>
           <span id="bar1" class='progress_bar' style="background-color:#38610B"></span>
           <span class='baricon'>2</span>
-          <span id="bar2" class='progress_bar'></span>
+          <span id="bar2" class='progress_bar' style="background-color:#38610B"></span>
           <span class='baricon'>3</span>
           <span id="bar3" class='progress_bar'></span>
           <span class='baricon'>4</span>
@@ -84,21 +84,20 @@
         <!-- ================================================================================================ -->
         <!-- ================================================================================================ -->
           <div id="delivery_address">
-          <Center>
-            <p class='form_head'>Data Customer</p>
-              <label for="phone">Customer's Name</label> <br>
-              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
-              <label for="address">Recipient's Address</label> <br>
-              <input type="text" class="form-control" name="name" value="{{ Auth::user()->address }}" style="text-align:center;"/>
-              <label for="address">City</label> <br>
-              <input type="text" class="form-control" name="name" value="{{ Auth::user()->address }}" style="text-align:center;"/>
-              <label for="phone">Recipient's Phone Number</label> <br>
+            <p class='form_head'>Request Product Sample</p>
+              <label for="address">Select your delivery addres</label> <br>
+              <input type="radio" name="address" value="male" checked> Use my account's address<br>
+              <input type="radio" name="address" value="female"> Other address<br>    
+              <div class="col-md-6">
+              <textarea class="form-control" rows="3"  style="display:block; margin-left: auto; margin-right: auto;"></textarea>
+              </div>
+              <br>
+              <label for="phone">Enter recipient phone number</label> <br>
               <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}" />
               
             <br>
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
             <input type="button" value="Next" onclick="show_next('delivery_address', 'choose_agent', 'bar3');">
-          </Center>
           </div>
 
         <!-- ================================================================================================ -->
