@@ -12,7 +12,6 @@ function show_next(id,nextid,bar)
 	
   if(error==0)
   {
-    document.getElementById("subcriber").style.display="none";
     document.getElementById("product_details").style.display="none";
     document.getElementById("delivery_address").style.display="none";
     document.getElementById("choose_agent").style.display="none";
@@ -28,7 +27,6 @@ function show_next(id,nextid,bar)
 
 function show_prev(previd,bar)
 {
-  document.getElementById("subcriber").style.display="none";
   document.getElementById("product_details").style.display="none";
   document.getElementById("delivery_address").style.display="none";
   document.getElementById("choose_agent").style.display="none";

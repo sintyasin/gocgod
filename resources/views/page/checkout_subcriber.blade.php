@@ -34,7 +34,7 @@
         <br>
       </div>
             
-      <form class="form-horizontal" role="form" method="GET" action="{{ url('orderall_checkout') }}">
+      <form class="form-horizontal" role="form" method="POST" action="{{ url('orderall_checkout') }}">
       {!! csrf_field() !!}
         
         <div id="wrapper_table">

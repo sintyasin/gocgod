@@ -29,7 +29,7 @@ Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
 
 Route::get('checkout_subcriber', 'ProductController@getAllMenu');
-Route::get('orderall_checkout', 'TransactionController@order_details');
+Route::post('orderall_checkout', 'TransactionController@order_details');
 Route::post('addtocart', 'TransactionController@addtocart');
 Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
 Route::post('updatecart/', 'TransactionController@updatecart');
