@@ -569,20 +569,26 @@ class TransactionController extends Controller
   public function postEditOrderCustomer(Request $request)
   {
     $v = Validator::make($request->all(), [
-        'id' => 'required'
+        'id' => 'required|numeric',
+        'ship' => 'required'
     ]);
 
-    if ($v->fails())
-    {
-        return 0;
-    }    
     $input = $request->all();
 
     $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
 
-    $query = TxOrder::find($id);
-    //dd($query);
-    return $this->getEditOrderCustomer($query);
+    if ($v->fails())
+    {
+        return redirect('/edit/order' . '/' . $id)->withErrors($v->errors())->withInput();
+    }    
+
+    $ship = filter_var($input['ship'], FILTER_SANITIZE_STRING);
+
+    $order = TxOrder::find($id);
+    $order->shipping_date = $ship;
+    $order->save();
+
+    return redirect('edit/order' . '/' . $id);
   }
 
   public function getEditOrderCustomer($id)

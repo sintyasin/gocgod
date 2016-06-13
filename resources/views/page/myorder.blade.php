@@ -27,9 +27,9 @@
                   <h4 class="modal-title" style="color:black;">Product Detail</h4>
                 </div>
                 <div class="modal-body">
-                  <!-- <div id="name" style="min-height:30px; width:80px; float:left;"></div>
-                  <div id="qty" style="min-height:30px; width:80px; margin-left:80px; float:left;"></div>
-                  <div id="price" style="min-height:30px; width:150px; margin-left:240px;"></div> -->
+                  <div id="name" style="color:black; min-height:30px; width:80px; float:left;"></div>
+                  <div id="qty" style="color:black; min-height:30px; width:80px; margin-left:80px; float:left;"></div>
+                  <div id="price" style="color:black; min-height:30px; width:150px; margin-left:240px;"></div>
                   <table id="ProductDetail" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
                     <thead>
                     </thead>
@@ -53,7 +53,36 @@
 @push('scripts')
 <script>
 $('#datatableUser tbody').on( 'click', '.detail', function () {
-  
+    var id = $(this).data('id');
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/dataorderproduct') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(data)
+      {
+        if(data != 0)
+        {
+          var obj = JSON.parse(data);
+          var name = "";
+          var qty = "";
+          var price = "";
+          var total = 0;
+          for(var i=0; i<obj.length; i++)
+          {
+            name += (obj[i].name + "<br>") ;
+            qty += ("x" + obj[i].quantity + "<br>") ;
+            price += ("@Rp" + obj[i].price + "<br>");
+
+            total += (obj[i].price * obj[i].quantity);
+          }
+          price += ("<hr style='border-color:black;'> Total : Rp" + total);
+          $(".modal-body #name").html(name);  
+          $(".modal-body #qty").html(qty);
+          $(".modal-body #price").html(price);
+        }
+      }
+    });
   
     $("#productDetail").modal();
 }); 
