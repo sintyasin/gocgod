@@ -6,9 +6,9 @@
         <h2>My Order</h2>
         <div class="row">
           <div class="col-lg-12">
-            <form class="form-horizontal" role="form" method="POST" action= {{ URL('admin/post/edit/faq')  . '/' . $query->question_id }} >
+            <form class="form-horizontal" role="form" method="POST" action= {{ URL('post/edit/order') }} >
             {!! csrf_field() !!}
-
+            <input type="hidden" name="id" value={{$query->order_id}} />
             <div class="form-group">
                 <label class="col-md-1 control-label">Order Id</label>
 
