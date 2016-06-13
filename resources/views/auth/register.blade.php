@@ -157,7 +157,10 @@
 @push('scripts')
 <script type="text/javascript">
     $(function() {
-        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var date = $('#datepicker').datepicker({ 
+            dateFormat: 'yy-mm-dd',
+            maxDate: new Date
+        }).val();
 
         $( "#datepicker" ).datepicker();
     });
