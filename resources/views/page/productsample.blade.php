@@ -45,8 +45,6 @@
                     <input type="text" name='event_venue' placeholder='Event Venue'/>
                     <p>Event Description</p>
                     <input type="text" name='event_description' placeholder='Event Description'/>
-                    <p>Request Date</p>
-                    <input type="text" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
                     
                     <br>
                     <input type="submit" value="Next">
@@ -64,7 +62,10 @@
 
 <script type="text/javascript">
     $(function() {
-        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        var date = $('#datepicker').datepicker({ 
+          dateFormat: 'yy-mm-dd' ,
+          minDate: new Date
+        }).val();
 
         $( "#datepicker" ).datepicker();
     });

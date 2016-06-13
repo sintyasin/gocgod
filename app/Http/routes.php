@@ -42,16 +42,21 @@ Route::get('becomeanagent', 'MemberController@bank');
 Route::post('request_agent', 'MemberController@request_agent');
 
 Route::get('customerorder', 'TransactionController@getOrderList');
+Route::get('agent/current/order', 'TransactionController@getCurrentOrderList');
 Route::get('customerorder/data', array('as' => 'customerorderlist.data', 
 		'uses' =>'TransactionController@getOrderData'));
+Route::get('agent/history/order', 'TransactionController@getHistoryOrderList');
+Route::get('agent/history/order/data', array('as' => 'agenthistoryorderlist.data', 
+		'uses' =>'TransactionController@getHistoryOrderData'));
 Route::post('dataorderproduct', 'TransactionController@getProductOrder');
 Route::post('sending', 'TransactionController@sending');
 
 Route::get('myorder', 'TransactionController@getOrderListCustomer');
 Route::get('myorder/data', array('as' => 'orderlistCustomer.data', 
 	'uses' =>'TransactionController@getOrderDataCustomer'));
-Route::get('edit/order/{id}', 'AdminController@getEditOrder');
 Route::post('receive', 'TransactionController@receive');
+Route::get('edit/order/{id}', 'TransactionController@getEditOrderCustomer');
+Route::post('post/edit/order', 'TransactionController@postEditOrderCustomer');
 Route::post('post/edit/order/{id}', 'AdminController@postEditOrder');
 Route::post('product/order', 'AdminController@getProductOrder');
 
