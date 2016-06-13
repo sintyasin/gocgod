@@ -14,8 +14,6 @@ function show_next(id,nextid,bar)
   {
     document.getElementById("product_details").style.display="none";
     document.getElementById("delivery_address").style.display="none";
-    document.getElementById("choose_agent").style.display="none";
-    document.getElementById("payment").style.display="none";
     $("#"+nextid).fadeIn();
     document.getElementById(bar).style.backgroundColor="#38610B";
   }
@@ -29,8 +27,6 @@ function show_prev(previd,bar)
 {
   document.getElementById("product_details").style.display="none";
   document.getElementById("delivery_address").style.display="none";
-  document.getElementById("choose_agent").style.display="none";
-  document.getElementById("payment").style.display="none";
   $("#"+previd).fadeIn();
   document.getElementById(bar).style.backgroundColor="#D8D8D8";
 }

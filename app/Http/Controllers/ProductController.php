@@ -81,7 +81,7 @@ class ProductController extends Controller
 
         $input = $request->all();
 
-        $request_id = filter_var($input['id'], FILTER_SANITIZE_STRING);;
+        $request_id = filter_var($input['id'], FILTER_SANITIZE_STRING);
         $varian_id = filter_var($input['product'], FILTER_SANITIZE_STRING);
         $quantity = filter_var($input['qty'], FILTER_SANITIZE_STRING);
 

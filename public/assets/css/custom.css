@@ -792,7 +792,7 @@ figure:hover figcaption {
   margin-top:10px;
 }
 
-#finish, #delivery_address, #choose_agent, #payment
+#finish, #delivery_address
 {
   display:none;
 }

@@ -21,10 +21,6 @@
           <span class='baricon'>2</span>
           <span id="bar2" class='progress_bar'></span>
           <span class='baricon'>3</span>
-          <span id="bar3" class='progress_bar'></span>
-          <span class='baricon'>4</span>
-          <span id="bar4" class='progress_bar'></span>
-          <span class='baricon'>5</span>
         </div>
         <br>
         <br>

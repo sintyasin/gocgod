@@ -51,7 +51,7 @@
 					<div class="position_menu">
 						<div class="col-xs-12">
 							<a href="#" class="cartBtn" onclick="addtocart({{$query->varian_id}})"><i class="fa fa-shopping-cart" ></i> Add Cart</a> 
-							<a href={{ URL('/checkout') }} class="cartBtn" target="_self">Subscribe</a>
+							<a href={{ URL('/checkout_subcriber') }} class="cartBtn" target="_self">Subscribe</a>
 							
 						</div>
 						<br>

@@ -195,7 +195,7 @@
 	            I am Single Buyer
 	          </a>
 	          </button>
-	          <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_subcriber')}}">
+	          <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_subscriber')}}">
 	            I am Subcriber
 	           </a>
 	          </button>
