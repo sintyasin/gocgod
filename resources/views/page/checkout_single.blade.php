@@ -6,13 +6,11 @@
   <div class="padding_outer">
     <h2> CheckOut </h2>
   
-
     @if (Auth::guest())
       <div class="clicktoregister">
         <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
       </div>
     @else
-
     <div class="stepper">
       <div id="wrapper_progress">
         <br>
@@ -20,12 +18,6 @@
           <span class='baricon'>1</span>
           <span id="bar1" class='progress_bar'></span>
           <span class='baricon'>2</span>
-          <span id="bar2" class='progress_bar'></span>
-          <span class='baricon'>3</span>
-          <span id="bar3" class='progress_bar'></span>
-          <span class='baricon'>4</span>
-          <span id="bar4" class='progress_bar'></span>
-          <span class='baricon'>5</span>
           <!-- <span id="bar5" class='progress_bar'></span>
           <span class='baricon'>6</span> -->
         </div>
@@ -37,13 +29,13 @@
         <br>
       </div>
             
-      <form class="form-horizontal" role="form" method="POST" action="{{ url('orderall') }}">
+      <form class="form-horizontal" role="form" method="POST" action="{{ url('order_single') }}">
       {!! csrf_field() !!}
-        
+        <div id="wrapper_table">
           <div id="product_details">
             <p class='form_head'>Order Details</p>
             <div class="shiping-method">
-              <table id="" class="display table table-striped table-bordered dt-responsive" width="100%">
+              <table id="order_details" class="display table table-striped table-bordered dt-responsive" width="100%">
                 <thead>
                   <tr>
                     <th>Product</th>
@@ -54,19 +46,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <?php $i = 0; ?>
-                  @foreach(Cart::content() as $row)
+                  <?php $i=0?>
+                  @foreach(Cart::instance('single')->content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
-                    <td>Rp {{number_format($row->price, 2, ',', '.')}}</td>
+                    <td>Rp {{$row->price}}</td>
                     <td align="center">
                       <input type="hidden" id="{{ $i.'-rowid' }}" value="{{$row->rowid}}">
                       <input type="hidden" id="{{ $i.'-id' }}" value="{{$row->id}}">
-                      <!-- <input type="text" value="{{ $row->qty }}" id="qty" class="qty" maxlength="2" min="1" data-row="{{ $row->rowid }}" data-kode="{{ $row->id }}" data-line="{{ $i.'-'.$row->rowid }}" onkeypress="return isNumber(event)" style="text-align:center;"> -->
-                      <input type="number" maxlength="2" id="{{ $i.'-qty' }}" value="{{$row->qty}}" style="width:60px; color:black; text-align: center;s">
+                      <input type="number" min="1" maxlength="2" id="{{ $i.'-qty_subcriber' }}" value="{{$row->qty}}" style="width:60px; color:black; text-align: center;">
                       
                     </td>
-                    <td><span id="{{ $i.'-subtotal' }}">Rp {{number_format($row->subtotal, 2, ',', '.')}}</span></td>
+                    <td><span id="{{ $i.'-subtotal' }}">Rp {{$row->subtotal}}</span></td>
                     <td align="center">
                       <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Update</button>
                       <button type="button" onclick="deletecart({{ $i }})" class="btn btn-danger">Delete</button>
@@ -77,124 +68,54 @@
                 </tbody>
               </table>
               <p class="plxLogin"><font size="3">Total Price</font></p>
-              <p class="plxLogin"><font size="4"><b><span id="total-cart">Rp {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-            <!-- <input type="button" value="Previous" onclick="show_prev('subcriber','bar2');">
- -->            <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
+             <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar1');">
           </div>
         </div>
         <div id="wrapper">
         <!-- ================================================================================================ -->
         <!-- ================================================================================================ -->
           <div id="delivery_address">
-            <p class='form_head'>Request Product Sample</p>
-              <label for="address">Select your delivery addres</label> <br>
-              <input type="radio" name="address" value="male" checked> Use my account's address<br>
-              <input type="radio" name="address" value="female"> Other address<br>    
-              <div class="col-md-6">
-              <textarea class="form-control" rows="3"  style="display:block; margin-left: auto; margin-right: auto;"></textarea>
-              </div>
-              <br>
-              <label for="phone">Enter recipient phone number</label> <br>
-              <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}" />
-              
+          <Center>
+            <p class='form_head'>Data Customer</p>
+              <label for="phone">Customer's Name</label> <br>
+              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
+              <label for="address">Recipient's Address</label> <br>
+              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center;"/>
+              <label for="address">City</label> <br>
+              <select class="form-control" id="city" name="city" >
+                @foreach($city as $data)
+                  @if(Auth::user()->city_id == $data->city_id)
+                    <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
+                  @else
+                    <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
+                  @endif
+                @endforeach
+              </select>
+              <label for="Agent">Choose an Agent</label> <br>
+              <select class="form-control" id="agent" name="agent" >
+              @foreach($agent as $data)
+                @if(Auth::user()->city_id == $data->city_id)
+                  <option value="{{ $data->id }}" selected >{{$data->name}} - {{ $data->city_name }}</option>
+                @else
+                  <option value="{{ $data->id }}">{{$data->name}} - {{ $data->city_name }}</option>
+                @endif
+              @endforeach
+              </select>
+
+              <label for="Date">Request Shipping Date</label><br>
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
             <br>
-            <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
-            <input type="button" value="Next" onclick="show_next('delivery_address', 'choose_agent', 'bar3');">
+
+
+            <input type="button" value="Previous" onclick="show_prev('product_details','bar1');">
+            <input type="submit" value="Submit" style="color:white; border: solid white;">
+          </Center>
+          </div>
           </div>
 
-        <!-- ================================================================================================ -->
-        <!-- ================================================================================================ -->            
-          <div id="choose_agent">
-            <p class='form_head'>Request Product Sample</p>
-            <p>Product</p>
-            <select  name='product'>
-            <!--  -->
-            </select>
-            <p>Quantity</p>
-            <select  name='quantity'>
-                <option value="10"> 10 </option> 
-                <option value="15"> 15 </option>
-                <option value="20"> 20 </option>
-            </select>
-            <br>
-            <input type="button" value="Previous" onclick="show_prev('delivery_address','bar4');">
-            <input type="button" value="Next" onclick="show_next('choose_agent', 'payment','bar4');">
-          </div>
-
-        <!-- ================================================================================================ -->
-        <!-- ================================================================================================ -->
-          <div id="payment">
-            <p class='form_head'>Total Order + Shipping Fee</p>
-            <div class="checkout-option">
-              <div class="method-input-box">
-                <p><input type="radio" name="payment" value="check"><label>Check / Money order </label></p>
-                <p><input type="radio" name="payment" value="card" checked><label>Credit Card (saved) </label></p>               
-              </div>
-              <div class="master-card-info">
-              <!-- <form action="#"> -->
-                <div class="form-group">
-                  <label>Name on Card</label>
-                  <input type="text" class="form-control">            
-                </div>      
-                <div class="cardtype form-group">
-                  <label>Credit Card Type</label>
-                  <select class="form-control">
-                    <option>--Please Select--</option>
-                    <option>American Express</option>
-                    <option>Visa</option>
-                    <option>MasterCard</option>
-                    <option>Discover</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                 <label>Credit Card Number</label>
-                 <input type="text" class="form-control">            
-                </div>  
-                <div class="expirationdate form-group">
-                 <label>Expiration Date</label>
-                 <select class="form-control month-select">
-                  <option>Month</option>
-                  <option>01 - January</option>
-                  <option>02 - February</option>
-                  <option>03 - March</option>
-                  <option>04 - April</option>
-                  <option>05 - May</option>
-                  <option>06 - June</option>
-                  <option>07 - July</option>
-                  <option>08 - August</option>
-                  <option>09 - September</option>
-                  <option>10 - October</option>
-                  <option>11 - November</option>
-                  <option>12 - December</option>
-                 </select><br/>
-                 <select class="form-control year-select">
-                  <option>Year</option>
-                  <option>2015</option>
-                  <option>2016</option>
-                  <option>2017</option>
-                  <option>2018</option>
-                  <option>2019</option>
-                  <option>2020</option>
-                  <option>2021</option>
-                  <option>2022</option>
-                  <option>2023</option>
-                  <option>2024</option>
-                  <option>2025</option>
-                 </select>
-                </div>
-                <div class="verificationcard form-group">
-                 <label>Card Verification Number</label>
-                 <input type="text" class="form-control"><br/>
-                 <a href="#">What is this?</a>
-                </div>                                             
-              </div>
-            </div>
-            <input type="button" value="Previous" onclick="show_prev('choose_agent','bar4');">
-            <input type="Submit" value="Submit">
-          </div>
-          </div>
         </form>
     </div>
     @endif
@@ -204,55 +125,24 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
-      $('table.display').DataTable( {
+      var table = $('table.display').DataTable( {
         "autoWidth": false
       } );
   } );
 
-  function addtosubcriber(x)
-  {
-    var quantity = $('#'+x+'-qty_subcriber').val();
-    var name = $('#'+x+'-name').val();
-    var price = $('#'+x+'-price').val();
-    var id = $('#'+x+'-id').val();
-    
-    if ($('#'+x+'qty_subcriber').val() == 0) alert('Quantity product still blank...');
-    else{
-
-    $.ajax({
-      url: '{{ URL("/addtocartsubcriber")}}',
-      type: 'POST',
-      data: {id: id, qty: quantity, name: name, price: price},
-      beforeSend: function(request){
-        return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-      },
-  //    headers: {
-    //     'X-CSRF-Token': $('meta[name="token"]').attr('content')
-    // }
-    })
-    .done(function(){
-      $("#button_"+x).prop("disabled",true);
-      // $('input[type="button"]').attr('disabled','disabled');
-      alert('Added to cart!');
-      $('#'+x+'-subtotal').html(data.response.id);
-      $('#total-cart').html(data.response.qty);
-      $('#total-cart').html(data.response.name);
-      $('#total-cart').html(data.response.price);
-    })
-    .fail(function(){
-      alert('error');
-    })
-    }
-  }
+   $(function() {
+        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today+3' }).val();
+        $( "#datepicker" ).datepicker();
+    });
 
   function updatecart(x)
   {
     var rowId = $('#'+x+'-rowid').val();
     var id = $('#'+x+'-id').val();
-    var quantity = $('#'+x+'-qty').val();
+    var quantity = $('#'+x+'-qty_subcriber').val();
 
     $.ajax({
-      url: '{{URL("/updatecart")}}',
+      url: '{{URL("/updatecart_single")}}',
       type:'POST',
       data: {rowId:rowId, qty: quantity, id:id},
       beforeSend: function(request){
@@ -273,17 +163,20 @@
   {
     var rowId = $('#'+x+'-rowid').val();
     var id = $('#'+x+'-id').val();
-    var quantity = $('#'+x+'-qty').val();
+    var quantity = $('#'+x+'-qty_subcriber').val();
 
     $.ajax({
-      url: '{{URL("/deletecart")}}',
+      url: '{{URL("/deletecart_single")}}',
       type:'POST',
       data: {rowId:rowId, qty: quantity},
       beforeSend: function(request){
             return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
           },
     })
-    .done(function(){
+    .success(function(data){
+      var t = $('#order_details').DataTable();
+      t.row(x).remove().draw(false);
+      $('#total-cart').html(data.response.total);
       alert("Delete Data berhasil!");
     })
     .fail(function(){

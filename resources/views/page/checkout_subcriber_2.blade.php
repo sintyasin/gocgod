@@ -20,10 +20,6 @@
           <span class='baricon'>2</span>
           <span id="bar2" class='progress_bar'></span>
           <span class='baricon'>3</span>
-          <span id="bar3" class='progress_bar'></span>
-          <span class='baricon'>4</span>
-          <span id="bar4" class='progress_bar'></span>
-          <span class='baricon'>5</span>
           <!-- <span id="bar5" class='progress_bar'></span>
           <span class='baricon'>6</span> -->
         </div>
@@ -89,108 +85,44 @@
               <label for="phone">Customer's Name</label> <br>
               <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
               <label for="address">Recipient's Address</label> <br>
-              <input type="text" class="form-control" name="name" value="{{ Auth::user()->address }}" style="text-align:center;"/>
+              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center;"/>
               <label for="address">City</label> <br>
-              <input type="text" class="form-control" name="name" value="{{ Auth::user()->address }}" style="text-align:center;"/>
-              <label for="phone">Recipient's Phone Number</label> <br>
-              <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}" />
-              
+              <select class="form-control" id="city" name="city" >
+                @foreach($city as $data)
+                  @if(Auth::user()->city_id == $data->city_id)
+                    <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
+                  @else
+                    <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
+                  @endif
+                @endforeach
+              </select>
+              <label for="Agent">Choose an Agent</label> <br>
+              <select class="form-control" id="agent" name="agent" >
+              @foreach($agent as $data)
+                @if(Auth::user()->city_id == $data->city_id)
+                  <option value="{{ $data->id }}" selected >{{$data->name}} - {{ $data->city_name }}</option>
+                @else
+                  <option value="{{ $data->id }}">{{$data->name}} - {{ $data->city_name }}</option>
+                @endif
+              @endforeach
+              </select>
+
+              <label for="week">How many weeks?</label><br>
+              <input type="number" class="form-control" name='week'/>
+
+              <label for="Date">Request Shipping Date</label><br>
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
+
+              <label>The shipping day will be same with the first choosed day, you can change the day for the next shipping at "My Order" menu.</label>
             <br>
+
+
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
-            <input type="button" value="Next" onclick="show_next('delivery_address', 'choose_agent', 'bar3');">
+            <input type="submit" value="Submit" style="color:white; border: solid white;">
           </Center>
           </div>
-
-        <!-- ================================================================================================ -->
-        <!-- ================================================================================================ -->            
-          <div id="choose_agent">
-            <p class='form_head'>Request Product Sample</p>
-            <p>Product</p>
-            <select  name='product'>
-            <!--  -->
-            </select>
-            <p>Quantity</p>
-            <select  name='quantity'>
-                <option value="10"> 10 </option> 
-                <option value="15"> 15 </option>
-                <option value="20"> 20 </option>
-            </select>
-            <br>
-            <input type="button" value="Previous" onclick="show_prev('delivery_address','bar4');">
-            <input type="button" value="Next" onclick="show_next('choose_agent', 'payment','bar4');">
           </div>
 
-        <!-- ================================================================================================ -->
-        <!-- ================================================================================================ -->
-          <div id="payment">
-            <p class='form_head'>Total Order + Shipping Fee</p>
-            <div class="checkout-option">
-              <div class="method-input-box">
-                <p><input type="radio" name="payment" value="check"><label>Check / Money order </label></p>
-                <p><input type="radio" name="payment" value="card" checked><label>Credit Card (saved) </label></p>               
-              </div>
-              <div class="master-card-info">
-                <div class="form-group">
-                  <label>Name on Card</label>
-                  <input type="text" class="form-control">            
-                </div>      
-                <div class="cardtype form-group">
-                  <label>Credit Card Type</label>
-                  <select class="form-control">
-                    <option>--Please Select--</option>
-                    <option>American Express</option>
-                    <option>Visa</option>
-                    <option>MasterCard</option>
-                    <option>Discover</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                 <label>Credit Card Number</label>
-                 <input type="text" class="form-control">            
-                </div>  
-                <div class="expirationdate form-group">
-                 <label>Expiration Date</label>
-                 <select class="form-control month-select">
-                  <option>Month</option>
-                  <option>01 - January</option>
-                  <option>02 - February</option>
-                  <option>03 - March</option>
-                  <option>04 - April</option>
-                  <option>05 - May</option>
-                  <option>06 - June</option>
-                  <option>07 - July</option>
-                  <option>08 - August</option>
-                  <option>09 - September</option>
-                  <option>10 - October</option>
-                  <option>11 - November</option>
-                  <option>12 - December</option>
-                 </select><br/>
-                 <select class="form-control year-select">
-                  <option>Year</option>
-                  <option>2015</option>
-                  <option>2016</option>
-                  <option>2017</option>
-                  <option>2018</option>
-                  <option>2019</option>
-                  <option>2020</option>
-                  <option>2021</option>
-                  <option>2022</option>
-                  <option>2023</option>
-                  <option>2024</option>
-                  <option>2025</option>
-                 </select>
-                </div>
-                <div class="verificationcard form-group">
-                 <label>Card Verification Number</label>
-                 <input type="text" class="form-control"><br/>
-                 <a href="#">What is this?</a>
-                </div>                                             
-              </div>
-            </div>
-            <input type="button" value="Previous" onclick="show_prev('choose_agent','bar4');">
-            <input type="Submit" value="Submit">
-          </div>
-          </div>
         </form>
     </div>
     @endif
@@ -204,6 +136,11 @@
         "autoWidth": false
       } );
   } );
+
+   $(function() {
+        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today+3' }).val();
+        $( "#datepicker" ).datepicker();
+    });
 
   function updatecart(x)
   {
