@@ -191,9 +191,8 @@
 
 		      <div class="modal-body">
 		      <center>
-		      <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_singlebuyer')}}">
+		      <button type="button" class="boaBtn_boa_pf" onclick="single()">
 	            I am Single Buyer
-	          </a>
 	          </button>
 	          <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_subcriber')}}">
 	            I am Subscriber
@@ -206,3 +205,15 @@
 	    </div>
 	</div>
 </div>
+
+<script>
+function subscribe()
+{
+	window.location = '<?php echo URL::to('checkout_subcriber'); ?>';
+}
+
+function single()
+{
+	window.location = '<?php echo URL::to('checkout_singlebuyer'); ?>';
+}
+</script>

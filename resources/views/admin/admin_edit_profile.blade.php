@@ -216,7 +216,10 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script>
 $(function() {
-    var date = $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
+    var date = $('#datepicker').datepicker({ 
+        dateFormat: 'yy-mm-dd',
+        maxDate: new Date
+    }).val();
 
     $( "#datepicker" ).datepicker();
 });

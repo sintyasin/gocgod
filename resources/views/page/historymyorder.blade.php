@@ -95,6 +95,7 @@ $(function() {
         },
         dom: 'Bfrtip',
         columns: [
+            { data: 'order_id', name: 'order_id', title:'Order Id'},
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
             { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date', sType: 'date' },

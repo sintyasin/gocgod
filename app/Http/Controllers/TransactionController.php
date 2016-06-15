@@ -362,14 +362,47 @@ class TransactionController extends Controller
 
   public function getOrderData(Request $request)
   {
-
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
-    ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
-    ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
-    ->where('a.id', Auth::user()->id)
-    ->get(['order_id', 'c.name as customer', 'order_date', 'ship_address', 'c.phone as phone','city_name', 'status_confirmed', 'status_shipping' ,'who']);
+                            ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
+                            ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            ->where('a.id', Auth::user()->id)
+                            ->where('status_shipping', 0)
+                            ->orderBy('shipping_date', 'asc')
+                            ->get(['order_id', 'c.name as customer', 'shipping_date', 'ship_address', 'c.phone as phone','city_name', 'status_confirmed', 'status_shipping' ,'who']);
+        
 
 
+    return Datatables::of($data['query'])
+    ->editColumn('status_payment', function($data){ 
+        if($data->status_payment == 0) return "Unpaid";
+        else if($data->status_payment == 1) return "Paid";
+    })
+    ->editColumn('status_confirmed', function($data){ 
+        if($data->status_confirmed == 0) return "Unconfirmed";
+        else if($data->status_confirmed == 1) return "Confirmed";
+    })
+    ->make(true);
+  }
+
+  public function getCurrentOrderList()
+  {
+    return view('page.agent_current_order');
+  }
+
+  public function getHistoryOrderList()
+  {
+    return view('page.agent_history_order');
+  }
+
+  public function getHistoryOrderData(Request $request)
+  {
+    $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
+                            ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
+                            ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            ->where('a.id', Auth::user()->id)
+                            ->where('status_shipping', 1)
+                            ->orderBy('shipping_date', 'desc')
+                            ->get(['order_id', 'c.name as customer', 'shipping_date', 'ship_address', 'c.phone as phone','city_name', 'status_confirmed', 'status_shipping' ,'who']);
 
     return Datatables::of($data['query'])
     ->editColumn('status_payment', function($data){ 
@@ -533,6 +566,55 @@ class TransactionController extends Controller
 
   }
 
+  public function postEditOrderCustomer(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required|numeric',
+        'ship' => 'required'
+    ]);
+
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+
+    if ($v->fails())
+    {
+        return redirect('/edit/order' . '/' . $id)->withErrors($v->errors())->withInput();
+    }    
+
+    $ship = filter_var($input['ship'], FILTER_SANITIZE_STRING);
+
+    $order = TxOrder::find($id);
+    $order->shipping_date = $ship;
+    $order->save();
+
+    return redirect('edit/order' . '/' . $id);
+  }
+
+  public function getEditOrderCustomer($id)
+  {
+    $id = filter_var($id, FILTER_SANITIZE_STRING);
+    $query = TxOrder::find($id);    
+
+    $sunday = date("Y-m-d", strtotime("sunday"));
+    $sunday = new \DateTime($sunday);
+
+    $ship = new \DateTime($query->shipping_date);
+    
+    if($ship <= $sunday)
+      return redirect('myorder');
+    else
+    {
+      $data['query'] = $query;
+
+      $ship = date_format($ship,"Y-m-d");
+      $data['monday'] = date('Y-m-d', strtotime("-7 days", strtotime("next monday", strtotime($ship))));
+      $data['sunday'] = date('Y-m-d', strtotime("+6 days", strtotime($data['monday'])));
+      
+
+      return view('page.customer_edit_order', $data);
+    }
+  }
 
   //=========================== HISTORY ORDER
   public function getOrderListHistoryCustomer()
