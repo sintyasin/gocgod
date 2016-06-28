@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2016 at 07:08 AM
+-- Generation Time: Jun 28, 2016 at 06:36 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `faq__question` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `faq__question`
@@ -91,8 +91,10 @@ CREATE TABLE IF NOT EXISTS `faq__question` (
 INSERT INTO `faq__question` (`question_id`, `question`, `answer`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'halo', 'bandung', '2016-05-10 10:18:51', '2016-05-10 03:18:51', NULL),
 (5, 'ab', 'asdfsadfasdfasdf', '2016-05-24 03:31:09', '2016-05-23 20:30:57', NULL),
-(6, 'a', '1213', '2016-05-24 03:31:20', '2016-05-13 00:56:34', NULL),
-(8, 'tes', 'tes', '2016-05-23 20:34:14', '2016-05-23 20:34:14', NULL);
+(6, 'a\r\n', '1213jkljlk<strong>jkljlj</strong>l&nbsp;<s><em><strong>ajldsfkjklasdfjkljaskdflj</strong></em></s>', '2016-06-27 04:07:26', '2016-06-26 21:07:10', NULL),
+(8, 'tes', 'tes', '2016-06-27 04:07:57', '2016-06-26 21:07:57', '2016-06-26 21:07:57'),
+(9, 'halo bandung\r\n', 'adsf', '2016-06-26 20:11:04', '2016-06-26 20:11:04', NULL),
+(12, 'dasfasdfasdfasdfasdf\r\n', '<strong>12321312321312</strong>\r\n', '2016-06-26 21:19:41', '2016-06-26 21:19:41', NULL);
 
 -- --------------------------------------------------------
 
@@ -121,8 +123,8 @@ CREATE TABLE IF NOT EXISTS `master__admin` (
 --
 
 INSERT INTO `master__admin` (`id`, `password`, `name`, `address`, `city_id`, `date_of_birth`, `email`, `phone`, `super`, `created_at`, `updated_at`, `deleted_at`, `remember_token`) VALUES
-(1, '$2y$10$PdIxuztGnzEqYOyw7MWNK.laBG7qzwkeDWv4I6VXIj3NOKzAYaH0C', 'kevin', 'abc', 12, '2016-06-01', 'tes@tes.com', '123', 1, '2016-06-12 12:39:50', '2016-06-12 05:39:50', NULL, 'uZ7Pvf6DLcskWZBVaunvfhgzPM6UKPdPVNdWZEw3ZkUCltjixbOGG2ZwWUHX'),
-(6, '$2y$10$GdTJv/4VWklLKWcAxcIbFu.UPUBUsaSdhY8DQ7NKnuj0ASL3qAvhS', 'af', 'sadf', 1, '2016-06-08', 'a@a.com', '12345', 0, '2016-06-08 11:51:04', '2016-06-08 04:51:04', NULL, 'Z3U1c9vL8pFbCBzAEaFmtr8mFHb3I3IK5xjJiA1ND14uSPavXfnjElDlv7SA');
+(1, '$2y$10$PdIxuztGnzEqYOyw7MWNK.laBG7qzwkeDWv4I6VXIj3NOKzAYaH0C', 'kevin', 'abc', 12, '2016-06-01', 'tes@tes.com', '123', 1, '2016-06-27 08:59:23', '2016-06-27 01:59:23', NULL, '6cbkCxwu3DYXaw2h9uAxzWmhT6HsRK3PAvQlDEukgkxiD1oNNl0DkZ5zzurT'),
+(6, '$2y$10$7CnoiVPy8IEKDcUgN81T4Ocs8MAnylFlJmS/ssPsExYn7AaJcUR7G', 'af', 'sadf', 1, '2016-06-08', 'luph.yo3l@gmail.com', '12345', 0, '2016-06-27 11:18:21', '2016-06-27 04:18:21', NULL, 'poQifivYU0uiH2HqPaNWppSqjrzSqRxBDNJL5fXVCY69V6flThPtiNMQtfeV');
 
 -- --------------------------------------------------------
 
@@ -280,11 +282,11 @@ CREATE TABLE IF NOT EXISTS `master__member` (
 --
 
 INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`, `bank_id`) VALUES
-(3, 'af', '', 1, '0000-00-00', 'a@a.com', '', '$2y$10$DPAva0yvL3bjqvvoCi/5hea.I1kL5UFasYOtl9/oKKxJmNzfvCcbW', 0, 0, 0, '', '2016-06-12 13:41:43', '2016-06-10 04:56:45', '7Lv4cAnlpo9qUzyLcceBAFlbv9elVBXHOX1qxBy9gySEvRAxeAXk7B3YWLpU', NULL),
+(3, 'af', 'nomaden', 1, '0000-00-00', 'a@a.com', '021', '$2y$10$fUSbBm.iqAmx0q0JCx75OuqiGfkfq6RfBPVoDikFDeWPbObnRWvY.', 0, 0, 0, '', '2016-06-28 03:45:22', '2016-06-27 01:49:20', 'GTVNMSuF9K2rWWpbe2GcH4n8chQ2ggCd36pDhzE3Lb5eOsLndrAb7MNyeXl6', NULL),
 (4, 'b', '', 1, '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 1, 0, 0, '123123', '2016-06-08 11:24:44', '2016-06-08 04:24:44', 'vvJ7IZeTastukAp9uqeJe7iufJHZpp1KgHacuM5sXk76RVgMsAqp8UXw2XYm', 4),
-(5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 0, 80000, '6557788', '2016-06-12 16:51:59', '2016-06-12 09:51:59', '8SdY0azai4UyXbMHsaJr6L95h8kTUQh76lRqapjtNENQQaqOFkkHzvho8oqL', 4),
-(6, 'Rianto', 'komplek pakuwon blok apa aja', 1, '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 0, NULL, NULL, '2016-06-08 03:38:46', '2016-06-07 20:38:46', 'ZQF6hi1pl1QfJVlqqkjX21GgUjX2eLy29MGbXslkwZo690ntHOczco18L7OO', NULL),
-(7, 'Lia', 'komplek pakuwon blok apa aja', 1, '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 0, NULL, NULL, '2016-06-13 04:25:02', '2016-06-12 21:25:02', 'pdonyHTlw9gIFPkmSXmeP2gNC1oheMnxnzkNhONPFDrvIj1fpjhRkII12Zno', NULL),
+(5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 0, 80000, '6557788', '2016-06-27 09:52:58', '2016-06-27 02:52:58', '5lWnIgt4eQpvKuA4OHSLD6qxXQPlfqslHXTmyD39ilERp1RhTSFBDNqrSqmS', 4),
+(6, 'Rianto', 'komplek pakuwon blok apa aja', 1, '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 0, NULL, NULL, '2016-06-27 09:14:23', '2016-06-27 02:14:23', 'PRUy11IsMLXHLqQ2PvnqUnyYgQ44eN083MaUTD74N9fekUSoWrtNrPdwFFmC', NULL),
+(7, 'Lia', 'komplek pakuwon blok apa aja', 1, '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 0, NULL, NULL, '2016-06-13 05:15:26', '2016-06-12 22:15:26', 'nhIimNPceL2P1oDdNrlgZl3i8T06rlZXHQ816Pt9RP8DEPE2RQA7iOtgFqUk', NULL),
 (8, 'a', 'a', 15, '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 0, NULL, NULL, '2016-06-09 03:16:08', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL);
 
 -- --------------------------------------------------------
@@ -338,7 +340,7 @@ INSERT INTO `master__tx_balance` (`balance_id`, `agent_id`, `amountMoney`, `bala
 (3, 5, 150000, 0, '2016-06-07 08:12:12', '0000-00-00 00:00:00', NULL, 1),
 (4, 5, 20000, 0, '2016-06-10 10:59:55', '2016-06-10 03:59:55', NULL, 1),
 (5, 5, 10000, 0, '2016-06-10 11:19:37', '2016-06-10 04:19:37', NULL, 1),
-(6, 5, 20000, 0, '2016-06-07 02:42:29', '2016-06-07 02:42:29', NULL, 0),
+(6, 5, 20000, 0, '2016-06-27 04:23:02', '2016-06-26 21:23:02', NULL, 1),
 (7, 5, 80000, 0, '2016-06-07 02:57:35', '2016-06-07 02:57:35', NULL, 0),
 (8, 5, 80000, 0, '2016-06-07 02:58:14', '2016-06-07 02:58:14', NULL, 0),
 (9, 5, 20000, 0, '2016-06-10 10:52:36', '2016-06-10 03:52:36', NULL, 1);
@@ -354,15 +356,6 @@ CREATE TABLE IF NOT EXISTS `password__resets` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `password__resets`
---
-
-INSERT INTO `password__resets` (`email`, `token`, `created_at`) VALUES
-('a@a.com', '2dd2eb01f84668896fb9f383e36644ce1400a6909cf2a62928bba0e2336da380', '2016-06-02 03:34:34'),
-('aureliarianto@aurelia.com', '15c0b762d982fe5c2cb8a694d1ce6e6766861a8edc4bac97206a75d0daaa5519', '2016-06-12 05:08:39'),
-('niko95kus@yahoo.com', 'a9377a120e263a6eb89dbd1a65b6e80be1e5a03e465ba8e3d191a938d1e2ac56', '2016-06-08 20:17:40');
 
 -- --------------------------------------------------------
 
@@ -410,10 +403,10 @@ CREATE TABLE IF NOT EXISTS `product__testimonial` (
 --
 
 INSERT INTO `product__testimonial` (`testimonial_id`, `id`, `varian_id`, `testimonial`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 1, 'aaa', 0, '2016-05-24 05:48:15', '2016-05-20 02:05:52', NULL),
-(2, 3, 1, 'bbb', 0, '2016-05-24 05:48:18', '2016-05-23 22:47:45', NULL),
-(3, 4, 1, 'ccc', 1, '2016-05-24 05:47:56', '2016-05-23 22:47:56', NULL),
-(4, 5, 2, 'asd', 1, '2016-05-20 09:06:07', '2016-05-20 02:05:52', NULL);
+(1, 3, 1, 'aaa', 0, '2016-06-28 02:29:20', '2016-06-27 19:28:44', NULL),
+(2, 3, 1, 'bbb', 1, '2016-06-28 02:29:43', '2016-06-27 19:29:43', NULL),
+(3, 4, 1, 'ccc', 0, '2016-06-28 02:29:30', '2016-06-27 19:27:51', NULL),
+(4, 5, 2, 'asd', 1, '2016-06-28 02:29:43', '2016-06-27 19:29:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -441,7 +434,7 @@ CREATE TABLE IF NOT EXISTS `product__varian` (
 
 INSERT INTO `product__varian` (`varian_id`, `category_id`, `varian_name`, `price`, `qty`, `picture`, `description`, `weight`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 1, 'Soya Milk', 60000, 10, 'soya_milk.jpg', 'Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi\r\nTanpa bahan pengawet! Dan pemanis buatan\r\nSangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin!', 2, '2016-05-02 02:26:12', '0000-00-00 00:00:00', NULL),
-(2, 1, 'Cin Cau', 60000, 10, 'cin_cau.jpg', 'Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung .\r\nAir cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet .', 2, '2016-06-09 11:06:08', '2016-06-09 04:06:08', NULL),
+(2, 1, 'Cin Cau', 60000, 999, 'cin_cau.jpg', 'Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung .\r\nAir cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet .', 2, '2016-06-28 02:24:03', '2016-06-27 19:24:03', NULL),
 (3, 1, 'Honey Pine', 75000, 10, 'honey_pine.jpg', 'Sari buah nanas ini sangat bermanfaat buat kecantikan karna di buat tanpa bahan pengawet dan gula, bener2 murni dan fress \r\nManfaat sari buat nanas \r\n1. Menjaga kesehatan mata\r\n2. Meningkatkan imunitas\r\n3. Membantu pencernaan\r\n5. Mencegah hipertensi\r\n6. Meredakan mual\r\n7. Menguatkan tulang\r\n8. Memperbaiki kulit kaki\r\n9. Melembabkan kulit\r\n10. Mencerna kandungan lemak pada makanan Yang kita makan', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00', NULL),
 (4, 1, 'Guava', 75000, 10, 'guava.jpg', 'Guava adalah sari buah jambu pilihan , yg di proses secara higienis tanpa bahan pengawet dan gula, rasanya benar2 alami seperti makan buah aslinya \r\nManfaat sari guava diantaranya yaitu \r\n1. Mengandung vitamin C yg sangat di butuhkan Oleh tubuh \r\n2. Mengandung serat alami \r\n3.Melancarkan pencernaan seperti susah BAB, Sembelit serta menbuang zat-zat berbahaya di Dalam usus\r\n4.Membuat kulit lebih cerah dan lembut', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00', NULL),
 (5, 1, 'Fruit Punch', 75000, 10, 'fruit_punch.jpg', 'Fruit Punch Aneka Buah adalah minuman yang dibuat dari aneka macam buah-buahan segar seperti melon, semangka, jeruk, biji selasih dan air soda. Buah-buahan memanglah sangat dianjurkan untuk dikonsumsi tubuh karena memiliki sejuta manfaat yang beragam bagi kesehatan. Seperti buah semangka yang memiliki manfaat menjaga kesehatan jantung, mata dan tulang, menangkal radikal bebas, meningkatkan sistem kekebalan tubuh, membantu meningkatkan aliran urine dan mengurangi lemak pada tubuh. Selain semangka, biji selasih yang turut digunakan sebagai bahan pelengkpnya juga memiliki manfaat bagi tubuh antara lain dapat mengobati radang lambung, menyembuhkan sakit gigi, baik untuk menghaluskan kulit wajah, sebagai obat sakit kepala dan lain sebagainya.', 2, '2016-04-21 11:13:34', '0000-00-00 00:00:00', NULL),
@@ -473,7 +466,7 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `who` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaction__order`
@@ -482,8 +475,8 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
 INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_date`, `status_payment`, `ship_address`, `ship_city_id`, `status_confirmed`, `status_shipping`, `shipping_date`, `group_id`, `shipping_fee`, `total`, `created_at`, `updated_at`, `who`) VALUES
 (1, 7, 3, '2016-06-02 00:00:00', 1, 'sunrise', 1, 0, 0, '2016-06-19', 1, 10000, 10, '2016-06-12 19:09:34', '2016-06-12 11:25:44', 'single'),
 (2, 4, 5, '2016-06-03 00:00:00', 1, 'green garden', 3, 0, 1, '2016-06-01', 2, 0, 20, '2016-06-12 16:34:23', '2016-06-12 09:34:23', 'subscribe'),
-(3, 7, 3, '2016-06-16 00:00:00', 1, 'abc', 1, 0, 0, '2016-06-29', 3, 5000, 135000, '2016-06-13 04:49:57', '2016-06-12 21:49:57', 'single'),
-(4, 7, 3, '2016-06-13 11:26:09', 0, 'komplek pakuwon blok apa aja', 1, 0, 0, '2016-06-16', 4, 10000, 145000, '2016-06-13 04:32:46', '2016-06-12 21:32:26', 'single');
+(3, 7, 3, '2016-06-16 00:00:00', 1, 'abc', 1, 0, 0, '2016-06-22', 3, 5000, 135000, '2016-06-27 06:14:46', '2016-06-12 21:49:57', 'single'),
+(4, 7, 3, '2016-06-13 11:26:09', 0, 'komplek pakuwon blok apa aja', 1, 0, 0, '2016-07-05', 4, 10000, 145000, '2016-06-27 06:13:44', '2016-06-12 21:32:26', 'single');
 
 -- --------------------------------------------------------
 
@@ -550,6 +543,7 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
   `event_venue` varchar(100) NOT NULL,
   `event_description` varchar(1000) NOT NULL,
   `request_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `shipping_date` date NOT NULL,
   `approval` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -560,9 +554,9 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
 -- Dumping data for table `transaction__sample_request`
 --
 
-INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 'iseng aja', '2016-05-20', 'alsut', 'rame', '2016-05-18 10:27:22', 0, '2016-05-24 07:56:39', '2016-05-24 00:56:22', NULL),
-(4, 3, '', '0000-00-00', '', '', '2016-05-20 08:37:01', 0, '2016-05-24 04:38:06', '2016-05-23 21:37:59', NULL);
+INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `shipping_date`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 3, 'iseng aja', '2016-07-05', 'alsut', 'rame', '2016-05-18 10:27:22', '2016-07-05', 0, '2016-06-28 04:36:18', '2016-06-27 21:29:30', NULL),
+(4, 3, '', '2016-07-23', '', '', '2016-05-20 08:37:01', '2016-07-08', 0, '2016-06-28 04:36:23', '2016-06-27 21:29:30', NULL);
 
 --
 -- Indexes for dumped tables
@@ -706,7 +700,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `faq__question`
 --
 ALTER TABLE `faq__question`
-MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `master__admin`
 --
@@ -771,7 +765,7 @@ MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 -- AUTO_INCREMENT for table `transaction__order`
 --
 ALTER TABLE `transaction__order`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `transaction__sample_request`
 --
