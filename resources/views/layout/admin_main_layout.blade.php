@@ -45,8 +45,6 @@
             @yield('content')
         </div>
 
-        @include('include.admin_controlSideBar')
-
     </div>
 
 

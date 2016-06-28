@@ -64,7 +64,8 @@ class AdminController extends Controller
 {
   public function getConfirmTx()
   {
-    $today = new \DateTime(NULL);
+    date_default_timezone_set('Asia/Jakarta');
+    $today = new \DateTime(NULL); dd($today);
     date_add($today,date_interval_create_from_date_string("-8 days"));
     $date = date_format($today,"Y-m-d");
 
@@ -464,6 +465,7 @@ class AdminController extends Controller
   //PURCHASE ORDER
   public function getPurchaseList(Request $request)
   {
+    date_default_timezone_set('Asia/Jakarta');
     $input = $request->all();
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
@@ -552,6 +554,7 @@ class AdminController extends Controller
   //REPORT
   public function getProductReport(Request $request)
   {
+    date_default_timezone_set('Asia/Jakarta');
     $input = $request->all();
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
@@ -597,6 +600,7 @@ class AdminController extends Controller
 
   public function getTxReport(Request $request)
   {
+    date_default_timezone_set('Asia/Jakarta');
     $input = $request->all();
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
@@ -657,6 +661,7 @@ class AdminController extends Controller
   
   public function getAgentReport(Request $request)
   {
+    date_default_timezone_set('Asia/Jakarta');
     $input = $request->all();
 
     $start = filter_var($input['dateStart'], FILTER_SANITIZE_STRING);
@@ -867,6 +872,7 @@ class AdminController extends Controller
   //TRANSACTION
   public function getOrderList()
   {
+    date_default_timezone_set('Asia/Jakarta');
     $data['active'] = 'txOrder';
     $data['first'] = date("Y-m-d", strtotime( "first day of this month"));
     $data['last'] = date("Y-m-d", strtotime( "last day of this month"));
@@ -876,6 +882,7 @@ class AdminController extends Controller
 
   public function getOrderData(Request $request)
   {
+    date_default_timezone_set('Asia/Jakarta');
     $first = date("Y-m-d", strtotime( "first day of this month"));
     $last = date("Y-m-d", strtotime( "last day of this month"));
 
@@ -1059,147 +1066,7 @@ class AdminController extends Controller
     }
     else return 0;
     
-  }
-
-  public function getShipList()
-  {
-    $data['active'] = 'txShipping';
-
-    return view('admin.admin_ship', $data);
-  }
-
-  public function getShipData(Request $request)
-  {
-    $data['query'] = TxShipDetail::leftJoin('transaction__shipping as tx', 'tx.shipping_id', '=', 'transaction__shipping_detail.shipping_id')
-                            ->leftJoin('transaction__order as o', 'o.order_id', '=', 'tx.order_id')
-                            ->leftJoin('master__member as c', 'o.customer_id', '=', 'c.id')
-                            ->leftJoin('master__member as a', 'o.agent_id', '=', 'a.id')
-                            ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
-                            ->get(['tx.shipping_id as id', 'tx_shipping_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'start_date', 'day', 'total_week', 'date_shipping' ,'finish']);
-        
-    return Datatables::of($data['query'])
-    ->filter(function ($instance) use ($request) {
-                if ($request->has('dateStart')) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if($row['order_date'] >= $request->dateStart) return true;
-                        return false;
-                    });
-                }
-
-                if ($request->has('dateEnd')) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if($row['order_date'] <= $request->dateEnd) return true;
-                        return false;
-                    });
-                }
-
-                if ($request->has('customer')) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['customer'], $request->customer) !== false) return true;
-                        return false;
-                    });
-                }
-
-                if ($request->has('agent')) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['agent'], $request->agent) !== false) return true;
-                        return false;
-                    });
-                }
-                if ($request->has('id')) {
-                    $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['tx_shipping_id'], $request->id) !== false) return true;
-                        return false;
-                    });
-                }
-            })
-    ->editColumn('finish', function($data){ 
-        if($data->finish == 0) return "Not Yet";
-        else if($data->finish == 1) return "Finished";
-    })
-    ->make(true);
-  }
-
-  public function getEditShip($id)
-  {
-    $id = filter_var($id, FILTER_SANITIZE_STRING);
-    $data['query'] = TxShipDetail::leftJoin('transaction__shipping as tx', 'tx.shipping_id', '=', 'transaction__shipping_detail.shipping_id')
-                            ->leftJoin('transaction__order as o', 'o.order_id', '=', 'tx.order_id')
-                            ->leftJoin('master__member as c', 'o.customer_id', '=', 'c.id')
-                            ->leftJoin('master__member as a', 'o.agent_id', '=', 'a.id')
-                            ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
-                            ->where('tx.shipping_id', $id)
-                            ->get(['tx.shipping_id as id', 'tx_shipping_id', 'a.name as agent', 'c.name as cust', 'order_date', 'ship_address', 'city_name', 'day', 'date_shipping' ,'finish']);
-    
-    $data['active'] = 'txShipping';
-
-    return view('admin.admin_edit_ship', $data);      
-  }
-
-  public function postEditShip(Request $request, $id)
-  {
-    $id = filter_var($id, FILTER_SANITIZE_STRING);
-    $v = Validator::make($request->all(), [
-        'finish'    => 'required|numeric',
-    ]);
-
-    if ($v->fails())
-    {
-        return redirect('/admin/edit/ship/' . $id)->withErrors($v->errors())->withInput();
-    }    
-
-    $input = $request->all();
-    $finish = filter_var($input['finish'], FILTER_SANITIZE_STRING);
-
-    $ship = TxShip::find($id);
-    $ship->finish = $finish;
-    $ship->save();
-    Session::flash('update', 1);
-
-    return redirect('admin/ship');
-  }
-
-  public function getProductShip(Request $request)
-  {
-    $v = Validator::make($request->all(), [
-        'id' => 'required'
-    ]);
-
-    if ($v->fails())
-    {
-        return 0;
-    }    
-    $input = $request->all();
-
-    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-         
-    $x = TxShipDetail::leftJoin('transaction__shipping_product as tx', 'tx.tx_shipping_id', '=', 'transaction__shipping_detail.tx_shipping_id')
-                ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'tx.varian_id')
-                ->where('tx.tx_shipping_id', $id)
-                ->get(['varian_name', 'tx.qty as qty']);
-
-    
-    $allData;
-    $i = 0;
-    
-    foreach ($x as $tmp) {
-      $data = new SampleDetailData();
-      $data->name = $tmp->varian_name;
-      $data->quantity = $tmp->qty;
-
-      $allData[$i] = $data;
-      $i++;
-    }
-
-    if(isset($allData))
-    {
-      $json = json_encode($allData);
-
-      return $json;
-    }
-    else return 0;
-    
-  }
+  }  
 
   public function getCutOffDate()
   {
@@ -1615,7 +1482,7 @@ class AdminController extends Controller
 
     if ($v->fails())
     {
-        return redirect('/admineditagent/' . $id)->withErrors($v->errors())->withInput();
+        return redirect('/admin/edit/agent/' . $id)->withErrors($v->errors())->withInput();
     }    
 
     $input = $request->all();
@@ -1919,6 +1786,7 @@ class AdminController extends Controller
 
   public function getSampleData()
   {
+    date_default_timezone_set('Asia/Jakarta');
     $today = new \DateTime(NULL);
     date_add($today,date_interval_create_from_date_string("+7 days"));
     $date = date_format($today,"Y-m-d");
@@ -1926,7 +1794,7 @@ class AdminController extends Controller
     $data['query'] = SampleRequest::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
                                     ->where('approval', 0)
                                     ->where('event_date', '>=', $date)
-                                    ->get(['transaction__sample_request.request_id', 'name', 'event_name', 'event_date', 'event_venue', 'event_description', 'request_date']);
+                                    ->get(['shipping_date', 'phone' ,'transaction__sample_request.request_id', 'name', 'event_name', 'event_date', 'event_venue', 'event_description', 'request_date']);
 
     return Datatables::of($data['query'])
     ->make(true);
@@ -2017,21 +1885,11 @@ class AdminController extends Controller
             $groupId = ($orderData->group_id) + 1;
 
             //bikin order
-            $today = new \DateTime($sample->event_date);
-            date_add($today,date_interval_create_from_date_string("-3 days"));
-
-            if($today->format('l') == 'Saturday')
-              date_add($today,date_interval_create_from_date_string("-1 days"));
-            else if($today->format('l') == 'Sunday')
-              date_add($today,date_interval_create_from_date_string("-2 days"));
-
-            $date = date_format($today,"Y-m-d");
-
             $order = new TxOrder();
             $order->customer_id = $order->agent_id = $sample->agent_id;
             $order->ship_address = $agent->address;
             $order->ship_city_id = $agent->city_id;
-            $order->shipping_date = $date;
+            $order->shipping_date = $sample->shipping_date;
             $order->group_id = $groupId;
             $order->shipping_fee = 0;
             $order->total = 0;
@@ -2080,21 +1938,11 @@ class AdminController extends Controller
           $groupId = ($orderData->group_id) + 1;
 
           //bikin order
-          $today = new \DateTime($sample->event_date);
-          date_add($today,date_interval_create_from_date_string("-3 days"));
-
-          if($today->format('l') == 'Saturday')
-            date_add($today,date_interval_create_from_date_string("-1 days"));
-          else if($today->format('l') == 'Sunday')
-            date_add($today,date_interval_create_from_date_string("-2 days"));
-
-          $date = date_format($today,"Y-m-d");
-
           $order = new TxOrder();
           $order->customer_id = $order->agent_id = $sample->agent_id;
           $order->ship_address = $agent->address;
           $order->ship_city_id = $agent->city_id;
-          $order->shipping_date = $date;
+          $order->shipping_date = $sample->shipping_date;
           $order->group_id = $groupId;
           $order->shipping_fee = 0;
           $order->total = 0;

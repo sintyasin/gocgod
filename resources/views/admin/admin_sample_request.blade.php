@@ -36,11 +36,13 @@
           <tr>
             <th><input name="select_all" value="1" type="checkbox" /></th>
             <th>Agent</th>
+            <th>Phone</th>
             <th>Event Name</th>
             <th>Event Date</th>
             <th>Venue</th>
             <th>Description</th>
             <th>Request Date</th>
+            <th>Shipping Date</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -247,11 +249,13 @@ $(function() {
                return '<input type="checkbox">';
             }},
             { data: 'name', name: 'name', title:'Agent' },
+            { data: 'phone', name: 'phone', title:'Phone' },
             { data: 'event_name', name: 'event_name', title:'Event Name' },
             { data: 'event_date', name: 'event_date', title:'Event Date' },
             { data: 'event_venue', name: 'event_venue', title:'Venue' },
             { data: 'event_description', name: 'event_description', title:'Description' },
             { data: 'request_date', name: 'request_date', title:'Request Date' },
+            { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
               var data = "'" + row.request_id + "','" + row.event_name + "','" + row.event_description + "'";
               return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
