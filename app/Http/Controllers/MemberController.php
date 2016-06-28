@@ -14,6 +14,7 @@ use App\Balance;
 use Auth;
 use App\Bank;
 use App\Req_agent;
+use App\Product;
 
 use Hash;
 
@@ -260,8 +261,7 @@ class MemberController extends Controller
 
     public function bank()
     {
-        $data['bank'] = Bank::All();
-
+        $data['bank'] = Bank::all();
         return view('page.becomeanagent', $data);
     }
 

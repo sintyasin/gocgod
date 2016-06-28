@@ -4,9 +4,10 @@
 @section('content')
 <div class="container">
 	<h2>Find Agent Location</h2>
-	<div class="col-md-6" style="padding-bottom: 50px;">
+	<div class="col-md-12" style="padding-bottom: 50px;">
 	<?php $i=0; ?>
 		@foreach($queryAgent as $agent)
+		<div class="col-md-6">
 			<div class="find_location">
 			
 				<div class="title_location"> {{$agent->name}} </div>
@@ -20,6 +21,7 @@
 				</div>
 				<?php $i++; ?>
 			</div>
+		</div>
 		@endforeach
 	</div>
 </div>
