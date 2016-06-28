@@ -1828,14 +1828,22 @@ class AdminController extends Controller
 
     $input = $request->all();
 
-    $question = filter_var($input['question'], FILTER_SANITIZE_STRING);
-    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);
+    /*$question = filter_var($input['question'], FILTER_SANITIZE_STRING);
+    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);*/
+    $question = $input['question'];
+    $question = str_replace('<p>', '', $question);
+    $question = str_replace('</p>', '', $question);
+    
+
+    $answer = $input['answer'];
+    $answer = str_replace('<p>', '', $answer);
+    $answer = str_replace('</p>', '', $answer);
 
     $faq = Faq::find($id);
     $faq->question = $question;
     $faq->answer = $answer;
     $faq->save();
-
+    Session::flash('update', 1);
     return redirect('/admin/faq/list');
   }
 
@@ -1860,8 +1868,16 @@ class AdminController extends Controller
 
     $input = $request->all();
 
-    $question = filter_var($input['question'], FILTER_SANITIZE_STRING);
-    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);
+    /*$question = filter_var($input['question'], FILTER_SANITIZE_STRING);
+    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);*/
+    $question = $input['question'];
+    $question = str_replace('<p>', '', $question);
+    $question = str_replace('</p>', '', $question);
+    
+
+    $answer = $input['answer'];
+    $answer = str_replace('<p>', '', $answer);
+    $answer = str_replace('</p>', '', $answer);
 
     $faq = new Faq;
     $faq->question = $question;
@@ -1896,19 +1912,20 @@ class AdminController extends Controller
   //fungsi buat product
   public function getSampleRequest()
   {
-    $data['active'] = 'productSampleRequest';
-    /*$data['query'] = SampleDetail::leftJoin('transaction__sample_request as r', 'r.request_id', '=', 'transaction__sample_detail.request_id')
-                                  ->leftJoin('product__varian as p', 'p.varian_id' , '=', 'transaction__sample_detail.varian_id')
-                                  ->where('approval', 0)
-                                  ->get(['varian_name', 'quantity']);*/
+    $data['active'] = 'productSampleRequest'; 
 
     return view('admin.admin_sample_request', $data);
   }
 
   public function getSampleData()
   {
+    $today = new \DateTime(NULL);
+    date_add($today,date_interval_create_from_date_string("+7 days"));
+    $date = date_format($today,"Y-m-d");
+
     $data['query'] = SampleRequest::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
                                     ->where('approval', 0)
+                                    ->where('event_date', '>=', $date)
                                     ->get(['transaction__sample_request.request_id', 'name', 'event_name', 'event_date', 'event_venue', 'event_description', 'request_date']);
 
     return Datatables::of($data['query'])
@@ -1985,10 +2002,56 @@ class AdminController extends Controller
         }
         else if($action == "approve")
         {
-          $sample = SampleRequest::find($id);
-          $sample->approval = 1;
-          $sample->save();
-          Session::flash('approve', 1);
+          DB::transaction(function() use ($id)
+          {
+            //approve di tabel sample
+            $sample = SampleRequest::find($id);
+            $sample->approval = 1;
+            $sample->save();
+
+            //ambil data agent
+            $agent = Member::find($sample->agent_id);
+
+            //ambil group id
+            $orderData = TxOrder::orderBy('order_id', 'desc')->first();
+            $groupId = ($orderData->group_id) + 1;
+
+            //bikin order
+            $today = new \DateTime($sample->event_date);
+            date_add($today,date_interval_create_from_date_string("-3 days"));
+
+            if($today->format('l') == 'Saturday')
+              date_add($today,date_interval_create_from_date_string("-1 days"));
+            else if($today->format('l') == 'Sunday')
+              date_add($today,date_interval_create_from_date_string("-2 days"));
+
+            $date = date_format($today,"Y-m-d");
+
+            $order = new TxOrder();
+            $order->customer_id = $order->agent_id = $sample->agent_id;
+            $order->ship_address = $agent->address;
+            $order->ship_city_id = $agent->city_id;
+            $order->shipping_date = $date;
+            $order->group_id = $groupId;
+            $order->shipping_fee = 0;
+            $order->total = 0;
+            $order->who = 'single';
+            $order->save();
+
+            //bikin order detail
+            $detail = SampleDetail::where('request_id', $id)->get();
+
+            foreach ($detail as $data) {
+              $tmp = new TxOrderDetail();
+              $tmp->order_id = $order->order_id;
+              $tmp->varian_id = $data->varian_id;
+              $tmp->varian_price = 0;
+              $tmp->quantity = $data->quantity;
+              $tmp->save();
+            }
+
+            Session::flash('approve', 1);
+          });          
         }
       }
     }
@@ -2002,11 +2065,56 @@ class AdminController extends Controller
       }
       else if($action == "approve")
       {
-        $sample = SampleRequest::find($id);
-        $sample->approval = 1;
-        $sample->save();
+        DB::transaction(function() use ($id)
+        {
+          //approve di tabel sample
+          $sample = SampleRequest::find($id);
+          $sample->approval = 1;
+          $sample->save();
 
-        Session::flash('approve', 1);
+          //ambil data agent
+          $agent = Member::find($sample->agent_id);
+
+          //ambil group id
+          $orderData = TxOrder::orderBy('order_id', 'desc')->first();
+          $groupId = ($orderData->group_id) + 1;
+
+          //bikin order
+          $today = new \DateTime($sample->event_date);
+          date_add($today,date_interval_create_from_date_string("-3 days"));
+
+          if($today->format('l') == 'Saturday')
+            date_add($today,date_interval_create_from_date_string("-1 days"));
+          else if($today->format('l') == 'Sunday')
+            date_add($today,date_interval_create_from_date_string("-2 days"));
+
+          $date = date_format($today,"Y-m-d");
+
+          $order = new TxOrder();
+          $order->customer_id = $order->agent_id = $sample->agent_id;
+          $order->ship_address = $agent->address;
+          $order->ship_city_id = $agent->city_id;
+          $order->shipping_date = $date;
+          $order->group_id = $groupId;
+          $order->shipping_fee = 0;
+          $order->total = 0;
+          $order->who = 'single';
+          $order->save();
+
+          //bikin order detail
+          $detail = SampleDetail::where('request_id', $id)->get();
+          
+          foreach ($detail as $data) {
+            $tmp = new TxOrderDetail();
+            $tmp->order_id = $order->order_id;
+            $tmp->varian_id = $data->varian_id;
+            $tmp->varian_price = 0;
+            $tmp->quantity = $data->quantity;
+            $tmp->save();
+          }
+
+          Session::flash('approve', 1);
+        });
       }
     }
 

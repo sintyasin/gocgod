@@ -65,8 +65,6 @@ Route::get('myorder/data', array('as' => 'orderlistCustomer.data',
 Route::post('receive', 'TransactionController@receive');
 Route::get('edit/order/{id}', 'TransactionController@getEditOrderCustomer');
 Route::post('post/edit/order', 'TransactionController@postEditOrderCustomer');
-Route::post('post/edit/order/{id}', 'AdminController@postEditOrder');
-Route::post('product/order', 'AdminController@getProductOrder');
 
 Route::get('historymyorder', 'TransactionController@getOrderListHistoryCustomer');
 Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
@@ -89,6 +87,21 @@ Route::get('/general/log/in',
 Route::post('/admin/login',
 	'Auth\AdminAuthController@postLogin'
 );
+
+//password reset
+Route::get('admin/password/reset',
+	'Auth\AdminPasswordController@showResetForm'
+);
+Route::get('admin/password/reset/{token?}',
+	'Auth\AdminPasswordController@showResetForm'
+);
+Route::post('admin/password/reset',
+	'Auth\AdminPasswordController@reset'
+);
+Route::post('admin/password/email',
+	'Auth\AdminPasswordController@sendResetLinkEmail'
+);
+
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	//logout
 	Route::get('/logout',
