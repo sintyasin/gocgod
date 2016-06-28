@@ -28,8 +28,6 @@
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/custom.css') }}">
     <!-- rating -->
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/jquery.rateyo.min.css') }}">
-    <!-- sweetalert -->
-    <link rel="stylesheet" type="text/css" href="{{ URL::asset('assets/css/sweetalert.css') }}">
 
     
     <!-- favicon -->
@@ -82,8 +80,6 @@
     <!-- stepper -->
     <script src="{{ URL::asset('assets/js/slidingco.form.js')}}"></script>
     <script src="{{ URL::asset('assets/js/slidingprofile.js')}}"></script>
-    <!-- sweetalert -->
-    <script src="{{ URL::asset('assets/js/sweetalert.min.js')}}"></script>
 
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

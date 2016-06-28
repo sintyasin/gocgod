@@ -70,7 +70,6 @@
                               @endif
                           </div>
                       </div>
-                      <
 
                         <div class="form-group{{ $errors->has('bank_account') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Bank Account Number</label>

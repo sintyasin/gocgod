@@ -105,14 +105,6 @@
 
 	                    <li><p>  </p> </li>
 						<li><p>  </p> </li>
-
-						<!-- 						
-							li class="searchbox">
->>>>>>> origin/frontend
-							<input type="search" placeholder="Search......" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
-							<input type="submit" class="searchbox-submit" value="">
-							<span class="searchbox-icon"><i class="fa fa-search"></i></span>
-						</li> -->
 					</ul>
 				</div>
 			</div>
