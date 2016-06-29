@@ -10,10 +10,10 @@
 		@foreach($query_faq as $faq)
 			<div class="faq">
 				<div class="faq_title">
-					{{$faq->question_id}}. &nbsp{{$faq->question}}
+					{{$faq->question_id}}. &nbsp{!! $faq->question !!}
 				</div>
 				<div class="faq_answer">
-					{{$faq->answer}}
+					{!! $faq->answer !!}
 				</div>
 			</div>
 		@endforeach

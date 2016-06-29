@@ -18,6 +18,7 @@ use App\TxOrder;
 use App\TxOrderDetail;
 use Yajra\Datatables\Datatables;
 use App\City;
+use App\AboutUs;
 
 class ProductDataOrder
 {
@@ -31,6 +32,7 @@ class TransactionController extends Controller
 {
   public function order_details_single()
   {
+    $data['contact'] = AboutUs::first();
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)
     ->get();
@@ -269,6 +271,7 @@ class TransactionController extends Controller
 
   public function order_details()
   {
+    $data['contact'] = AboutUs::first();
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)
     ->get();
@@ -355,6 +358,7 @@ class TransactionController extends Controller
   //================================== CUSTOMER ORDER DATA - AGENT
   public function getOrderList()
   {
+    $data['contact'] = AboutUs::first();
     $data['active'] = 'txOrder';
 
     return view('page.customerorder', $data);
@@ -463,21 +467,19 @@ class TransactionController extends Controller
   {
     $input = $request->all();
     $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-    //dd($id);
 
     $order = Txorder::find($id);
     $order->status_shipping = 1;
     $order->save();
 
     return redirect('customerorder');
-
-
   }
 
 
   //================================== MY ORDER - CUSTOMER
   public function getOrderListCustomer()
   {
+    $data['contact'] = AboutUs::first();
     $data['active'] = 'txOrder';
 
     return view('page.myorder', $data);
@@ -555,15 +557,12 @@ class TransactionController extends Controller
   {
     $input = $request->all();
     $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-    //dd($id);
 
     $order = Txorder::find($id);
     $order->status_confirmed = 1;
     $order->save();
 
     return redirect('customerorder');
-
-
   }
 
   public function postEditOrderCustomer(Request $request)
@@ -593,6 +592,7 @@ class TransactionController extends Controller
 
   public function getEditOrderCustomer($id)
   {
+    $data['contact'] = AboutUs::first();
     $id = filter_var($id, FILTER_SANITIZE_STRING);
     $query = TxOrder::find($id);    
 
@@ -619,6 +619,7 @@ class TransactionController extends Controller
   //=========================== HISTORY ORDER
   public function getOrderListHistoryCustomer()
   {
+    $data['contact'] = AboutUs::first();
     $data['active'] = 'txOrder';
 
     return view('page.historymyorder', $data);
