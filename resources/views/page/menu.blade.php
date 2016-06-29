@@ -26,6 +26,11 @@
 			@endforeach
 		</div>
 		@endforeach
+		<div class="row">
+			<div class="col-md-12 col-sm-12 col-xs-12">
+				<div class="pull-right"> {!! $query->render() !!} </div>
+			</div>
+		</div>
 	</div>
 </div>
 @stop

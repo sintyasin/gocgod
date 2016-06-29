@@ -14,15 +14,17 @@ use App\Balance;
 use Auth;
 use App\Bank;
 use App\Req_agent;
+use App\AboutUs;
 use App\Product;
 
 use Hash;
 
 class MemberController extends Controller
 {
-	public function getLoginMember()
+	/*public function getLoginMember()
     {
-    	return view('testing.loginMember');
+        $data['contact'] = AboutUs::first();
+    	return view('testing.loginMember', $data);
     }
     
     public function postLoginMember(LoginRequest $request)
@@ -44,12 +46,14 @@ class MemberController extends Controller
 
     public function getRegisterMember()
     {
-    	return view('testing.registerMember');
+        $data['contact'] = AboutUs::first();
+    	return view('testing.registerMember', $data);
     }
 
     public function getRegisterAdmin()
     {
-    	return view('testing.registerAdmin');
+        $data['contact'] = AboutUs::first();
+    	return view('testing.registerAdmin', $data);
     }
 
     public function postRegisterAdmin(SignUpRequest $request)
@@ -65,7 +69,7 @@ class MemberController extends Controller
 
 		echo $name . " " . $cityId;
 
-		/*
+		
 		$user = new AdminModel;
 		$user->name = $name;
 		$user->city_id = $cityId;
@@ -74,7 +78,7 @@ class MemberController extends Controller
 		$user->email = $email;
 		$user->phone = $phone;
 		$user->password = $password;
-		$user->save();*/
+		$user->save();
     }
 
     public function postRegisterMember(SignUpRequest $request)
@@ -98,18 +102,19 @@ class MemberController extends Controller
 		$user->city_id = $cityId;
 		$user->password = $password;
 
-		/*
+		
 		$user->name = $name;
 		$user->address = $address;
 		$user->date_of_birth = $dob;
 		$user->phone = $phone;
 		$user->bank_account = $bank;
-		$user->status_user = $status;*/
+		$user->status_user = $status;
 		$user->save();
-    }
+    }*/
 
     public function readDataMember($id)
     {
+        $data['contact'] = AboutUs::first();
     	$data['query'] = Member::find($id);
 
     	return view('page.myaccount', $data);
@@ -117,6 +122,7 @@ class MemberController extends Controller
 
     public function readAgent()
     {
+        $data['contact'] = AboutUs::first();
     	$data['queryAgent'] = Member::where('status_user', 0)->get();
     	$i=0;
     	foreach($data['queryAgent'] as $tmp)
@@ -133,6 +139,7 @@ class MemberController extends Controller
 
     public function showbalance($id)
     {
+        $data['contact'] = AboutUs::first();
 		$data['querybalance'] = Balance::where('agent_id', $id)
 								->orderBy('created_at', 'desc')
 								->get();
@@ -261,7 +268,9 @@ class MemberController extends Controller
 
     public function bank()
     {
-        $data['bank'] = Bank::all();
+        $data['contact'] = AboutUs::first();
+        $data['bank'] = Bank::All();
+        
         return view('page.becomeanagent', $data);
     }
 

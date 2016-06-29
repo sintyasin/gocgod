@@ -50,6 +50,7 @@
 
 @push('scripts')
 <script>
+var table;
 var rows_selected = [];
 function deleteTestimoni(varian, testi, id) 
 {
@@ -62,7 +63,11 @@ function deleteTestimoni(varian, testi, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -83,7 +88,12 @@ function deleteSelectedTestimoni()
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          rows_selected = [];
+          alert('Data has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -121,7 +131,7 @@ function updateDataTableSelectAllCtrl(table){
 }
 
 $(function() {
-    var table = $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         rowCallback: function(row, data, dataIndex){
@@ -143,7 +153,7 @@ $(function() {
             { data: 'varian_name', name: 'varian_name', title:'Product' },
             { data: 'testimonial', name: 'testimonial', title:'Testimonials' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.varian_name + "', '" + row.testimonial + "'," + row.testimonial_id;
+              var data = "`" + row.varian_name + "`, `" + row.testimonial + "`," + row.testimonial_id;
               return '<button class="btn btn-danger" onclick="deleteTestimoni(' + data + ')" >' + 'Delete' + '</button>';
             } }
         ]

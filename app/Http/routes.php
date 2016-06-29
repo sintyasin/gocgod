@@ -65,8 +65,6 @@ Route::get('myorder/data', array('as' => 'orderlistCustomer.data',
 Route::post('receive', 'TransactionController@receive');
 Route::get('edit/order/{id}', 'TransactionController@getEditOrderCustomer');
 Route::post('post/edit/order', 'TransactionController@postEditOrderCustomer');
-Route::post('post/edit/order/{id}', 'AdminController@postEditOrder');
-Route::post('product/order', 'AdminController@getProductOrder');
 
 Route::get('historymyorder', 'TransactionController@getOrderListHistoryCustomer');
 Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
@@ -89,6 +87,21 @@ Route::get('/general/log/in',
 Route::post('/admin/login',
 	'Auth\AdminAuthController@postLogin'
 );
+
+//password reset
+Route::get('admin/do/password/reset',
+	'Auth\AdminPasswordController@showResetForm'
+);
+Route::get('admin/do/password/reset/{token?}',
+	'Auth\AdminPasswordController@showResetForm'
+);
+Route::post('admin/do/password/reset',
+	'Auth\AdminPasswordController@reset'
+);
+Route::post('admin/do/password/email',
+	'Auth\AdminPasswordController@sendResetLinkEmail'
+);
+
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	//logout
 	Route::get('/logout',
@@ -425,22 +438,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('product/order', 
 		'AdminController@getProductOrder'
 	);
-	//shipping
-	Route::get('ship', 
-		'AdminController@getShipList'
+	//ORDER CONFIRMATION
+	Route::get('order/confirm', 
+		'AdminController@getOrderConfirm'
 	);
-	Route::get('ship/data', 
-		array('as' => 'shiplist.data', 
-			'uses' =>'AdminController@getShipData')
+	Route::get('order/confirm/data', 
+		array('as' => 'orderconfirm.data', 
+			'uses' =>'AdminController@getOrderConfirmData')
 	);
-	Route::get('edit/ship/{id}', 
-		'AdminController@getEditShip'
-	);
-	Route::post('post/edit/ship/{id}', 
-		'AdminController@postEditShip'
-	);
-	Route::post('product/ship', 
-		'AdminController@getProductShip'
+	Route::post('process/order/confirmation', 
+		'AdminController@processOrderConfirmation'
 	);
 
 	//PURCHASE

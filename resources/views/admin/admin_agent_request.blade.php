@@ -62,6 +62,7 @@
 @push('scripts')
 <script>
 var rows_selected = [];
+var table;
 function reject(agent, id) 
 {
   if (confirm("Are you sure want to reject agent\'s request " + agent + "?") == true) 
@@ -73,7 +74,11 @@ function reject(agent, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Agent has been rejected');
+        }
         else alert('Failed');
       }
     });
@@ -91,7 +96,11 @@ function approve(agent, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Agent has been approved');
+        }
         else alert('Failed');
       }
     });
@@ -112,7 +121,12 @@ function rejectSelected()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Agent has been rejected');
+          }
           else alert('Failed');
         }
       });
@@ -134,7 +148,12 @@ function approveSelected()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Agent has been approved');
+          }
           else alert('Failed');
         }
       });
@@ -172,7 +191,7 @@ function updateDataTableSelectAllCtrl(table){
 }
 
 $(function() {
-    var table = $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         rowCallback: function(row, data, dataIndex){
@@ -199,7 +218,7 @@ $(function() {
             { data: 'bank_name', name: 'bank_name', title:'Bank' },
             { data: 'accno', name: 'accno', title:'Account Number' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.name + "','" + row.reqagent_id + "'";
+              var data = "`" + row.name + "`,`" + row.reqagent_id + "`";
               return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
                    '<button class="btn btn-danger" onclick="reject(' + data + ')">' + 'Reject' + '</button>';
             } }

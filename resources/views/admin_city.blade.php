@@ -48,6 +48,7 @@
 
 @push('scripts')
 <script>
+var table;
 function deleteCity(name, id) 
 {
   if (confirm("Are you sure want to delete: \n" + name + " ?") == true) 
@@ -59,7 +60,11 @@ function deleteCity(name, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('City has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -72,14 +77,14 @@ function editCity(id)
 }
 
 $(function() {
-    $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('citylist.data') !!}',
         columns: [
             { data: 'city_name', name: 'city_name', title:'City' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.city_name + "'";
+              var data = "`" + row.city_name + "`";
               return '<a class="btn btn-warning" onclick="editCity(' + row.city_id + ')" >' + 'Edit' + '</a> &nbsp;' +
                      '<a class="btn btn-danger" onclick="deleteCity(' + data + "," + row.city_id + ')" >' + 'Delete' + '</a>';
             } }

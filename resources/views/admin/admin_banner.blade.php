@@ -44,7 +44,7 @@
 
 @push('scripts')
 <script>
-
+var table;
 function deleteBanner(name, id) 
 {
   if (confirm("Are you sure want to delete " + name + " ?") == true) 
@@ -56,7 +56,11 @@ function deleteBanner(name, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Banner has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -69,7 +73,7 @@ function editBanner(id)
 }
 
 $(function() {
-    var table = $('#producttable').DataTable({
+    table = $('#producttable').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('banner.data') !!}',
@@ -86,17 +90,12 @@ $(function() {
               return x;
             } },
             {className: "dt-center", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.name + "'";
+              var data = "`" + row.name + "`";
               return '<br> <a class="btn btn-warning" onclick="editBanner(' + row.id + ')" >' + 'Edit' + '</a> <br><br>' +
                      '<a class="btn btn-danger" onclick="deleteBanner(' + data + ', ' + row.id + ')" >' + 'Delete' + '</a>';
             } }
         ]
     });
-    /*
-    $('#example tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        alert( data.id);
-    } );*/
 });
 </script>
 @endpush

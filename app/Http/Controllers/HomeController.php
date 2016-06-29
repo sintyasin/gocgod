@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Faq;
 use Auth;
 use App\Banner;
+use App\AboutUs;
 
 class HomeController extends Controller
 {
@@ -28,6 +29,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $data['contact'] = AboutUs::first();
         $data['query'] = Banner::all();
 
         return view('page.home', $data);
@@ -35,6 +37,7 @@ class HomeController extends Controller
 
     public function faq_question()
     {
+        $data['contact'] = AboutUs::first();
         $data['query_faq'] = faq::all();
         return view('page.faq', $data);
     }

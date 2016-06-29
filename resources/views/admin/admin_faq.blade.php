@@ -49,6 +49,7 @@
 
 @push('scripts')
 <script>
+var table;
 function deleteFaq(name, id) 
 {
   if (confirm("Are you sure want to delete question: \n" + name + " ?") == true) 
@@ -60,7 +61,11 @@ function deleteFaq(name, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('FAQ has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -73,7 +78,7 @@ function editFaq(id)
 }
 
 $(function() {
-    $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('faqlist.data') !!}',
@@ -81,9 +86,9 @@ $(function() {
             { data: 'question', width:"30%", name: 'question', title:'Question' },
             { data: 'answer', name: 'answer', title:'Answer' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.question + "'";
+              var data = "`" + row.question + "`";
               return '<a class="btn btn-warning" onclick="editFaq(' + row.question_id + ')" >' + 'Edit' + '</a> &nbsp;' +
-                     '<a class="btn btn-danger" onclick="deleteFaq(' + data + ', ' + row.question_id + ')" >' + 'Delete' + '</a>';
+                     '<a class="btn btn-danger" onclick="deleteFaq(' + data + "," + row.question_id + ')" >' + 'Delete' + '</a>';
             } }
         ]
     });

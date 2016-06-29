@@ -22,8 +22,8 @@
 				<div class="footer_link address">
 					<p>go C go D</p>
 					<ul>
-						<li><span>Address: </span> Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk</li>
-						<li><span>WA: </span>0811-139318 (Baby)</li>
+						<li><span>Address: </span> {{$contact->address}} </li>
+						<li><span>WA: </span>{{$contact->phone}} ({{$contact->name}})</li>
 					</ul>
 				</div>
 				<div class="footer_icon">
