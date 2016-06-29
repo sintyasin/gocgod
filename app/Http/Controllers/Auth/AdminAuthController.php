@@ -75,53 +75,35 @@ class AdminAuthController extends Controller
             return view('admin.admin_login');
     }
 
-    public function postLogin(Request $request)
+    public function login(Request $request)
     {
-        // validate the info, create rules for the inputs
-        $rules = array(
-            'email'    => 'required|email', // make sure the email is an actual email
-            'password' => 'required|min:3' // password can only be alphanumeric and has to be greater than 3 characters
-        );
+        $this->validateLogin($request);
 
-        // run the validation rules on the inputs from the form
-        $validator = Validator::make($request->all(), $rules);
+        // If the class is using the ThrottlesLogins trait, we can automatically throttle
+        // the login attempts for this application. We'll key this by the username and
+        // the IP address of the client making these requests into this application.
+        $throttles = $this->isUsingThrottlesLoginsTrait();
 
-        // if the validator fails, redirect back to the form
-        if ($validator->fails()) {
-            return redirect('/general/log/in')->withErrors($validator->errors())->withInput();
-        } else {
+        if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
+            $this->fireLockoutEvent($request);
 
-            // create our user data for the authentication
-            $input = $request->all();
-
-            $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
-            $password = filter_var($input['password'], FILTER_SANITIZE_STRING);
-            
-            $userdata = array(
-                'email'     => $email,
-                'password'  => $password
-            );
-
-            $remember;
-            if($request->has('remember')) $remember = true;
-            else $remember = false;
-
-            // attempt to do the login
-            if (Auth::guard('admin')->attempt($userdata, $remember)) {
-                // validation successful!
-                // redirect them to the secure section or whatever
-                // return Redirect::to('secure');
-                // for now we'll just echo success (even though echoing in a controller is bad)
-                return redirect()->intended($this->redirectPath());
-
-            } else {
-                Session::flash('failed', 1);
-                // validation not successful, send back to form 
-                return Redirect::to('/general/log/in');
-
-            }
-
+            return $this->sendLockoutResponse($request);
         }
+
+        $credentials = $this->getCredentials($request);
+
+        if (Auth::guard('admin')->attempt($credentials, $request->has('remember'))) {
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        if ($throttles && ! $lockedOut) {
+            $this->incrementLoginAttempts($request);
+        }
+
+        return $this->sendFailedLoginResponse($request);
     }
 
     public function getLogout()

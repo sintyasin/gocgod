@@ -82,16 +82,6 @@ return [
             'model' => App\Admin::class,
             'table' => 'master__admin',
         ],
-
-        // 'users' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\User::class,
-        // ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
     ],
 
     /*
@@ -123,7 +113,7 @@ return [
 
         'admin' => [
             'provider' => 'admin',
-            'email' => 'auth.emails.password',
+            'email' => 'auth.emails.admin_password',
             'table' => 'password__resets',
             'expire' => 60,
         ],

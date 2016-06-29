@@ -16,13 +16,14 @@ use App\Member;
 use App\TransactionController;
 use App\SampleDetail;
 use App\SampleRequest;
-
+use App\AboutUs;
 
 class ProductController extends Controller
 {
     public function getMenu()
     {
-    	$data['query'] = Product::all();
+        $data['contact'] = AboutUs::first();
+    	$data['query'] = Product::paginate(12);
         $i = 0;
         //masukkin data kategori ke array
         foreach($data['query'] as $tmp)
@@ -36,6 +37,7 @@ class ProductController extends Controller
 
     public function getMenuDetail($id)
     {
+        $data['contact'] = AboutUs::first();
         $data['query_testimonial'] = ProductTestimonial::where('varian_id', $id)
                                                         ->where('approval', 1)
                                                         ->get();
@@ -53,6 +55,7 @@ class ProductController extends Controller
 
     public function getMenuSample()
     {
+        $data['contact'] = AboutUs::first();
         $data['query'] = Product::all();
         
         return view('page.productsample', $data);
@@ -60,6 +63,7 @@ class ProductController extends Controller
 
     public function productSample($id)
     {
+        $data['contact'] = AboutUs::first();
         $data['request_data'] = SampleRequest::where('request_id', $id)->first();
         //dd($data['request_data']);
         $data['query'] = Product::all();
@@ -158,6 +162,7 @@ class ProductController extends Controller
 
     public function getAllMenu()
     {
+        $data['contact'] = AboutUs::first();
         $data['query_menu'] = Product::all();
         $i = 0;
         //masukkin data kategori ke array

@@ -26,39 +26,59 @@
     </div>
     @endif
     <div class="col-lg-12">
-      <form class="form-horizontal" role="form" method="POST" action= {{ URL('admin/post/faq') }} >
+      <form class="form-horizontal" role="form" method="POST" action= {{ URL('admin/post/faq') }}>
         {!! csrf_field() !!}
 
         <div class="form-group{{ $errors->has('question') ? ' has-error' : '' }}">
-            <label class="col-md-1 control-label">Question</label>
+          <div class="col-md-10">
+            <div class="box box-info">
+                <div class="box-header">
+                  <b><h3 class="box-title">Question</h3></b>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <button class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                  </div><!-- /. tools -->
+                </div><!-- /.box-header -->
+              <div class="box-body pad">
+                  <textarea id="editor1" placeholder="Question" name="question" rows="10" cols="80">
+                  </textarea>
 
-            <div class="col-md-5">
-                <textarea rows="3" class="form-control" placeholder="Question" name="question">{{ old('question') }}</textarea>
-
-                @if ($errors->has('question'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('question') }}</strong>
-                </span>
-                @endif
-            </div>
+                  @if ($errors->has('question'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('question') }}</strong>
+                  </span>
+                  @endif
+              </div>
+            </div><!-- /.box -->
+          </div>
         </div>
 
         <div class="form-group{{ $errors->has('answer') ? ' has-error' : '' }}">
-            <label class="col-md-1 control-label">Answer</label>
+          <div class="col-md-10">
+              <div class="box box-info">
+                <div class="box-header">
+                  <b><h3 class="box-title">Answer</h3></b>
+                  <!-- tools box -->
+                  <div class="pull-right box-tools">
+                    <button class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                  </div><!-- /. tools -->
+                </div><!-- /.box-header -->
+              <div class="box-body pad">
+                  <textarea id="editor2" placeholder="Answer" name="answer" rows="10" cols="80">
+                  </textarea>
 
-            <div class="col-md-5">
-                <textarea rows="5" class="form-control" placeholder="Answer" name="answer" >{{ old('answer') }}</textarea>
-
-                @if ($errors->has('answer'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('answer') }}</strong>
-                </span>
-                @endif
-            </div>
+                  @if ($errors->has('answer'))
+                  <span class="help-block">
+                      <strong>{{ $errors->first('answer') }}</strong>
+                  </span>
+                  @endif
+              </div>
+            </div><!-- /.box -->
+          </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-3">
+            <div class="col-md-12 col-md-offset-4">
                 <button type="submit" class="btn btn-primary">Submit</button>             
             </div>
         </div>
@@ -66,17 +86,17 @@
     </div>
   </div><!-- /.row -->
 </section><!-- /.content -->
-
 @push('scripts')
-<script type="text/javascript">
-
-function check() {
-  var e = document.getElementById('category');
-  if (e.options[e.selectedIndex].value == 0) {
-      document.getElementById('newcategory').style.display = 'block';
-  }
-  else document.getElementById('newcategory').style.display = 'none';
-}
+<script src="{{ URL::asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+<script>
+  $(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1');
+    CKEDITOR.replace('editor2');
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
+  });
 </script>
 @endpush
 @stop

@@ -34,7 +34,7 @@
     <![endif]-->
   </head>
 
-  <body class="hold-transition skin-blue sidebar-mini">
+  <body class="hold-transition skin-blue sidebar-mini wysihtml5-supported">
 
     <div class="wrapper">   
         @include('include.admin_header')
@@ -44,8 +44,6 @@
         <div class="content-wrapper">
             @yield('content')
         </div>
-
-        @include('include.admin_controlSideBar')
 
     </div>
 
@@ -67,9 +65,11 @@
     <!-- jQuery UI 1.11.4 -->
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <!-- 
     <script>
       $.widget.bridge('uibutton', $.ui.button);
     </script>
+     -->
     <!-- Bootstrap 3.3.5 -->
     <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script> 
 
@@ -79,6 +79,12 @@
     <!-- <script src="{{ URL::asset('assets/dist/js/pages/dashboard.js')}}"></script> -->
     <!-- AdminLTE for demo purposes -->
     <script src="{{ URL::asset('assets/dist/js/demo.js')}}"></script>
+
+    <!-- CK Editor -->
+    <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+
+    
 
 
   </body>

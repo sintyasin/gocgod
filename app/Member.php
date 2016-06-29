@@ -16,7 +16,7 @@ class Member extends Authenticatable
      * @var array
      */
 	protected $fillable = [
-        'name', 'address', 'date_of_birth', 'phone', 'email', 'password', 'city_id', 'status_user', 'bank_account'
+        'name', 'address', 'date_of_birth', 'phone', 'email', 'password', 'city_id', 'status_user'
     ];
 
     /**
@@ -26,6 +26,10 @@ class Member extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $guarded = [
+        'id', 'status_user', 'verification', 'balance', 'bank_account', 'bank_id'
     ];
 
     public function member_testi()
