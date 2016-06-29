@@ -49,6 +49,7 @@
 
 @push('scripts')
 <script>
+var table;
 function deleteCategory(name, id) 
 {
   if (confirm("Are you sure want to delete: \n" + name + " ?") == true) 
@@ -60,7 +61,11 @@ function deleteCategory(name, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -74,7 +79,7 @@ function editCategory(id)
 }
 
 $(function() {
-    $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('categorylist.data') !!}',
@@ -82,7 +87,7 @@ $(function() {
             { data: 'category_name', width:'25%', name: 'category_name', title:'Category' },
             { data: 'description', name: 'description', title:'Description' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.category_name + "'";
+              var data = "`" + row.category_name + "`";
               return '<a class="btn btn-warning" onclick="editCategory(' + row.category_id + ')" >' + 'Edit' + '</a> &nbsp;' +
                      '<a class="btn btn-danger" onclick="deleteCategory(' + data + "," + row.category_id + ')" >' + 'Delete' + '</a>';
             } }

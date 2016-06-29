@@ -56,6 +56,7 @@
 
 @push('scripts')
 <script>
+var table;
 var rows_selected = [];
 function reject(id, name, testi) 
 {
@@ -68,7 +69,11 @@ function reject(id, name, testi)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been rejected');
+        }
         else alert('Failed');
       }
     });
@@ -86,7 +91,11 @@ function approve(id, name, testi)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been approved');
+        }
         else alert('Failed');
       }
     });
@@ -107,7 +116,12 @@ function rejectSelected()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Data has been rejected');
+          }
           else alert('Failed');
         }
       });
@@ -129,7 +143,12 @@ function approveSelected()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Data has been approved');
+          }
           else alert('Failed');
         }
       });
@@ -167,7 +186,7 @@ function updateDataTableSelectAllCtrl(table){
 }
 
 $(function() {
-  var table = $('#datatableUser').DataTable({
+  table = $('#datatableUser').DataTable({
       processing: true,
       serverSide: true,
       rowCallback: function(row, data, dataIndex){
@@ -189,7 +208,7 @@ $(function() {
           { data: 'varian_name', name: 'varian_name', title:'Product' },
           { data: 'testimonial', name: 'testimonial', title:'Testimonials' },
           {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-            var data = "'" + row.testimonial_id + "','" + row.varian_name + "','" + row.testimonial + "'";
+            var data = "`" + row.testimonial_id + "`,`" + row.varian_name + "`,`" + row.testimonial + "`";
             return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
                    '<button class="btn btn-danger" onclick="reject(' + data + ')">' + 'Reject' + '</button>';
           } }

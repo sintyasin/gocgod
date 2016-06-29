@@ -52,6 +52,7 @@
 @push('scripts')
 <script>
 var rows_selected = [];
+var table;
 function deleteReview(agent, comment, id) 
 {
   if (confirm("Are you sure want to delete agent\'s " + agent + " review:\n" + comment + "?") == true) 
@@ -63,7 +64,11 @@ function deleteReview(agent, comment, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -84,7 +89,12 @@ function deleteSelectedReview()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Data has been deleted');
+          }
           else alert('Failed');
         }
       });
@@ -122,7 +132,7 @@ function updateDataTableSelectAllCtrl(table){
 }
 
 $(function() {
-    var table = $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         rowCallback: function(row, data, dataIndex){
@@ -145,7 +155,7 @@ $(function() {
             { data: 'rating', name: 'rating', title:'Rating' },
             { data: 'comment', name: 'comment', title:'Comment' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.agent + "', '" + row.comment + "','" + row.rating_id + "'";
+              var data = "`" + row.agent + "`, `" + row.comment + "`,`" + row.rating_id + "`";
               return '<button class="btn btn-danger" onclick="deleteReview(' + data + ')" >' + 'Delete' + '</button>';
             } }
         ]

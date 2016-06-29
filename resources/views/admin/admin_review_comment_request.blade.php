@@ -58,6 +58,7 @@
 @push('scripts')
 <script>
 var rows_selected = [];
+var table;
 function reject(agent, comment, id) 
 {
   if (confirm("Are you sure want to reject agent\'s " + agent + " review:\n" + comment + "?") == true) 
@@ -69,7 +70,11 @@ function reject(agent, comment, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been rejected');
+        }
         else alert('Failed');
       }
     });
@@ -87,7 +92,11 @@ function approve(agent, comment, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been approved');
+        }
         else alert('Failed');
       }
     });
@@ -108,7 +117,12 @@ function rejectSelected()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Data has been rejected');
+          }
           else alert('Failed');
         }
       });
@@ -130,7 +144,12 @@ function approveSelected()
         success:
         function(success)
         {
-          if(success) location.reload();
+          if(success)
+          {
+            table.draw();
+            rows_selected = [];
+            alert('Data has been approved');
+          }
           else alert('Failed');
         }
       });
@@ -168,7 +187,7 @@ function updateDataTableSelectAllCtrl(table){
 }
 
 $(function() {
-    var table = $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         rowCallback: function(row, data, dataIndex){
@@ -191,7 +210,7 @@ $(function() {
             { data: 'rating', name: 'rating', title:'Rating' },
             { data: 'comment', name: 'comment', title:'Comment' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.agent + "', '" + row.comment + "','" + row.rating_id + "'";
+              var data = "`" + row.agent + "`, `" + row.comment + "`,`" + row.rating_id + "`";
               return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
                    '<button class="btn btn-danger" onclick="reject(' + data + ')">' + 'Reject' + '</button>';
             } }

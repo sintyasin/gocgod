@@ -87,6 +87,12 @@
         </a>
       </li>
 
+      <li class=" <?php if($active == 'txOrderConfirm') echo 'active'; ?> ">
+        <a href= {{URL('admin/order/confirm')}} >
+          <i class="fa fa-sticky-note-o"></i> <span>Order Confirmation</span>
+        </a>
+      </li>
+
       <li class=" <?php if($active == 'purchase') echo 'active'; ?> ">
         <a href= {{URL('admin/purchase?dateStart=&dateEnd=&export=0')}} >
           <i class="fa fa-tasks"></i> <span>Purchase Order</span>

@@ -54,7 +54,7 @@
 
 @push('scripts')
 <script>
-
+var table;
 function deleteProduct(name, id) 
 {
   if (confirm("Are you sure want to delete " + name + " ?") == true) 
@@ -66,7 +66,11 @@ function deleteProduct(name, id)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been deleted');
+        }
         else alert('Failed');
       }
     });
@@ -80,7 +84,7 @@ function editProduct(id)
 }
 
 $(function() {
-    var table = $('#producttable').DataTable({
+    table = $('#producttable').DataTable({
         processing: true,
         serverSide: true,
         ajax: '{!! route('productlist.data') !!}',
@@ -98,7 +102,7 @@ $(function() {
             } },
             { data: 'description', name: 'description', title:'Description' },
             {className: "dt-center", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.varian_name + "'";
+              var data = "`" + row.varian_name + "`";
               return '<br> <a class="btn btn-warning" onclick="editProduct(' + row.varian_id + ')" >' + 'Edit' + '</a> <br><br>' +
                      '<a class="btn btn-danger" onclick="deleteProduct(' + data + ', ' + row.varian_id + ')" >' + 'Delete' + '</a>';
             } }
