@@ -89,16 +89,16 @@ Route::post('/admin/login',
 );
 
 //password reset
-Route::get('admin/password/reset',
+Route::get('admin/do/password/reset',
 	'Auth\AdminPasswordController@showResetForm'
 );
-Route::get('admin/password/reset/{token?}',
+Route::get('admin/do/password/reset/{token?}',
 	'Auth\AdminPasswordController@showResetForm'
 );
-Route::post('admin/password/reset',
+Route::post('admin/do/password/reset',
 	'Auth\AdminPasswordController@reset'
 );
-Route::post('admin/password/email',
+Route::post('admin/do/password/email',
 	'Auth\AdminPasswordController@sendResetLinkEmail'
 );
 
@@ -438,22 +438,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('product/order', 
 		'AdminController@getProductOrder'
 	);
-	//shipping
-	Route::get('ship', 
-		'AdminController@getShipList'
+	//ORDER CONFIRMATION
+	Route::get('order/confirm', 
+		'AdminController@getOrderConfirm'
 	);
-	Route::get('ship/data', 
-		array('as' => 'shiplist.data', 
-			'uses' =>'AdminController@getShipData')
+	Route::get('order/confirm/data', 
+		array('as' => 'orderconfirm.data', 
+			'uses' =>'AdminController@getOrderConfirmData')
 	);
-	Route::get('edit/ship/{id}', 
-		'AdminController@getEditShip'
-	);
-	Route::post('post/edit/ship/{id}', 
-		'AdminController@postEditShip'
-	);
-	Route::post('product/ship', 
-		'AdminController@getProductShip'
+	Route::post('process/order/confirmation', 
+		'AdminController@processOrderConfirmation'
 	);
 
 	//PURCHASE

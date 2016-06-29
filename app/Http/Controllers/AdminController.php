@@ -37,6 +37,7 @@ use App\Bank;
 use App\Member;
 use App\Banner;
 use App\Balance;
+use App\TxOrderConfirmation;
 
 class SampleDetailData
 {
@@ -65,7 +66,7 @@ class AdminController extends Controller
   public function getConfirmTx()
   {
     date_default_timezone_set('Asia/Jakarta');
-    $today = new \DateTime(NULL); dd($today);
+    $today = new \DateTime(NULL);
     date_add($today,date_interval_create_from_date_string("-8 days"));
     $date = date_format($today,"Y-m-d");
 
@@ -1066,7 +1067,52 @@ class AdminController extends Controller
     }
     else return 0;
     
-  }  
+  }
+  //ORDER CONFIRMATION
+  public function getOrderConfirm()
+  {
+    $data['active'] = 'txOrderConfirm';
+
+    return view('admin.admin_order_confirm', $data);
+  }
+
+  public function getOrderConfirmData()
+  {
+    $data['query'] = TxOrderConfirmation::get(['confirmation_id', 'group_id', 'payment_date', 'amount', 'account_name', 'account_number', 'confirmation_status']);
+        
+    return Datatables::of($data['query'])
+    ->make(true); 
+  }
+
+  public function processOrderConfirmation(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+
+    DB::transaction(function() use ($id)
+    {
+      $confirm = TxOrderConfirmation::find($id);
+      $confirm->confirmation_status = 1;
+      $confirm->save();
+
+      $order = txOrder::where('group_id', $id)->get();
+      foreach ($order as $data) {
+        $data->status_payment = 1;
+        $data->save();
+      }
+    });         
+
+    return 1;
+  }
 
   public function getCutOffDate()
   {
@@ -1788,12 +1834,11 @@ class AdminController extends Controller
   {
     date_default_timezone_set('Asia/Jakarta');
     $today = new \DateTime(NULL);
-    date_add($today,date_interval_create_from_date_string("+7 days"));
     $date = date_format($today,"Y-m-d");
 
     $data['query'] = SampleRequest::leftJoin('master__member as m', 'm.id', '=', 'agent_id')
                                     ->where('approval', 0)
-                                    ->where('event_date', '>=', $date)
+                                    ->where('shipping_date', '>=', $date)
                                     ->get(['shipping_date', 'phone' ,'transaction__sample_request.request_id', 'name', 'event_name', 'event_date', 'event_venue', 'event_description', 'request_date']);
 
     return Datatables::of($data['query'])

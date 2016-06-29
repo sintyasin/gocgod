@@ -22,7 +22,7 @@ class ProductController extends Controller
 {
     public function getMenu()
     {
-    	$data['query'] = Product::all();
+    	$data['query'] = Product::paginate(12);
         $i = 0;
         //masukkin data kategori ke array
         foreach($data['query'] as $tmp)

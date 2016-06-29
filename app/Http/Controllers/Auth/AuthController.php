@@ -91,10 +91,8 @@ class AuthController extends Controller
             'dob' => 'required|max:10',
             'phone' => 'required|numeric',
             'email' => 'required|email|max:255|unique:master__member',
-            'password' => 'required|min:3|confirmed',
+            'passwords' => 'required|min:3|confirmed',
             'city' => 'required|numeric',
-            // 'userType' => 'required|numeric',
-            // 'bank' => 'required|numeric',
         ]);
     }
 
@@ -121,10 +119,8 @@ class AuthController extends Controller
                 'date_of_birth' => $data['dob'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
-                'password' => bcrypt($data['password']),
+                'passwords' => bcrypt($data['passwords']),
                 'city_id' => $city->city_id,
-                // 'status_user' => $data['userType'],
-                // 'bank_account' => $data['bank'],
             ]);
         }
         else
@@ -135,10 +131,8 @@ class AuthController extends Controller
                 'date_of_birth' => $data['dob'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
-                'password' => bcrypt($data['password']),
+                'passwords' => bcrypt($data['passwords']),
                 'city_id' => $data['city'],
-                // 'status_user' => $data['userType'],
-                // 'bank_account' => $data['bank'],
             ]);
         }
     }

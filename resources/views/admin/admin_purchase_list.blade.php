@@ -108,10 +108,12 @@
                   <?php $i++; $namaLama = $data->Agent;?>
                 @else
                   @if($data->Agent == $namaLama)
+                  <tr>
                     <td></td>
                     <td> {{$data->Product}} </td>
                     <td> {{$data->Quantity}} </td>
                     <td> {{number_format($data->Total, 0, ',', '.')}} </td>
+                  </tr>
                   @else
                     <tr>
                       <td> {{$data->Agent}} </td>

@@ -86,7 +86,7 @@
 @push('scripts')
 <script>
 var rows_selected = [];
-
+var table;
 $('#datatableUser tbody').on( 'click', '.detail', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -130,7 +130,11 @@ function reject(id, name, desc)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been rejected');
+        }
         else alert('Failed');
       }
     });
@@ -148,7 +152,11 @@ function approve(id, name, desc)
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          alert('Data has been approved');
+        }
         else alert('Failed');
       }
     });
@@ -169,7 +177,12 @@ function rejectSelected()
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          rows_selected = [];
+          alert('Data has been rejected');
+        }
         else alert('Failed');
       }
     });
@@ -191,7 +204,12 @@ function approveSelected()
       success:
       function(success)
       {
-        if(success) location.reload();
+        if(success)
+        {
+          table.draw();
+          rows_selected = [];
+          alert('Data has been approved');
+        }
         else alert('Failed');
       }
     });
@@ -230,7 +248,7 @@ function updateDataTableSelectAllCtrl(table){
 
       var i=0;
 $(function() {
-    var table = $('#datatableUser').DataTable({
+    table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
         rowCallback: function(row, data, dataIndex){
@@ -257,7 +275,7 @@ $(function() {
             { data: 'request_date', name: 'request_date', title:'Request Date' },
             { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date' },
             {className: "dt-center", width:"17%", name: 'actions', render: function(data, type, row) {
-              var data = "'" + row.request_id + "','" + row.event_name + "','" + row.event_description + "'";
+              var data = "`" + row.request_id + "`,`" + row.event_name + "`,`" + row.event_description + "`";
               return '<button class="btn btn-info" onclick="approve(' + data + ')" >' + 'Approve' + '</button> &nbsp; &nbsp;' +
                    '<button class="btn btn-danger" onclick="reject(' + data + ')">' + 'Reject' + '</button> <br><br>' + 
                    '<button type="button" class="btn btn-warning detail" data-id="' + row.request_id + '" data-toggle="modal" data-target="#sampleDetail">Product Detail</button>';
