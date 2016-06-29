@@ -15,6 +15,7 @@ use Auth;
 use App\Bank;
 use App\Req_agent;
 use App\AboutUs;
+use App\Product;
 
 use Hash;
 
@@ -269,7 +270,7 @@ class MemberController extends Controller
     {
         $data['contact'] = AboutUs::first();
         $data['bank'] = Bank::All();
-
+        
         return view('page.becomeanagent', $data);
     }
 

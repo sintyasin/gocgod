@@ -583,9 +583,20 @@ class TransactionController extends Controller
 
     $ship = filter_var($input['ship'], FILTER_SANITIZE_STRING);
 
+    
     $order = TxOrder::find($id);
     $order->shipping_date = $ship;
     $order->save();
+    $detailorder = \DB::table('transaction__order_detail')
+                  ->where('order_id', $id)
+                  ->sum('quantity');     
+    $orderdetail = TxOrderDetail::where('order_id', $id)->get();
+    
+    for($i=0; $i<$detailorder; $i++)
+    {
+      $input[$i];
+    }
+    
 
     return redirect('edit/order' . '/' . $id);
   }
@@ -594,7 +605,8 @@ class TransactionController extends Controller
   {
     $data['contact'] = AboutUs::first();
     $id = filter_var($id, FILTER_SANITIZE_STRING);
-    $query = TxOrder::find($id);    
+    $query = TxOrder::find($id);
+
 
     $sunday = date("Y-m-d", strtotime("sunday"));
     $sunday = new \DateTime($sunday);
@@ -610,8 +622,19 @@ class TransactionController extends Controller
       $ship = date_format($ship,"Y-m-d");
       $data['monday'] = date('Y-m-d', strtotime("-7 days", strtotime("next monday", strtotime($ship))));
       $data['sunday'] = date('Y-m-d', strtotime("+6 days", strtotime($data['monday'])));
+      $data['name_product'] = TxOrder::leftJoin('transaction__order_detail as od', 'transaction__order.order_id', '=', 'od.order_id')
+                              ->leftJoin('product__varian as pv', 'od.varian_id','=', 'pv.varian_id')
+                              ->where('od.order_id', $id)
+                              ->get(['pv.varian_name as vn','od.varian_id as varian_id', 'pv.price as price', 'od.quantity as qty']);
+      $data['total_quantity'] = \DB::table('transaction__order_detail')
+                  ->where('order_id', $id)
+                  ->sum('quantity');
+      $data['total_price'] = \DB::table('transaction__order_detail')
+                  ->select(\DB::raw('sum(varian_price * quantity) AS price'))
+                  ->where('order_id', $id)
+                  ->first();
+      $data['product_all'] = Product::all();
       
-
       return view('page.customer_edit_order', $data);
     }
   }

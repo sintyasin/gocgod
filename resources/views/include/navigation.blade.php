@@ -105,14 +105,6 @@
 
 	                    <li><p>  </p> </li>
 						<li><p>  </p> </li>
-
-						<!-- 						
-							li class="searchbox">
->>>>>>> origin/frontend
-							<input type="search" placeholder="Search......" name="search" class="searchbox-input" onkeyup="buttonUp();" required>
-							<input type="submit" class="searchbox-submit" value="">
-							<span class="searchbox-icon"><i class="fa fa-search"></i></span>
-						</li> -->
 					</ul>
 				</div>
 			</div>
@@ -194,9 +186,9 @@
 		      <button type="button" class="boaBtn_boa_pf" onclick="single()">
 	            I am Single Buyer
 	          </button>
-
-	          <button type="button" class="boaBtn_boa_pf" onclick="subscribe()">
-	            I am Subcriber
+	          <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_subcriber')}}">
+	            I am Subscriber
+	           </a>
 	          </button>
 	            <br><br><p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
 		      </div>

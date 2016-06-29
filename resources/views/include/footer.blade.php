@@ -39,8 +39,14 @@
 				<div class="footer_link">
 					<p>My Account</p>
 					<ul>
-						<li><a href="{{ url('/profile') }}">My Account</a></li>
+						@if(Auth::guest())
+						<li><a href="#">My Account</a></li>
+						<li><a href="#">Check Out</a></li>
+						@else
+						<li><a href="{{ url('/profile/{id}') }}">My Account</a></li>
 						<li><a href="{{ url('/checkout') }}">Check Out</a></li>
+						@endif
+						
 					</ul>
 				</div>
 			</div>
