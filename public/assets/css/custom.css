@@ -743,6 +743,42 @@ figure:hover figcaption {
   padding-bottom: 20px;
   border-bottom: 2px solid white;
 }
+#wrapper_a
+{
+  padding-bottom: 20px;
+  width:100%;
+  padding:0px;
+  margin:0px auto;
+  font-family:helvetica;
+  position:relative;
+}
+#wrapper_a div
+{
+  padding:5px;
+  box-sizing:border-box;
+  background-color:#585858;
+}
+#wrapper_a div p
+{
+  color:#F2F2F2;
+  margin:0px;
+  margin-top:10px;
+  font-weight:bold;
+}
+#wrapper_a div label
+{
+  color:#F2F2F2;
+  margin:0px;
+  margin-top:10px;
+}
+#wrapper_a div .form_head
+{
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid white;
+}
 #wrapper_table div .form_head
 {
   font-size:22px;
@@ -769,7 +805,37 @@ figure:hover figcaption {
   border:none;
   /*margin-top:10px;*/
 }
-#wrapper div input[type="button"],input[type="submit"]
+
+#wrapper_a div input[type="button"],input[type="submit"]
+{
+  width:80px;
+  height:40px;
+  border-radius:5px;
+  border:2px solid white;
+  background:none;
+  color:white;
+  margin:5px;
+  margin-top:10px;
+}
+#wrapper_a div input[type="number"], #wrapper div input[type="text"], #wrapper_table div input[type="text"]
+{
+  width:50%;
+  height:40px;
+  padding:5px;
+  border-radius:5px;
+  border:none;
+  /*margin-top:10px;*/
+}
+#wrapper_a div select
+{
+  width:50%;
+  height:40px;
+  padding:5px;
+  border-radius:5px;
+  border:none;
+  /*margin-top:10px;*/
+}
+#wrapper_a div input[type="button"],input[type="submit"]
 {
   width:80px;
   height:40px;

@@ -111,11 +111,16 @@
               <input type="number" class="form-control" name='week'/>
 
               <label for="Date">Request Shipping Date</label><br>
-              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker"/>   
 
               <label>The shipping day will be same with the first choosed day, you can change the day for the next shipping at "My Order" menu.</label>
             <br>
+            <br>
+            <p class="plxLogin"><font size="3">Total Price</font></p>
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>
 
+            <label> Silahkan melakukan pembayaran ke rekening : ... </label>
+            <br>
 
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
             <input type="submit" value="Submit" style="color:white; border: solid white;">
@@ -138,7 +143,7 @@
   } );
 
    $(function() {
-        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today+3' }).val();
+        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?> }).val();
         $( "#datepicker" ).datepicker();
     });
 

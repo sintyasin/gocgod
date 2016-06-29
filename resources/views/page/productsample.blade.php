@@ -39,13 +39,39 @@
                     <p class='form_head'>Event Details</p>
                     <p>Event Name</p>
                     <input type="text" name='event_name' placeholder='Event Name'/>
+                    @if ($errors->has('event_name'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('event_name') }}</strong>
+                    </span>
+                    @endif
                     <p>Event Date</p>
-                    <input type="text" name='event_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
+                    <input type="text" name='event_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker"/>
+                    @if ($errors->has('event_date'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('event_date') }}</strong>
+                    </span>
+                    @endif
                     <p>Event Venue</p>
                     <input type="text" name='event_venue' placeholder='Event Venue'/>
+                    @if ($errors->has('event_venue'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('event_venue') }}</strong>
+                    </span>
+                    @endif
                     <p>Event Description</p>
                     <input type="text" name='event_description' placeholder='Event Description'/>
-                    
+                    @if ($errors->has('event_description'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('event_description') }}</strong>
+                    </span>
+                    @endif
+                    <p>Shipping Date</p>
+                    <input type="text" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker1"/>
+                    @if ($errors->has('request_date'))
+                    <span class="help-block">
+                        <strong>{{ $errors->first('request_date') }}</strong>
+                    </span>
+                    @endif
                     <br>
                     <input type="submit" value="Next">
                   </center>
@@ -64,10 +90,18 @@
     $(function() {
         var date = $('#datepicker').datepicker({ 
           dateFormat: 'yy-mm-dd' ,
-          minDate: new Date
+          minDate: <?php echo "'". $start."'"; ?>
         }).val();
 
         $( "#datepicker" ).datepicker();
+    });
+    $(function() {
+        var date = $('#datepicker1').datepicker({ 
+          dateFormat: 'yy-mm-dd' ,
+          minDate: <?php echo "'". $start."'"; ?>
+        }).val();
+
+        $( "#datepicker1" ).datepicker();
     });
 </script>
 @endpush

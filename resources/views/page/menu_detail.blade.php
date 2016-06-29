@@ -38,7 +38,7 @@
 					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
 					</div>
 					<div class="col-xs-5">
-						<input type="text" min="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
+						<input type="number" min="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
 						<input type="hidden" id="name" value="{{ $query->varian_name }}">
 						<input type="hidden" id="price" value="{{ $query->price }}">
 					</div>

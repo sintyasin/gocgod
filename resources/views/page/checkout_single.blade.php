@@ -106,7 +106,13 @@
               </select>
 
               <label for="Date">Request Shipping Date</label><br>
-              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker" autocomplete="off" />   
+            <br>
+            <br>
+            <p class="plxLogin"><font size="3">Total Price</font></p>
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>
+
+            <label> Silahkan melakukan pembayaran ke rekening : ... </label>
             <br>
 
 
@@ -131,7 +137,7 @@
   } );
 
    $(function() {
-        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today+3' }).val();
+        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?>  }).val();
         $( "#datepicker" ).datepicker();
     });
 
