@@ -178,7 +178,14 @@ class TransactionController extends Controller
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
     $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
-    $shipping_fee = 10000;
+    if(Cart::instance('single')->count() >= 5)
+    {
+      $shipping_fee = 0;
+    }
+    else
+    {
+      $shipping_fee = 10000;
+    }
     $who = 'single';
     $total = Cart::instance('single')->total();
 
@@ -222,10 +229,11 @@ class TransactionController extends Controller
     }
 
     Cart::instance('single')->destroy();
+    $a = TxOrder::orderBy('order_id', 'desc')->first();
 
     if($input['payment'] == 0)
     {
-      return redirect('/banktransfer');
+      return redirect('/banktransfer/'.$a->order_id);
     }
     else if($input['payment'] == 1)
     {
@@ -234,6 +242,18 @@ class TransactionController extends Controller
 
   }
 
+  public function banktransfer($id)
+  {
+    $data['order'] = TxOrder::find($id);
+    $data['orderdetail'] = \DB::table('transaction__order_detail')
+                  ->select(\DB::raw('SUM(quantity) as quantity'))
+                  ->groupBy('order_id')
+                  ->get();
+    $data['contact'] = AboutUs::first();
+
+    return view('page.summary', $data);
+
+  }
 
   //=============================== CHECKOUT SUBSCRIBER 
 
@@ -406,7 +426,7 @@ class TransactionController extends Controller
     $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
     $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
-    $shipping_fee = 10000;
+    $shipping_fee = 0;
     $who = 'subcriber';
     $total = Cart::instance('subcriber')->total();
 
@@ -453,7 +473,31 @@ class TransactionController extends Controller
       }
     }
     Cart::instance('subcriber')->destroy();
-    return redirect('/myorder');
+    
+
+    if($input['payment'] == 0)
+    {
+      return redirect('/summary/'.$a->group_id);
+    }
+    else if($input['payment'] == 1)
+    {
+      return redirect('/#');
+    }
+
+  }
+
+  public function summary($id)
+  {
+    $data['order'] = TxOrder::where('group_id', $id)->first();
+    $data['orderprice'] = \DB::table('transaction__order')
+                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->groupBy('group_id')
+                      ->having('group_id', '=', $id)
+                      ->get();
+                      
+    $data['contact'] = AboutUs::first();
+
+    return view('page.summary1', $data);
 
   }
 
