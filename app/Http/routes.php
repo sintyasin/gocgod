@@ -38,12 +38,15 @@ Route::post('orderall', 'TransactionController@orderall');
 Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
 Route::post('updatecart/', 'TransactionController@updatecart');
 Route::post('deletecart/', 'TransactionController@deletecart');
+Route::get('summary/{id}', 'TransactionController@summary');
+
 
 Route::post('addtocart', 'TransactionController@addtocart');
 Route::get('checkout_singlebuyer', 'TransactionController@order_details_single');
 Route::post('updatecart_single/', 'TransactionController@updatecart_single');
 Route::post('deletecart_single/', 'TransactionController@deletecart_single');
 Route::post('order_single', 'TransactionController@order_single');
+Route::get('banktransfer/{id}', 'TransactionController@banktransfer');
 
 
 Route::get('profile/{id}', 'MemberController@showbalance');

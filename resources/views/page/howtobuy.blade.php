@@ -12,7 +12,7 @@
 		      <ul class="nav nav-tabs" role="tablist">
 		        <li role="presentation" class="active"><a href="#" onclick="first()" aria-controls="home" role="tab" data-toggle="tab">First</a></li>
 		        <li role="presentation"><a href="#" onclick="single()" aria-controls="profile" role="tab" data-toggle="tab">Single Buyer</a></li>
-		      	<li role="presentation"><a href="#" onclick="subcriber()" aria-controls="profile" role="tab" data-toggle="tab">Subcriber Buyer</a></li>
+		      	<li role="presentation"><a href="#" onclick="subcriber()" aria-controls="profile" role="tab" data-toggle="tab">Subscriber Buyer</a></li>
 		      </ul>
 		    </div>
 
@@ -31,7 +31,7 @@
 			<br>
 	</div>
 </div>
-
+@push('scripts')
 <script>
 	function first()
 	{
@@ -71,11 +71,9 @@
 			}
 		});
 	}
-	
-	$(document).ready()
-	{
-	  first();
-	}
+	$(document).ready(function(){
+		first();
+	});
 </script>
-
+@endpush
 @stop
