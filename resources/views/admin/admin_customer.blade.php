@@ -53,11 +53,13 @@ $(function() {
             { data: 'name', name: 'name', title:'Name' },
             { data: 'address', name: 'address', title:'Address' },
             { data: 'city_name', name: 'city_name', title:'City' },
+            { data: 'country', name: 'country', title:'Country' },
+            { data: 'zipcode', name: 'zipcode', title:'Zip Code' },
             { data: 'date_of_birth', name: 'date_of_birth', title:'Date of birth' },            
             { data: 'email', name: 'email', title:'Email' },
             { data: 'phone', name: 'phone', title:'Phone' },
             { data: 'verification', name: 'verification', title:'Verification' },
-            {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
+            {className: "dt-center", width:"10%", name: 'actions', title:'Actions', render: function(data, type, row) {
               return '<a class="btn btn-warning" onclick="editCustomer(' + row.id + ')" >' + 'Edit' + '</a>';
             } }
         ]

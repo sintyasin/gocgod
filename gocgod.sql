@@ -3,7 +3,6 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2016 at 02:34 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -263,7 +262,11 @@ CREATE TABLE IF NOT EXISTS `master__member` (
   `name` varchar(50) NOT NULL,
   `address` varchar(500) NOT NULL,
   `city_id` int(11) NOT NULL,
+<<<<<<< HEAD
+  `country` varchar(100) NOT NULL,
+=======
   `country` varchar(100) NOT NULL DEFAULT 'Indonesia',
+>>>>>>> b1b3be18c4a801749b3f86d0bb4c9083b6cfc9f2
   `zipcode` varchar(50) NOT NULL,
   `date_of_birth` date NOT NULL,
   `email` varchar(255) NOT NULL,
@@ -284,6 +287,14 @@ CREATE TABLE IF NOT EXISTS `master__member` (
 --
 
 INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `country`, `zipcode`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`, `bank_id`) VALUES
+<<<<<<< HEAD
+(3, 'af', 'nomaden', 1, '', '', '0000-00-00', 'a@a.com', '021', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 0, 0, 0, '', '2016-06-28 11:07:25', '2016-06-28 04:07:25', 'd3bgwzaKRxgEknguVjvrPKS3awewzrmlstJtH1f4rmJRhJoH2tpFUc5hJkpq', NULL),
+(4, 'b', '', 1, '', '', '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 0, 0, '123123', '2016-06-29 04:21:50', '2016-06-28 21:21:50', '5Pnn1oDgCHp0w0AKzaWbI89dw4DmDYI8dJZJ8bP38bu3fNRuet3VMWHNF9Xa', 4),
+(5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, '', '', '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 0, 80000, '6557788', '2016-06-29 11:19:09', '2016-06-29 04:19:09', 'J9hltwk0hubZM9usOhrq5XVkkVZtVkiLMD6H4IKVGicizyysymBc3Ysr4Uo2', 4),
+(6, 'Rianto', 'komplek pakuwon blok apa aja', 1, '', '', '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 0, NULL, NULL, '2016-06-27 09:14:23', '2016-06-27 02:14:23', 'PRUy11IsMLXHLqQ2PvnqUnyYgQ44eN083MaUTD74N9fekUSoWrtNrPdwFFmC', NULL),
+(7, 'Lia', 'komplek pakuwon blok apa aja', 1, '', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 0, NULL, NULL, '2016-06-28 11:08:58', '2016-06-28 04:08:58', 'AcCA5z371Wi42ixmd4TdqBlmuyHldvLUX3rKw7Arg2V6cjOr7ms1PjuvDAHz', NULL),
+(8, 'a', 'a', 15, '', '', '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 0, NULL, NULL, '2016-06-09 03:16:08', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL);
+=======
 (3, 'af', 'nomaden', 1, 'Indonesia', '14460', '0000-00-00', 'a@a.com', '021', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 0, 0, 0, '', '2016-06-30 05:37:04', '2016-06-29 22:37:04', 'NvbxHqhOu3wVKthZiW494vTHTc0z9vgS59uoYKrbaDFjka1xKGMPzhh7EF1z', NULL),
 (4, 'b', '', 1, 'Indonesia', '', '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 0, 0, '123123', '2016-06-30 04:11:14', '2016-06-28 21:21:50', '5Pnn1oDgCHp0w0AKzaWbI89dw4DmDYI8dJZJ8bP38bu3fNRuet3VMWHNF9Xa', 4),
 (5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, 'Indonesia', '', '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 0, 80000, '6557788', '2016-06-30 04:11:14', '2016-06-29 04:19:09', 'J9hltwk0hubZM9usOhrq5XVkkVZtVkiLMD6H4IKVGicizyysymBc3Ysr4Uo2', 4),
@@ -291,6 +302,7 @@ INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `country`, `zi
 (7, 'Lia', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 0, NULL, NULL, '2016-06-30 04:11:14', '2016-06-28 04:08:58', 'AcCA5z371Wi42ixmd4TdqBlmuyHldvLUX3rKw7Arg2V6cjOr7ms1PjuvDAHz', NULL),
 (8, 'a', 'a', 15, 'Indonesia', '', '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 0, NULL, NULL, '2016-06-30 04:11:14', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL),
 (11, 'user', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 1, 'Indonesia', '', '1995-11-16', 'user@user.com', '0811139318', '$2y$10$ZiDJI3Eu/x5dBPjmAo5A6.qnwQ5i9lOo1Vbvu08NKQDWkpFARJ8ou', 1, 0, NULL, NULL, '2016-06-30 05:42:43', '2016-06-29 22:42:43', 'wF20Vu2JSg6JYqgRhpeax8tZbNKH6i4ujKXRA7psVtS0Q0aL61lXAv4Bkozz', NULL);
+>>>>>>> b1b3be18c4a801749b3f86d0bb4c9083b6cfc9f2
 
 -- --------------------------------------------------------
 
@@ -473,12 +485,30 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `who` varchar(50) NOT NULL
+<<<<<<< HEAD
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+=======
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+>>>>>>> b1b3be18c4a801749b3f86d0bb4c9083b6cfc9f2
 
 --
 -- Dumping data for table `transaction__order`
 --
 
+<<<<<<< HEAD
+INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_date`, `status_payment`, `ship_address`, `ship_city_id`, `status_confirmed`, `status_shipping`, `shipping_date`, `group_id`, `shipping_fee`, `total`, `created_at`, `updated_at`, `who`) VALUES
+(1, 7, 3, '2016-06-02 00:00:00', 0, 'sunrise', 1, 0, 0, '2016-06-19', 1, 10000, 10, '2016-06-29 03:45:14', '2016-06-12 11:25:44', 'single'),
+(2, 4, 5, '2016-06-03 00:00:00', 0, 'green garden', 3, 0, 0, '2016-06-01', 2, 0, 20, '2016-06-29 03:45:33', '2016-06-12 09:34:23', 'subscribe'),
+(3, 7, 3, '2016-06-16 00:00:00', 1, 'abc', 1, 0, 0, '2016-06-22', 3, 5000, 135000, '2016-06-29 03:47:11', '2016-06-28 20:47:11', 'single'),
+(4, 7, 3, '2016-06-13 11:26:09', 0, 'komplek pakuwon blok apa aja', 1, 0, 0, '2016-07-05', 4, 10000, 145000, '2016-06-27 06:13:44', '2016-06-12 21:32:26', 'single'),
+(6, 3, 3, '2016-06-29 11:05:33', 0, 'nomaden', 1, 0, 0, '2016-07-08', 5, 0, 0, '2016-06-28 21:05:33', '2016-06-28 21:05:33', 'single'),
+(7, 3, 3, '2016-06-29 11:06:12', 0, 'nomaden', 1, 0, 0, '2016-07-08', 6, 0, 0, '2016-06-28 21:06:12', '2016-06-28 21:06:12', 'single'),
+(8, 3, 3, '2016-06-29 11:07:26', 0, 'nomaden', 1, 0, 0, '2016-07-05', 7, 0, 0, '2016-06-28 21:07:26', '2016-06-28 21:07:26', 'single'),
+(9, 3, 3, '2016-06-29 11:07:29', 0, 'nomaden', 1, 0, 0, '2016-07-05', 8, 0, 0, '2016-06-28 21:07:29', '2016-06-28 21:07:29', 'single'),
+(10, 3, 3, '2016-06-29 11:07:29', 0, 'nomaden', 1, 0, 0, '2016-07-08', 9, 0, 0, '2016-06-28 21:07:29', '2016-06-28 21:07:29', 'single'),
+(11, 3, 3, '2016-06-29 11:13:23', 0, 'nomaden', 1, 0, 0, '2016-07-08', 10, 0, 0, '2016-06-28 21:13:23', '2016-06-28 21:13:23', 'single'),
+(12, 3, 3, '2016-06-29 11:15:02', 0, 'nomaden', 1, 0, 0, '2016-07-05', 11, 0, 0, '2016-06-28 21:15:02', '2016-06-28 21:15:02', 'single');
+=======
 INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_date`, `status_payment`, `ship_address`, `country`, `zipcode`, `ship_city_id`, `status_confirmed`, `status_shipping`, `shipping_date`, `group_id`, `shipping_fee`, `total`, `created_at`, `updated_at`, `who`) VALUES
 (1, 7, 3, '2016-06-02 00:00:00', 0, 'sunrise', 'Indonesia', '', 1, 0, 0, '2016-06-19', 1, 10000, 10, '2016-06-29 03:45:14', '2016-06-12 11:25:44', 'single'),
 (2, 4, 5, '2016-06-03 00:00:00', 0, 'green garden', 'Indonesia', '', 3, 0, 0, '2016-06-01', 2, 0, 20, '2016-06-29 03:45:33', '2016-06-12 09:34:23', 'subscribe'),
@@ -492,6 +522,7 @@ INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_
 (11, 3, 3, '2016-06-29 11:13:23', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 10, 0, 0, '2016-06-28 21:13:23', '2016-06-28 21:13:23', 'single'),
 (12, 3, 3, '2016-06-29 11:15:02', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-05', 11, 0, 0, '2016-06-28 21:15:02', '2016-06-28 21:15:02', 'single'),
 (13, 11, 4, '2016-06-30 14:33:18', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '1', 1, 0, 0, '2016-07-14', 12, 10000, 10000, '2016-06-30 00:33:18', '2016-06-30 00:33:18', 'single');
+>>>>>>> b1b3be18c4a801749b3f86d0bb4c9083b6cfc9f2
 
 -- --------------------------------------------------------
 
@@ -825,7 +856,11 @@ MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 -- AUTO_INCREMENT for table `transaction__order`
 --
 ALTER TABLE `transaction__order`
+<<<<<<< HEAD
+MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+=======
 MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+>>>>>>> b1b3be18c4a801749b3f86d0bb4c9083b6cfc9f2
 --
 -- AUTO_INCREMENT for table `transaction__order_confirmation`
 --
