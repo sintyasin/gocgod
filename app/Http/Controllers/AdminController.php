@@ -1505,7 +1505,7 @@ class AdminController extends Controller
       $data['query'] = Member::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
                             ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
                             ->where('status_user', 0)
-                            ->get(['bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
+                            ->get(['country', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
         
       return Datatables::of($data['query'])
       ->make(true);
@@ -1610,7 +1610,7 @@ class AdminController extends Controller
   {
       $data['query'] = Member::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
                             ->where('status_user', 1)
-                            ->get(['id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'city_name']);
+                            ->get(['country', 'zipcode' ,'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'city_name']);
         
       return Datatables::of($data['query'])
       ->make(true);
