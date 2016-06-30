@@ -77,6 +77,8 @@ Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryC
 
 
 Route::auth();
+Route::get('user/activation/{token}', array('as' => 'user.activate',
+	'uses' => 'Auth\AuthController@activateUser'));
 
 //////halaman admin
 //auto update konfirmasi terima barang
