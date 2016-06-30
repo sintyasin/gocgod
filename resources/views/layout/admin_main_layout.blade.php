@@ -25,6 +25,9 @@
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ URL::asset('assets/dist/css/skins/_all-skins.min.css') }}">
 
+    <!-- favicon -->
+    <link rel="icon" href="{{ URL::asset('assets/images/favicon.png') }}">
+    <link rel="icon" href="../favicon.ico">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
