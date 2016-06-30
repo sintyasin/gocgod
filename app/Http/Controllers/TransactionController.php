@@ -18,6 +18,8 @@ use App\TxOrder;
 use App\TxOrderDetail;
 use Yajra\Datatables\Datatables;
 use App\City;
+use App\CutOffDate;
+use Session;
 use App\AboutUs;
 
 class ProductDataOrder
@@ -36,6 +38,48 @@ class TransactionController extends Controller
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)
     ->get();
+
+    $start = "";
+    date_default_timezone_set('Asia/Jakarta');
+    if(date("l") == "Friday")
+    {
+      $now = strtotime(date("H:i"));
+      $plusdate = date("H:i", strtotime('+20 minutes', $now));
+      if($plusdate > "17:00")
+      {
+        $cutoff = CutOffDate::find(1);
+        $today = new \DateTime(NULL);
+        date_add($today,date_interval_create_from_date_string("+".$cutoff->cut_off." days"));
+        $start = date_format($today,"Y-m-d");
+      }
+      else
+      {
+        $start = date("Y-m-d", strtotime( "next monday"));
+      }
+    }
+    else 
+    {
+      if(date("l") == "Saturday")
+      {
+        $cutoff = CutOffDate::find(1);
+        $today = new \DateTime(NULL);
+        date_add($today,date_interval_create_from_date_string("+".($cutoff->cut_off - 1)." days"));
+        $start = date_format($today,"Y-m-d");
+      }
+      else if(date("l") == "Sunday")
+      {
+        $cutoff = CutOffDate::find(1);
+        $today = new \DateTime(NULL);
+        date_add($today,date_interval_create_from_date_string("+".($cutoff->cut_off - 2)." days"));
+        $start = date_format($today,"Y-m-d"); 
+      }
+      else
+      {
+        $start = date("Y-m-d", strtotime( "next monday"));
+      }
+    }
+    
+    $data['start'] = $start;
 
     $data['city'] = City::all();
 
@@ -118,6 +162,7 @@ class TransactionController extends Controller
       'city' => 'required|numeric',
       'agent' => 'required|numeric',
       'request_date' =>  'required|max:10',
+      'zipcode' => 'required|max:50',
       ]);
 
     if ($v->fails())
@@ -131,6 +176,7 @@ class TransactionController extends Controller
     $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
     $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
+    $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
     $shipping_fee = 10000;
     $who = 'single';
@@ -155,6 +201,7 @@ class TransactionController extends Controller
     $order->agent_id = $agent_id;
     $order->ship_address = $ship_address;
     $order->ship_city_id = $ship_city_id;
+    $order->zipcode = $zipcode;
     $order->shipping_date = $date;
     $order->group_id = $group;
     $order->shipping_fee = $shipping_fee;
@@ -175,7 +222,15 @@ class TransactionController extends Controller
     }
 
     Cart::instance('single')->destroy();
-    return redirect('/myorder');
+
+    if($input['payment'] == 0)
+    {
+      return redirect('/banktransfer');
+    }
+    else if($input['payment'] == 1)
+    {
+      return redirect('/#');
+    }
 
   }
 
@@ -191,6 +246,7 @@ class TransactionController extends Controller
     {
       return "Not completed data";
     }
+
     $rowid = Cart::instance('subcriber')->search(array('id' => $data->id));
 
     if($rowid){
@@ -276,6 +332,50 @@ class TransactionController extends Controller
     ->where('status_user', 0)
     ->get();
 
+
+    $start = "";
+    date_default_timezone_set('Asia/Jakarta');
+    if(date("l") == "Friday")
+    {
+      $now = strtotime(date("H:i"));
+      $plusdate = date("H:i", strtotime('+20 minutes', $now));
+      if($plusdate > "17:00")
+      {
+        $cutoff = CutOffDate::find(1);
+        $today = new \DateTime(NULL);
+        date_add($today,date_interval_create_from_date_string("+".$cutoff->cut_off." days"));
+        $start = date_format($today,"Y-m-d");
+      }
+      else
+      {
+        $start = date("Y-m-d", strtotime( "next monday"));
+      }
+    }
+    else 
+    {
+      if(date("l") == "Saturday")
+      {
+        $cutoff = CutOffDate::find(1);
+        $today = new \DateTime(NULL);
+        date_add($today,date_interval_create_from_date_string("+".($cutoff->cut_off - 1)." days"));
+        $start = date_format($today,"Y-m-d");
+      }
+      else if(date("l") == "Sunday")
+      {
+        $cutoff = CutOffDate::find(1);
+        $today = new \DateTime(NULL);
+        date_add($today,date_interval_create_from_date_string("+".($cutoff->cut_off - 2)." days"));
+        $start = date_format($today,"Y-m-d"); 
+      }
+      else
+      {
+        $start = date("Y-m-d", strtotime( "next monday"));
+      }
+    }
+    
+    $data['start'] = $start;
+
+
     $data['city'] = City::all();
 
     return view('page.checkout_subcriber_2', $data);
@@ -286,6 +386,7 @@ class TransactionController extends Controller
     $v = Validator::make($request->all(),[
       'address' => 'required|max:500',
       'city' => 'required|numeric',
+      'zipcode' => 'required|max:50',
       'agent' => 'required|numeric',
       'week' => 'required|numeric',
       'request_date' =>  'required|max:10',
@@ -302,6 +403,7 @@ class TransactionController extends Controller
     $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
     $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
+    $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
     $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
     $shipping_fee = 10000;
@@ -329,6 +431,7 @@ class TransactionController extends Controller
       $order->agent_id = $agent_id;
       $order->ship_address = $ship_address;
       $order->ship_city_id = $ship_city_id;
+      $order->zipcode = $zipcode;
       $order->shipping_date = $date;
       $order->group_id = $group;
       $order->shipping_fee = $shipping_fee;
@@ -589,16 +692,59 @@ class TransactionController extends Controller
     $order->save();
     $detailorder = \DB::table('transaction__order_detail')
                   ->where('order_id', $id)
-                  ->sum('quantity');     
+                  ->sum('quantity');
+    // $total_price = \DB::table('transaction__order_detail')
+    //   ->select(\DB::raw('sum(varian_price * quantity) AS price'))
+    //   ->where('order_id', $id)
+    //   ->first();
+    $total_price = TxOrder::where('order_id', $id)
+                ->get(['total']);     
+    $total_product = Product::all();
     $orderdetail = TxOrderDetail::where('order_id', $id)->get();
     
-    for($i=0; $i<$detailorder; $i++)
+    $array;
+    $tmp_total=0;
+    for($i=0, $j=0; $i<count($total_product); $i++)
     {
-      $input[$i];
+      $quantity = filter_var($input[$i.'-qty'], FILTER_SANITIZE_STRING);
+      if($quantity > 0)
+      {
+        $tmp_total += ($quantity*$total_product[$i]->price);
+        $array[$j++] = $i;
+      }
     }
-    
 
-    return redirect('edit/order' . '/' . $id);
+    if($tmp_total> $total_price[0]->total)
+    {
+      Session::flash('error', 1);
+      return redirect('edit/order' . '/' . $id);
+    }
+    else
+    {
+      \DB::transaction(function() use ($id, $array, $total_product, $input)
+      {
+        TxOrderDetail::where('order_id', $id)
+                      ->delete();
+
+        foreach($array as $data){
+          $quantity_a = filter_var($input[$data.'-qty'], FILTER_SANITIZE_STRING);
+          $new = new TxOrderDetail;
+          $new->order_id = $id;
+          $new->varian_id =  $total_product[$data]->varian_id;
+          $new->quantity = $quantity_a;
+          $new->varian_price = $total_product[$data]->price;
+          $new->save();
+
+        }
+
+
+
+        Session::flash('success', 1);
+      });
+
+    }
+
+    return redirect('myorder');
   }
 
   public function getEditOrderCustomer($id)
@@ -629,10 +775,8 @@ class TransactionController extends Controller
       $data['total_quantity'] = \DB::table('transaction__order_detail')
                   ->where('order_id', $id)
                   ->sum('quantity');
-      $data['total_price'] = \DB::table('transaction__order_detail')
-                  ->select(\DB::raw('sum(varian_price * quantity) AS price'))
-                  ->where('order_id', $id)
-                  ->first();
+      $data['total_price'] = TxOrder::where('order_id', $id)
+                              ->get(['total']);
       $data['product_all'] = Product::all();
       
       return view('page.customer_edit_order', $data);

@@ -106,16 +106,25 @@
                 @endif
               @endforeach
               </select>
+              <label for="zipcode">Recipient's Zip Code</label> <br>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
 
               <label for="week">How many weeks?</label><br>
               <input type="number" class="form-control" name='week'/>
 
               <label for="Date">Request Shipping Date</label><br>
-              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker"/>   
 
               <label>The shipping day will be same with the first choosed day, you can change the day for the next shipping at "My Order" menu.</label>
+              <br><br>  
+              <label for="payment">Payment</label>
+              <br>
+              <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label> 
+              <input type="radio" name="payment" id="payment" value="1"> <label>FirstPay</label><br>  
+            <br>
             <br>
 
+            <br>
 
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
             <input type="submit" value="Submit" style="color:white; border: solid white;">
@@ -138,7 +147,7 @@
   } );
 
    $(function() {
-        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today+3' }).val();
+        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?> }).val();
         $( "#datepicker" ).datepicker();
     });
 
@@ -190,6 +199,7 @@
       alert('error');
     })
   }
+
 
 </script>
 @endpush

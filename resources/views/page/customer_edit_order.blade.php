@@ -5,6 +5,14 @@
     <div class="container">
         <h2>My Order</h2>
         <div class="row">
+        @if(Session::has('error'))
+            <div class="alert alert-danger fade in">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Total Price must not greater than the previous total price!</strong>
+            </div>
+            
+            @endif
+
           <center>
           <div class="col-lg-12">
             
@@ -24,7 +32,7 @@
                 <label class="col-md-1 control-label">Total Price</label>
 
                 <div class="col-md-5">
-                    <input disabled type="text" class="form-control" value="Rp {{number_format($total_price->price, 2, ',', '.')}}">
+                    <input disabled type="text" class="form-control" value="Rp {{number_format($total_price[0]->total, 2, ',', '.')}}">
                 </div>
             </div>
 
@@ -72,13 +80,16 @@
                         <td>{{$product->varian_name}}</td>
                         <td>Rp {{number_format($product->price, 2, ',','.')}}</td>
                         <td>
+                        <input type="number" min="0" maxlength="2" id={{$i."-qty"}} name={{$i."-qty"}} value="0" style="width:60px; color:black; text-align: center;">
                         @foreach($name_product as $quantity)
-                            @if($product->varian_id == $quantity->varian_id)
-                            <input type="number" min="0" maxlength="2" id="" value="{{$quantity->qty}}" style="width:60px; color:black; text-align: center;">
-                            @else
-                            <input type="number" min="0" maxlength="2" id="" value="0" style="width:60px; color:black; text-align: center;">
-                            @endif
-                        @endforeach
+                       @if($product->varian_id == $quantity->varian_id)
+                       <script>
+                        var tmp = <?php echo $i; ?> + '-qty';
+                        document.getElementById(tmp).value=<?php echo $quantity->qty; ?>;
+                       </script>
+                       @endif
+                       @endforeach
+
                         </td>
                     </tr>
                   <?php $i++?>

@@ -20,6 +20,27 @@ use App\AboutUs;
 
 class ProductController extends Controller
 {
+    public function howToBuy()
+    {
+        $data['contact'] = AboutUs::first();
+        return view('page.howtobuy', $data);
+    }
+
+    public function howToBuyFirst()
+    {
+        return view('page.howtobuyfirst');
+    }
+
+    public function howToBuySingle()
+    {
+        return view('page.howtobuysingle');
+    }
+
+    public function howToBuySubcriber()
+    {
+        return view('page.howtobuysubcriber');
+    }
+
     public function getMenu()
     {
         $data['contact'] = AboutUs::first();
@@ -58,7 +79,48 @@ class ProductController extends Controller
         $data['contact'] = AboutUs::first();
         $data['query'] = Product::all();
         
-        return view('page.productsample', $data);
+        $start = "";
+      date_default_timezone_set('Asia/Jakarta');
+      if(date("l") == "Friday")
+      {
+        $now = strtotime(date("H:i"));
+        $plusdate = date("H:i", strtotime('+20 minutes', $now));
+        if($plusdate > "17:00")
+        {
+          $cutoff = CutOffDate::find(1);
+          $today = new \DateTime(NULL);
+          date_add($today,date_interval_create_from_date_string("+".$cutoff->cut_off." days"));
+          $start = date_format($today,"Y-m-d");
+        }
+        else
+        {
+          $start = date("Y-m-d", strtotime( "next monday"));
+        }
+      }
+      else 
+      {
+        if(date("l") == "Saturday")
+        {
+          $cutoff = CutOffDate::find(1);
+          $today = new \DateTime(NULL);
+          date_add($today,date_interval_create_from_date_string("+".($cutoff->cut_off - 1)." days"));
+          $start = date_format($today,"Y-m-d");
+        }
+        else if(date("l") == "Sunday")
+        {
+          $cutoff = CutOffDate::find(1);
+          $today = new \DateTime(NULL);
+          date_add($today,date_interval_create_from_date_string("+".($cutoff->cut_off - 2)." days"));
+          $start = date_format($today,"Y-m-d"); 
+        }
+        else
+        {
+          $start = date("Y-m-d", strtotime( "next monday"));
+        }
+      }
+      
+      $data['start'] = $start;
+      return view('page.productsample', $data);
     }
 
     public function productSample($id)
@@ -73,28 +135,63 @@ class ProductController extends Controller
 
     public function productsampledata(Request $request)
     {
-        $v = Validator::make($request->all(),[
-            'product' => 'required|numeric',
-            'qty' => 'required|numeric',
+        $a = Validator::make($request->all(),[
+            'id' => 'required|numeric',
             ]);
-
-        if ($v->fails())
-        {
-            return redirect('productsample/'.$request->id)->withErrors($v->errors())->withInput();
-        }
 
         $input = $request->all();
 
-        $request_id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-        $varian_id = filter_var($input['product'], FILTER_SANITIZE_STRING);
-        $quantity = filter_var($input['qty'], FILTER_SANITIZE_STRING);
+        for($i=0; $i<5; $i++)
+        {
+            $v = Validator::make($request->all(),[
+                $i.'-product' => 'required|numeric',
+            ]);
 
-        $sample = new SampleDetail;
-        $sample->request_id = $request_id;
-        $sample->varian_id = $varian_id;
-        $sample->quantity = $quantity;
-        $sample->save();
+            if ($v->fails())
+            {
+                continue;
+            }
+            else{
+                $request_id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+                $varian_id = filter_var($input[$i.'-product'], FILTER_SANITIZE_STRING);
+                $quantity = filter_var($input[$i.'-qty'], FILTER_SANITIZE_STRING);
 
+                $check = SampleDetail::where('request_id', $request_id)->where('varian_id', $varian_id)->first();
+                if(count($check))
+                {   
+                    /*$update = SampleDetail::where('request_id', $request_id)
+                        ->where('varian_id', $varian_id)
+                        ->first();*/
+                    $total = $check->quantity + intval($quantity);
+
+                    /*var_dump($total);
+                    $check->quantity = $total;
+                    $check->save();*/
+                    // $update = 
+                    \DB::table('transaction__sample_detail')
+                        ->where('request_id', $request_id)
+                        ->where('varian_id', $varian_id)
+                        ->increment('quantity', $quantity);
+                        //->update(['quantity'=>('quantity'+$quantity)]);
+                }
+                else
+                {
+                    $sample = new SampleDetail;
+                    $sample->request_id = $request_id;
+                    $sample->varian_id = $varian_id;
+                    $sample->quantity = $quantity;
+                    $sample->save();
+                }
+                // else
+                // {
+                //     $sample = new SampleDetail;
+                //     $sample->request_id = $request_id;
+                //     $sample->varian_id = $varian_id;
+                //     $sample->quantity = $quantity;
+                //     $sample->save();
+                // }
+            }
+        }
         return redirect('/home');
     }
 

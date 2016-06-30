@@ -67,6 +67,8 @@
                   @endforeach
                 </tbody>
               </table>
+              <p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
+              <br>
               <p class="plxLogin"><font size="3">Total Price</font></p>
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
@@ -104,9 +106,17 @@
                 @endif
               @endforeach
               </select>
-
+              <label for="zipcode">Recipient's Zip Code</label> <br>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
               <label for="Date">Request Shipping Date</label><br>
-              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker"/>   
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker" autocomplete="off" /> 
+              <label for="payment">Payment</label>
+              <br>
+              <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label> 
+              <input type="radio" name="payment" id="payment" value="1"> <label>FirstPay</label><br>  
+            <br>
+            <br>
+
             <br>
 
 
@@ -115,6 +125,7 @@
           </Center>
           </div>
           </div>
+          
 
         </form>
     </div>
@@ -131,7 +142,7 @@
   } );
 
    $(function() {
-        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: 'today+3' }).val();
+        var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?>  }).val();
         $( "#datepicker" ).datepicker();
     });
 
@@ -183,6 +194,7 @@
       alert('error');
     })
   }
+
 
 </script>
 @endpush

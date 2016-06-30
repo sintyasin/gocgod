@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 28, 2016 at 06:36 AM
+-- Generation Time: Jun 30, 2016 at 02:34 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `about__us` (
 --
 
 INSERT INTO `about__us` (`id`, `name`, `address`, `phone`, `created_at`, `updated_at`) VALUES
-(1, 'Baby', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk  ', '0811139318', '2016-06-08 11:43:37', '2016-05-23 20:52:22');
+(1, 'Baby', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk  ', '0811139318', '2016-06-29 11:43:42', '2016-05-23 20:52:22');
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `banner` (
 
 INSERT INTO `banner` (`id`, `name`, `alias`, `description1`, `description2`, `price`, `picture`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'SOYA MILK', 'Susu Kacang', 'Terbuat dari kacang kedelai pilihan', 'Tanpa bahan pengawet dan pemanis buatan!', 60000, 'slide-2.png', '2016-06-09 03:51:10', '0000-00-00 00:00:00', NULL),
-(2, 'FRUIT PUNCH', 'Aneka Buah', 'Dibuat dari aneka macam buah-buahan segar', 'seperti melon, semangka, jeruk, biji selasih', 75000, 'slide-1.png', '2016-06-09 11:00:09', '0000-00-00 00:00:00', NULL);
+(2, 'FRUIT PUNCH', 'Aneka Buah', 'Dibuat dari aneka macam buah-buahan segar', 'seperti melon, semangka, jeruk, biji selasih', 75000, 'slide-1.png', '2016-06-29 04:39:57', '2016-06-28 21:39:34', NULL);
 
 -- --------------------------------------------------------
 
@@ -92,8 +92,8 @@ INSERT INTO `faq__question` (`question_id`, `question`, `answer`, `created_at`, 
 (1, 'halo', 'bandung', '2016-05-10 10:18:51', '2016-05-10 03:18:51', NULL),
 (5, 'ab', 'asdfsadfasdfasdf', '2016-05-24 03:31:09', '2016-05-23 20:30:57', NULL),
 (6, 'a\r\n', '1213jkljlk<strong>jkljlj</strong>l&nbsp;<s><em><strong>ajldsfkjklasdfjkljaskdflj</strong></em></s>', '2016-06-27 04:07:26', '2016-06-26 21:07:10', NULL),
-(8, 'tes', 'tes', '2016-06-27 04:07:57', '2016-06-26 21:07:57', '2016-06-26 21:07:57'),
-(9, 'halo bandung\r\n', 'adsf', '2016-06-26 20:11:04', '2016-06-26 20:11:04', NULL),
+(8, 'tes', 'tes', '2016-06-29 04:33:46', '2016-06-26 21:07:57', NULL),
+(9, 'halo bandung', 'adsf', '2016-06-29 04:47:03', '2016-06-28 21:46:55', NULL),
 (12, 'dasfasdfasdfasdfasdf\r\n', '<strong>12321312321312</strong>\r\n', '2016-06-26 21:19:41', '2016-06-26 21:19:41', NULL);
 
 -- --------------------------------------------------------
@@ -123,8 +123,8 @@ CREATE TABLE IF NOT EXISTS `master__admin` (
 --
 
 INSERT INTO `master__admin` (`id`, `password`, `name`, `address`, `city_id`, `date_of_birth`, `email`, `phone`, `super`, `created_at`, `updated_at`, `deleted_at`, `remember_token`) VALUES
-(1, '$2y$10$PdIxuztGnzEqYOyw7MWNK.laBG7qzwkeDWv4I6VXIj3NOKzAYaH0C', 'kevin', 'abc', 12, '2016-06-01', 'tes@tes.com', '123', 1, '2016-06-27 08:59:23', '2016-06-27 01:59:23', NULL, '6cbkCxwu3DYXaw2h9uAxzWmhT6HsRK3PAvQlDEukgkxiD1oNNl0DkZ5zzurT'),
-(6, '$2y$10$7CnoiVPy8IEKDcUgN81T4Ocs8MAnylFlJmS/ssPsExYn7AaJcUR7G', 'af', 'sadf', 1, '2016-06-08', 'luph.yo3l@gmail.com', '12345', 0, '2016-06-27 11:18:21', '2016-06-27 04:18:21', NULL, 'poQifivYU0uiH2HqPaNWppSqjrzSqRxBDNJL5fXVCY69V6flThPtiNMQtfeV');
+(1, '$2y$10$PdIxuztGnzEqYOyw7MWNK.laBG7qzwkeDWv4I6VXIj3NOKzAYaH0C', 'kevin', 'abc', 1, '2016-06-01', 'tes@tes.com', '12345', 1, '2016-06-29 08:05:13', '2016-06-29 01:05:13', NULL, 'pRR3UXZrlFCEXOtWO6DxU8YGEdjFQCipAB0RI85pea6hVuHKKpT2WF5iZz4i'),
+(6, '$2y$10$5e2Uag0P8i5ZMXVZz6HI0.Jte8UcDXUhS3iQxP9JHVgkQ1T7BMSA6', 'af', 'sadf', 1, '2016-06-08', 'luph.yo3l@gmail.com', '12345', 0, '2016-06-29 08:04:25', '2016-06-29 01:04:25', NULL, 'fRe7kU5wjwoN0Viuk7xXjSItfR2MdsxDVSsNKC89lpUt4iJNmYGKOVRYk5LV');
 
 -- --------------------------------------------------------
 
@@ -171,8 +171,8 @@ CREATE TABLE IF NOT EXISTS `master__agent_rating` (
 --
 
 INSERT INTO `master__agent_rating` (`agent_id`, `customer_id`, `rating`, `comment`, `approval`, `rating_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(3, 4, 1, 'abc', 0, 1, '2016-06-08 09:41:46', '2016-06-08 02:41:46', '2016-06-08 02:41:46'),
-(5, 3, 5, 'bbbbb', 0, 2, '2016-06-08 08:41:51', '2016-06-08 01:41:38', NULL);
+(3, 4, 1, 'abc', 0, 1, '2016-06-29 04:19:58', '2016-06-28 21:19:43', NULL),
+(5, 3, 5, 'bbbbb', 0, 2, '2016-06-29 04:20:00', '2016-06-28 21:19:45', NULL);
 
 -- --------------------------------------------------------
 
@@ -198,7 +198,7 @@ INSERT INTO `master__bank` (`bank_id`, `bank_name`, `created_at`, `updated_at`, 
 (3, 'DANAMON', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
 (4, 'BNI', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
 (5, 'BRI', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
-(6, 'CIMB', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
+(6, 'CIMB', '2016-06-29 04:24:59', '2016-06-28 21:23:41', NULL),
 (7, 'PERMATA', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
 (8, 'MEGA', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
 (9, 'OCBC', '2016-06-08 05:16:47', '0000-00-00 00:00:00', NULL),
@@ -227,7 +227,7 @@ INSERT INTO `master__city` (`city_id`, `city_name`, `created_at`, `updated_at`, 
 (3, 'bandung', '2016-05-24 03:44:49', '2016-05-23 20:44:34', '0000-00-00 00:00:00'),
 (10, '1', '2016-06-02 11:24:19', '2016-05-23 20:49:18', '0000-00-00 00:00:00'),
 (11, 'bandung', '2016-06-02 04:24:44', '2016-06-02 04:24:44', NULL),
-(12, 'tegal', '2016-06-03 00:32:41', '2016-06-03 00:32:41', NULL),
+(12, 'tegal', '2016-06-29 04:35:24', '2016-06-28 21:35:24', '2016-06-28 21:35:24'),
 (13, 'tegal', '2016-06-03 07:33:18', '2016-06-03 00:33:18', '2016-06-03 00:33:18'),
 (14, 'Korea', '2016-06-07 04:19:31', '2016-06-07 04:19:31', NULL),
 (15, 'Jepang', '2016-06-07 21:45:03', '2016-06-07 21:45:03', NULL);
@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `master__cut_off_date` (
 --
 
 INSERT INTO `master__cut_off_date` (`id`, `cut_off`, `created_at`, `updated_at`) VALUES
-(1, 3, '2016-06-06 06:30:45', '2016-06-05 23:30:45');
+(1, 4, '2016-06-28 05:09:29', '2016-06-27 22:09:29');
 
 -- --------------------------------------------------------
 
@@ -263,6 +263,8 @@ CREATE TABLE IF NOT EXISTS `master__member` (
   `name` varchar(50) NOT NULL,
   `address` varchar(500) NOT NULL,
   `city_id` int(11) NOT NULL,
+  `country` varchar(100) NOT NULL DEFAULT 'Indonesia',
+  `zipcode` varchar(50) NOT NULL,
   `date_of_birth` date NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(100) NOT NULL,
@@ -275,19 +277,20 @@ CREATE TABLE IF NOT EXISTS `master__member` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `remember_token` varchar(255) NOT NULL,
   `bank_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__member`
 --
 
-INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`, `bank_id`) VALUES
-(3, 'af', 'nomaden', 1, '0000-00-00', 'a@a.com', '021', '$2y$10$fUSbBm.iqAmx0q0JCx75OuqiGfkfq6RfBPVoDikFDeWPbObnRWvY.', 0, 0, 0, '', '2016-06-28 03:45:22', '2016-06-27 01:49:20', 'GTVNMSuF9K2rWWpbe2GcH4n8chQ2ggCd36pDhzE3Lb5eOsLndrAb7MNyeXl6', NULL),
-(4, 'b', '', 1, '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 1, 0, 0, '123123', '2016-06-08 11:24:44', '2016-06-08 04:24:44', 'vvJ7IZeTastukAp9uqeJe7iufJHZpp1KgHacuM5sXk76RVgMsAqp8UXw2XYm', 4),
-(5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 0, 80000, '6557788', '2016-06-27 09:52:58', '2016-06-27 02:52:58', '5lWnIgt4eQpvKuA4OHSLD6qxXQPlfqslHXTmyD39ilERp1RhTSFBDNqrSqmS', 4),
-(6, 'Rianto', 'komplek pakuwon blok apa aja', 1, '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 0, NULL, NULL, '2016-06-27 09:14:23', '2016-06-27 02:14:23', 'PRUy11IsMLXHLqQ2PvnqUnyYgQ44eN083MaUTD74N9fekUSoWrtNrPdwFFmC', NULL),
-(7, 'Lia', 'komplek pakuwon blok apa aja', 1, '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 0, NULL, NULL, '2016-06-13 05:15:26', '2016-06-12 22:15:26', 'nhIimNPceL2P1oDdNrlgZl3i8T06rlZXHQ816Pt9RP8DEPE2RQA7iOtgFqUk', NULL),
-(8, 'a', 'a', 15, '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 0, NULL, NULL, '2016-06-09 03:16:08', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL);
+INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `country`, `zipcode`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`, `bank_id`) VALUES
+(3, 'af', 'nomaden', 1, 'Indonesia', '14460', '0000-00-00', 'a@a.com', '021', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 0, 0, 0, '', '2016-06-30 05:37:04', '2016-06-29 22:37:04', 'NvbxHqhOu3wVKthZiW494vTHTc0z9vgS59uoYKrbaDFjka1xKGMPzhh7EF1z', NULL),
+(4, 'b', '', 1, 'Indonesia', '', '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 0, 0, '123123', '2016-06-30 04:11:14', '2016-06-28 21:21:50', '5Pnn1oDgCHp0w0AKzaWbI89dw4DmDYI8dJZJ8bP38bu3fNRuet3VMWHNF9Xa', 4),
+(5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, 'Indonesia', '', '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 0, 80000, '6557788', '2016-06-30 04:11:14', '2016-06-29 04:19:09', 'J9hltwk0hubZM9usOhrq5XVkkVZtVkiLMD6H4IKVGicizyysymBc3Ysr4Uo2', 4),
+(6, 'Rianto', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 0, NULL, NULL, '2016-06-30 04:11:14', '2016-06-27 02:14:23', 'PRUy11IsMLXHLqQ2PvnqUnyYgQ44eN083MaUTD74N9fekUSoWrtNrPdwFFmC', NULL),
+(7, 'Lia', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 0, NULL, NULL, '2016-06-30 04:11:14', '2016-06-28 04:08:58', 'AcCA5z371Wi42ixmd4TdqBlmuyHldvLUX3rKw7Arg2V6cjOr7ms1PjuvDAHz', NULL),
+(8, 'a', 'a', 15, 'Indonesia', '', '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 0, NULL, NULL, '2016-06-30 04:11:14', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL),
+(11, 'user', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 1, 'Indonesia', '', '1995-11-16', 'user@user.com', '0811139318', '$2y$10$ZiDJI3Eu/x5dBPjmAo5A6.qnwQ5i9lOo1Vbvu08NKQDWkpFARJ8ou', 1, 0, NULL, NULL, '2016-06-30 05:42:43', '2016-06-29 22:42:43', 'wF20Vu2JSg6JYqgRhpeax8tZbNKH6i4ujKXRA7psVtS0Q0aL61lXAv4Bkozz', NULL);
 
 -- --------------------------------------------------------
 
@@ -311,7 +314,7 @@ CREATE TABLE IF NOT EXISTS `master__req_agent` (
 --
 
 INSERT INTO `master__req_agent` (`reqagent_id`, `bank_id`, `status_confirm`, `created_at`, `updated_at`, `bank_account`, `member_id`, `deleted_at`) VALUES
-(1, 4, 0, '2016-06-08 09:44:33', '2016-06-08 02:44:21', '123123', 4, NULL);
+(1, 4, 0, '2016-06-29 04:22:25', '2016-06-28 21:22:15', '123123', 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -328,7 +331,7 @@ CREATE TABLE IF NOT EXISTS `master__tx_balance` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `order_id` int(11) DEFAULT NULL,
   `statusTransfer` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__tx_balance`
@@ -343,7 +346,8 @@ INSERT INTO `master__tx_balance` (`balance_id`, `agent_id`, `amountMoney`, `bala
 (6, 5, 20000, 0, '2016-06-27 04:23:02', '2016-06-26 21:23:02', NULL, 1),
 (7, 5, 80000, 0, '2016-06-07 02:57:35', '2016-06-07 02:57:35', NULL, 0),
 (8, 5, 80000, 0, '2016-06-07 02:58:14', '2016-06-07 02:58:14', NULL, 0),
-(9, 5, 20000, 0, '2016-06-10 10:52:36', '2016-06-10 03:52:36', NULL, 1);
+(9, 5, 20000, 0, '2016-06-10 10:52:36', '2016-06-10 03:52:36', NULL, 1),
+(10, 5, 20, 1, '2016-06-28 08:01:57', '2016-06-28 08:01:57', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -378,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `product__category` (
 
 INSERT INTO `product__category` (`category_id`, `category_name`, `description`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'minuman', '', '2016-05-13 08:55:19', '2016-05-13 01:55:19', NULL),
-(2, 'makanan', '', '2016-05-19 10:04:35', '2016-05-19 03:04:35', NULL),
+(2, 'makanan', '', '2016-06-29 03:54:27', '2016-06-28 20:54:27', '2016-06-28 20:54:27'),
 (3, 'qqqqq', '', '2016-05-20 09:25:16', '2016-05-20 02:25:16', '2016-05-20 02:25:16');
 
 -- --------------------------------------------------------
@@ -403,10 +407,10 @@ CREATE TABLE IF NOT EXISTS `product__testimonial` (
 --
 
 INSERT INTO `product__testimonial` (`testimonial_id`, `id`, `varian_id`, `testimonial`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 1, 'aaa', 0, '2016-06-28 02:29:20', '2016-06-27 19:28:44', NULL),
-(2, 3, 1, 'bbb', 1, '2016-06-28 02:29:43', '2016-06-27 19:29:43', NULL),
-(3, 4, 1, 'ccc', 0, '2016-06-28 02:29:30', '2016-06-27 19:27:51', NULL),
-(4, 5, 2, 'asd', 1, '2016-06-28 02:29:43', '2016-06-27 19:29:43', NULL);
+(1, 3, 1, 'aaa', 1, '2016-06-29 04:18:02', '2016-06-28 20:57:32', NULL),
+(2, 3, 1, 'bbb', 0, '2016-06-29 03:58:22', '2016-06-28 20:58:15', NULL),
+(3, 4, 1, 'ccc', 1, '2016-06-29 04:18:04', '2016-06-28 20:58:00', NULL),
+(4, 5, 2, 'asd', 0, '2016-06-29 03:58:07', '2016-06-28 20:55:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -426,7 +430,7 @@ CREATE TABLE IF NOT EXISTS `product__varian` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product__varian`
@@ -441,7 +445,8 @@ INSERT INTO `product__varian` (`varian_id`, `category_id`, `varian_name`, `price
 (6, 1, 'Sirsak', 60000, 10, 'sirsak.jpg', '\r\nManfaat jus sirsak sangat luar biasa bagi kesehatan seperti untuk diet, kulit, kanker, dan banyak lagi yang harus Anda ketahui. Buah sirsak merupakan jenis buah yang banyak disukai karena rasanya yang nikmat dan menyegarkan. Selain rasanya yang nikmat dan segar, buah sirsak mengandung manfaat yang sangat berkhasiat dalam mengatasi berbagai masalah kesehatan. Buah sirsak dapat dikonsumsi langsung buahnya atau dijadikan minuman jus yang lebih mudah diserap tubuh, sehingga sangat baik untuk saluran pencernaan.\r\n\r\n', 1, '2016-04-21 11:13:34', '0000-00-00 00:00:00', NULL),
 (7, 1, 'Kacang Hijau', 60000, 10, 'kacang_hijau.jpg', 'Manfaat sari kacang hijau \r\n1.Meningkatkan penyerapan nutrisi\r\n2. Mencegah penyakit jantung & stroke\r\n3.Membersihkan pencernaan\r\n4.Mengatasi anemia\r\n5.Menjaga berat badan\r\n6.Membantu pertumbuhan sel organ, otot & otak\r\nTampa bahan pengawet !!!!', 2, '2016-04-21 11:16:07', '0000-00-00 00:00:00', NULL),
 (8, 1, 'Liang Teh', 75000, 10, 'liang_teh.jpg', '\r\nLiang teh merupakan minuman yang mempunyai manfaat serta khasiat yang banyak bagi kesehatan tubuh. Selain itu, liang teh mempunyai rasa yang enak dan banyak digemari oleh semua kalangan baik anak – anak, remaja dan orang tua. Liang teh merupakan jenis minuman yang dapat disajikan dalam keadaan hangat maupun dingin. Kandungan didalamnya dapat meredakan panas dalam dan mengatasi masalah sistem pencernaan tubuh. Minuman herbal yang berasal dari China ini memiliki jenis warna dan rasa yang sangat bervariatif sesuai dengan jenis tanaman yang digunakan sebagai bahan pembuat liang teh.\r\n\r\n', 2, '2016-04-21 11:16:07', '0000-00-00 00:00:00', NULL),
-(9, 1, 'Lime Watz', 75000, 10, 'lime_watz.jpg', 'Membantu menurunkan berat badan\r\nSari lemon kerap disertakan dalam diet penurunan berat badan. Biasanya, sari lemon dicampurkan dengan air hangat dan madu. Tak hanya sehat, lemon juga rendah kalori, bahkan termasuk yang terendah di antara buah citrus lainnya. Sekitar 100 g lemon hanya mengandung 29 kalori. Lemon pun bebas kolesterol, lemak jenuh, dan memiliki indeks glikemik rendah. Lemon juga kaya serat pangan sehingga baik dikonsumsi Anda yang ingin memangkas berat badan.\r\nLime Watz itu campuran Lemon , madu , kiwi dan Semangka kuning.', 2, '2016-04-21 11:17:42', '0000-00-00 00:00:00', NULL);
+(9, 1, 'Lime Watz', 75000, 10, 'lime_watz.jpg', 'Membantu menurunkan berat badan\r\nSari lemon kerap disertakan dalam diet penurunan berat badan. Biasanya, sari lemon dicampurkan dengan air hangat dan madu. Tak hanya sehat, lemon juga rendah kalori, bahkan termasuk yang terendah di antara buah citrus lainnya. Sekitar 100 g lemon hanya mengandung 29 kalori. Lemon pun bebas kolesterol, lemak jenuh, dan memiliki indeks glikemik rendah. Lemon juga kaya serat pangan sehingga baik dikonsumsi Anda yang ingin memangkas berat badan.\r\nLime Watz itu campuran Lemon , madu , kiwi dan Semangka kuning.', 2, '2016-04-21 11:17:42', '0000-00-00 00:00:00', NULL),
+(10, 1, 'af', 12, 15, '1467172368a.png', 'adsfasdf', 7, '2016-06-29 03:52:56', '2016-06-28 20:52:56', '2016-06-28 20:52:56');
 
 -- --------------------------------------------------------
 
@@ -456,6 +461,8 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status_payment` int(11) NOT NULL DEFAULT '0',
   `ship_address` varchar(500) NOT NULL,
+  `country` varchar(100) NOT NULL DEFAULT 'Indonesia',
+  `zipcode` varchar(50) NOT NULL,
   `ship_city_id` int(11) NOT NULL,
   `status_confirmed` int(11) NOT NULL DEFAULT '0',
   `status_shipping` int(11) NOT NULL DEFAULT '0',
@@ -466,17 +473,53 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `who` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaction__order`
 --
 
-INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_date`, `status_payment`, `ship_address`, `ship_city_id`, `status_confirmed`, `status_shipping`, `shipping_date`, `group_id`, `shipping_fee`, `total`, `created_at`, `updated_at`, `who`) VALUES
-(1, 7, 3, '2016-06-02 00:00:00', 1, 'sunrise', 1, 0, 0, '2016-06-19', 1, 10000, 10, '2016-06-12 19:09:34', '2016-06-12 11:25:44', 'single'),
-(2, 4, 5, '2016-06-03 00:00:00', 1, 'green garden', 3, 0, 1, '2016-06-01', 2, 0, 20, '2016-06-12 16:34:23', '2016-06-12 09:34:23', 'subscribe'),
-(3, 7, 3, '2016-06-16 00:00:00', 1, 'abc', 1, 0, 0, '2016-06-22', 3, 5000, 135000, '2016-06-27 06:14:46', '2016-06-12 21:49:57', 'single'),
-(4, 7, 3, '2016-06-13 11:26:09', 0, 'komplek pakuwon blok apa aja', 1, 0, 0, '2016-07-05', 4, 10000, 145000, '2016-06-27 06:13:44', '2016-06-12 21:32:26', 'single');
+INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_date`, `status_payment`, `ship_address`, `country`, `zipcode`, `ship_city_id`, `status_confirmed`, `status_shipping`, `shipping_date`, `group_id`, `shipping_fee`, `total`, `created_at`, `updated_at`, `who`) VALUES
+(1, 7, 3, '2016-06-02 00:00:00', 0, 'sunrise', 'Indonesia', '', 1, 0, 0, '2016-06-19', 1, 10000, 10, '2016-06-29 03:45:14', '2016-06-12 11:25:44', 'single'),
+(2, 4, 5, '2016-06-03 00:00:00', 0, 'green garden', 'Indonesia', '', 3, 0, 0, '2016-06-01', 2, 0, 20, '2016-06-29 03:45:33', '2016-06-12 09:34:23', 'subscribe'),
+(3, 7, 3, '2016-06-16 00:00:00', 1, 'abc', 'Indonesia', '', 1, 0, 0, '2016-06-22', 3, 5000, 135000, '2016-06-29 03:47:11', '2016-06-28 20:47:11', 'single'),
+(4, 7, 3, '2016-06-13 11:26:09', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '', 1, 0, 0, '2016-07-05', 4, 10000, 145000, '2016-06-27 06:13:44', '2016-06-12 21:32:26', 'single'),
+(6, 3, 3, '2016-06-29 11:05:33', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 5, 0, 0, '2016-06-28 21:05:33', '2016-06-28 21:05:33', 'single'),
+(7, 3, 3, '2016-06-29 11:06:12', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 6, 0, 0, '2016-06-28 21:06:12', '2016-06-28 21:06:12', 'single'),
+(8, 3, 3, '2016-06-29 11:07:26', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-05', 7, 0, 0, '2016-06-28 21:07:26', '2016-06-28 21:07:26', 'single'),
+(9, 3, 3, '2016-06-29 11:07:29', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-05', 8, 0, 0, '2016-06-28 21:07:29', '2016-06-28 21:07:29', 'single'),
+(10, 3, 3, '2016-06-29 11:07:29', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 9, 0, 0, '2016-06-28 21:07:29', '2016-06-28 21:07:29', 'single'),
+(11, 3, 3, '2016-06-29 11:13:23', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 10, 0, 0, '2016-06-28 21:13:23', '2016-06-28 21:13:23', 'single'),
+(12, 3, 3, '2016-06-29 11:15:02', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-05', 11, 0, 0, '2016-06-28 21:15:02', '2016-06-28 21:15:02', 'single'),
+(13, 11, 4, '2016-06-30 14:33:18', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '1', 1, 0, 0, '2016-07-14', 12, 10000, 10000, '2016-06-30 00:33:18', '2016-06-30 00:33:18', 'single');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transaction__order_confirmation`
+--
+
+CREATE TABLE IF NOT EXISTS `transaction__order_confirmation` (
+`confirmation_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  `payment_date` date NOT NULL,
+  `amount` int(11) NOT NULL,
+  `account_name` varchar(100) NOT NULL,
+  `account_number` varchar(100) NOT NULL,
+  `confirmation_status` int(11) NOT NULL DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `transaction__order_confirmation`
+--
+
+INSERT INTO `transaction__order_confirmation` (`confirmation_id`, `group_id`, `payment_date`, `amount`, `account_name`, `account_number`, `confirmation_status`, `created_at`, `updated_at`) VALUES
+(1, 1, '2016-06-29', 10000, 'kevin', '123', 0, '2016-06-29 10:22:51', '0000-00-00 00:00:00'),
+(2, 2, '2016-07-28', 50000, 'aurelia', '9876', 0, '2016-06-29 10:45:06', '0000-00-00 00:00:00'),
+(3, 3, '2016-06-06', 20000, 'kevin k', '55555', 1, '2016-06-29 10:47:11', '2016-06-29 03:47:11'),
+(4, 4, '2016-06-30', 40000, 'aurelia rianto', '11111', 0, '2016-06-29 10:44:58', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -504,7 +547,18 @@ INSERT INTO `transaction__order_detail` (`order_id`, `varian_id`, `varian_price`
 (3, 2, 60000, 1, '2016-06-09 09:55:41', '0000-00-00 00:00:00'),
 (3, 7, 75000, 1, '2016-06-09 09:55:41', '0000-00-00 00:00:00'),
 (4, 2, 60000, 1, '2016-06-12 21:26:10', '2016-06-12 21:26:10'),
-(4, 3, 75000, 1, '2016-06-12 21:26:10', '2016-06-12 21:26:10');
+(4, 3, 75000, 1, '2016-06-12 21:26:10', '2016-06-12 21:26:10'),
+(6, 1, 0, 10, '2016-06-28 21:05:33', '2016-06-28 21:05:33'),
+(6, 2, 0, 3, '2016-06-28 21:05:33', '2016-06-28 21:05:33'),
+(7, 1, 0, 10, '2016-06-28 21:06:12', '2016-06-28 21:06:12'),
+(7, 2, 0, 3, '2016-06-28 21:06:12', '2016-06-28 21:06:12'),
+(8, 3, 0, 1, '2016-06-28 21:07:26', '2016-06-28 21:07:26'),
+(9, 3, 0, 1, '2016-06-28 21:07:29', '2016-06-28 21:07:29'),
+(10, 1, 0, 10, '2016-06-28 21:07:29', '2016-06-28 21:07:29'),
+(10, 2, 0, 3, '2016-06-28 21:07:29', '2016-06-28 21:07:29'),
+(11, 1, 0, 10, '2016-06-28 21:13:23', '2016-06-28 21:13:23'),
+(11, 2, 0, 3, '2016-06-28 21:13:23', '2016-06-28 21:13:23'),
+(12, 3, 0, 1, '2016-06-28 21:15:02', '2016-06-28 21:15:02');
 
 -- --------------------------------------------------------
 
@@ -555,8 +609,8 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
 --
 
 INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `shipping_date`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 3, 'iseng aja', '2016-07-05', 'alsut', 'rame', '2016-05-18 10:27:22', '2016-07-05', 0, '2016-06-28 04:36:18', '2016-06-27 21:29:30', NULL),
-(4, 3, '', '2016-07-23', '', '', '2016-05-20 08:37:01', '2016-07-08', 0, '2016-06-28 04:36:23', '2016-06-27 21:29:30', NULL);
+(1, 3, 'iseng aja', '2016-07-05', 'alsut', 'rame', '2016-05-18 10:27:22', '2016-07-05', 0, '2016-06-29 04:15:09', '2016-06-28 21:15:02', NULL),
+(4, 3, '', '2016-07-23', '', '', '2016-05-20 08:37:01', '2016-07-08', 0, '2016-06-29 04:13:35', '2016-06-28 21:13:23', NULL);
 
 --
 -- Indexes for dumped tables
@@ -665,6 +719,12 @@ ALTER TABLE `transaction__order`
  ADD PRIMARY KEY (`order_id`), ADD KEY `fk_traor_cus_id` (`customer_id`), ADD KEY `fk_traor_ag_id` (`agent_id`), ADD KEY `fk_or_ci_id` (`ship_city_id`);
 
 --
+-- Indexes for table `transaction__order_confirmation`
+--
+ALTER TABLE `transaction__order_confirmation`
+ ADD PRIMARY KEY (`confirmation_id`);
+
+--
 -- Indexes for table `transaction__order_detail`
 --
 ALTER TABLE `transaction__order_detail`
@@ -735,7 +795,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `master__member`
 --
 ALTER TABLE `master__member`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `master__req_agent`
 --
@@ -745,7 +805,7 @@ MODIFY `reqagent_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `master__tx_balance`
 --
 ALTER TABLE `master__tx_balance`
-MODIFY `balance_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `balance_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `product__category`
 --
@@ -760,12 +820,17 @@ MODIFY `testimonial_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `product__varian`
 --
 ALTER TABLE `product__varian`
-MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `transaction__order`
 --
 ALTER TABLE `transaction__order`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=17;
+MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `transaction__order_confirmation`
+--
+ALTER TABLE `transaction__order_confirmation`
+MODIFY `confirmation_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `transaction__sample_request`
 --

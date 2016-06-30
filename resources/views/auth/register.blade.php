@@ -41,6 +41,21 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('zipcode') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Zipcode</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Zipcode" name="zipcode" value="{{ old('zipcode') }}">
+
+                                @if ($errors->has('zipcode'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('zipcode') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <label class="col-md-4 control-label">Date of Birth</label>
 
