@@ -224,6 +224,7 @@ class MemberController extends Controller
     	 $v = Validator::make($request->all(), [
             'city' => 'required|numeric',
             'address' => 'required|max:500',
+            'zipcode' => 'required|max:50',
             'phone' => 'numeric',
             'email' => 'required|email',
         ]);
@@ -237,6 +238,7 @@ class MemberController extends Controller
 
         $city = filter_var($input['city'], FILTER_SANITIZE_STRING);
         $address = filter_var($input['address'], FILTER_SANITIZE_STRING);
+        $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
         $phone = filter_var($input['phone'], FILTER_SANITIZE_STRING);
         $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
         
@@ -260,6 +262,7 @@ class MemberController extends Controller
         else
             $member->city_id = $city;
         $member->address = $address;
+        $member->zipcode = $zipcode;
         $member->phone = $phone;
         $member->email = $email;
         $member->save();

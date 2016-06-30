@@ -5,6 +5,12 @@
     <div class="container">
         <h2>My Order</h2>
         <div class="row">
+        @if(Session::has('success'))
+            <div class="alert alert-success fade in">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>Order has been updated successfully!</strong>
+            </div>
+        @endif
           <div class="col-lg-12">
             <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
               <thead>
@@ -125,6 +131,7 @@ $(function() {
         processing: true,
         serverSide: true,
         bFilter : false,
+        order : [[0,'desc']],
         ajax: {
             url: '{!! route('orderlistCustomer.data') !!}',
         },

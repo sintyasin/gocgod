@@ -24,6 +24,10 @@ Route::post('productsample', 'ProductController@productsampledata');
 
 Route::post('review/{id}', 'ProductController@giveTestimonial');
 
+Route::get('howtobuy', 'ProductController@howToBuy');
+Route::get('howtobuyfirst', 'ProductController@howToBuyFirst');
+Route::get('howtobuysingle', 'ProductController@howToBuySingle');
+Route::get('howtobuysubcriber', 'ProductController@howToBuySubcriber');
 
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
@@ -512,9 +516,7 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
 
 
-Route::get('howtobuy', function(){
-		return view('page.howtobuy');
-});
+
 
 
 Route::get('myorder', function(){
