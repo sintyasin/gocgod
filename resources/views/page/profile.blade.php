@@ -96,6 +96,20 @@
                       </div>
                   </div>
 
+                  <div class="form-group{{ $errors->has('zipcode') ? ' has-error' : '' }}">
+                      <label class="col-md-4 control-label">Zip Code</label>
+
+                      <div class="col-md-8">
+                          <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}">
+
+                          @if ($errors->has('address'))
+                          <span class="help-zipcode">
+                              <strong>{{ $errors->first('zipcode') }}</strong>
+                          </span>
+                          @endif
+                      </div>
+                  </div>
+
                   <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
                       <label class="col-md-4 control-label">Phone</label>
 
@@ -238,6 +252,9 @@
                     <ul class="list-group list-group-unbordered">
                       <li class="list-group-item">
                         Address: &nbsp;<b> {{Auth::user()->address}}</b>
+                      </li>
+                      <li class="list-group-item">
+                        Zip Code: &nbsp;<b> {{Auth::user()->zipcode}}</b>
                       </li>
                       <li class="list-group-item">
                         Date of Birth: &nbsp;<b> {{Auth::user()->date_of_birth}}</b>

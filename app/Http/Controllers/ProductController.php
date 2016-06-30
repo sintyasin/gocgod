@@ -20,6 +20,27 @@ use App\AboutUs;
 
 class ProductController extends Controller
 {
+    public function howToBuy()
+    {
+        $data['contact'] = AboutUs::first();
+        return view('page.howtobuy', $data);
+    }
+
+    public function howToBuyFirst()
+    {
+        return view('page.howtobuyfirst');
+    }
+
+    public function howToBuySingle()
+    {
+        return view('page.howtobuysingle');
+    }
+
+    public function howToBuySubcriber()
+    {
+        return view('page.howtobuysubcriber');
+    }
+
     public function getMenu()
     {
         $data['contact'] = AboutUs::first();

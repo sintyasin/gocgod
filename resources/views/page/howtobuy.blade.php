@@ -17,23 +17,9 @@
 		    </div>
 
 		    <div class="col-lg-12">
-		      <br><br>
-		      <center>
-		      <h1>1</h1><h2>Click Join Us</h2>
-		      </center>
-		      <img src={{ URL::asset("assets/images/howtobuy/01.png") }} class='figure-img img-fluid' alt='Image'>
-		  	  <hr style="color:black;">
-		  	  <center>
-		      <h1>2</h1><h2>Register to be a Member</h2>
-		      </center>
-		      <img src={{ URL::asset("assets/images/howtobuy/02.png") }} class='figure-img img-fluid' alt='Image'>
-		  	  <hr style="color:black;">
-		  	  <center>
-		      <h1>3</h1><h2>To See the Menus</h2>
-		      </center>
-		      <img src={{ URL::asset("assets/images/howtobuy/03.png") }} class='figure-img img-fluid' alt='Image'>
-		      <br>
-		      <img src={{ URL::asset("assets/images/howtobuy/04.png") }} class='figure-img img-fluid' alt='Image'>
+		      <div id="picture_htb">
+		      
+		  	  </div>
 		  	</div><!-- /.row -->
 			<!-- <div class="container">
 			<img src={{ URL::asset("assets/images/howtobuy/01.png") }} class='figure-img img-fluid' alt='Image'>
@@ -41,8 +27,55 @@
 			<img src={{ URL::asset("assets/images/howtobuy/02.png") }} class='figure-img img-fluid' alt='Image'>
 			</div> -->
 			</div>
-		
+			<br>
+			<br>
 	</div>
 </div>
+
+<script>
+	function first()
+	{
+		$.ajax({
+			type: "GET",
+			url: "{{ URL::to('howtobuyfirst')}}",
+			success:
+			function(data)
+			{
+				$('#picture_htb').html(data);
+			}
+		});
+	}
+
+	function single()
+	{
+		$.ajax({
+			type: "GET",
+			url: "{{ URL::to('howtobuysingle')}}",
+			success:
+			function(data)
+			{
+				$('#picture_htb').html(data);
+			}
+		});
+	}
+
+	function subcriber()
+	{
+		$.ajax({
+			type: "GET",
+			url: "{{ URL::to('howtobuysubcriber')}}",
+			success:
+			function(data)
+			{
+				$('#picture_htb').html(data);
+			}
+		});
+	}
+	
+	$(document).ready()
+	{
+	  first();
+	}
+</script>
 
 @stop

@@ -162,6 +162,7 @@ class TransactionController extends Controller
       'city' => 'required|numeric',
       'agent' => 'required|numeric',
       'request_date' =>  'required|max:10',
+      'zipcode' => 'required|max:50',
       ]);
 
     if ($v->fails())
@@ -175,6 +176,7 @@ class TransactionController extends Controller
     $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
     $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
+    $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
     $shipping_fee = 10000;
     $who = 'single';
@@ -199,6 +201,7 @@ class TransactionController extends Controller
     $order->agent_id = $agent_id;
     $order->ship_address = $ship_address;
     $order->ship_city_id = $ship_city_id;
+    $order->zipcode = $zipcode;
     $order->shipping_date = $date;
     $order->group_id = $group;
     $order->shipping_fee = $shipping_fee;
@@ -219,7 +222,15 @@ class TransactionController extends Controller
     }
 
     Cart::instance('single')->destroy();
-    return redirect('/myorder');
+
+    if($input['payment'] == 0)
+    {
+      return redirect('/banktransfer');
+    }
+    else if($input['payment'] == 1)
+    {
+      return redirect('/#');
+    }
 
   }
 
@@ -375,6 +386,7 @@ class TransactionController extends Controller
     $v = Validator::make($request->all(),[
       'address' => 'required|max:500',
       'city' => 'required|numeric',
+      'zipcode' => 'required|max:50',
       'agent' => 'required|numeric',
       'week' => 'required|numeric',
       'request_date' =>  'required|max:10',
@@ -391,6 +403,7 @@ class TransactionController extends Controller
     $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
     $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
+    $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
     $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
     $shipping_fee = 10000;
@@ -418,6 +431,7 @@ class TransactionController extends Controller
       $order->agent_id = $agent_id;
       $order->ship_address = $ship_address;
       $order->ship_city_id = $ship_city_id;
+      $order->zipcode = $zipcode;
       $order->shipping_date = $date;
       $order->group_id = $group;
       $order->shipping_fee = $shipping_fee;

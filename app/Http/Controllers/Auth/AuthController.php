@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\City;
 use Cart;
 use Auth;
+use App\AboutUs;
 
 class AuthController extends Controller
 {
@@ -80,7 +81,7 @@ class AuthController extends Controller
         if (property_exists($this, 'registerView')) {
             return view($this->registerView);
         }
-
+        $data['contact'] = AboutUs::first();
         $data['city'] = City::all();
 
         return view('auth.register', $data);
@@ -103,6 +104,7 @@ class AuthController extends Controller
         return Validator::make($data, [
             'name' => 'required|max:255',
             'address' => 'required|max:500',
+            'zipcode' => 'required|max:50',
             'dob' => 'required|max:10',
             'phone' => 'required|numeric',
             'email' => 'required|email|max:255|unique:master__member',
@@ -120,6 +122,7 @@ class AuthController extends Controller
 
     protected function create(array $data)
     {
+
         if($data['city'] == 0)
         {
             $newcity = filter_var($data['newcity'], FILTER_SANITIZE_STRING);
@@ -131,10 +134,11 @@ class AuthController extends Controller
             return Member::create([
                 'name' => $data['name'],
                 'address' => $data['address'],
+                'zipcode' => $data['zipcode'],
                 'date_of_birth' => $data['dob'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
-                'passwords' => bcrypt($data['passwords']),
+                'password' => bcrypt($data['passwords']),
                 'city_id' => $city->city_id,
             ]);
         }
@@ -143,10 +147,11 @@ class AuthController extends Controller
             return Member::create([
                 'name' => $data['name'],
                 'address' => $data['address'],
+                'zipcode' => $data['zipcode'],
                 'date_of_birth' => $data['dob'],
                 'phone' => $data['phone'],
                 'email' => $data['email'],
-                'passwords' => bcrypt($data['passwords']),
+                'password' => bcrypt($data['passwords']),
                 'city_id' => $data['city'],
             ]);
         }

@@ -106,6 +106,8 @@
                 @endif
               @endforeach
               </select>
+              <label for="zipcode">Recipient's Zip Code</label> <br>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
 
               <label for="week">How many weeks?</label><br>
               <input type="number" class="form-control" name='week'/>
@@ -114,12 +116,14 @@
               <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker"/>   
 
               <label>The shipping day will be same with the first choosed day, you can change the day for the next shipping at "My Order" menu.</label>
+              <br><br>  
+              <label for="payment">Payment</label>
+              <br>
+              <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label> 
+              <input type="radio" name="payment" id="payment" value="1"> <label>FirstPay</label><br>  
             <br>
             <br>
-            <p class="plxLogin"><font size="3">Total Price</font></p>
-              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>
 
-            <label> Silahkan melakukan pembayaran ke rekening : ... </label>
             <br>
 
             <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
@@ -195,6 +199,7 @@
       alert('error');
     })
   }
+
 
 </script>
 @endpush
