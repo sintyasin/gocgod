@@ -4,11 +4,11 @@
 <!-- Start checkout content -->
 <div class="container">
   <div class="padding_outer">
-    <h2> CheckOut </h2>
+    <h2>Shopping Cart</h2>
   
     @if (Auth::guest())
       <div class="clicktoregister">
-        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan sign in terlebih dahulu atau klik link ini untuk mendaftar </a>
+        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan masuk terlebih dahulu atau klik link ini untuk mendaftar </a>
       </div>
     @else
     <div class="stepper">
@@ -69,7 +69,7 @@
               </table>
               <p>*Gratis ongkos kirim untuk pembelian dengan total kuantitas lebih dari 5</p>
               <br>
-              <p class="plxLogin"><font size="3">Total Price</font></p>
+              <p class="plxLogin"><font size="3">Total Harga</font></p>
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
@@ -81,12 +81,12 @@
         <!-- ================================================================================================ -->
           <div id="delivery_address">
           <Center>
-            <p class='form_head'>Data Customer</p>
-              <label for="phone">Customer's Name</label> <br>
+            <p class='form_head'>Data Pelanggan</p>
+              <label for="phone">Nama Pelanggan</label> <br>
               <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
-              <label for="address">Recipient's Address</label> <br>
+              <label for="address">Alamat Pengiriman</label> <br>
               <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center;"/>
-              <label for="address">City</label> <br>
+              <label for="address">Kota</label> <br>
               <select class="form-control" id="city" name="city" >
                 @foreach($city as $data)
                   @if(Auth::user()->city_id == $data->city_id)
@@ -96,7 +96,9 @@
                   @endif
                 @endforeach
               </select>
-              <label for="Agent">Choose an Agent</label> <br>
+              <label for="zipcode">Kode Pos Pengiriman</label> <br>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
+              <label for="Agent">Pilih Agent</label> <br>
               <select class="form-control" id="agent" name="agent" >
               @foreach($agent as $data)
                 @if(Auth::user()->city_id == $data->city_id)
@@ -106,11 +108,10 @@
                 @endif
               @endforeach
               </select>
-              <label for="zipcode">Recipient's Zip Code</label> <br>
-              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
-              <label for="Date">Request Shipping Date</label><br>
+              
+              <label for="Date">Tanggal Pengiriman</label><br>
               <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker" autocomplete="off" /> 
-              <label for="payment">Payment</label>
+              <label for="payment">Pembayaran</label>
               <br>
               <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label> 
               <input type="radio" name="payment" id="payment" value="1"> <label>FirstPay</label><br>  
