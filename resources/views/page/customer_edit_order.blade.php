@@ -3,12 +3,12 @@
 @section('content')
 <div class="padding_outer">
     <div class="container">
-        <h2>My Order</h2>
+        <h2>Orderku</h2>
         <div class="row">
         @if(Session::has('error'))
             <div class="alert alert-danger fade in">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>Total Price must not greater than the previous total price!</strong>
+              <strong>Total harga tidak boleh melebihi total harga sebelumnya!</strong>
             </div>
             
             @endif
@@ -21,7 +21,7 @@
             <input type="hidden" name="id" value={{$query->order_id}} />
             
             <div class="form-group">
-                <label class="col-md-1 control-label">Order Id</label>
+                <label class="col-md-1 control-label">Id Order</label>
 
                 <div class="col-md-5">
                     <input disabled type="text" class="form-control" value="{{$query->order_id}}" placeholder="{{$query->order_id}}">
@@ -29,7 +29,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-1 control-label">Total Price</label>
+                <label class="col-md-1 control-label">Total Harga</label>
 
                 <div class="col-md-5">
                     <input disabled type="text" class="form-control" value="Rp {{number_format($total_price[0]->total, 2, ',', '.')}}">
@@ -37,7 +37,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-1 control-label">Total Quantity</label>
+                <label class="col-md-1 control-label">Total Kuantitas</label>
 
                 <div class="col-md-5">
                     <input disabled type="text" class="form-control" value="{{$total_quantity}}" placeholder="{{$total_quantity}}">
@@ -46,7 +46,7 @@
 
 
             <div class="form-group{{ $errors->has('ship') ? ' has-error' : '' }}">">
-                <label class="col-md-1 control-label">Shipping Date</label>
+                <label class="col-md-1 control-label">Tanggal Pengiriman</label>
 
                 <div class="col-md-5">
                     <div class='input-group date' id='datetimepicker1'>
@@ -69,9 +69,9 @@
               <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Kuantitas</th>
                     </tr>
                   </thead>
                   <tbody>
