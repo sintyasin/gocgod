@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Validator;
+use Session;
 use Cart;
 use Auth;
 use App\Http\Requests;
@@ -254,6 +255,7 @@ class ProductController extends Controller
         $testi->testimonial = $testimonial;
         $testi->save();
 
+        Session::flash('status', 'Terima kasih atas review Anda. Review Anda akan kami proses.');
         return redirect('/menu_detail/'.$idd);
     }
 

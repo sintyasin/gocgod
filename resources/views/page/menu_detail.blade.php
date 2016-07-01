@@ -38,7 +38,7 @@
 					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
 					</div>
 					<div class="col-xs-5">
-						<input type="number" min="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
+						<input type="number" min="1" value="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
 						<input type="hidden" id="name" value="{{ $query->varian_name }}">
 						<input type="hidden" id="price" value="{{ $query->price }}">
 					</div>
@@ -70,6 +70,13 @@
 
 		<div class="col-md-12 col-xs-12">
 			<div class="padding_outer_review">
+				@if(Session::has('status'))
+				<div class="alert alert-success fade in">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>{{ session('status') }}</strong>
+				</div>
+				@endif
+
 				<div class="well">
 
 					<div class="panel sauget-accordion">
@@ -153,7 +160,6 @@
 
 @push('scripts')
 <script>
-
       // $(function () {
       //   $(".rateyo").rateYo({
       //   	fullStar: true,
