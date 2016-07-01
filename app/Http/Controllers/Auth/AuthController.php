@@ -47,8 +47,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Cart::instance('single')->destroy();
-        Cart::instance('subcriber')->destroy();
+        Cart::destroy();
         Auth::guard($this->getGuard())->logout();
 
 
@@ -105,11 +104,19 @@ class AuthController extends Controller
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
-            $this->throwValidationException(
-                $request, $validator
-            );
+            //dd($validator->errors());
+            if($validator->errors()->has('hari') || $validator->errors()->has('bulan') || $validator->errors()->has('tahun'))
+                return redirect('register')->with('day', 'Format : dd')
+                                           ->with('month', 'Pilih bulan')
+                                           ->with('year', 'Format : yyyy')
+                                           ->withErrors($validator->errors())->withInput();
+            else
+            {
+                $this->throwValidationException(
+                    $request, $validator
+                );    
+            }
         }
-
 
         $sender = 'admin@gocgod.com';
         
@@ -148,7 +155,13 @@ class AuthController extends Controller
 
         //cek udh aktivasi lewat email/blom
         $query = Member::where('email', $credentials['email'])->first();
-        $activate = $query->verification;
+
+        $activate = 0;
+
+        if(!empty($query))
+            $activate = $query->verification;
+        else
+            return $this->sendFailedLoginResponse($request);
 
         if($activate)
         {
@@ -171,14 +184,16 @@ class AuthController extends Controller
     protected function validator(array $data)
     {    
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'address' => 'required|max:500',
-            'zipcode' => 'required|max:50',
-            'dob' => 'required|max:10',
-            'phone' => 'required|numeric',
+            'nama' => 'required|max:255',
+            'alamat' => 'required|max:500',
+            'kodepos' => 'required|max:50',
+            'hari' => 'required|numeric|digits:2|between:1,31',
+            'bulan' => 'required',
+            'tahun' => 'required|numeric|digits:4|min:1900',
+            'telepon' => 'required|numeric',
             'email' => 'required|email|max:255|unique:master__member',
             'passwords' => 'required|min:3|confirmed',
-            'city' => 'required|numeric',
+            'kota' => 'required|numeric',
         ]);
     }
 
@@ -191,20 +206,23 @@ class AuthController extends Controller
 
     protected function create(array $data)
     {
-        if($data['city'] == 0)
+        //ambil data ulang tahun
+        $dob = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
+
+        if($data['kota'] == 0)
         {
-            $newcity = filter_var($data['newcity'], FILTER_SANITIZE_STRING);
+            $newcity = filter_var($data['kotabaru'], FILTER_SANITIZE_STRING);
 
             $city = new City;
             $city->city_name = $newcity;
             $city->save();
 
             return Member::create([
-                'name' => $data['name'],
-                'address' => $data['address'],
-                'zipcode' => $data['zipcode'],
-                'date_of_birth' => $data['dob'],
-                'phone' => $data['phone'],
+                'name' => $data['nama'],
+                'address' => $data['alamat'],
+                'zipcode' => $data['kodepos'],
+                'date_of_birth' => $dob,
+                'phone' => $data['telepon'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['passwords']),
                 'city_id' => $city->city_id,
@@ -213,14 +231,14 @@ class AuthController extends Controller
         else
         {
             return Member::create([
-                'name' => $data['name'],
-                'address' => $data['address'],
-                'zipcode' => $data['zipcode'],
-                'date_of_birth' => $data['dob'],
-                'phone' => $data['phone'],
+                'name' => $data['nama'],
+                'address' => $data['alamat'],
+                'zipcode' => $data['kodepos'],
+                'date_of_birth' => $dob,
+                'phone' => $data['telepon'],
                 'email' => $data['email'],
                 'password' => bcrypt($data['passwords']),
-                'city_id' => $data['city'],
+                'city_id' => $data['kota'],
             ]);
         }
     }
