@@ -186,10 +186,11 @@
 		      <button type="button" class="boaBtn_boa_pf" onclick="single()">
 	            I am Single Buyer
 	          </button>
-	          <button type="button" class="boaBtn_boa_pf"><a href="{{ url('/checkout_subcriber')}}">
+	          <a href="{{ url('/checkout_subcriber')}}"><button type="button" class="boaBtn_boa_pf">
 	            I am Subscriber
-	           </a>
+	           
 	          </button>
+	          </a>
 	            <br><br><p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
 		      </div>
 		      </center>
