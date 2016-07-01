@@ -26,7 +26,7 @@
 							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
 
 							<!-- <li><a href="{{ url('/cart') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart</a></li> -->
-							<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Find an Agent</a></li>
+							<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Cari Agent</a></li>
 
 
 
@@ -34,7 +34,7 @@
 
 							@if (Auth::guest())
 							<li class="dropdown">
-								<a href=# class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Sign In <span class="caret"> </a>
+								<a href=# class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Masuk <span class="caret"> </a>
 
 								<ul id="login-dp" class="dropdown-menu">
 									<li>
@@ -43,7 +43,7 @@
 												<form class="form" role="form" method="POST" action="{{ url('/login') }}" accept-charset="UTF-8" id="login-nav">
 													{!! csrf_field() !!}
 													<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-														<label class="sr-only" for="inputemail">Email address</label>
+														<label class="sr-only" for="inputemail">Alamat Email</label>
 														<input type="email" class="form-control" id="inputemail" name="email" placeholder="Input Your Email" value="{{ old('email') }}" required>
 														@if ($errors->has('email'))
 														<script type="text/javascript">
@@ -70,12 +70,12 @@
 
 						                                    <div class="checkbox">
 																 <label>
-																 <input type="checkbox" name="remember"> Remember Me
+																 <input type="checkbox" name="remember"> Ingat Saya
 																 </label>
 															</div>
 
 
-				                                             <div class="help-block text-right"><a href="{{ url('/password/reset') }}">Forget the password ?</a></div>
+				                                             <div class="help-block text-right"><a href="{{ url('/password/reset') }}">Lupa Password ?</a></div>
 														</div>
 														<div class="form-group">
 															 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
@@ -83,7 +83,7 @@
 												 </form>
 											</div>
 											<div class="bottom text-center">
-												New here ? <a href="{{ url('/register') }}"><b>Join Us</b></a>
+												Baru? <a href="{{ url('/register') }}"><b>Klik disini untuk mendaftar</b></a>
 											</div>
 									</div>
 								</li>
@@ -96,7 +96,7 @@
 
 	                            <ul class="dropdown-menu" role="menu">
 	                            	<li><a href="{{ url('/profile/'.Auth::user()->id) }}"><div class="padding_outer_profile">Profile</div></a></li>
-	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">My Order</div></a></li>
+	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">Orderku</div></a></li>
 	                            	<li><a href="{{ url('/historymyorder') }}"><div class="padding_outer_profile">History Order</div></a></li>
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
 	                            </ul>
@@ -113,16 +113,16 @@
 				<div class="mainmenu float-left">
 					<nav>
 						<ul>
-							<li><a href="{{ url('/home') }}">HOME</a></li>
+							<li><a href="{{ url('/home') }}">BERANDA</a></li>
 							<!-- <li><a href="#">PRODUCT DETAIL</i></a></li> -->
 							<li><a href="{{ url('/menu') }}">MENU</a></li>
-							<li><a href="{{ url('/howtobuy') }}">HOW TO BUY</a></li>
+							<li><a href="{{ url('/howtobuy') }}">CARA BERBELANJA</a></li>
 							@if(!Auth::guest() && Auth::user()->status_user == 1)
-							<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
+							<li><a href="{{ url('/becomeanagent') }}">BERGABUNG MENJADI AGEN</a></li>
 							@endif
 							<li><a href="{{ url('/faq') }}">FAQ</a></li>
 							@if(!Auth::guest() && Auth::user()->status_user == 0)
-							<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
+							<li><a href="{{ url('/customerorder')}}">ORDER PELANGGAN</a></li>
 							@endif	
 							<li class="shop_icon"><a href="#" data-toggle="modal" data-target="#checkout"><img src="{{ URL::asset('assets/images/menu_icon_img.png') }}" alt="" /><span>{{Cart::count()}}</span> Shopping Cart</a></li>
 							<!-- <li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
@@ -149,19 +149,19 @@
 		<div class="mobile-menu">
 			<nav id="dropdown">
 				<ul>
-					<li><a href="{{ url('/home') }}">HOME</a></li>
+					<li><a href="{{ url('/home') }}">BERANDA</a></li>
 					<!-- <li><a href="#">PRODUCT DETAIL</a></li> -->
 					<li><a href="{{ url('/menu') }}">MENU</a></li>
-					<li><a href="{{ url('/howtobuy') }}">HOW TO BUY</a></li>
+					<li><a href="{{ url('/howtobuy') }}">CARA BERBELANJA</a></li>
 					@if(!Auth::guest() && Auth::user()->status_user == 1)
 					<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
 					@endif
 					<li><a href="{{ url('/faq') }}">FAQ</a></li>
 					<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
 					@if(!Auth::guest() && Auth::user()->status_user == 0)
-					<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
+					<li><a href="{{ url('/customerorder')}}">ORDER PELANGGAN</a></li>
 					@endif
-					<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+					<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>SHOPPING CART</a></li>
 <!-- 					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
 					
 				</ul>

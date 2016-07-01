@@ -4,11 +4,11 @@
 <!-- Start checkout content -->
 <div class="container">
   <div class="padding_outer">
-    <h2> CheckOut </h2>
+    <h2>Shopping Cart</h2>
   
     @if (Auth::guest())
       <div class="clicktoregister">
-        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan sign in terlebih dahulu atau klik link ini untuk mendaftar </a>
+        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan masuk terlebih dahulu atau klik link ini untuk mendaftar </a>
       </div>
     @else
     <div class="stepper">
@@ -82,7 +82,7 @@
           <div id="delivery_address">
           <Center>
             <p class='form_head'> Data Pelanggan <p>
-              <label for="name">Nama Pengirim</label> <br>
+              <label for="name">Nama Pelanggan</label> <br>
               <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
               <label for="address">Alamat Pengiriman</label> <br>
               <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center;"/>
@@ -96,7 +96,7 @@
                   @endif
                 @endforeach
               </select>
-              <label for="zipcode">Zip Code Pengiriman</label> <br>
+              <label for="zipcode">Kode Pos Pengiriman</label> <br>
               <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
               <label for="Agent">Pilih Agent</label> <br>
               <select class="form-control" id="agent" name="agent" >

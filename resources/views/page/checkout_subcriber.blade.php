@@ -4,12 +4,12 @@
 <!-- Start checkout content -->
 <div class="container">
   <div class="padding_outer">
-    <h2> CheckOut </h2>
+    <h2>Shopping Cart</h2>
   
     <?php $i=0?>
     @if (Auth::guest())
       <div class="clicktoregister">
-        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan masuk terlebih dahulu atau klik link ini untuk mendaftar </a>
       </div>
     @else
     <div class="stepper">
@@ -36,15 +36,15 @@
         <div id="wrapper_table">
           <div id="subcriber">
             <br>
-            <p class='form_head'>Choose Products (Subscriber only)</p>
+            <p class='form_head'>Pilih Produk</p>
             <table class="display table table-striped table-bordered dt-responsive" width="100%">
               <thead>
                 <tr>
-                  <th>Product</th>
-                  <th>Picture</th>
-                  <th>Description</th>
-                  <th>Price</th>
-                  <th>Quantity</th>
+                  <th>Produk</th>
+                  <th>Gambar</th>
+                  <th>Deskripsi</th>
+                  <th>Harga</th>
+                  <th>Kuantitas</th>
                   <th></th>
                 </tr>
               </thead>
@@ -71,7 +71,7 @@
                       @endforeach
                     </td>
                     <td>
-                    <button type="button" id="button_{{$a}}" class="btn btn-primary" onclick="addtosubcriber({{ $a }})"> Add to Cart</button>
+                    <button type="button" id="button_{{$a}}" class="btn btn-primary" onclick="addtosubcriber({{ $a }})"> Tambah ke Cart</button>
                     </td>
                   </tr>
                   <?php $a++?>
