@@ -1,6 +1,11 @@
 @extends('layout.main_layout')
 
 @section('content')
+@if (session('active'))
+	<div class="alert alert-success">
+	    {{ session('active') }}
+	</div>
+@endif
 <div class="padding_slider">
 	@include('include.slide')
 </div>
