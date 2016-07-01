@@ -273,6 +273,13 @@ class MemberController extends Controller
     {
         $data['contact'] = AboutUs::first();
         $data['bank'] = Bank::All();
+
+        $query = Req_agent::where('member_id', Auth::user()->id)->first();
+
+        if(empty($query))
+            $data['request'] = 0;
+        else
+            $data['request'] = 1;
         
         return view('page.becomeanagent', $data);
     }
@@ -286,7 +293,7 @@ class MemberController extends Controller
 
         if ($v->fails())
         {
-            return redirect('becomeanagent')->withErrors($v->errors())->withInput();
+            return redirect('becomeanagent')->with('error', 'Data tidak valid, silahkan mendaftar ulang')->withErrors($v->errors())->withInput();
         }    
 
         $input = $request->all();
@@ -300,6 +307,6 @@ class MemberController extends Controller
         $req->bank_id = $bank;
         $req->bank_account = $bank_account;
         $req->save();
-        return redirect('/home');
+        return redirect('becomeanagent')->with('success', 'Permintaan menjadi agen telah diterima, pihak Goc God akan menghubungi anda');
     }
 }
