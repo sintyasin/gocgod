@@ -117,15 +117,16 @@ class AuthController extends Controller
         $user = $this->create($request->all());
         $this->activationService->sendActivationMail($user, $sender);
 
-        return redirect('/register')->with('status', 'We sent you an activation code. Check your email.');
+        return redirect('/register')->with('status', 'Kode aktivasi telah dikirim. Silahkan cek email Anda.');
     }
 
     public function activateUser($token)
     {
-        if ($user = $this->activationService->activateUser($token)) {
+        /*if ($user = $this->activationService->activateUser($token)) {
             Auth::guard($this->getGuard())->login($user);
-        }
-        return redirect($this->redirectPath());
+        }*/
+        $this->activationService->activateUser($token);
+        return redirect('/home')->with('active', 'Akun sudah teraktivasi. Silahkan sign in.');
     }
 
     public function login(Request $request)
@@ -164,7 +165,7 @@ class AuthController extends Controller
 
             return $this->sendFailedLoginResponse($request);
         }
-        return redirect('/register')->with('warning', 'You need to confirm your account. We have sent you an activation code, please check your email.');
+        return redirect('/register')->with('warning', 'Akun anda harus diaktivasi terlebih dahulu. Kode aktivasi telah dikirim, silahkan cek email Anda.');
     }
 
     protected function validator(array $data)
