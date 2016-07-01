@@ -8,7 +8,7 @@
   
     @if (Auth::guest())
       <div class="clicktoregister">
-        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan sign in terlebih dahulu atau klik link ini untuk mendaftar </a>
       </div>
     @else
     <div class="stepper">
@@ -33,21 +33,21 @@
       {!! csrf_field() !!}
         <div id="wrapper_table">
           <div id="product_details">
-            <p class='form_head'>Order Details</p>
+            <p class='form_head'>Detail Order</p>
             <div class="shiping-method">
               <table id="order_details" class="display table table-striped table-bordered dt-responsive" width="100%">
                 <thead>
                   <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
+                    <th>Produk</th>
+                    <th>Harga</th>
+                    <th>Kuantitas</th>
                     <th>Sub Total</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php $i=0?>
-                  @foreach(Cart::instance('single')->content() as $row)
+                  @foreach(Cart::content() as $row)
                   <tr>
                     <td>{{$row->name}}</td>
                     <td>Rp {{$row->price}}</td>
@@ -59,15 +59,15 @@
                     </td>
                     <td><span id="{{ $i.'-subtotal' }}">Rp {{$row->subtotal}}</span></td>
                     <td align="center">
-                      <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Update</button>
-                      <button type="button" onclick="deletecart({{ $i }})" class="btn btn-danger">Delete</button>
+                      <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Ubah</button>
+                      <button type="button" onclick="deletecart({{ $i }})" class="btn btn-danger">Hapus</button>
                     </td>
                   </tr>
                   <?php $i++; ?>
                   @endforeach
                 </tbody>
               </table>
-              <p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
+              <p>*Gratis ongkos kirim untuk pembelian dengan total kuantitas lebih dari 5</p>
               <br>
               <p class="plxLogin"><font size="3">Total Price</font></p>
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
