@@ -162,10 +162,10 @@ h1, h2, h5, a, .header_top_right ul li,.mainmenu a:hover, .choose_text:hover.cho
 .header_top_left ul li ,.header_top_right ul li ,.social_icon,.social_others,.mainmenu li,.footer_icon li,.slide_btn,.shop_now_btn,.choose_text,.choose_text i,.nav.nav-tabs.items_ul,button.checkPageBtn,a.checkPageBtn {
   display: inline-block;
 }
-.social_icon li a,.footer_icon li a,.shop_icon a,.shop_icon span,.choose_text i,.single_review  img,.review_icon{
+.social_icon li a,.footer_icon li a,.shop_icon span,.choose_text i,.single_review  img,.review_icon{
   border-radius: 50%;
 }
-.social_icon li a,.footer_icon li a,.shop_icon a,.shop_icon span,.searchbox-icon, .searchbox-submit,.single_product,#scrollUp,button.checkPageBtn,a.checkPageBtn,#qua_in input,#qua_in_2 input{
+.social_icon li a,.footer_icon li a,.shop_icon span,.searchbox-icon, .searchbox-submit,.single_product,#scrollUp,button.checkPageBtn,a.checkPageBtn,#qua_in input,#qua_in_2 input{
   text-align: center;
 }
 .main_single_product,.compare_menu ul li a,.single_features,.guarantee_features img,.disclaimer i ,.news_input{
@@ -259,7 +259,7 @@ body {
 [2.1.1.1 Header-Social-Icon ]
 -------------------------*/
 .social_icon li {margin-right: 8px;}
-.social_icon li a, .footer_icon li a, .shop_icon a {
+.social_icon li a, .footer_icon li a {
   background: rgb(57, 74, 95) none repeat scroll 0 0;
   display: block;
   height: 25px;
@@ -270,7 +270,7 @@ body {
   color: rgb(255, 255, 255);
   font-size: 14px;
 }
-.shop_icon span,.slide_btn:hover,.shop_now_btn:hover{background:#3a4b60;}
+.slide_btn:hover,.shop_now_btn:hover{background:#3a4b60;}
 .social_icon li a:hover i{opacity:.6;}
 /*-------------------------
 [2.1.1.2 Header-Other-Icon ]
@@ -357,20 +357,16 @@ li.searchbox.searchbox-open {padding-top: 0;}
   color:rgb(57, 74, 95);
 }
 .shop_icon span {
+  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
   font-size: 10px;
   height: 20px;
+  border: 1px solid rgb(57, 74, 95);
+  color:black;
   padding-top: 2px;
   position: absolute;
-  right: -10px;
-  top: -3px;
+  left: 18px;
+  top: -9px;
   width: 20px;
-}
-.shop_icon a {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: 1px solid rgb(57, 74, 95);
-  height: 30px;
-  padding: 5px !important;
-  width: 30px;
 }
 .mainmenu a i {top: 0;}
 .mainmenu a:hover i {top: 5px;}

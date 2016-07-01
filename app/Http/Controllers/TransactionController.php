@@ -96,7 +96,7 @@ class TransactionController extends Controller
       return "Not completed data";
     }
 
-    Cart::instance('single')->add([
+    Cart::add([
       'id'=> $data->id, 
       'qty' => $data->qty,
       'name' => $data->name,
@@ -124,9 +124,9 @@ class TransactionController extends Controller
       return 'Quantity not valid';
     }else {
       $product = \DB::table('product__varian')->where('varian_id', $id)->first();
-      Cart::instance('single')->update($data->rowId, $qty);
+      Cart::update($data->rowId, $qty);
       $subtotal = $product->price * $qty;
-      $total = Cart::instance('single')->total();
+      $total = Cart::total();
 
       $response = array(
         'subtotal' => $subtotal,
@@ -146,8 +146,8 @@ class TransactionController extends Controller
     {
       return "Not completed data";
     }
-    Cart::instance('single')->remove($data->rowId);
-    $total = Cart::instance('single')->total();
+    Cart::remove($data->rowId);
+    $total = Cart::total();
 
     $response = array(
       'total' => $total);
@@ -178,7 +178,7 @@ class TransactionController extends Controller
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
     $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
-    if(Cart::instance('single')->count() >= 5)
+    if(Cart::count() >= 5)
     {
       $shipping_fee = 0;
     }
@@ -187,7 +187,7 @@ class TransactionController extends Controller
       $shipping_fee = 10000;
     }
     $who = 'single';
-    $total = Cart::instance('single')->total();
+    $total = Cart::total();
 
     $a = TxOrder::orderBy('group_id', 'desc')->first();
     $group;
@@ -217,7 +217,7 @@ class TransactionController extends Controller
     $order->save();
    
 
-    foreach(Cart::instance('single')->content() as $single)
+    foreach(Cart::content() as $single)
     {
       $b = TxOrder::orderBy('order_id', 'desc')->first();
       $details = new TxOrderDetail;
@@ -228,7 +228,7 @@ class TransactionController extends Controller
       $details->save();
     }
 
-    Cart::instance('single')->destroy();
+    Cart::destroy();
     $a = TxOrder::orderBy('order_id', 'desc')->first();
 
     if($input['payment'] == 0)
@@ -267,21 +267,21 @@ class TransactionController extends Controller
       return "Not completed data";
     }
 
-    $rowid = Cart::instance('subcriber')->search(array('id' => $data->id));
+    $rowid = Cart::search(array('id' => $data->id));
 
     if($rowid){
-      $item = Cart::instance('subcriber')->get($rowid[0]);
-      Cart::instance('subcriber')->update($rowid[0], $item->qty + $data->qty);
+      $item = Cart::get($rowid[0]);
+      Cart::update($rowid[0], $item->qty + $data->qty);
     }
     else{
-      Cart::instance('subcriber')->add([
+      Cart::add([
         'id'=> $data->id, 
         'qty' => $data->qty,
         'name' => $data->name,
         'price' => $data->price,
         ]);
     }
-    $total = Cart::instance('subcriber')->total();
+    $total = Cart::total();
     $response = array(
       'id' => $data->id,
       'qty' => $data->qty,
@@ -313,9 +313,9 @@ class TransactionController extends Controller
       return 'Quantity not valid';
     }else {
       $product = \DB::table('product__varian')->where('varian_id', $id)->first();
-      Cart::instance('subcriber')->update($data->rowId, $qty);
+      Cart::update($data->rowId, $qty);
       $subtotal = $product->price * $qty;
-      $total = Cart::instance('subcriber')->total();
+      $total = Cart::total();
 
       $response = array(
         'subtotal' => $subtotal,
@@ -335,8 +335,8 @@ class TransactionController extends Controller
     {
       return "Not completed data";
     }
-    Cart::instance('subcriber')->remove($data->rowId);
-    $total = Cart::instance('subcriber')->total();
+    Cart::remove($data->rowId);
+    $total = Cart::total();
 
     $response = array(
       'total' => $total);
@@ -428,7 +428,7 @@ class TransactionController extends Controller
     $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
     $shipping_fee = 0;
     $who = 'subcriber';
-    $total = Cart::instance('subcriber')->total();
+    $total = Cart::total();
 
     $a = TxOrder::orderBy('group_id', 'desc')->first();
     $group;
@@ -461,7 +461,7 @@ class TransactionController extends Controller
       date_add($date_shipping,date_interval_create_from_date_string("+7 days"));
       $date = date_format($date_shipping,"Y-m-d");
 
-      foreach(Cart::instance('subcriber')->content() as $subcriber)
+      foreach(Cart::content() as $subcriber)
       {
         $b = TxOrder::orderBy('order_id', 'desc')->first();
         $details = new TxOrderDetail;
@@ -472,7 +472,7 @@ class TransactionController extends Controller
         $details->save();
       }
     }
-    Cart::instance('subcriber')->destroy();
+    Cart::destroy();
     
 
     if($input['payment'] == 0)
