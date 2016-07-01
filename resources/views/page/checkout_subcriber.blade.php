@@ -41,6 +41,7 @@
               <thead>
                 <tr>
                   <th>Product</th>
+                  <th>Picture</th>
                   <th>Description</th>
                   <th>Price</th>
                   <th>Quantity</th>
@@ -52,6 +53,7 @@
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
+                    <td> </td>
                     <td style="text-align: justify"> {{$items->description}} </td>
                     <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
@@ -59,6 +61,14 @@
                       <input type="hidden" value="{{$items->varian_id}}" id = "{{ $a.'-id' }}">
                       <input type="hidden" value="{{$items->price}}" id = "{{ $a.'-price' }}">
                       <input type="number" min="0" maxlength="2" id="{{ $a.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
+                      @foreach(Cart::content() as $cart)
+                      @if($cart->id == $items->varian_id)
+                      <script>
+                        var tmp = <?php echo $a; ?> + '-qty_subcriber';
+                        document.getElementById(tmp).value= <?php echo $cart->qty; ?>
+                      </script>
+                      @endif
+                      @endforeach
                     </td>
                     <td>
                     <button type="button" id="button_{{$a}}" class="btn btn-primary" onclick="addtosubcriber({{ $a }})"> Add to Cart</button>

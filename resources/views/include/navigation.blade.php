@@ -124,7 +124,7 @@
 							@if(!Auth::guest() && Auth::user()->status_user == 0)
 							<li><a href="{{ url('/customerorder')}}">Customer Order</a></li>
 							@endif	
-							<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
+							<li class="shop_icon"><a href="#" data-toggle="modal" data-target="#checkout"><img src="{{ URL::asset('assets/images/menu_icon_img.png') }}" alt="" /><span>{{Cart::count()}}</span> Shopping Cart</a></li>
 							<!-- <li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
 
 							<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
@@ -187,11 +187,11 @@
 	            I am Single Buyer
 	          </button>
 	          <a href="{{ url('/checkout_subcriber')}}"><button type="button" class="boaBtn_boa_pf">
-	            I am Subscriber
+	            Berlangganan
 	           
 	          </button>
 	          </a>
-	            <br><br><p>*Free Shipping Fee For Subcriber or Buy More Than 5 Items</p>
+	            <br><br><p>*Gratis ongkos kirim untuk yang berlangganan atau pembelian dengan total kuantitas lebih dari 5</p>
 		      </div>
 		      </center>
 	      	</div>
