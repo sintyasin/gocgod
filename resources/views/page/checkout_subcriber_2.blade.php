@@ -73,7 +73,8 @@
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-             <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
+              <input onclick="back()" type="button" value="Kembali"> 
+             <input type="button" value="Berikutnya" onclick="show_next('product_details', 'delivery_address','bar2');">
           </div>
         </div>
         <div id="wrapper">
@@ -127,8 +128,8 @@
 
             <br>
 
-            <input type="button" value="Previous" onclick="show_prev('product_details','bar3');">
-            <input type="submit" value="Submit" style="color:white; border: solid white;">
+            <input type="button" value="Kembali" onclick="show_prev('product_details','bar3');">
+            <input type="submit" value="Kirim" style="color:white; border: solid white;">
           </Center>
           </div>
           </div>
@@ -146,6 +147,13 @@
         "autoWidth": false
       } );
   } );
+
+
+  function back()
+  {
+    window.location = 'checkout_subcriber';
+  }
+
 
    $(function() {
         var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?> }).val();
@@ -181,7 +189,7 @@
     var rowId = $('#'+x+'-rowid').val();
     var id = $('#'+x+'-id').val();
     var quantity = $('#'+x+'-qty_subcriber').val();
-
+alert(x);
     $.ajax({
       url: '{{URL("/deletecart")}}',
       type:'POST',
@@ -195,6 +203,7 @@
       t.row(x).remove().draw(false);
       $('#total-cart').html(data.response.total);
       alert("Delete Data berhasil!");
+      alert(t.rows().count());
     })
     .fail(function(){
       alert('error');

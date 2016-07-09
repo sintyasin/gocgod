@@ -13,6 +13,13 @@
       </div>
     @else
     <div class="stepper">
+      @if (session('error'))
+        <div class="alert alert-danger fade in">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>{{ session('error') }}</strong>
+        </div>
+      @endif
+
       <div id="wrapper_progress">
         <br>
         <div class="col-md-12 col-xs-12">
@@ -30,7 +37,7 @@
         <br>
       </div>
             
-      <form class="form-horizontal" role="form" method="POST" action="{{ url('orderall_checkout') }}">
+      <form class="form-horizontal" id="orderForm" role="form" method="POST" action="{{ url('orderall_checkout') }}">
       {!! csrf_field() !!}
         
         <div id="wrapper_table">
@@ -45,7 +52,6 @@
                   <th>Deskripsi</th>
                   <th>Harga</th>
                   <th>Kuantitas</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -53,14 +59,14 @@
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
-                    <td> </td>
+                    <td> <img src={{URL('assets/images/product') . '/' . $items->category_name . '/' .  $items->picture}} /> </td>
                     <td style="text-align: justify"> {{$items->description}} </td>
                     <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
-                      <input type="hidden" value="{{$items->varian_name}}" id = "{{ $a.'-name' }}">
-                      <input type="hidden" value="{{$items->varian_id}}" id = "{{ $a.'-id' }}">
-                      <input type="hidden" value="{{$items->price}}" id = "{{ $a.'-price' }}">
-                      <input type="number" min="0" maxlength="2" id="{{ $a.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
+                      <input type="hidden" value="{{$items->varian_name}}" id = "{{ $a.'-name' }}" name = "{{ $a.'-name' }}">
+                      <input type="hidden" value="{{$items->varian_id}}" id = "{{ $a.'-id' }}" name = "{{ $a.'-id' }}">
+                      <input type="hidden" value="{{$items->price}}" id = "{{ $a.'-price' }}" name = "{{ $a.'-price' }}">
+                      <input type="number" min="0" maxlength="2" id="{{ $a.'-qty_subcriber' }}" name = "{{ $a.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
                       @foreach(Cart::content() as $cart)
                       @if($cart->id == $items->varian_id)
                       <script>
@@ -70,19 +76,20 @@
                       @endif
                       @endforeach
                     </td>
-                    <td>
-                    <button type="button" id="button_{{$a}}" class="btn btn-primary" onclick="addtosubcriber({{ $a }})"> Tambah ke Cart</button>
-                    </td>
                   </tr>
                   <?php $a++?>
                 @endforeach
               </tbody>
             </table>
             <br>
-            <input type="submit" value="Next">
           </div>
+
+          <div id="alert">
+          </div>
+
           </div>
         </form>
+        <input onclick="check()" type="submit" value="Berikutnya">
     </div>
     @endif
   </div>
@@ -95,6 +102,31 @@
         "autoWidth": false
       } );
   } );
+
+  function check()
+  {
+    var rows = <?php echo $a; ?>;
+    var bisaNext = false;
+    for (var i = 0; i < rows; i++) 
+    {
+      var quantity = $('#'+i+'-qty_subcriber').val();
+      if(quantity > 0)
+      {
+        bisaNext = true;
+        break;
+      }
+    }
+
+    if(bisaNext)
+      document.getElementById('orderForm').submit();
+    else
+    {
+      var data = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Anda harus membeli minimal 1 produk</strong></div>';
+      document.getElementById('alert').innerHTML = data;
+    }
+      
+
+  }
 
   function addtosubcriber(x)
   {

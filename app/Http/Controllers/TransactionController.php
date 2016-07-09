@@ -327,7 +327,6 @@ class TransactionController extends Controller
 
   public function deletecart(Request $data)
   {
-
     $v = Validator::make($data->all(),[
       'qty' =>'required|numeric',
       ]);
@@ -345,8 +344,68 @@ class TransactionController extends Controller
   }
 
 
-  public function order_details()
+  public function order_details(Request $data)
   {
+    $totalProduct = count(Product::all());
+
+    for ($i=0; $i < $totalProduct; $i++) { 
+      $v = Validator::make($data->all(),[
+        $i.'-name' =>'required',
+        $i.'-id' =>'required|numeric',
+        $i.'-price' =>'required|numeric',
+        $i.'-qty_subcriber' =>'required|numeric',
+      ]);
+    }
+
+    if($v->fails())
+    {
+      return redirect('checkout_subcriber')->with('error', 'Error. Data yang anda masukkan tidak valid');
+    }
+
+    $input = $data->all();
+
+    //masukkin data ke cart
+    for ($i=0; $i < $totalProduct; $i++) {
+      if($input[$i.'-qty_subcriber'] > 0)
+      {
+        $id = filter_var($input[$i.'-id'], FILTER_SANITIZE_STRING);
+        $qty = intval(filter_var($input[$i.'-qty_subcriber'], FILTER_SANITIZE_STRING));
+        $name = filter_var($input[$i.'-name'], FILTER_SANITIZE_STRING);
+        $price = floatval(filter_var($input[$i.'-price'], FILTER_SANITIZE_STRING));
+
+        //cek kalo udh ada di cart, berarti tinggal update
+        $rowid = Cart::search(array('id' => $id));
+
+        if($rowid){
+          $item = Cart::get($rowid[0]);
+          Cart::update($rowid[0], $qty);
+        }
+        else{
+          Cart::add([
+          'id'=> $id, 
+          'qty' => $qty,
+          'name' => $name,
+          'price' => $price,
+          ]);
+        }
+      } 
+    }
+
+    /*$rowid = Cart::search(array('id' => $data->id));
+
+    if($rowid){
+      $item = Cart::get($rowid[0]);
+      Cart::update($rowid[0], $item->qty + $data->qty);
+    }
+    else{
+      Cart::add([
+        'id'=> $data->id, 
+        'qty' => $data->qty,
+        'name' => $data->name,
+        'price' => $data->price,
+        ]);
+    }*/
+
     $data['contact'] = AboutUs::first();
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)

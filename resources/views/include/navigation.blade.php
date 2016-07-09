@@ -44,7 +44,7 @@
 													{!! csrf_field() !!}
 													<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 														<label class="sr-only" for="inputemail">Alamat Email</label>
-														<input type="email" class="form-control" id="inputemail" name="email" placeholder="Input Your Email" value="{{ old('email') }}" required>
+														<input type="email" class="form-control" id="inputemail" name="email" placeholder="gocgod@gocgod.com" value="{{ old('email') }}" required>
 														@if ($errors->has('email'))
 														<script type="text/javascript">
 															alert('False Email or Password');
@@ -68,14 +68,14 @@
 						                                    </span> -->
 						                                    @endif
 
-						                                    <div class="checkbox">
+						                                    <div class="checkbox text-center">
 																 <label>
-																 <input type="checkbox" name="remember"> Ingat Saya
+																 <input type="checkbox" name="remember" class="text-center"> Biarkan saya tetap masuk
 																 </label>
 															</div>
 
 
-				                                             <div class="help-block text-right"><a href="{{ url('/password/reset') }}">Lupa Password ?</a></div>
+				                                             <div class="help-block text-center"><a href="{{ url('/password/reset') }}">Lupa Password ?</a></div>
 														</div>
 														<div class="form-group">
 															 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
@@ -95,10 +95,10 @@
 	                            </a>
 
 	                            <ul class="dropdown-menu" role="menu">
-	                            	<li><a href="{{ url('/profile/'.Auth::user()->id) }}"><div class="padding_outer_profile">Profile</div></a></li>
-	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">Orderku</div></a></li>
-	                            	<li><a href="{{ url('/historymyorder') }}"><div class="padding_outer_profile">History Order</div></a></li>
-	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Logout</div></a></li>
+	                            	<li><a href="{{ url('/profile/'.Auth::user()->id) }}"><div class="padding_outer_profile">Informasi Akun</div></a></li>
+	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">Pesananku</div></a></li>
+	                            	<li><a href="{{ url('/historymyorder') }}"><div class="padding_outer_profile">Riwayat Pesanan</div></a></li>
+	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Keluar</div></a></li>
 	                            </ul>
 	                        </li>
 	                    @endif
