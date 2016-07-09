@@ -115,7 +115,7 @@
 						<ul>
 							<li><a href="{{ url('/home') }}">BERANDA</a></li>
 							<!-- <li><a href="#">PRODUCT DETAIL</i></a></li> -->
-							<li><a href="{{ url('/menu') }}">MENU</a></li>
+							<li><a href="{{ url('/menu') }}">PRODUK</a></li>
 							<li><a href="{{ url('/howtobuy') }}">CARA BERBELANJA</a></li>
 							@if(!Auth::guest() && Auth::user()->status_user == 1)
 							<li><a href="{{ url('/becomeanagent') }}">BERGABUNG MENJADI AGEN</a></li>
@@ -151,10 +151,10 @@
 				<ul>
 					<li><a href="{{ url('/home') }}">BERANDA</a></li>
 					<!-- <li><a href="#">PRODUCT DETAIL</a></li> -->
-					<li><a href="{{ url('/menu') }}">MENU</a></li>
+					<li><a href="{{ url('/menu') }}">PRODUK</a></li>
 					<li><a href="{{ url('/howtobuy') }}">CARA BERBELANJA</a></li>
 					@if(!Auth::guest() && Auth::user()->status_user == 1)
-					<li><a href="{{ url('/becomeanagent') }}">BECOME AN AGENT</a></li>
+					<li><a href="{{ url('/becomeanagent') }}">BERGABUNG MENJADI AGEN</a></li>
 					@endif
 					<li><a href="{{ url('/faq') }}">FAQ</a></li>
 					<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->

@@ -23,9 +23,9 @@
 						<span class="actual">Rp {{$price}}</span>
 					</div>
 
-					<h3 class="quick_h3">Description: </h3>
+					<h3 class="quick_h3">Deskripsi: </h3>
 					<p class="quick_desc"> {{$query->description}}</p>
-					<h3 class="quick_h3">Weight: <span class="color"> {{$query->weight}} kg</span></h3> 
+					<h3 class="quick_h3">Berat: <span class="color"> {{$query->weight}} kg</span></h3> 
 				</div>
 			</div>
 		</div>
@@ -35,7 +35,7 @@
 			<div class="padding_outer_menu">
 				<div class="border_outer">
 					<div class="col-xs-5">
-					<h3 class="quick_h3" style="padding-top: 10px"> QUANTITY: </h3>
+					<h3 class="quick_h3" style="padding-top: 10px"> KUANTITAS: </h3>
 					</div>
 					<div class="col-xs-5">
 						<input type="number" min="1" value="1" class="form-control" id="qty" placeholder="Qty" name="#" style="width: 100px;">
@@ -50,15 +50,15 @@
 					</div>
 					<div class="position_menu">
 						<div class="col-xs-12">
-							<a href="#" class="cartBtn" onclick="addtocart({{$query->varian_id}})"><i class="fa fa-shopping-cart" ></i> Add Cart</a> 
-							<a href={{ URL('/checkout_subcriber') }} class="cartBtn" target="_self">Subscribe</a>
+							<a href="#" class="cartBtn" onclick="addtocart({{$query->varian_id}})"><i class="fa fa-shopping-cart" ></i> Tambah</a>
+							<a href={{ URL('/checkout_subcriber') }} class="cartBtn" target="_self">Berlangganan</a>
 							
 						</div>
 						<br>
 							@if (Auth::guest())
 							<br>
 							@elseif (Auth::user()->status_user == 0)
-							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Request Product Sample </a></button>
+							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Contoh Produk </a></button>
 							@else
 							<br>
 							@endif
@@ -83,7 +83,7 @@
 						<div id="headingFive" role="tab" class="panel-heading">
 							<h4 class="panel-title">
 							<a class="btn" aria-controls="orderReview" aria-expanded="false" href="#review" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-									Leave a Review Click Here
+									Klik disini untuk memberikan ulasan produk
 								</a>
 							</h4>
 						</div>
@@ -93,18 +93,18 @@
 									<div class="col-md-12 col-xs-12">
 										<div class="product-review">
 											@if (Auth::guest())
-						                        <a href={{ URL('/register')}} class="testimonial_custom"> Please Log in or Click here to Register </a>
+						                        <a href={{ URL('/register')}} class="testimonial_custom"> Silahkan masuk terlebih dahulu atau klik link ini untuk mendaftar </a>
 						                    @else
 						                    	<form method="POST" action="{{ url('/review/'. $query->varian_id) }}">
 						                    		{!! csrf_field() !!}
 							                    	<!-- <input type="hidden" class="form-control" name="varian_id" value="{{ $query->varian_id }}"> -->
 							                    	<div class="form-group">
-														<label>Name:</label>
+														<label>Nama:</label>
 														<input type="text" class="form-control" id="name" value="{{ Auth::user()->name }}" style="width: 100%;" disabled> 
 													</div>
 													<div class="form-group">
-														<label>Review:</label>
-														<textarea class="form-control" name="testimonial" placeholder="Your Review" row="12"></textarea>
+														<label>Ulasan:</label>
+														<textarea class="form-control" name="testimonial" placeholder="Ulasan Anda" row="12"></textarea>
 														@if ($errors->has('testimonial'))
 											            <span class="help-block">
 											                <strong>{{ $errors->first('testimonial') }}</strong>
