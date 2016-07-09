@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
 	<div class ="padding_outer">
-		<h2>Our Menu</h2>
+		<h2>Menu</h2>
 		<?php $i = 0; ?>
 		@foreach($query->chunk(4) as $items)
 		<div class="row">  

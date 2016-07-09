@@ -18,6 +18,7 @@ use App\TransactionController;
 use App\SampleDetail;
 use App\SampleRequest;
 use App\AboutUs;
+use App\CutOffDate;
 
 class ProductController extends Controller
 {

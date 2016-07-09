@@ -22,8 +22,8 @@
 				<div class="footer_link address">
 					<p>go C go D</p>
 					<ul>
-						<li><span>Address: </span> {{$contact->address}} </li>
-						<li><span>WA: </span>{{$contact->phone}} ({{$contact->name}})</li>
+						<li><span>Alamat: </span> {{$contact->address}} </li>
+						<li><span>WhatsApp: </span>{{$contact->phone}} ({{$contact->name}})</li>
 					</ul>
 				</div>
 				<div class="footer_icon">
@@ -37,14 +37,14 @@
 			</div>
 			<div class="col-sm-6 col-md-3">
 				<div class="footer_link">
-					<p>My Account</p>
+					<p>Akun Saya</p>
 					<ul>
 						@if(Auth::guest())
-						<li><a href="#">My Account</a></li>
-						<li><a href="#">Check Out</a></li>
+						<li><a href="#">Profile</a></li>
+						<li><a href="#">Shopping Cart</a></li>
 						@else
-						<li><a href="{{ url('/profile/{id}') }}">My Account</a></li>
-						<li><a href="{{ url('/checkout') }}">Check Out</a></li>
+						<li><a href="{{ url('/profile/{id}') }}">Profile</a></li>
+						<li><a href="{{ url('/checkout') }}">Shopping Cart</a></li>
 						@endif
 						
 					</ul>
@@ -54,7 +54,7 @@
 				<div class="footer_link res_mar">
 					<p>Customer Support</p>
 					<ul>
-						<li><a href="{{ url('/howtobuy') }}">Shipping Guide</a></li>
+						<li><a href="{{ url('/howtobuy') }}">Cara Berbelanja</a></li>
 					</ul>
 				</div>
 			</div>
