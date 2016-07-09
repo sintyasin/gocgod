@@ -263,14 +263,17 @@ class ProductController extends Controller
     public function getAllMenu()
     {
         $data['contact'] = AboutUs::first();
-        $data['query_menu'] = Product::all();
+        //$data['query_menu'] = Product::all();
+        $data['query_menu'] = Product::leftJoin('product__category as c', 'c.category_id', '=', 'product__varian.category_id')
+                                     ->get(['varian_name', 'varian_id', 'price', 'picture', 'product__varian.description as description', 'category_name']);
+//dd($data['query_menu']);
         $i = 0;
         //masukkin data kategori ke array
-        foreach($data['query_menu'] as $tmp)
+        /*foreach($data['query_menu'] as $tmp)
         {
             $data['queryCategory'][$i] = ProductCategory::find($tmp->category_id);
             $i++;
-        }
+        }*/
 
         // //musti dijoin 3 table
         // foreach($data['cart_content'] as $temp)
