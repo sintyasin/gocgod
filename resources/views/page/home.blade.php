@@ -5,7 +5,7 @@
 	<div class="alert alert-success">
 	    {{ session('active') }}
 	</div>
-@else (session('login'))
+@elseif (session('login'))
 	<div class="alert alert-danger">
 	    {{ session('login') }}
 	</div>
