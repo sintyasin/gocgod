@@ -16,12 +16,6 @@ Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('/', 'HomeController@index');
 Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
 Route::get('menu/', 'ProductController@getMenu');
-Route::get('myaccount/{id}', 'MemberController@readDataMember');
-
-Route::get('productsample', 'ProductController@getMenuSample');
-Route::post('eventsample', 'ProductController@eventsample');
-Route::get('productsample/{id}', 'ProductController@productsample');
-Route::post('productsample', 'ProductController@productsampledata');
 
 Route::post('review/{id}', 'ProductController@giveTestimonial');
 
@@ -33,53 +27,8 @@ Route::get('howtobuysubcriber', 'ProductController@howToBuySubcriber');
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
 
-Route::get('checkout_subcriber', 'ProductController@getAllMenu');
-Route::post('orderall_checkout', 'TransactionController@order_details');
-Route::post('orderall', 'TransactionController@orderall');
-Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
-Route::get('customercart', 'TransactionController@customerCart');
-Route::post('updatecart/', 'TransactionController@updatecart');
-Route::post('deletecart/', 'TransactionController@deletecart');
-Route::get('summary/{id}', 'TransactionController@summary');
-
-
-Route::post('addtocart', 'TransactionController@addtocart');
-Route::get('checkout_singlebuyer', 'TransactionController@order_details_single');
-Route::post('updatecart_single/', 'TransactionController@updatecart_single');
-Route::post('deletecart_single/', 'TransactionController@deletecart_single');
-Route::post('order_single', 'TransactionController@order_single');
-Route::get('banktransfer/{id}', 'TransactionController@banktransfer');
-
-
-Route::get('profile/{id}', 'MemberController@showbalance');
-Route::post('withdrawMoney', 'MemberController@withdrawMoney');
-Route::post('edit_profile', 'MemberController@edit_profile');
-Route::post('edit_password', 'MemberController@edit_password');
 Route::get('becomeanagent', 'MemberController@bank');
 Route::post('request_agent', 'MemberController@request_agent');
-
-Route::get('customerorder', 'TransactionController@getOrderList');
-Route::get('agent/current/order', 'TransactionController@getCurrentOrderList');
-Route::get('customerorder/data', array('as' => 'customerorderlist.data', 
-		'uses' =>'TransactionController@getOrderData'));
-Route::get('agent/history/order', 'TransactionController@getHistoryOrderList');
-Route::get('agent/history/order/data', array('as' => 'agenthistoryorderlist.data', 
-		'uses' =>'TransactionController@getHistoryOrderData'));
-Route::post('dataorderproduct', 'TransactionController@getProductOrder');
-Route::post('sending', 'TransactionController@sending');
-
-Route::get('myorder', 'TransactionController@getOrderListCustomer');
-Route::get('myorder/data', array('as' => 'orderlistCustomer.data', 
-	'uses' =>'TransactionController@getOrderDataCustomer'));
-Route::post('receive', 'TransactionController@receive');
-Route::get('edit/order/{id}', 'TransactionController@getEditOrderCustomer');
-Route::post('post/edit/order', 'TransactionController@postEditOrderCustomer');
-
-Route::get('historymyorder', 'TransactionController@getOrderListHistoryCustomer');
-Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
-	'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
-Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryCustomer');
-
 
 //Route::auth();
 Route::post('login', 'Auth\AuthController@login');
@@ -93,6 +42,58 @@ Route::post('password/reset', 'Auth\PasswordController@reset');
 
 Route::get('user/activation/{token}', array('as' => 'user.activate',
 	'uses' => 'Auth\AuthController@activateUser'));
+
+Route::group(['middleware' => 'user'], function () {
+	Route::get('myorder', 'TransactionController@getOrderListCustomer');
+	Route::get('myorder/data', array('as' => 'orderlistCustomer.data', 
+	'uses' =>'TransactionController@getOrderDataCustomer'));
+	Route::get('myaccount/{id}', 'MemberController@readDataMember');
+	Route::get('productsample', 'ProductController@getMenuSample');
+	Route::post('eventsample', 'ProductController@eventsample');
+	Route::get('productsample/{id}', 'ProductController@productsample');
+	Route::post('productsample', 'ProductController@productsampledata');
+	Route::get('checkout_subcriber', 'ProductController@getAllMenu');
+	Route::post('orderall_checkout', 'TransactionController@order_details');
+	Route::post('orderall', 'TransactionController@orderall');
+	Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
+	Route::get('customercart', 'TransactionController@customerCart');
+	Route::post('updatecart/', 'TransactionController@updatecart');
+	Route::post('deletecart/', 'TransactionController@deletecart');
+	Route::get('summary/{id}', 'TransactionController@summary');
+
+
+	Route::post('addtocart', 'TransactionController@addtocart');
+	Route::get('checkout_singlebuyer', 'TransactionController@order_details_single');
+	Route::post('updatecart_single/', 'TransactionController@updatecart_single');
+	Route::post('deletecart_single/', 'TransactionController@deletecart_single');
+	Route::post('order_single', 'TransactionController@order_single');
+	Route::get('banktransfer/{id}', 'TransactionController@banktransfer');
+	Route::get('profile/{id}', 'MemberController@showbalance');
+	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
+	Route::post('edit_profile', 'MemberController@edit_profile');
+	Route::post('edit_password', 'MemberController@edit_password');
+	Route::get('customerorder', 'TransactionController@getOrderList');
+	Route::get('agent/current/order', 'TransactionController@getCurrentOrderList');
+	Route::get('customerorder/data', array('as' => 'customerorderlist.data', 
+			'uses' =>'TransactionController@getOrderData'));
+	Route::get('agent/history/order', 'TransactionController@getHistoryOrderList');
+	Route::get('agent/history/order/data', array('as' => 'agenthistoryorderlist.data', 
+			'uses' =>'TransactionController@getHistoryOrderData'));
+	Route::post('dataorderproduct', 'TransactionController@getProductOrder');
+	Route::post('sending', 'TransactionController@sending');
+
+
+	Route::post('receive', 'TransactionController@receive');
+	Route::get('edit/order/{id}', 'TransactionController@getEditOrderCustomer');
+	Route::post('post/edit/order', 'TransactionController@postEditOrderCustomer');
+
+	Route::get('historymyorder', 'TransactionController@getOrderListHistoryCustomer');
+	Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
+		'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
+	Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryCustomer');
+});
+
+
 
 //////halaman admin
 //auto update konfirmasi terima barang

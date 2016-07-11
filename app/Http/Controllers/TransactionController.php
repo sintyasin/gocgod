@@ -33,6 +33,11 @@ public $price;
 //=========================== CHECKOUT SINGLE
 class TransactionController extends Controller
 {
+  public function customerCart()
+  {
+    return view('page.customercart');
+  }
+  
   public function order_details_single()
   {
     $data['contact'] = AboutUs::first();
