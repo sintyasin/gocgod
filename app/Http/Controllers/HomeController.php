@@ -8,6 +8,10 @@ use App\Faq;
 use Auth;
 use App\Banner;
 use App\AboutUs;
+use App\TxOrder;
+use App\TxOrderDetail;
+use App\Member;
+use Mail;
 
 class HomeController extends Controller
 {

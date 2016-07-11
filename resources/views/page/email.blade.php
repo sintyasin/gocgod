@@ -29,7 +29,7 @@
 		</div>
 	</div>
 	<Center>
-	<!-- <img style="padding-top:20px; width:100px; margin-right:20px;" src="{{ URL::asset('assets/images/logo/logo.png') }}"> -->
+<!-- 	<img style="padding-top:20px; width:100px; margin-right:20px;" src="{{ URL::asset('assets/images/logo/logo.png') }}"> -->
 	<p style="font-size:30px;  text-align: center; font-family:calibri; font-weight:bold; padding-top:none;"> Pesanan Anda <span style="color:red">Akan Diproses</span> </p>
 	<hr>
 	</Center>
@@ -38,9 +38,9 @@
 	<div class="isi" style="font-family:calibri; padding-left:20px; padding-right:20px;">
 	<p>Terima kasih atas kepercayaannya untuk memesan produk kami.</p>
 
-	<p style="font-weight:bold; font-size:20px; margin-bottom:-2px;">Informasi Pemesanan</p>
+	<p style="font-weight:bold; font-size:20px;">Informasi Pemesanan</p>
 	<hr style="width: 200px; float:left;">
-	<p style="padding-top:5px;"> Id Pesanan: 
+	<p style="padding-top:20px;"> Id Pesanan: 
 	
 	@foreach($order_a as $id)
 	@if($id->order_id == $order_a[0]->order_id)
@@ -69,9 +69,9 @@
 
 
 	<br>
-	<p style="font-weight:bold; font-size:20px; margin-bottom:-2px;">Informasi Pembayaran</p>
+	<p style="font-weight:bold; font-size:20px;">Informasi Pembayaran</p>
 	<hr style="width: 200px; float:left;">
-	<p style="padding-top:5px;"> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span>
+	<p style="padding-top:20px;"> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span>
 	<br>
 	Silahkan segera melakukan pembayaran.
 	</p>
@@ -80,5 +80,15 @@
 
 	</div>
 
+	<br>
+	<br>
+
+	<div class="top_custom" style="overflow:hidden; background:rgb(1,117,96) none repeat scroll 0 0; overflow:hidden; height:100px; width:100%;">
+		<div class="col-sm-12 col-sm-12">
+			<br>
+			<div class="font_padding" style="font-size:15px; font-family: calibri; padding:10px; color:white;"> <span style="font-size:20px; font-weight: bold;"> GoCGoD </span><br> <span style="font-weight:bold">Alamat:</span> <span>{{$contact->address}}</span> 
+				<br> <span style="font-weight:bold">WhatsApp: </span> <span>{{$contact->phone}}</span></div>
+		</div>
+	</div>
 </body>
 </html>
