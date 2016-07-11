@@ -32,12 +32,12 @@ class ActivationService
         $token = $this->activationRepo->createActivation($user);
 
         $link = route('user.activate', $token);
-        $text = sprintf('Activate account %s', $link);
+        $text = sprintf('Aktifkan akun Anda dengan klik link berikut %s', $link);
 
         Mail::raw($text, function($message) use ($user, $text, $sender)
         {
             $message->from($sender, 'go C go D');
-            $message->to($user->email)->subject('Activation mail');
+            $message->to($user->email)->subject('Aktivasi akun goCgoD');
         });
     }
 
