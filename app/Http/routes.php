@@ -11,6 +11,7 @@
 |
 */
 
+Route::get('email', 'MemberController@a');
 Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('/', 'HomeController@index');
 Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');

@@ -250,6 +250,14 @@ class TransactionController extends Controller
                   ->groupBy('order_id')
                   ->get();
     $data['contact'] = AboutUs::first();
+    /*$data['payment'] = 
+
+
+    Mail::send('page.email', $data, function ($m) use ($user) {
+            $m->from('hello@app.com', 'Your Application');
+
+            $m->to($user->email, $user->name)->subject('Your Reminder!');
+        });*/
 
     return view('page.summary', $data);
 

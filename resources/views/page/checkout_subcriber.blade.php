@@ -59,7 +59,7 @@
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
-                    <td> <img src={{URL('assets/images/product') . '/' . $items->category_name . '/' .  $items->picture}} /> </td>
+                    <td> <img style='height: 100px;' src={{URL('assets/images/product') . '/' . $items->category_name . '/' .  $items->picture}} /> </td>
                     <td style="text-align: justify"> {{$items->description}} </td>
                     <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
