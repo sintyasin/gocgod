@@ -20,6 +20,6 @@ class UserMiddleware
             return $next($request);
         }
         
-        return redirect('/');
+        return redirect('/')->with('login', 'Silahkan masuk untuk memilih menu ini');
     }
 }
