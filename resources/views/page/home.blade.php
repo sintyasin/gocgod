@@ -5,6 +5,10 @@
 	<div class="alert alert-success">
 	    {{ session('active') }}
 	</div>
+@else (session('login'))
+	<div class="alert alert-danger">
+	    {{ session('login') }}
+	</div>
 @endif
 <div class="padding_slider">
 	@include('include.slide')
