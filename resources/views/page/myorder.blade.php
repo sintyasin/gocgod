@@ -3,12 +3,12 @@
 @section('content')
 <div class="padding_outer">
     <div class="container">
-        <h2>My Order</h2>
+        <h2>Pesananku</h2>
         <div class="row">
         @if(Session::has('success'))
             <div class="alert alert-success fade in">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>Order has been updated successfully!</strong>
+              <strong>Pesanan berhasil diubah!</strong>
             </div>
         @endif
           <div class="col-lg-12">
@@ -30,7 +30,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title" style="color:black;">Product Detail</h4>
+                  <h4 class="modal-title" style="color:black;">Perincian Produk</h4>
                 </div>
                 <div class="modal-body">
                   <div id="name" style="color:black; min-height:30px; width:80px; float:left;"></div>
@@ -46,7 +46,7 @@
                   </table>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                 </div>
               </div>
 
@@ -137,16 +137,16 @@ $(function() {
         },
         dom: 'Bfrtip',
         columns: [
-            { data: 'order_id', name: 'order_id', title:'Order Id'},
-            { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
-            { data: 'agent', name: 'agent', title:'Agent' },
-            { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date' },
+            { data: 'order_id', name: 'order_id', title:'Id Pesanan'},
+            { data: 'order_date', name: 'order_date', title:'Tanggal Pemesanan', sType: 'date' },
+            { data: 'agent', name: 'agent', title:'Agen' },
+            { data: 'shipping_date', name: 'shipping_date', title:'Tanggal Pengiriman' },
             // { data: 'varian_name', name: 'varian_name', title:'Varian_name' },
-            { data: 'shipping_fee', name: 'shipping_fee', title:'Shipping Fee' },
+            { data: 'shipping_fee', name: 'shipping_fee', title:'Ongkos Kirim' },
             { data: 'total', name: 'total', title:'Total' },
-            { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
-            { data: 'status_shipping', name: 'status_shipping', title:'Shipping Confirmation' },
-            { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
+            { data: 'status_payment', name: 'status_payment', title:'Status Pembayaran' },
+            { data: 'status_shipping', name: 'status_shipping', title:'Konfirmasi Pengiriman' },
+            { data: 'ship_address', name: 'ship_address', title:'Alamat Pengiriman' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
               //BUAT DAPETIN HARI MINGGU
               var today = new Date();

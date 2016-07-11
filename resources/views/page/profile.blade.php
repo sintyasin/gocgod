@@ -3,18 +3,18 @@
 @section('content')
 <div class="padding_outer">
     <div class="container">
-        <h2>Profile</h2>
+        <h2>Informasi Akun</h2>
 
     	<div class="col-md-3">
         @if(Auth::user()->status_user == 0)
         <button type="button" class="boaBtn_boa_pf" onclick="show_balance('profile')">
-          My Profile
+          Informasi Akun
         </button>
         @endif
 
         <!-- Button trigger modal -->
         <button type="button" class="boaBtn_boa_pf" data-toggle="modal" data-target="#myModal">
-          Edit Profile Data
+          Ubah Informasi
         </button>
 
         <!-- Modal -->
@@ -23,7 +23,7 @@
             <div class="modal-content">
               <div class="modal_header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  Edit Profile Data
+                  Ubah Informasi
               </div>
               <div class="modal-body">
                 
@@ -31,7 +31,7 @@
                   {!! csrf_field() !!}
 
                   <div class="form-group">
-                      <label class="col-md-4 control-label">Name</label>
+                      <label class="col-md-4 control-label">Nama</label>
 
                       <div class="col-md-8">
                           <input type="text" class="form-control" value="{{ Auth::user()->name }}" disabled/>
@@ -39,7 +39,7 @@
                   </div>
 
                   <div class="form-group{{ $errors->has('dob') ? ' has-error' : '' }}">
-                      <label class="col-md-4 control-label">Date Of Birth</label>
+                      <label class="col-md-4 control-label">Tanggal Lahir</label>
 
                       <div class="col-md-8">
                           <div class='input-group date' id='datetimepicker1'>
@@ -52,7 +52,7 @@
                   </div>
 
                   <div class="form-group{{ $errors->has('city') || $errors->first('newcity') ? ' has-error' : '' }}">
-                      <label class="col-md-4 control-label">City</label>
+                      <label class="col-md-4 control-label">Kota</label>
 
                       <div class="col-md-8">
                           <select onclick="javascript:check();" class="form-control" id="city" name="city" >
@@ -63,11 +63,11 @@
                                 <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
                               @endif
                             @endforeach
-                              <option value="0">New City</option>
+                              <option value="0">Kota Baru</option>
                           </select>
                           <div id="newcity" style="display:none;">
                             <br>
-                            <input type='text' class="form-control" placeholder="New city name" name="newcity" >
+                            <input type='text' class="form-control" name="newcity" >
                           </div>
                           @if ($errors->has('city'))
                           <span class="help-block">
@@ -83,7 +83,7 @@
                   </div>
 
                   <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-                      <label class="col-md-4 control-label">Address</label>
+                      <label class="col-md-4 control-label">Alamat</label>
 
                       <div class="col-md-8">
                           <textarea class="form-control" name="address" rows="3">{{ Auth::user()->address }}</textarea>
@@ -97,7 +97,7 @@
                   </div>
 
                   <div class="form-group{{ $errors->has('zipcode') ? ' has-error' : '' }}">
-                      <label class="col-md-4 control-label">Zip Code</label>
+                      <label class="col-md-4 control-label">Kode Pos</label>
 
                       <div class="col-md-8">
                           <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}">
@@ -111,7 +111,7 @@
                   </div>
 
                   <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                      <label class="col-md-4 control-label">Phone</label>
+                      <label class="col-md-4 control-label">Telepon</label>
 
                       <div class="col-md-8">
                           <input type="text" class="form-control" name="phone" value="{{ Auth::user()->phone }}">
@@ -140,7 +140,7 @@
 
                   <div class="form-group">
                       <div class="col-md-offset-4">
-                          <button type="submit" class="btn btn-primary">Submit</button>     
+                          <button type="submit" class="btn btn-primary">SUBMIT</button>     
                           &nbsp; &nbsp;
                           <a href={{ URL('profile/'.Auth::user()->id) }} class="btn btn-default">Cancel</a>
                       </div>
@@ -156,7 +156,7 @@
 
         <!-- Button trigger modal -->
         <button type="button" class="boaBtn_boa_pf" data-toggle="modal" data-target="#myPassword">
-          Edit Password
+          Ubah Password
         </button>
 
         <!-- Modal -->
@@ -165,7 +165,7 @@
             <div class="modal-content">
               <div class="modal_header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  Edit Password
+                  Ubah Password
               </div>
               <div class="modal-body">
                 
@@ -173,7 +173,7 @@
             
 
                     <div class="form-group{{ $errors->has('pass') ? ' has-error' : '' }}">
-                        <label class="col-md-4 control-label">Current Password</label>
+                        <label class="col-md-4 control-label">Password Awal</label>
 
                         <div class="col-md-8">
                             <input type='password' name="pass" class="form-control"/>
@@ -187,7 +187,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('newpassword') ? ' has-error' : '' }}">
-                        <label class="col-md-4 control-label">New Password</label>
+                        <label class="col-md-4 control-label">Password Baru</label>
 
                         <div class="col-md-8">
                             <input type='password' name="newpassword" class="form-control"/>
@@ -201,7 +201,7 @@
                     </div>
 
                     <div class="form-group{{ $errors->has('newpassword_confirmation') ? ' has-error' : '' }}">
-                        <label class="col-md-4 control-label">Confirm New Password</label>
+                        <label class="col-md-4 control-label">Konfirmasi Password Baru</label>
 
                         <div class="col-md-8">
                             <input type='password' name="newpassword_confirmation" class="form-control"/>
@@ -216,7 +216,7 @@
 
                     <div class="form-group">
                         <div class="col-md-offset-4">
-                            <button type="submit" class="btn btn-primary">Submit</button>     
+                            <button type="submit" class="btn btn-primary">SUBMIT</button>     
                             &nbsp; &nbsp;
                             <a href={{ URL('profile/'.Auth::user()->id) }} class="btn btn-default">Cancel</a>
                         </div>
@@ -230,7 +230,7 @@
 
         @if(Auth::user()->status_user == 0)
         <button type="button" class="boaBtn_boa_pf" onclick="show_balance('balance')">
-          My Balance
+          Total Uang
         </button>
         @endif
     	</div>
@@ -243,34 +243,34 @@
                 	<h3 class="profile-username text-center"> {{Auth::user()->name}} </h3>
                     <p class="text-muted text-center"> 
                     @if (Auth::user()->status_user == 1)
-                    	Customer
+                    	Pelanggan
                     @else
-                        Agent
+                      Agen
                     @endif
                     </p>
                     <center>
                     <ul class="list-group list-group-unbordered">
                       <li class="list-group-item">
-                        Address: &nbsp;<b> {{Auth::user()->address}}</b>
+                        Alamat: &nbsp;<b> {{Auth::user()->address}}</b>
                       </li>
                       <li class="list-group-item">
-                        Zip Code: &nbsp;<b> {{Auth::user()->zipcode}}</b>
+                        Kode Pos: &nbsp;<b> {{Auth::user()->zipcode}}</b>
                       </li>
                       <li class="list-group-item">
-                        Date of Birth: &nbsp;<b> {{Auth::user()->date_of_birth}}</b>
+                        Tanggal Lahir: &nbsp;<b> {{Auth::user()->date_of_birth}}</b>
                       </li>
                       <li class="list-group-item">
-                        Telephone:&nbsp;<b> {{Auth::user()->phone}}</b>
+                        Telepon:&nbsp;<b> {{Auth::user()->phone}}</b>
                       </li>
                       <li class="list-group-item">
                         Email: &nbsp;<b> {{Auth::user()->email}}</b>
                       </li>
                       @if(Auth::user()->status_user==0)
                       	<li class="list-group-item">
-                      	Bank Account: &nbsp;<b> {{Auth::user()->bank_account}}</b>
+                      	Akun Bank: &nbsp;<b> {{Auth::user()->bank_account}}</b>
                       	</li>
                       	<li class="list-group-item">
-                      	Balance: &nbsp;<b> Rp {{Auth::user()->balance}}</b>
+                      	Jumlah: &nbsp;<b> Rp {{Auth::user()->balance}}</b>
                       	</li>
                       @endif
                     </ul>
@@ -285,10 +285,10 @@
           <div class="box box-primary" >
                 <div class="box-body box-profile">
                   
-                  <h3 class="profile-username text-center"> {{Auth::user()->name}} - Balance </h3>
-                    <p class="text-muted text-center" style="font-weight: bold;"> Balance: Rp {{number_format(Auth::user()->balance,0, ',' , '.')}} </p>
+                  <h3 class="profile-username text-center"> {{Auth::user()->name}} - Jumlah Uang </h3>
+                    <p class="text-muted text-center" style="font-weight: bold;"> Rp {{number_format(Auth::user()->balance,0, ',' , '.')}} </p>
                     <center>
-                    <button type="button" class="boaBtnProfile" data-toggle="modal" data-target="#withdrawMoney"> Withdraw Money </button>
+                    <button type="button" class="boaBtnProfile" data-toggle="modal" data-target="#withdrawMoney"> Penarikan Uang </button>
                     </center>
                      
                     <br>
@@ -297,11 +297,11 @@
                       <thead>
                         <tr>
                           <th></th>
-                          <th>Date</th>
-                          <th>Type</th>
-                          <th>Amount</th>
-                          <th>Description</th>
-                          <th>Status Tranferred</th>
+                          <th>Tanggal</th>
+                          <th>Tipe</th>
+                          <th>Jumlah</th>
+                          <th>Deskripsi</th>
+                          <th>Status</th>
                         </tr>
                       </thead>
                       @foreach($querybalance as $query)
@@ -311,9 +311,9 @@
                         <td>{{$i+1}}</td>
                         <td>{{$query->created_at}}</td>
                         <td>@if($query->balance_type == 0)
-                        Withdraw
+                        Penarikan
                         @elseif ($query->balance_type == 1)
-                        Fee
+                        Pemasukan
                         @endif</td>
                         <td>Rp {{number_format($query->amountMoney, 0, ',', '.')}}</td>
                         <td>@if($query->balance_type == 0)
@@ -322,9 +322,9 @@
                         From Order {{$query->status}}
                         @endif</td>
                         <td>@if($query->balance_type == 0 && $query->statusTransfer == 0)
-                        Processed
+                        Sedang diproses
                         @elseif ($query->balance_type == 0 && $query->statusTransfer == 1)
-                        Tranferred
+                        Sudah di transfer
                         @endif
                         </td>
 
@@ -346,7 +346,7 @@
             <div class="modal-content">
               <div class="modal_header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                  Withdraw Money
+                  Penarikan Uang
               </div>
               <div class="modal-body">
                 
@@ -356,11 +356,11 @@
                     <div class="form-group">
                       <center>
                         <div class="col-md-12">
-                        <label class="control-label" style="padding-bottom: 30px;"><b>YOUR BALANCE IS Rp {{number_format(Auth::user()->balance, 0, ',', '.')}}</b>
+                        <label class="control-label" style="padding-bottom: 30px;"><b>TOTAL UANG: Rp {{number_format(Auth::user()->balance, 0, ',', '.')}}</b>
                         </label>
                         </div>
                         <div class="col-md-12">
-                        <label class="control-label" style="padding-bottom: 10px;">How much do you want to withdraw?
+                        <label class="control-label" style="padding-bottom: 10px;">Berapa jumlah uang yang ingin ditarik?
                         </label>
                         </div>
                         <div class="col-md-12">
@@ -375,7 +375,7 @@
                         <br>
                         <br>
                             <button type="submit" class="checkPageBtn">
-                             Withdraw
+                            SUBMIT
                             </button>
                         </div>
                         </center>

@@ -16,7 +16,7 @@ var table = $('#customerDatatable').DataTable({
         dom: 'Bfrtip',
         order: [[ 2, "desc" ]],
         columns: [
-            { data: 'order_id', name: 'order_id', title:'Id Order' },
+            { data: 'order_id', name: 'order_id', title:'Id Pesanan' },
             { data: 'customer', name: 'customer', title:'Pelanggan' },
             { data: 'shipping_date', name: 'shipping_date', title:'Tanggal Pemesanan', sType: 'date' },
             { data: 'phone', name: 'phone', title:'Telepon' },

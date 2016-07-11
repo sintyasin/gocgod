@@ -584,12 +584,12 @@ class TransactionController extends Controller
 
     return Datatables::of($data['query'])
     ->editColumn('status_payment', function($data){ 
-        if($data->status_payment == 0) return "Unpaid";
-        else if($data->status_payment == 1) return "Paid";
+        if($data->status_payment == 0) return "Belum dibayar";
+        else if($data->status_payment == 1) return "Sudah dibayar";
     })
     ->editColumn('status_confirmed', function($data){ 
-        if($data->status_confirmed == 0) return "Unconfirmed";
-        else if($data->status_confirmed == 1) return "Confirmed";
+        if($data->status_confirmed == 0) return "Belum diterima";
+        else if($data->status_confirmed == 1) return "Sudah diterima";
     })
     ->make(true);
   }
@@ -616,12 +616,12 @@ class TransactionController extends Controller
 
     return Datatables::of($data['query'])
     ->editColumn('status_payment', function($data){ 
-      if($data->status_payment == 0) return "Unpaid";
-      else if($data->status_payment == 1) return "Paid";
+      if($data->status_payment == 0) return "Belum dibayar";
+      else if($data->status_payment == 1) return "Sudah dibayar";
     })
     ->editColumn('status_confirmed', function($data){ 
-      if($data->status_confirmed == 0) return "Unconfirmed";
-      else if($data->status_confirmed == 1) return "Confirmed";
+      if($data->status_confirmed == 0) return "Belum diterima";
+      else if($data->status_confirmed == 1) return "Sudah diterima";
     })
     ->make(true);
   }
@@ -687,7 +687,6 @@ class TransactionController extends Controller
   {
     $data['contact'] = AboutUs::first();
     $data['active'] = 'txOrder';
-
     return view('page.myorder', $data);
   }
 
@@ -706,12 +705,12 @@ class TransactionController extends Controller
 
     return Datatables::of($data['query'])
     ->editColumn('status_payment', function($data){ 
-      if($data->status_payment == 0) return "Unpaid";
-      else if($data->status_payment == 1) return "Paid";
+      if($data->status_payment == 0) return "Belum dibayar";
+      else if($data->status_payment == 1) return "Sudah dibayar";
     })
     ->editColumn('status_shipping', function($data){ 
-      if($data->status_shipping == 0) return "Processed";
-      else if($data->status_shipping == 1) return "Sent";
+      if($data->status_shipping == 0) return "Sedang diproses";
+      else if($data->status_shipping == 1) return "Sudah dikirim";
     })
     ->make(true);
   }

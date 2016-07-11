@@ -89,7 +89,7 @@
 
           </div>
         </form>
-        <input onclick="check()" type="submit" value="Berikutnya">
+        <input onclick="check()" type="submit" value="Next">
     </div>
     @endif
   </div>
@@ -105,7 +105,8 @@
 
   function check()
   {
-    var rows = <?php echo $a; ?>;
+
+    var rows = <?php if(isset($a)) echo $a; ?>;
     var bisaNext = false;
     for (var i = 0; i < rows; i++) 
     {

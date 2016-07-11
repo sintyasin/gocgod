@@ -122,7 +122,7 @@
 							@endif
 							<li><a href="{{ url('/faq') }}">FAQ</a></li>
 							@if(!Auth::guest() && Auth::user()->status_user == 0)
-							<li><a href="{{ url('/customerorder')}}">ORDER PELANGGAN</a></li>
+							<li><a href="{{ url('/customerorder')}}">PESANAN PELANGGAN</a></li>
 							@endif	
 							<li class="shop_icon"><a href="#" data-toggle="modal" data-target="#checkout"><img src="{{ URL::asset('assets/images/menu_icon_img.png') }}" alt="" /><span>{{Cart::count()}}</span> Shopping Cart</a></li>
 							<!-- <li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
@@ -159,7 +159,7 @@
 					<li><a href="{{ url('/faq') }}">FAQ</a></li>
 					<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
 					@if(!Auth::guest() && Auth::user()->status_user == 0)
-					<li><a href="{{ url('/customerorder')}}">ORDER PELANGGAN</a></li>
+					<li><a href="{{ url('/customerorder')}}">PESANAN PELANGGAN</a></li>
 					@endif
 					<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>SHOPPING CART</a></li>
 <!-- 					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
@@ -178,13 +178,13 @@
 		    <div class="modal-content">
 		      <div class="modal_header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        	<center>Who are you?</center>
+		        	<center>Lanjutkan ke Pembayaran</center>
 		      </div>
 
 		      <div class="modal-body">
 		      <center>
 		      <button type="button" class="boaBtn_boa_pf" onclick="single()">
-	            I am Single Buyer
+	            Sekali Membeli
 	          </button>
 	          <a href="{{ url('/checkout_subcriber')}}"><button type="button" class="boaBtn_boa_pf">
 	            Berlangganan

@@ -40,10 +40,10 @@
 					<p>Akun Saya</p>
 					<ul>
 						@if(Auth::guest())
-						<li><a href="#">Profile</a></li>
+						<li><a href="#">Informasi Akun</a></li>
 						<li><a href="#">Shopping Cart</a></li>
 						@else
-						<li><a href="{{ url('/profile/{id}') }}">Profile</a></li>
+						<li><a href="{{ url('/profile/{id}') }}">Informasi Akun</a></li>
 						<li><a href="{{ url('/checkout') }}">Shopping Cart</a></li>
 						@endif
 						
@@ -52,17 +52,18 @@
 			</div>
 			<div class="col-sm-6 col-md-3">
 				<div class="footer_link res_mar">
-					<p>Customer Support</p>
+					<p>Bantuan</p>
 					<ul>
 						<li><a href="{{ url('/howtobuy') }}">Cara Berbelanja</a></li>
+						<li><a href="{{ url('/faq')}}"> FAQ </a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3">
 				<div class="footer_link res_mar">
-					<p>information</p>
+					<p>Informasi</p>
 					<ul>
-						<li><a href="{{ url('/findalocation') }}">Our Agent Location</a></li>
+						<li><a href="{{ url('/findalocation') }}">Lokasi Agen</a></li>
 					</ul>
 				</div>
 			</div>
@@ -74,7 +75,7 @@
 		<div class="row">
 			<div class="col-sm-6 col-xs-12">
 			</div>
-			<div class="col-sm-6 col-xs-12">
+			<!-- <div class="col-sm-6 col-xs-12">
 				<div class="copyright_icon text-right">
 					<a href="#"><img src="{{ url('/assets/images/footer/paypal-1.png') }}" alt="" /></a>
 					<a href="#"><img src="{{ url('/assets/images/footer/paypal-2.png') }}" alt="" /></a>
@@ -82,7 +83,7 @@
 					<a href="#"><img src="{{ url('/assets/images/footer/paypal-4.png') }}" alt="" /></a>
 					<a href="#"><img src="{{ url('/assets/images/footer/paypal-5.png') }}" alt="" /></a>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

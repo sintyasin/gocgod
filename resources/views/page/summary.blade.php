@@ -41,6 +41,8 @@
             
             <p class="plxLogin"><font size="3">Silahkan transfer ke <br>GOCGOD<br></font> </p>
 
+            <a href="{{ url('/menu') }}"><input type="button" style="width:150px;" value="Kembali Berbelanja"></a>
+
           </Center>
           </div>
           </div>

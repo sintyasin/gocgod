@@ -16,14 +16,14 @@ var table = $('#customerDatatable').DataTable({
         dom: 'Bfrtip',
         order: [[ 2, "asc" ]],
         columns: [
-            { data: 'order_id', name: 'order_id', title:'Order Id' },
-            { data: 'customer', name: 'customer', title:'Customer' },
-            { data: 'shipping_date', name: 'shipping_date', title:'Order Date', sType: 'date' },
-            { data: 'phone', name: 'phone', title:'Phone' },
-            { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
-            { data: 'city_name', name: 'city_name', title:'City' },            
-            { data: 'who', name: 'who', title:'Type' },
-            { data: 'status_confirmed', name: 'status_confirmed', title:'Confirmed Status' },
+            { data: 'order_id', name: 'order_id', title:'Id Pesanan' },
+            { data: 'customer', name: 'customer', title:'Pelanggan' },
+            { data: 'shipping_date', name: 'shipping_date', title:'Tanggal Pesanan', sType: 'date' },
+            { data: 'phone', name: 'phone', title:'Telepon' },
+            { data: 'ship_address', name: 'ship_address', title:'Alamat Pengiriman' },
+            { data: 'city_name', name: 'city_name', title:'Kota' },            
+            { data: 'who', name: 'who', title:'Tipe' },
+            { data: 'status_confirmed', name: 'status_confirmed', title:'Status Konfirmasi' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
 
             if(row.status_shipping == 0){

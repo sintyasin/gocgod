@@ -35,7 +35,7 @@
       {!! csrf_field() !!}
         <div id="wrapper_table">
           <div id="product_details">
-            <p class='form_head'>Detail Order</p>
+            <p class='form_head'>Rincian Pesanan</p>
             <div class="shiping-method">
               <table id="order_details" class="display table table-striped table-bordered dt-responsive" width="100%">
                 <thead>
@@ -69,12 +69,12 @@
                   @endforeach
                 </tbody>
               </table>
-              <p class="plxLogin"><font size="3">Total Price</font></p>
+              <p class="plxLogin"><font size="3">Total Harga</font></p>
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-              <input onclick="back()" type="button" value="Kembali"> 
-             <input type="button" value="Berikutnya" onclick="show_next('product_details', 'delivery_address','bar2');">
+              <input onclick="back()" type="button" value="Back"> 
+             <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar2');">
           </div>
         </div>
         <div id="wrapper">
@@ -128,7 +128,7 @@
 
             <br>
 
-            <input type="button" value="Kembali" onclick="show_prev('product_details','bar3');">
+            <input type="button" value="Back" onclick="show_prev('product_details','bar3');">
             <input type="submit" value="Kirim" style="color:white; border: solid white;">
           </Center>
           </div>
