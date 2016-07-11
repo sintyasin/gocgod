@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="padding_outer">
 		<h2> {{ $query->varian_name }} </h2>
-
+		
 		<div class="col-md-3 col-xs-12">
 			<div class="labout">
 				<img src={{URL::asset("assets/images/product/". $queryCategory->category_name . "/" . $query->picture)}} style="height:260px;">
@@ -46,7 +46,7 @@
 					
 					<div class="col-xs-12">
 					<br>
-					<p class="notes">*Free shipping fee for subcriber or buy more than 5</p>
+					<p class="notes">*Gratis ongkos kirim bagi yang berlangganan atau total pembelian lebih dari 5</p>
 					</div>
 					<div class="position_menu">
 						<div class="col-xs-12">
@@ -148,6 +148,49 @@
 					@endforeach
 
 					
+					<div class="modal fade" id="myModal_added" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+			          <div class="modal-dialog" role="document">
+			            <div class="modal-content">
+			              <div class="modal_header">
+			                  <center>Cart Telah Ditambahkan</center>
+			              </div>
+			              <div class="modal-body">
+			                <center>
+			                <a href={{ url("/menu_detail/".$query->varian_id) }}" class="cartBtn"> Kembali Berbelanja </a>  &nbsp;&nbsp;&nbsp;
+			                <a href="#" class="cartBtn" data-toggle="modal" data-target="#checkout" data-dismiss="modal"> Lanjutkan Ke Pembayaran</a>
+			                </center>
+
+			              </div>
+			            </div>
+			          </div>
+			        </div>
+
+					<div class="modal fade" id="checkout" tabindex="-1" role="dialog" aira-labelledby="myModalLabel">
+						<div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal_header">
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        	<center>Lanjutkan ke Pembayaran</center>
+						      </div>
+
+						      <div class="modal-body">
+						      <center>
+						      <button type="button" class="boaBtn_boa_pf" onclick="single()">
+					            Sekali Membeli
+					          </button>
+					          <a href="{{ url('/checkout_subcriber')}}"><button type="button" class="boaBtn_boa_pf">
+					            Berlangganan
+					           
+					          </button>
+					          </a>
+					            <br><br><p>*Gratis ongkos kirim untuk yang berlangganan atau pembelian dengan total kuantitas lebih dari 5</p>
+						      </div>
+						      </center>
+					      	</div>
+					    </div>
+					</div>
+
+
 
 
 				</div>
@@ -187,8 +230,8 @@
 		    // }
       	})
       	.done(function(){
-      		alert('Added to cart!');
-      		window.location.replace('{{URL("/menu_detail")}}'+ '/' + id);
+      		$('#myModal_added').modal('show');
+      		// window.location.replace('{{URL("/menu_detail")}}'+ '/' + id);
       	})
       	.fail(function(){
       		alert('error');

@@ -73,7 +73,9 @@
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
-             <input type="button" value="Next" onclick="show_next('product_details', 'delivery_address','bar1');">
+            <div id="alert">
+            </div>
+             <input type="button" value="Next" onclick="check()">
           </div>
         </div>
         <div id="wrapper">
@@ -136,8 +138,9 @@
 <!-- End checkout content -->
 @push('scripts')
 <script>
+var table;
   $(document).ready(function() {
-      var table = $('table.display').DataTable( {
+      table = $('table.display').DataTable( {
         "autoWidth": false
       } );
   } );
@@ -187,13 +190,25 @@
     })
     .success(function(data){
       var t = $('#order_details').DataTable();
-      t.row(x).remove().draw(false);
+      t.row(x).remove().draw();
       $('#total-cart').html(data.response.total);
       alert("Delete Data berhasil!");
     })
     .fail(function(){
       alert('error');
     })
+  }
+
+  function check()
+  {
+    if(table.rows().data().length > 0) 
+    show_next('product_details',  'delivery_address','bar1');
+    else
+    {
+      var data = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Anda harus membeli minimal 1 produk</strong></div>';
+      document.getElementById('alert').innerHTML = data;
+    }
+
   }
 
 

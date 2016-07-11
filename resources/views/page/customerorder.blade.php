@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+  <br>
 	<h2>Pesanan Pelanggan</h2>
 	@if (Auth::guest())
       <div class="clicktoregister">

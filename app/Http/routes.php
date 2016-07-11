@@ -11,6 +11,7 @@
 |
 */
 
+Route::get('email', 'MemberController@a');
 Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('/', 'HomeController@index');
 Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
@@ -524,15 +525,3 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
-
-
-
-
-
-
-
-
-
-Route::get('myorder', function(){
-	return view('page.myorder');
-});

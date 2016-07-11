@@ -3,16 +3,16 @@
 @section('content')
 <div class="container">
 	<div class="padding_outer">
-		<h2>How To Buy</h2>
+		<h2>Cara Berbelanja</h2>
 
 			<div class="row">
    
 		    <div class="col-lg-12">
 		      <!-- Nav tabs -->
 		      <ul class="nav nav-tabs" role="tablist">
-		        <li role="presentation" class="active"><a href="#" onclick="first()" aria-controls="home" role="tab" data-toggle="tab">First</a></li>
-		        <li role="presentation"><a href="#" onclick="single()" aria-controls="profile" role="tab" data-toggle="tab">Single Buyer</a></li>
-		      	<li role="presentation"><a href="#" onclick="subcriber()" aria-controls="profile" role="tab" data-toggle="tab">Subscriber Buyer</a></li>
+		        <li role="presentation" class="active"><a href="#" onclick="first()" aria-controls="home" role="tab" data-toggle="tab">Perkenalan</a></li>
+		        <li role="presentation"><a href="#" onclick="single()" aria-controls="profile" role="tab" data-toggle="tab">Sekali Membeli</a></li>
+		      	<li role="presentation"><a href="#" onclick="subcriber()" aria-controls="profile" role="tab" data-toggle="tab">Berlangganan</a></li>
 		      </ul>
 		    </div>
 

@@ -3,7 +3,8 @@
 
 @section('content')
 <div class="container">
-	<h2>Find Agent Location</h2>
+	<br>
+	<h2>Lokasi Agen</h2>
 	<div class="col-md-12" style="padding-bottom: 50px;">
 	<?php $i=0; ?>
 		@foreach($queryAgent as $agent)

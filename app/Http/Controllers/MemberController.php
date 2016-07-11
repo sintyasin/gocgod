@@ -16,6 +16,8 @@ use App\Bank;
 use App\Req_agent;
 use App\AboutUs;
 use App\Product;
+use App\TxOrder;
+use App\TxOrderDetail;
 
 use Hash;
 
@@ -112,6 +114,27 @@ class MemberController extends Controller
 		$user->save();
     }*/
 
+    public function a()
+    {
+        $data['order'] = TxOrder::where('group_id', 23)->first();
+        $data['orderprice'] = \DB::table('transaction__order')
+                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->groupBy('group_id')
+                      ->having('group_id', '=', 23)
+                      ->get();
+
+        $data['order_a'] = TxOrder::where('group_id', 23)->get();
+        $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order_a'][0]->order_id)
+                                ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
+                                ->get(['varian_name', 'price', 'quantity']);
+        $data['agent'] = Member::where('id', $data['order_a'][0]->agent_id)
+                                ->get(['name']);
+
+
+        // dd($data['orderdetails']);
+
+        return view('page.email', $data);
+    }
     public function readDataMember($id)
     {
         $data['contact'] = AboutUs::first();
