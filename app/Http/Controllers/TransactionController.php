@@ -21,6 +21,7 @@ use App\City;
 use App\CutOffDate;
 use Session;
 use App\AboutUs;
+use Mail;
 
 class ProductDataOrder
 {
@@ -250,14 +251,25 @@ class TransactionController extends Controller
                   ->groupBy('order_id')
                   ->get();
     $data['contact'] = AboutUs::first();
-    /*$data['payment'] = 
+    $data['order_a'] = TxOrder::where('order_id', $id)->get();
+    $data['orderprice'] = \DB::table('transaction__order')
+                  ->select('total as total_price')
+                  ->where('order_id', '=', $id)
+                  ->get();
+
+    $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
+                            ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
+                            ->get(['varian_name', 'price', 'quantity']);
+    $data['agent'] = Member::where('id', $data['order']->agent_id)
+                            ->get(['name']);
 
 
-    Mail::send('page.email', $data, function ($m) use ($user) {
-            $m->from('hello@app.com', 'Your Application');
+    $user = 0;
+    Mail::send('page.email', $data, function ($m) {
+        $m->from('hello@app.com', 'Your Application');
 
-            $m->to($user->email, $user->name)->subject('Your Reminder!');
-        });*/
+        $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+    });
 
     return view('page.summary', $data);
 
@@ -563,6 +575,20 @@ class TransactionController extends Controller
                       ->get();
                       
     $data['contact'] = AboutUs::first();
+
+    $data['order_a'] = TxOrder::where('group_id', $id)->get();
+    $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order_a'][0]->order_id)
+                            ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
+                            ->get(['varian_name', 'price', 'quantity']);
+    $data['agent'] = Member::where('id', $data['order_a'][0]->agent_id)
+                            ->get(['name']);
+
+
+    Mail::send('page.email', $data, function ($m) {
+        $m->from('hello@app.com', 'Your Application');
+
+        $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+    });
 
     return view('page.summary1', $data);
 
