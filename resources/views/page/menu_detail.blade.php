@@ -156,7 +156,7 @@
 			              </div>
 			              <div class="modal-body">
 			                <center>
-			                <a href={{ url("/menu_detail/".$query->varian_id) }}" class="cartBtn"> Kembali Berbelanja </a>  &nbsp;&nbsp;&nbsp;
+			                <a href={{ url("/menu") }} class="cartBtn"> Kembali Berbelanja </a>  &nbsp;&nbsp;&nbsp;
 			                <a href="#" class="cartBtn" data-toggle="modal" data-target="#checkout" data-dismiss="modal"> Lanjutkan Ke Pembayaran</a>
 			                </center>
 
