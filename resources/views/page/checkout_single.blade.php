@@ -35,38 +35,9 @@
           <div id="product_details">
             <p class='form_head'>Detail Order</p>
             <div class="shiping-method">
-              <table id="order_details" class="display table table-striped table-bordered dt-responsive" width="100%">
-                <thead>
-                  <tr>
-                    <th>Produk</th>
-                    <th>Harga</th>
-                    <th>Kuantitas</th>
-                    <th>Sub Total</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php $i=0?>
-                  @foreach(Cart::content() as $row)
-                  <tr>
-                    <td>{{$row->name}}</td>
-                    <td>Rp {{$row->price}}</td>
-                    <td align="center">
-                      <input type="hidden" id="{{ $i.'-rowid' }}" value="{{$row->rowid}}">
-                      <input type="hidden" id="{{ $i.'-id' }}" value="{{$row->id}}">
-                      <input type="number" min="1" maxlength="2" id="{{ $i.'-qty_subcriber' }}" value="{{$row->qty}}" style="width:60px; color:black; text-align: center;">
-                      
-                    </td>
-                    <td><span id="{{ $i.'-subtotal' }}">Rp {{$row->subtotal}}</span></td>
-                    <td align="center">
-                      <button type="button" class="btn btn-primary" onclick="updatecart({{ $i }})"> Ubah</button>
-                      <button type="button" onclick="deletecart({{ $i }})" class="btn btn-danger">Hapus</button>
-                    </td>
-                  </tr>
-                  <?php $i++; ?>
-                  @endforeach
-                </tbody>
-              </table>
+              <div id="table">
+              </div>
+
               <p>*Gratis ongkos kirim untuk pembelian dengan total kuantitas lebih dari 5</p>
               <br>
               <p class="plxLogin"><font size="3">Total Harga</font></p>
@@ -138,17 +109,27 @@
 <!-- End checkout content -->
 @push('scripts')
 <script>
-var table;
   $(document).ready(function() {
-      table = $('table.display').DataTable( {
-        "autoWidth": false
-      } );
+      tabel();
   } );
 
    $(function() {
         var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?>  }).val();
         $( "#datepicker" ).datepicker();
     });
+
+   function tabel()
+   {
+    $.ajax({
+      type: "GET",
+      url: "{{ URL::to('customercart')}}",
+      success:
+      function(data)
+      {
+        $('#table').html(data);
+      }
+    });
+   }
 
   function updatecart(x)
   {
@@ -176,31 +157,37 @@ var table;
 
   function deletecart(x)
   {
-    var rowId = $('#'+x+'-rowid').val();
-    var id = $('#'+x+'-id').val();
-    var quantity = $('#'+x+'-qty_subcriber').val();
+    if (confirm("Apakah Anda ingin menghapus produk yang dipilih ?") == true) 
+    {
+      var rowId = $('#'+x+'-rowid').val();
+      var id = $('#'+x+'-id').val();
+      var quantity = $('#'+x+'-qty_subcriber').val();
 
-    $.ajax({
-      url: '{{URL("/deletecart_single")}}',
-      type:'POST',
-      data: {rowId:rowId, qty: quantity},
-      beforeSend: function(request){
-            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-          },
-    })
-    .success(function(data){
-      var t = $('#order_details').DataTable();
-      t.row(x).remove().draw();
-      $('#total-cart').html(data.response.total);
-      alert("Delete Data berhasil!");
-    })
-    .fail(function(){
-      alert('error');
-    })
+      $.ajax({
+        url: '{{URL("/deletecart_single")}}',
+        type:'POST',
+        data: {rowId:rowId, qty: quantity},
+        beforeSend: function(request){
+              return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+            },
+      })
+      .success(function(data){
+        /*var t = $('#order_details').DataTable();
+        t.row(x).remove().draw();*/
+        tabel();
+        $('#total-cart').html(data.response.total);
+        alert("Delete Data berhasil!");
+      })
+      .fail(function(){
+        alert('error');
+      })
+    }
   }
 
   function check()
   {
+    var table = $('#order_details').DataTable({retrieve: true});
+
     if(table.rows().data().length > 0) 
     show_next('product_details',  'delivery_address','bar1');
     else
@@ -208,7 +195,6 @@ var table;
       var data = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Anda harus membeli minimal 1 produk</strong></div>';
       document.getElementById('alert').innerHTML = data;
     }
-
   }
 
 
