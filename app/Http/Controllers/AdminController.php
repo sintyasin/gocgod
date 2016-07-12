@@ -1902,6 +1902,10 @@ class AdminController extends Controller
     $input = $request->all();
     $action = filter_var($input['action'], FILTER_SANITIZE_STRING);
 
+    date_default_timezone_set('Asia/Jakarta');
+    $date_order = new  \DateTime();
+    $order_date = date_format($date_order, "Y-m-d H:i:s");
+
     if(is_array($input['id']))
     {
       foreach ($input['id'] as $id)
@@ -1939,6 +1943,7 @@ class AdminController extends Controller
             $order->shipping_fee = 0;
             $order->total = 0;
             $order->who = 'single';
+            $order->order_date = $order_date;
             $order->save();
 
             //bikin order detail
@@ -1992,6 +1997,7 @@ class AdminController extends Controller
           $order->shipping_fee = 0;
           $order->total = 0;
           $order->who = 'single';
+          $order->order_date = $order_date;
           $order->save();
 
           //bikin order detail
