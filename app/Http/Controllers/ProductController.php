@@ -221,13 +221,18 @@ class ProductController extends Controller
         $event_description = filter_var($input['event_description'], FILTER_SANITIZE_STRING);
         $request_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
 
+        date_default_timezone_set('Asia/Jakarta');
+        $date_order = new  \DateTime();
+        $order_date = date_format($date_order, "Y-m-d H:i:s");
+
         $event = new SampleRequest;
         $event->agent_id = $id;
         $event->event_name = $event_name;
         $event->event_date = $event_date;
         $event->event_venue = $event_venue;
         $event->event_description = $event_description;
-        $event->request_date = $request_date;
+        $event->shipping_date = $request_date;
+        $event->request_date = $order_date;
         $event->save();
 
         return redirect('/productsample/'.$event->request_id);
