@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2016 at 09:50 AM
+-- Generation Time: Jul 12, 2016 at 10:08 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -288,7 +288,7 @@ INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `country`, `zi
 (4, 'b', '', 1, 'Indonesia', '', '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 1, 0, '123123', '2016-07-11 02:42:41', '2016-07-10 19:42:41', '6AsI9VzduqOZ3cBF6coAGvBT0ZDxIDxwpo2Q8HPCxYU13JEZIgkw9luy0TSG', 4),
 (5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, 'Indonesia', '', '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 1, 80000, '6557788', '2016-06-30 09:40:21', '2016-06-29 04:19:09', 'J9hltwk0hubZM9usOhrq5XVkkVZtVkiLMD6H4IKVGicizyysymBc3Ysr4Uo2', 4),
 (6, 'Rianto', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-27 02:14:23', 'PRUy11IsMLXHLqQ2PvnqUnyYgQ44eN083MaUTD74N9fekUSoWrtNrPdwFFmC', NULL),
-(7, 'Lia', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 1, NULL, NULL, '2016-07-11 03:17:09', '2016-07-10 20:17:09', 'hxxuC2EAuXt8SGxciMkFI0bkajBc1dWNJgdD67ZBNTH0kjk554QIRmp6jtP8', NULL),
+(7, 'Lia', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 1, NULL, NULL, '2016-07-12 03:04:23', '2016-07-11 20:04:23', 'epcYcFQ7SuokE9N5vDyuRVOsjqwrKrCJSL4wNs1Bd8o8zpgUbhS3hEKNMgUB', NULL),
 (8, 'a', 'a', 15, 'Indonesia', '', '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL),
 (11, 'user', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 1, 'Indonesia', '', '1995-11-16', 'user@user.com', '0811139318', '$2y$10$ZiDJI3Eu/x5dBPjmAo5A6.qnwQ5i9lOo1Vbvu08NKQDWkpFARJ8ou', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-29 22:42:43', 'wF20Vu2JSg6JYqgRhpeax8tZbNKH6i4ujKXRA7psVtS0Q0aL61lXAv4Bkozz', NULL),
 (12, 'Aurelia Rianto', 'Komplek pakuwon blok N no 3', 1, 'Indonesia', '11460', '1995-08-27', 'aureliarianto.27@gmail.com', '08999940821', '$2y$10$DFeZMTDZOAceUhz9tEh3YeAssY83wV9d3lSXrxh4WTJFjlg.kM0AO', 1, 0, NULL, NULL, '2016-06-30 21:33:28', '2016-06-30 21:33:28', '', NULL),
@@ -547,8 +547,8 @@ CREATE TABLE IF NOT EXISTS `transaction__order_confirmation` (
   `account_name` varchar(100) NOT NULL,
   `account_number` varchar(100) NOT NULL,
   `confirmation_status` int(11) NOT NULL DEFAULT '0',
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updated_at` datetime NOT NULL
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
@@ -556,10 +556,10 @@ CREATE TABLE IF NOT EXISTS `transaction__order_confirmation` (
 --
 
 INSERT INTO `transaction__order_confirmation` (`confirmation_id`, `group_id`, `payment_date`, `amount`, `account_name`, `account_number`, `confirmation_status`, `created_at`, `updated_at`) VALUES
-(1, 1, '2016-06-29', 10000, 'kevin', '123', 0, '2016-06-29 10:22:51', '0000-00-00 00:00:00'),
-(2, 2, '2016-07-28', 50000, 'aurelia', '9876', 0, '2016-06-29 10:45:06', '0000-00-00 00:00:00'),
-(3, 3, '2016-06-06', 20000, 'kevin k', '55555', 1, '2016-06-29 10:47:11', '2016-06-29 03:47:11'),
-(4, 4, '2016-06-30', 40000, 'aurelia rianto', '11111', 0, '2016-06-29 10:44:58', '0000-00-00 00:00:00');
+(1, 1, '2016-06-29', 10000, 'kevin', '123', 0, '2016-06-29 03:22:51', '0000-00-00 00:00:00'),
+(2, 2, '2016-07-28', 50000, 'aurelia', '9876', 0, '2016-06-29 03:45:06', '0000-00-00 00:00:00'),
+(3, 3, '2016-06-06', 20000, 'kevin k', '55555', 1, '2016-06-29 03:47:11', '2016-06-28 20:47:11'),
+(4, 4, '2016-06-30', 40000, 'aurelia rianto', '11111', 0, '2016-06-29 03:44:58', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -662,7 +662,8 @@ INSERT INTO `transaction__sample_detail` (`request_id`, `varian_id`, `quantity`,
 (4, 2, 3, '2016-05-24 04:49:32', '0000-00-00 00:00:00'),
 (5, 1, 2, '2016-07-01 03:08:40', '2016-07-01 03:08:40'),
 (5, 2, 2, '2016-07-01 03:08:40', '2016-07-01 03:08:40'),
-(5, 4, 1, '2016-07-01 03:08:40', '2016-07-01 03:08:40');
+(5, 4, 1, '2016-07-01 03:08:40', '2016-07-01 03:08:40'),
+(7, 5, 25, '2016-07-11 20:08:11', '2016-07-11 20:08:11');
 
 -- --------------------------------------------------------
 
@@ -677,13 +678,13 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
   `event_date` date NOT NULL,
   `event_venue` varchar(100) NOT NULL,
   `event_description` varchar(1000) NOT NULL,
-  `request_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `request_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `shipping_date` date NOT NULL,
   `approval` int(11) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaction__sample_request`
@@ -692,7 +693,9 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
 INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `shipping_date`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 3, 'iseng aja', '2016-07-05', 'alsut', 'rame', '2016-05-18 10:27:22', '2016-07-05', 0, '2016-06-29 04:15:09', '2016-06-28 21:15:02', NULL),
 (4, 3, '', '2016-07-23', '', '', '2016-05-20 08:37:01', '2016-07-08', 0, '2016-06-29 04:13:35', '2016-06-28 21:13:23', NULL),
-(5, 3, 'a', '2016-07-05', 'a', 'a', '2016-07-04 17:00:00', '0000-00-00', 0, '2016-07-01 03:08:03', '2016-07-01 03:08:03', NULL);
+(5, 3, 'a', '2016-07-05', 'a', 'a', '2016-07-04 17:00:00', '0000-00-00', 0, '2016-07-01 03:08:03', '2016-07-01 03:08:03', NULL),
+(6, 3, 'a', '2016-07-18', 'a', 'a', '2016-07-17 17:00:00', '0000-00-00', 0, '2016-07-11 20:04:49', '2016-07-11 20:04:49', NULL),
+(7, 3, 'poipoi', '2016-07-18', 'poi', 'poi', '2016-07-12 03:08:02', '2016-07-18', 0, '2016-07-12 03:08:02', '2016-07-12 03:08:02', NULL);
 
 --
 -- Indexes for dumped tables
@@ -917,7 +920,7 @@ MODIFY `confirmation_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `transaction__sample_request`
 --
 ALTER TABLE `transaction__sample_request`
-MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- Constraints for dumped tables
 --
