@@ -136,6 +136,23 @@ class AuthController extends Controller
         return redirect('/home')->with('active', 'Akun sudah teraktivasi. Silahkan sign in.');
     }
 
+    protected function getCredentials(Request $request)
+    {
+        return $request->only($this->loginUsername(), 'password_masuk');
+    }
+
+    public function loginUsername()
+    {
+        return property_exists($this, 'username') ? $this->username : 'email_masuk';
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->loginUsername() => 'required', 'password_masuk' => 'required',
+        ]);
+    }
+
     public function login(Request $request)
     {
         $this->validateLogin($request);
@@ -154,7 +171,7 @@ class AuthController extends Controller
         $credentials = $this->getCredentials($request);
 
         //cek udh aktivasi lewat email/blom
-        $query = Member::where('email', $credentials['email'])->first();
+        $query = Member::where('email', $credentials['email_masuk'])->first();
 
         $activate = 0;
 
@@ -165,7 +182,12 @@ class AuthController extends Controller
 
         if($activate)
         {
-            if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+            $user = [
+                'email' => $credentials['email_masuk'], 
+                'password' => $credentials['password_masuk']
+            ];
+
+            if (Auth::guard($this->getGuard())->attempt($user, $request->has('remember'))) {
                 return $this->handleUserWasAuthenticated($request, $throttles);
             }
 

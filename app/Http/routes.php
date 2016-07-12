@@ -24,6 +24,8 @@ Route::get('howtobuyfirst', 'ProductController@howToBuyFirst');
 Route::get('howtobuysingle', 'ProductController@howToBuySingle');
 Route::get('howtobuysubcriber', 'ProductController@howToBuySubcriber');
 
+Route::post('addtocart', 'TransactionController@addtocart');
+
 Route::get('faq', 'HomeController@faq_question');
 Route::get('findalocation', 'MemberController@readAgent');
 
@@ -62,7 +64,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('summary/{id}', 'TransactionController@summary');
 
 
-	Route::post('addtocart', 'TransactionController@addtocart');
+
 	Route::get('checkout_singlebuyer', 'TransactionController@order_details_single');
 	Route::post('updatecart_single/', 'TransactionController@updatecart_single');
 	Route::post('deletecart_single/', 'TransactionController@deletecart_single');

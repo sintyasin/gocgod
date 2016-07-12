@@ -44,8 +44,8 @@
 													{!! csrf_field() !!}
 													<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 														<label class="sr-only" for="inputemail">Alamat Email</label>
-														<input type="email" class="form-control" id="inputemail" name="email" placeholder="gocgod@gocgod.com" value="{{ old('email') }}" required>
-														@if ($errors->has('email'))
+														<input type="email" class="form-control" id="inputemail" name="email_masuk" placeholder="gocgod@gocgod.com" value="{{ old('email') }}" required>
+														@if ($errors->has('email_masuk'))
 														<script type="text/javascript">
 															alert('False Email or Password');
 														</script>
@@ -58,10 +58,10 @@
 						                            </div>
 						                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 						                            	<label class="sr-only" for="inputpassword">Password</label>
-						                            	<input type="password" class="form-control" id="inputpassword" placeholder="Password" name="password" required>
-						                            	@if ($errors->has('password'))
+						                            	<input type="password" class="form-control" id="inputpassword" placeholder="Password" name="password_masuk" required>
+						                            	@if ($errors->has('password_masuk'))
 						                            	<script type="text/javascript">
-						                            		alert('False Email or Password');
+						                            		alert('Alamat Email atau Password Salah!');
 						                            	</script>
 						                                    <!-- <span class="help-block">
 						                                        <strong>{{ $errors->first('password') }}</strong>
