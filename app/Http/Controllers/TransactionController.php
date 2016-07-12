@@ -209,6 +209,10 @@ class TransactionController extends Controller
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
 
+    date_default_timezone_set('Asia/Jakarta');
+    $date_order = new  \DateTime();
+    $order_date = date_format($date_order, "Y-m-d H:i:s");
+
     $order = new TxOrder;
     $order->customer_id = $customer_id;
     $order->agent_id = $agent_id;
@@ -220,6 +224,7 @@ class TransactionController extends Controller
     $order->shipping_fee = $shipping_fee;
     $order->total = $total + $shipping_fee;
     $order->who = $who;
+    $order->order_date = $order_date;
     $order->save();
    
 
@@ -528,6 +533,9 @@ class TransactionController extends Controller
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
 
+    date_default_timezone_set('Asia/Jakarta');
+    $date_order = new  \DateTime();
+    $order_date = date_format($date_order, "Y-m-d H:i:s");
     for($i = 0; $i < $week; $i++)
     {
       $order = new TxOrder;
@@ -541,6 +549,7 @@ class TransactionController extends Controller
       $order->shipping_fee = $shipping_fee;
       $order->total = $total + $shipping_fee;
       $order->who = $who;
+      $order->order_date = $order_date;
       $order->save();
       date_add($date_shipping,date_interval_create_from_date_string("+7 days"));
       $date = date_format($date_shipping,"Y-m-d");

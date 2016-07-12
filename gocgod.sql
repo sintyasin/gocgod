@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 30, 2016 at 05:04 PM
+-- Generation Time: Jul 12, 2016 at 09:50 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -277,20 +277,22 @@ CREATE TABLE IF NOT EXISTS `master__member` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `remember_token` varchar(255) NOT NULL,
   `bank_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__member`
 --
 
 INSERT INTO `master__member` (`id`, `name`, `address`, `city_id`, `country`, `zipcode`, `date_of_birth`, `email`, `phone`, `password`, `status_user`, `verification`, `balance`, `bank_account`, `created_at`, `updated_at`, `remember_token`, `bank_id`) VALUES
-(3, 'af', 'nomaden', 1, 'Indonesia', '14460', '0000-00-00', 'a@a.com', '021', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 0, 1, 0, '', '2016-06-30 09:40:21', '2016-06-30 02:10:14', 'NUElxZ67w7AiRBh6pxuGMYKLbQElHcAtzrZ8tp45cpLp0KvwGmNipXbRJlAi', NULL),
-(4, 'b', '', 1, 'Indonesia', '', '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 1, 0, '123123', '2016-06-30 09:40:21', '2016-06-28 21:21:50', '5Pnn1oDgCHp0w0AKzaWbI89dw4DmDYI8dJZJ8bP38bu3fNRuet3VMWHNF9Xa', 4),
+(3, 'af', 'nomaden', 1, 'Indonesia', '14460', '0000-00-00', 'a@a.com', '021', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 0, 1, 0, '', '2016-07-11 02:24:14', '2016-07-10 19:24:14', 'W4sWrhzSh4ZKg4lW5mdNb8JUP5MybYjnOGOBIfPzgWtpBFBfLY1ZbJdKlL7v', NULL),
+(4, 'b', '', 1, 'Indonesia', '', '0000-00-00', 'b@b.com', '', '$2y$10$V.FqluggCpwDaWNJyhfqluFomZ2PVA2Hm0wCBg01fFJp33PphpDuK', 0, 1, 0, '123123', '2016-07-11 02:42:41', '2016-07-10 19:42:41', '6AsI9VzduqOZ3cBF6coAGvBT0ZDxIDxwpo2Q8HPCxYU13JEZIgkw9luy0TSG', 4),
 (5, 'Aurelia', 'Komplek pakuwon blok N no 10', 14, 'Indonesia', '', '2016-02-17', 'aureliarianto@aurelia.com', '08999940888', '$2y$10$7p0b4onetwj/TgIoXJ1LZ.G.ijd2KSx9daM0Pc0g.CSs228LsKMw2', 0, 1, 80000, '6557788', '2016-06-30 09:40:21', '2016-06-29 04:19:09', 'J9hltwk0hubZM9usOhrq5XVkkVZtVkiLMD6H4IKVGicizyysymBc3Ysr4Uo2', 4),
 (6, 'Rianto', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-30', 'rianto@rianto.com', '0812981098', '$2y$10$2YlV2rYohCI3aukWpkawTul5zERrS1uiXkTGHnxWF0naMP2G1yoKu', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-27 02:14:23', 'PRUy11IsMLXHLqQ2PvnqUnyYgQ44eN083MaUTD74N9fekUSoWrtNrPdwFFmC', NULL),
-(7, 'Lia', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-28 04:08:58', 'AcCA5z371Wi42ixmd4TdqBlmuyHldvLUX3rKw7Arg2V6cjOr7ms1PjuvDAHz', NULL),
+(7, 'Lia', 'komplek pakuwon blok apa aja', 1, 'Indonesia', '', '2016-06-16', 'lia@lia.com', '1', '$2y$10$MNNb.j.K/0JqabgAQplqLeZxuwdOB3VygzeDVZjkUZV0uFiHW7CtW', 1, 1, NULL, NULL, '2016-07-11 03:17:09', '2016-07-10 20:17:09', 'hxxuC2EAuXt8SGxciMkFI0bkajBc1dWNJgdD67ZBNTH0kjk554QIRmp6jtP8', NULL),
 (8, 'a', 'a', 15, 'Indonesia', '', '2016-06-30', 'niko95kus@yahoo.com', '1', '$2y$10$WUk22rUr2PkxrrgRDNQZZORGkB25HOSfkb.h/YJy014reBhuWzTgi', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-07 21:45:26', '1aFfSDgxMCNCxvJzhCLZd65Jn6RqH0SA9gb9k8XW2aslwuCJgnVElV3lS6hE', NULL),
-(11, 'user', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 1, 'Indonesia', '', '1995-11-16', 'user@user.com', '0811139318', '$2y$10$ZiDJI3Eu/x5dBPjmAo5A6.qnwQ5i9lOo1Vbvu08NKQDWkpFARJ8ou', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-29 22:42:43', 'wF20Vu2JSg6JYqgRhpeax8tZbNKH6i4ujKXRA7psVtS0Q0aL61lXAv4Bkozz', NULL);
+(11, 'user', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 1, 'Indonesia', '', '1995-11-16', 'user@user.com', '0811139318', '$2y$10$ZiDJI3Eu/x5dBPjmAo5A6.qnwQ5i9lOo1Vbvu08NKQDWkpFARJ8ou', 1, 1, NULL, NULL, '2016-06-30 09:40:21', '2016-06-29 22:42:43', 'wF20Vu2JSg6JYqgRhpeax8tZbNKH6i4ujKXRA7psVtS0Q0aL61lXAv4Bkozz', NULL),
+(12, 'Aurelia Rianto', 'Komplek pakuwon blok N no 3', 1, 'Indonesia', '11460', '1995-08-27', 'aureliarianto.27@gmail.com', '08999940821', '$2y$10$DFeZMTDZOAceUhz9tEh3YeAssY83wV9d3lSXrxh4WTJFjlg.kM0AO', 1, 0, NULL, NULL, '2016-06-30 21:33:28', '2016-06-30 21:33:28', '', NULL),
+(13, 'GoCGoD', 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 1, 'Indonesia', '14460', '1995-07-11', 'gocgod@gocgod.com', '0811139318', '$2y$10$TJwwuMko5r2/vM8djmN/xuNgN7VkhR8J4dXZQcX2InLdLdx0LODP2', 1, 1, NULL, NULL, '2016-07-11 10:32:47', '2016-07-11 03:32:47', 'tnqEAhxwmgbvSl2YE4QQOCV97xoM4AjUags0WHf4GieG4sHmI7Jdb4rRoqQg', NULL);
 
 -- --------------------------------------------------------
 
@@ -307,14 +309,15 @@ CREATE TABLE IF NOT EXISTS `master__req_agent` (
   `bank_account` varchar(100) NOT NULL,
   `member_id` int(11) NOT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `master__req_agent`
 --
 
 INSERT INTO `master__req_agent` (`reqagent_id`, `bank_id`, `status_confirm`, `created_at`, `updated_at`, `bank_account`, `member_id`, `deleted_at`) VALUES
-(1, 4, 0, '2016-06-29 04:22:25', '2016-06-28 21:22:15', '123123', 4, NULL);
+(1, 4, 0, '2016-06-29 04:22:25', '2016-06-28 21:22:15', '123123', 4, NULL),
+(2, 1, 0, '2016-07-11 19:48:12', '2016-07-11 19:48:12', '123123', 7, NULL);
 
 -- --------------------------------------------------------
 
@@ -450,16 +453,15 @@ CREATE TABLE IF NOT EXISTS `product__varian` (
 --
 
 INSERT INTO `product__varian` (`varian_id`, `category_id`, `varian_name`, `price`, `qty`, `picture`, `description`, `weight`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 1, 'Soya Milk', 60000, 10, 'soya_milk.jpg', 'Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi\r\nTanpa bahan pengawet! Dan pemanis buatan\r\nSangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin!', 2, '2016-05-02 02:26:12', '0000-00-00 00:00:00', NULL),
+(1, 1, 'Soya Milk', 60000, 999, 'soya_milk.jpg', 'Soya milk terbuat dari kacang kedelai pilihan , minuman bergizi dan berprotein sangat tinggi\r\nTanpa bahan pengawet! Dan pemanis buatan\r\nSangat cocok untuk anak-anak, dewasa, dan org tua . Kualitas terjamin!', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
 (2, 1, 'Cin Cau', 60000, 999, 'cin_cau.jpg', 'Manfaat air cin cau cukup beragam sudah biasa di gunakan dalam pengobatan tradisional untuk obat batuk, tekanan darah tinggi, diare, sembelit, menurunkan demam , mengobati panas dalam, menjaga sistem pencernaan , mengatasi perut kembung .\r\nAir cin cau hitam juga sangat membantu bagi anda yg sedang menjalani program diet .', 2, '2016-06-28 02:24:03', '2016-06-27 19:24:03', NULL),
-(3, 1, 'Honey Pine', 75000, 10, 'honey_pine.jpg', 'Sari buah nanas ini sangat bermanfaat buat kecantikan karna di buat tanpa bahan pengawet dan gula, bener2 murni dan fress \r\nManfaat sari buat nanas \r\n1. Menjaga kesehatan mata\r\n2. Meningkatkan imunitas\r\n3. Membantu pencernaan\r\n5. Mencegah hipertensi\r\n6. Meredakan mual\r\n7. Menguatkan tulang\r\n8. Memperbaiki kulit kaki\r\n9. Melembabkan kulit\r\n10. Mencerna kandungan lemak pada makanan Yang kita makan', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00', NULL),
-(4, 1, 'Guava', 75000, 10, 'guava.jpg', 'Guava adalah sari buah jambu pilihan , yg di proses secara higienis tanpa bahan pengawet dan gula, rasanya benar2 alami seperti makan buah aslinya \r\nManfaat sari guava diantaranya yaitu \r\n1. Mengandung vitamin C yg sangat di butuhkan Oleh tubuh \r\n2. Mengandung serat alami \r\n3.Melancarkan pencernaan seperti susah BAB, Sembelit serta menbuang zat-zat berbahaya di Dalam usus\r\n4.Membuat kulit lebih cerah dan lembut', 2, '2016-04-21 11:10:39', '0000-00-00 00:00:00', NULL),
-(5, 1, 'Fruit Punch', 75000, 10, 'fruit_punch.jpg', 'Fruit Punch Aneka Buah adalah minuman yang dibuat dari aneka macam buah-buahan segar seperti melon, semangka, jeruk, biji selasih dan air soda. Buah-buahan memanglah sangat dianjurkan untuk dikonsumsi tubuh karena memiliki sejuta manfaat yang beragam bagi kesehatan. Seperti buah semangka yang memiliki manfaat menjaga kesehatan jantung, mata dan tulang, menangkal radikal bebas, meningkatkan sistem kekebalan tubuh, membantu meningkatkan aliran urine dan mengurangi lemak pada tubuh. Selain semangka, biji selasih yang turut digunakan sebagai bahan pelengkpnya juga memiliki manfaat bagi tubuh antara lain dapat mengobati radang lambung, menyembuhkan sakit gigi, baik untuk menghaluskan kulit wajah, sebagai obat sakit kepala dan lain sebagainya.', 2, '2016-04-21 11:13:34', '0000-00-00 00:00:00', NULL),
-(6, 1, 'Sirsak', 60000, 10, 'sirsak.jpg', '\r\nManfaat jus sirsak sangat luar biasa bagi kesehatan seperti untuk diet, kulit, kanker, dan banyak lagi yang harus Anda ketahui. Buah sirsak merupakan jenis buah yang banyak disukai karena rasanya yang nikmat dan menyegarkan. Selain rasanya yang nikmat dan segar, buah sirsak mengandung manfaat yang sangat berkhasiat dalam mengatasi berbagai masalah kesehatan. Buah sirsak dapat dikonsumsi langsung buahnya atau dijadikan minuman jus yang lebih mudah diserap tubuh, sehingga sangat baik untuk saluran pencernaan.\r\n\r\n', 1, '2016-04-21 11:13:34', '0000-00-00 00:00:00', NULL),
-(7, 1, 'Kacang Hijau', 60000, 10, 'kacang_hijau.jpg', 'Manfaat sari kacang hijau \r\n1.Meningkatkan penyerapan nutrisi\r\n2. Mencegah penyakit jantung & stroke\r\n3.Membersihkan pencernaan\r\n4.Mengatasi anemia\r\n5.Menjaga berat badan\r\n6.Membantu pertumbuhan sel organ, otot & otak\r\nTampa bahan pengawet !!!!', 2, '2016-04-21 11:16:07', '0000-00-00 00:00:00', NULL),
-(8, 1, 'Liang Teh', 75000, 10, 'liang_teh.jpg', '\r\nLiang teh merupakan minuman yang mempunyai manfaat serta khasiat yang banyak bagi kesehatan tubuh. Selain itu, liang teh mempunyai rasa yang enak dan banyak digemari oleh semua kalangan baik anak – anak, remaja dan orang tua. Liang teh merupakan jenis minuman yang dapat disajikan dalam keadaan hangat maupun dingin. Kandungan didalamnya dapat meredakan panas dalam dan mengatasi masalah sistem pencernaan tubuh. Minuman herbal yang berasal dari China ini memiliki jenis warna dan rasa yang sangat bervariatif sesuai dengan jenis tanaman yang digunakan sebagai bahan pembuat liang teh.\r\n\r\n', 2, '2016-04-21 11:16:07', '0000-00-00 00:00:00', NULL),
-(9, 1, 'Lime Watz', 75000, 10, 'lime_watz.jpg', 'Membantu menurunkan berat badan\r\nSari lemon kerap disertakan dalam diet penurunan berat badan. Biasanya, sari lemon dicampurkan dengan air hangat dan madu. Tak hanya sehat, lemon juga rendah kalori, bahkan termasuk yang terendah di antara buah citrus lainnya. Sekitar 100 g lemon hanya mengandung 29 kalori. Lemon pun bebas kolesterol, lemak jenuh, dan memiliki indeks glikemik rendah. Lemon juga kaya serat pangan sehingga baik dikonsumsi Anda yang ingin memangkas berat badan.\r\nLime Watz itu campuran Lemon , madu , kiwi dan Semangka kuning.', 2, '2016-04-21 11:17:42', '0000-00-00 00:00:00', NULL),
-(10, 1, 'af', 12, 15, '1467172368a.png', 'adsfasdf', 7, '2016-06-29 03:52:56', '2016-06-28 20:52:56', '2016-06-28 20:52:56');
+(3, 1, 'Honey Pine', 75000, 999, 'honey_pine.jpg', 'Sari buah nanas ini sangat bermanfaat buat kecantikan karna di buat tanpa bahan pengawet dan gula, bener2 murni dan fress \r\nManfaat sari buat nanas \r\n1. Menjaga kesehatan mata\r\n2. Meningkatkan imunitas\r\n3. Membantu pencernaan\r\n5. Mencegah hipertensi\r\n6. Meredakan mual\r\n7. Menguatkan tulang\r\n8. Memperbaiki kulit kaki\r\n9. Melembabkan kulit\r\n10. Mencerna kandungan lemak pada makanan Yang kita makan', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
+(4, 1, 'Guava', 75000, 999, 'guava.jpg', 'Guava adalah sari buah jambu pilihan , yg di proses secara higienis tanpa bahan pengawet dan gula, rasanya benar2 alami seperti makan buah aslinya \r\nManfaat sari guava diantaranya yaitu \r\n1. Mengandung vitamin C yg sangat di butuhkan Oleh tubuh \r\n2. Mengandung serat alami \r\n3.Melancarkan pencernaan seperti susah BAB, Sembelit serta menbuang zat-zat berbahaya di Dalam usus\r\n4.Membuat kulit lebih cerah dan lembut', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
+(5, 1, 'Fruit Punch', 75000, 999, 'fruit_punch.jpg', 'Fruit Punch Aneka Buah adalah minuman yang dibuat dari aneka macam buah-buahan segar seperti melon, semangka, jeruk, biji selasih dan air soda. Buah-buahan memanglah sangat dianjurkan untuk dikonsumsi tubuh karena memiliki sejuta manfaat yang beragam bagi kesehatan. Seperti buah semangka yang memiliki manfaat menjaga kesehatan jantung, mata dan tulang, menangkal radikal bebas, meningkatkan sistem kekebalan tubuh, membantu meningkatkan aliran urine dan mengurangi lemak pada tubuh. Selain semangka, biji selasih yang turut digunakan sebagai bahan pelengkpnya juga memiliki manfaat bagi tubuh antara lain dapat mengobati radang lambung, menyembuhkan sakit gigi, baik untuk menghaluskan kulit wajah, sebagai obat sakit kepala dan lain sebagainya.', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
+(6, 1, 'Sirsak', 60000, 999, 'sirsak.jpg', '\r\nManfaat jus sirsak sangat luar biasa bagi kesehatan seperti untuk diet, kulit, kanker, dan banyak lagi yang harus Anda ketahui. Buah sirsak merupakan jenis buah yang banyak disukai karena rasanya yang nikmat dan menyegarkan. Selain rasanya yang nikmat dan segar, buah sirsak mengandung manfaat yang sangat berkhasiat dalam mengatasi berbagai masalah kesehatan. Buah sirsak dapat dikonsumsi langsung buahnya atau dijadikan minuman jus yang lebih mudah diserap tubuh, sehingga sangat baik untuk saluran pencernaan.\r\n\r\n', 1, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
+(7, 1, 'Kacang Hijau', 60000, 999, 'kacang_hijau.jpg', 'Manfaat sari kacang hijau \r\n1.Meningkatkan penyerapan nutrisi\r\n2. Mencegah penyakit jantung & stroke\r\n3.Membersihkan pencernaan\r\n4.Mengatasi anemia\r\n5.Menjaga berat badan\r\n6.Membantu pertumbuhan sel organ, otot & otak\r\nTampa bahan pengawet !!!!', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
+(8, 1, 'Liang Teh', 75000, 999, 'liang_teh.jpg', '\r\nLiang teh merupakan minuman yang mempunyai manfaat serta khasiat yang banyak bagi kesehatan tubuh. Selain itu, liang teh mempunyai rasa yang enak dan banyak digemari oleh semua kalangan baik anak – anak, remaja dan orang tua. Liang teh merupakan jenis minuman yang dapat disajikan dalam keadaan hangat maupun dingin. Kandungan didalamnya dapat meredakan panas dalam dan mengatasi masalah sistem pencernaan tubuh. Minuman herbal yang berasal dari China ini memiliki jenis warna dan rasa yang sangat bervariatif sesuai dengan jenis tanaman yang digunakan sebagai bahan pembuat liang teh.\r\n\r\n', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL),
+(9, 1, 'Lime Watz', 75000, 999, 'lime_watz.jpg', 'Membantu menurunkan berat badan\r\nSari lemon kerap disertakan dalam diet penurunan berat badan. Biasanya, sari lemon dicampurkan dengan air hangat dan madu. Tak hanya sehat, lemon juga rendah kalori, bahkan termasuk yang terendah di antara buah citrus lainnya. Sekitar 100 g lemon hanya mengandung 29 kalori. Lemon pun bebas kolesterol, lemak jenuh, dan memiliki indeks glikemik rendah. Lemon juga kaya serat pangan sehingga baik dikonsumsi Anda yang ingin memangkas berat badan.\r\nLime Watz itu campuran Lemon , madu , kiwi dan Semangka kuning.', 2, '2016-07-12 02:49:37', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -471,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
 `order_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `agent_id` int(11) NOT NULL,
-  `order_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `order_date` datetime NOT NULL,
   `status_payment` int(11) NOT NULL DEFAULT '0',
   `ship_address` varchar(500) NOT NULL,
   `country` varchar(100) NOT NULL DEFAULT 'Indonesia',
@@ -486,7 +488,7 @@ CREATE TABLE IF NOT EXISTS `transaction__order` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `who` varchar(50) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaction__order`
@@ -504,7 +506,32 @@ INSERT INTO `transaction__order` (`order_id`, `customer_id`, `agent_id`, `order_
 (10, 3, 3, '2016-06-29 11:07:29', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 9, 0, 0, '2016-06-28 21:07:29', '2016-06-28 21:07:29', 'single'),
 (11, 3, 3, '2016-06-29 11:13:23', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-08', 10, 0, 0, '2016-06-28 21:13:23', '2016-06-28 21:13:23', 'single'),
 (12, 3, 3, '2016-06-29 11:15:02', 0, 'nomaden', 'Indonesia', '', 1, 0, 0, '2016-07-05', 11, 0, 0, '2016-06-28 21:15:02', '2016-06-28 21:15:02', 'single'),
-(13, 11, 4, '2016-06-30 14:33:18', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '1', 1, 0, 0, '2016-07-14', 12, 10000, 10000, '2016-06-30 00:33:18', '2016-06-30 00:33:18', 'single');
+(13, 11, 4, '2016-06-30 14:33:18', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '1', 1, 0, 0, '2016-07-14', 12, 10000, 10000, '2016-06-30 00:33:18', '2016-06-30 00:33:18', 'single'),
+(14, 3, 4, '2016-07-01 14:09:01', 0, 'nomaden', 'Indonesia', '14460', 1, 0, 0, '2016-07-05', 13, 0, 570000, '2016-07-01 00:09:01', '2016-07-01 00:09:01', 'single'),
+(15, 3, 4, '2016-07-01 14:10:13', 0, 'nomaden', 'Indonesia', '14460', 1, 0, 0, '2016-07-06', 14, 0, 255000, '2016-07-01 00:10:13', '2016-07-01 00:10:13', 'subcriber'),
+(16, 3, 4, '2016-07-01 14:10:13', 0, 'nomaden', 'Indonesia', '14460', 1, 0, 0, '2016-07-13', 14, 0, 255000, '2016-07-01 00:10:13', '2016-07-01 00:10:13', 'subcriber'),
+(17, 3, 4, '2016-07-01 14:46:13', 0, 'nomaden', 'Indonesia', '14460', 1, 0, 0, '2016-07-04', 15, 0, 255000, '2016-07-01 00:46:13', '2016-07-01 00:46:13', 'subcriber'),
+(18, 3, 4, '2016-07-01 14:46:13', 0, 'nomaden', 'Indonesia', '14460', 1, 0, 0, '2016-07-11', 15, 0, 255000, '2016-07-01 00:46:13', '2016-07-01 00:46:13', 'subcriber'),
+(19, 7, 4, '2016-07-11 09:43:37', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '111', 1, 0, 0, '2016-07-18', 16, 0, 75000, '2016-07-10 19:43:37', '2016-07-10 19:43:37', 'subcriber'),
+(20, 7, 4, '2016-07-11 09:43:37', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '111', 1, 0, 0, '2016-07-25', 16, 0, 75000, '2016-07-10 19:43:37', '2016-07-10 19:43:37', 'subcriber'),
+(21, 7, 4, '2016-07-11 09:44:37', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '1111', 1, 0, 0, '2016-07-18', 17, 0, 75000, '2016-07-10 19:44:37', '2016-07-10 19:44:37', 'subcriber'),
+(22, 7, 4, '2016-07-11 09:44:37', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '1111', 1, 0, 0, '2016-07-25', 17, 0, 75000, '2016-07-10 19:44:37', '2016-07-10 19:44:37', 'subcriber'),
+(23, 7, 4, '2016-07-11 09:48:36', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '1', 1, 0, 0, '2016-07-18', 18, 0, 60000, '2016-07-10 19:48:36', '2016-07-10 19:48:36', 'subcriber'),
+(24, 7, 4, '2016-07-11 09:48:36', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '1', 1, 0, 0, '2016-07-25', 18, 0, 60000, '2016-07-10 19:48:36', '2016-07-10 19:48:36', 'subcriber'),
+(25, 7, 4, '2016-07-11 09:50:34', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '1', 1, 0, 0, '2016-07-18', 19, 10000, 70000, '2016-07-10 19:50:34', '2016-07-10 19:50:34', 'single'),
+(26, 13, 4, '2016-07-11 10:52:34', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-18', 20, 10000, 70000, '2016-07-10 20:52:34', '2016-07-10 20:52:34', 'single'),
+(27, 13, 4, '2016-07-11 11:04:39', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-18', 21, 0, 135000, '2016-07-10 21:04:39', '2016-07-10 21:04:39', 'subcriber'),
+(28, 13, 4, '2016-07-11 11:04:39', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-25', 21, 0, 135000, '2016-07-10 21:04:39', '2016-07-10 21:04:39', 'subcriber'),
+(29, 13, 4, '2016-07-11 11:05:13', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-18', 22, 0, 135000, '2016-07-10 21:05:13', '2016-07-10 21:05:13', 'subcriber'),
+(30, 13, 4, '2016-07-11 11:05:14', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-25', 22, 0, 135000, '2016-07-10 21:05:14', '2016-07-10 21:05:14', 'subcriber'),
+(31, 13, 4, '2016-07-11 13:27:11', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-19', 23, 0, 135000, '2016-07-10 23:27:11', '2016-07-10 23:27:11', 'subcriber'),
+(32, 13, 4, '2016-07-11 13:27:11', 0, 'Ruko The Centro Citywalk Metro Broadway blok A6, Pantai Indah Kapuk', 'Indonesia', '14460', 1, 0, 0, '2016-07-26', 23, 0, 135000, '2016-07-10 23:27:11', '2016-07-10 23:27:11', 'subcriber'),
+(33, 7, 4, '2016-07-12 09:39:06', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '123', 1, 0, 0, '2016-07-18', 24, 0, 135000, '2016-07-12 02:39:06', '2016-07-12 02:39:06', 'subcriber'),
+(34, 7, 4, '2016-07-12 09:39:06', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '123', 1, 0, 0, '2016-07-25', 24, 0, 135000, '2016-07-12 02:39:06', '2016-07-12 02:39:06', 'subcriber'),
+(35, 7, 4, '2016-07-12 09:39:08', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '123', 1, 0, 0, '2016-07-18', 25, 0, 0, '2016-07-12 02:39:08', '2016-07-12 02:39:08', 'subcriber'),
+(36, 7, 4, '2016-07-12 09:39:08', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '123', 1, 0, 0, '2016-07-25', 25, 0, 0, '2016-07-12 02:39:08', '2016-07-12 02:39:08', 'subcriber'),
+(37, 7, 4, '2016-07-12 09:40:09', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '098', 1, 0, 0, '2016-07-18', 26, 0, 60000, '2016-07-12 02:40:09', '2016-07-12 02:40:09', 'subcriber'),
+(38, 7, 4, '2016-07-12 09:40:09', 0, 'komplek pakuwon blok apa aja', 'Indonesia', '098', 1, 0, 0, '2016-07-25', 26, 0, 60000, '2016-07-12 02:40:09', '2016-07-12 02:40:09', 'subcriber');
 
 -- --------------------------------------------------------
 
@@ -571,7 +598,45 @@ INSERT INTO `transaction__order_detail` (`order_id`, `varian_id`, `varian_price`
 (10, 2, 0, 3, '2016-06-28 21:07:29', '2016-06-28 21:07:29'),
 (11, 1, 0, 10, '2016-06-28 21:13:23', '2016-06-28 21:13:23'),
 (11, 2, 0, 3, '2016-06-28 21:13:23', '2016-06-28 21:13:23'),
-(12, 3, 0, 1, '2016-06-28 21:15:02', '2016-06-28 21:15:02');
+(12, 3, 0, 1, '2016-06-28 21:15:02', '2016-06-28 21:15:02'),
+(14, 2, 60000, 2, '2016-07-01 00:09:01', '2016-07-01 00:09:01'),
+(14, 3, 75000, 6, '2016-07-01 00:09:02', '2016-07-01 00:09:02'),
+(15, 2, 60000, 3, '2016-07-01 00:10:13', '2016-07-01 00:10:13'),
+(15, 5, 75000, 1, '2016-07-01 00:10:13', '2016-07-01 00:10:13'),
+(16, 2, 60000, 3, '2016-07-01 00:10:14', '2016-07-01 00:10:14'),
+(16, 5, 75000, 1, '2016-07-01 00:10:14', '2016-07-01 00:10:14'),
+(17, 2, 60000, 2, '2016-07-01 00:46:13', '2016-07-01 00:46:13'),
+(17, 3, 75000, 1, '2016-07-01 00:46:13', '2016-07-01 00:46:13'),
+(17, 7, 60000, 1, '2016-07-01 00:46:13', '2016-07-01 00:46:13'),
+(18, 2, 60000, 2, '2016-07-01 00:46:13', '2016-07-01 00:46:13'),
+(18, 3, 75000, 1, '2016-07-01 00:46:13', '2016-07-01 00:46:13'),
+(18, 7, 60000, 1, '2016-07-01 00:46:14', '2016-07-01 00:46:14'),
+(19, 3, 75000, 1, '2016-07-10 19:43:37', '2016-07-10 19:43:37'),
+(20, 3, 75000, 1, '2016-07-10 19:43:37', '2016-07-10 19:43:37'),
+(21, 4, 75000, 1, '2016-07-10 19:44:37', '2016-07-10 19:44:37'),
+(22, 4, 75000, 1, '2016-07-10 19:44:37', '2016-07-10 19:44:37'),
+(23, 2, 60000, 1, '2016-07-10 19:48:36', '2016-07-10 19:48:36'),
+(24, 2, 60000, 1, '2016-07-10 19:48:36', '2016-07-10 19:48:36'),
+(25, 2, 60000, 1, '2016-07-10 19:50:34', '2016-07-10 19:50:34'),
+(26, 1, 60000, 1, '2016-07-10 20:52:34', '2016-07-10 20:52:34'),
+(27, 2, 60000, 1, '2016-07-10 21:04:39', '2016-07-10 21:04:39'),
+(27, 5, 75000, 1, '2016-07-10 21:04:39', '2016-07-10 21:04:39'),
+(28, 2, 60000, 1, '2016-07-10 21:04:39', '2016-07-10 21:04:39'),
+(28, 5, 75000, 1, '2016-07-10 21:04:39', '2016-07-10 21:04:39'),
+(29, 2, 60000, 1, '2016-07-10 21:05:14', '2016-07-10 21:05:14'),
+(29, 5, 75000, 1, '2016-07-10 21:05:14', '2016-07-10 21:05:14'),
+(30, 2, 60000, 1, '2016-07-10 21:05:14', '2016-07-10 21:05:14'),
+(30, 5, 75000, 1, '2016-07-10 21:05:14', '2016-07-10 21:05:14'),
+(31, 1, 60000, 1, '2016-07-10 23:27:11', '2016-07-10 23:27:11'),
+(31, 8, 75000, 1, '2016-07-10 23:27:11', '2016-07-10 23:27:11'),
+(32, 1, 60000, 1, '2016-07-10 23:27:11', '2016-07-10 23:27:11'),
+(32, 8, 75000, 1, '2016-07-10 23:27:11', '2016-07-10 23:27:11'),
+(33, 2, 60000, 1, '2016-07-12 02:39:06', '2016-07-12 02:39:06'),
+(33, 5, 75000, 1, '2016-07-12 02:39:06', '2016-07-12 02:39:06'),
+(34, 2, 60000, 1, '2016-07-12 02:39:06', '2016-07-12 02:39:06'),
+(34, 5, 75000, 1, '2016-07-12 02:39:06', '2016-07-12 02:39:06'),
+(37, 1, 60000, 1, '2016-07-12 02:40:09', '2016-07-12 02:40:09'),
+(38, 1, 60000, 1, '2016-07-12 02:40:09', '2016-07-12 02:40:09');
 
 -- --------------------------------------------------------
 
@@ -594,7 +659,10 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_detail` (
 INSERT INTO `transaction__sample_detail` (`request_id`, `varian_id`, `quantity`, `created_at`, `updated_at`) VALUES
 (1, 3, 1, '2016-05-24 10:15:00', '2016-05-10 17:00:00'),
 (4, 1, 10, '2016-05-24 04:49:32', '0000-00-00 00:00:00'),
-(4, 2, 3, '2016-05-24 04:49:32', '0000-00-00 00:00:00');
+(4, 2, 3, '2016-05-24 04:49:32', '0000-00-00 00:00:00'),
+(5, 1, 2, '2016-07-01 03:08:40', '2016-07-01 03:08:40'),
+(5, 2, 2, '2016-07-01 03:08:40', '2016-07-01 03:08:40'),
+(5, 4, 1, '2016-07-01 03:08:40', '2016-07-01 03:08:40');
 
 -- --------------------------------------------------------
 
@@ -615,7 +683,7 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `deleted_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `transaction__sample_request`
@@ -623,7 +691,8 @@ CREATE TABLE IF NOT EXISTS `transaction__sample_request` (
 
 INSERT INTO `transaction__sample_request` (`request_id`, `agent_id`, `event_name`, `event_date`, `event_venue`, `event_description`, `request_date`, `shipping_date`, `approval`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 3, 'iseng aja', '2016-07-05', 'alsut', 'rame', '2016-05-18 10:27:22', '2016-07-05', 0, '2016-06-29 04:15:09', '2016-06-28 21:15:02', NULL),
-(4, 3, '', '2016-07-23', '', '', '2016-05-20 08:37:01', '2016-07-08', 0, '2016-06-29 04:13:35', '2016-06-28 21:13:23', NULL);
+(4, 3, '', '2016-07-23', '', '', '2016-05-20 08:37:01', '2016-07-08', 0, '2016-06-29 04:13:35', '2016-06-28 21:13:23', NULL),
+(5, 3, 'a', '2016-07-05', 'a', 'a', '2016-07-04 17:00:00', '0000-00-00', 0, '2016-07-01 03:08:03', '2016-07-01 03:08:03', NULL);
 
 --
 -- Indexes for dumped tables
@@ -808,12 +877,12 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `master__member`
 --
 ALTER TABLE `master__member`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=37;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `master__req_agent`
 --
 ALTER TABLE `master__req_agent`
-MODIFY `reqagent_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `reqagent_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `master__tx_balance`
 --
@@ -838,7 +907,7 @@ MODIFY `varian_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 -- AUTO_INCREMENT for table `transaction__order`
 --
 ALTER TABLE `transaction__order`
-MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `transaction__order_confirmation`
 --
@@ -848,7 +917,7 @@ MODIFY `confirmation_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT for table `transaction__sample_request`
 --
 ALTER TABLE `transaction__sample_request`
-MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --
