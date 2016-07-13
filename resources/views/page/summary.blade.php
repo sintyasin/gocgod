@@ -39,9 +39,14 @@
             <hr>
             <p class="plxLogin"><font size="4">Total  : Rp {{number_format($order->shipping_fee + $order->total, 2, ',','.')}}</font> </p>
             
+            @if($order->payment_method == 'banktransfer')
             <p class="plxLogin"><font size="3">Silahkan transfer ke <br>GOCGOD<br></font> </p>
-
             <a href="{{ url('/menu') }}"><input type="button" style="width:150px;" value="Kembali Berbelanja"></a>
+            @elseif($order->payment_method == 'firstpay')
+            <a href="{{ url('/#') }}"><input type="button" style="width:150px;" value="Klik untuk membayar"></a>
+            @endif
+
+            
 
           </Center>
           </div>

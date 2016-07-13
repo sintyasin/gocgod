@@ -21,7 +21,7 @@
 	<div class="boa_caption">
 		Get free shipping fee
 	</div>
-	<a href={{ URL('/login') }} class="boaBtn" target="_self">Become Our Member</a> <a href={{ URL('/menu') }} class="boaBtn" target="_self">Subscribe Our Product</a>
+	<a href={{ URL('/register') }} class="boaBtn" target="_self">Become Our Member</a> <a href={{ URL('/menu') }} class="boaBtn" target="_self">Subscribe Our Product</a>
 </div>
 
 <!-- <div class="clicktoregister">
