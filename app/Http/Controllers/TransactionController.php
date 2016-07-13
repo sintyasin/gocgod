@@ -225,6 +225,15 @@ class TransactionController extends Controller
     $order->total = $total + $shipping_fee;
     $order->who = $who;
     $order->order_date = $order_date;
+    if($input['payment'] == 0)
+    {
+      $order->payment_method = 'banktransfer';
+    }
+    else if($input['payment'] == 1) //firstpayss
+    {
+      $order->payment_method = 'firstpay';
+    }
+
     $order->save();
    
 
@@ -242,15 +251,7 @@ class TransactionController extends Controller
     Cart::destroy();
     $a = TxOrder::orderBy('order_id', 'desc')->first();
 
-    if($input['payment'] == 0)
-    {
-      return redirect('/banktransfer/'.$a->order_id);
-    }
-    else if($input['payment'] == 1)
-    {
-      return redirect('/#');
-    }
-
+    return redirect('/banktransfer/'.$a->order_id);
   }
 
   public function banktransfer($id)
