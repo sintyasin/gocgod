@@ -311,6 +311,7 @@ $(function() {
             } },         
             { data: 'payment_method', name: 'payment_method', title:'Payment Method' },
             { data: 'payment_account', name: 'payment_account', title:'Payment Account' },
+            { data: 'bank_code', name: 'bank_code', title:'Bank Code' },
             { data: 'who', name: 'who', title:'Type' },
             { data: 'city_name', name: 'city_name', title:'City' },   
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
