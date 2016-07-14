@@ -1187,7 +1187,7 @@ class AdminController extends Controller
   {
     $data['active'] = "cityList";
 
-    return view('admin_city', $data);
+    return view('admin.admin_city', $data);
   }  
 
   public function getCityData()

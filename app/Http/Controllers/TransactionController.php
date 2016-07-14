@@ -9,6 +9,7 @@ use Auth;
 use Cart;
 use App\Http\Requests;
 use App\Product;
+use App\Banner;
 use App\ProductCategory;
 use App\NameProduct;
 use App\ProductTestimonial;
@@ -225,15 +226,10 @@ class TransactionController extends Controller
     $order->total = $total + $shipping_fee;
     $order->who = $who;
     $order->order_date = $order_date;
-    if($input['payment'] == 0)
+    if($input['payment'] == 0) //bank transfer.   kalo firstpay ga ush diisi dulu (biarin null)
     {
-      $order->payment_method = 'banktransfer';
+      $order->payment_method = 0;
     }
-    else if($input['payment'] == 1) //firstpayss
-    {
-      $order->payment_method = 'firstpay';
-    }
-
     $order->save();
    
 
@@ -249,9 +245,30 @@ class TransactionController extends Controller
     }
 
     Cart::destroy();
-    $a = TxOrder::orderBy('order_id', 'desc')->first();
 
-    return redirect('/banktransfer/'.$a->order_id);
+    if(empty($order->payment_method))//firstpay
+      return redirect('/payment/confirm/'.$order->order_id);
+    else if($order->payment_method == 0) //kalo bank transfer langsung ke payment
+      return redirect('/payment/'.$order->order_id);
+  }
+
+  public function paymentConfirm($id)
+  {
+    $data['order'] = TxOrder::find($id);
+    $data['contact'] = AboutUs::first();
+    
+    $query = Member::where('id', $data['order']->customer_id)
+                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
+                                  ->get(['city_name']);
+
+
+    $data['customerCity'] = $query[0]->city_name;
+
+    $signature = 'gocgod' . 'gocgod123' . $data['order']->group_id . $data['order']->total;
+    
+    $data['signature'] = md5($signature);
+        
+    return view('page.paymentconfirm', $data);
   }
 
   public function banktransfer($id)
@@ -271,18 +288,126 @@ class TransactionController extends Controller
     $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
                             ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
                             ->get(['varian_name', 'price', 'quantity']);
+        
     $data['agent'] = Member::where('id', $data['order']->agent_id)
                             ->get(['name']);
 
+    $data['status_payment'] = 'Pending';
+    $data['payment_method'] = 'Bank Transfer';
 
-    $user = 0;
     Mail::send('page.email', $data, function ($m) {
-        $m->from('hello@app.com', 'Your Application');
+        $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
         $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
     });
 
     return view('page.summary', $data);
+  }
+
+  //redirect dari firstpay
+  public function payment(Request $request)
+  {
+    $xml = simplexml_load_string($request->getContent());    
+    $id = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
+
+    $data['order'] = TxOrder::find($id);
+
+    $data['status_payment'] = '';
+    $data['payment_method'] = '';
+
+    $amount = $data['order']->total;
+    $signature = md5('gocgod' . 'gocgod123'. $id . $amount);
+
+    if($signature == $xml->signature)
+    {
+      $data['orderdetail'] = \DB::table('transaction__order_detail')
+                    ->select(\DB::raw('SUM(quantity) as quantity'))
+                    ->groupBy('order_id')
+                    ->get();
+      $data['contact'] = AboutUs::first();
+      $data['order_a'] = TxOrder::where('order_id', $id)->get();
+      $data['orderprice'] = \DB::table('transaction__order')
+                    ->select('total as total_price')
+                    ->where('order_id', '=', $id)
+                    ->get();
+
+      $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
+                              ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
+                              ->get(['varian_name', 'price', 'quantity']);
+          
+      $data['agent'] = Member::where('id', $data['order']->agent_id)
+                              ->get(['name']);
+
+
+
+
+      $payment_method = $data['order']->payment_method;
+      if($payment_method == 1) $data['payment_method'] = 'ATM Bersama';
+      else if($payment_method == 4) $data['payment_method'] = 'Credit Card';
+
+      if($xml->payment_status == 1) $data['status_payment'] = 'Pending';
+      else if($xml->payment_status == 2) $data['status_payment'] = 'Paid';
+      else if($xml->payment_status == 3) $data['status_payment'] = 'Failed';
+
+      $member = Member::find($data['order']->customer_id);
+
+      Mail::send('page.email', $data, function ($m) use ($member) {
+          $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+
+          $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
+      });
+
+      return view('page.summary', $data);
+    }
+    else
+      return redirect('home');
+  }
+
+  public function getNotification(Request $data)
+  {
+    $xml = simplexml_load_string($data->getContent());
+    
+    $idOrder = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
+
+    $query = TxOrder::find($idOrder);
+    $amount = $query->total;
+
+    $signature = md5('gocgod' . 'gocgod123'. $idOrder . $amount);
+    if($signature == $xml->signature)
+    {
+      $query->payment_method = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
+      $query->payment_account = filter_var($xml->idpaymentcode, FILTER_SANITIZE_STRING);
+      $query->save();
+    }
+
+  }
+
+  public function getResponse(Request $data)
+  {
+    $xml = simplexml_load_string($data->getContent());
+    
+    $idOrder = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
+    $paymentChannel = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
+
+    $query = TxOrder::find($idOrder);
+    $amount = $query->total;
+
+    $signature = md5('gocgod' . 'gocgod123'. $idOrder . $amount);
+
+    //update database kalo dia belum bayar & payment channelnya sama
+    if($signature == $xml->signature && $query->status_payment == 0 && $query->payment_method == $paymentChannel)
+    {
+      //berhasil
+      if($xml->payment_status == 2)
+      {
+        $query->status_payment = 1;
+      }
+      else if($xml->payment_status == 3) //gagal
+      {
+        $query->status_payment = -1;
+      }
+      $query->save();
+    }
 
   }
 
@@ -600,7 +725,7 @@ class TransactionController extends Controller
 
 
     Mail::send('page.email', $data, function ($m) {
-        $m->from('hello@app.com', 'Your Application');
+        $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
         $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
     });
