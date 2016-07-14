@@ -49,15 +49,57 @@
                   <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                 </div>
               </div>
-
             </div>
           </div>
-        </div>
+
+          <div class="modal fade" id="modalreview" tabindex="-1" role="dialog" aira-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal_header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <center>Ulasan Agen</center>
+                  </div>
+
+                  <div class="modal-body">
+                  <center>
+                    <form method="POST">
+                    <input type="hidden" name="id" id="id" />
+                    <input type="hidden" name="agent_id" id="agent_id" />
+
+                    <div id="rateYo"></div>
+                    <br>
+
+                    <textarea class="form-control" id="review" placeholder="masukkan kritik, saran dan masukan disini"></textarea>
+                    <br>
+                    <br>
+                    <a>
+                    <button type="button" onclick="reviewandreceive()" class="boaBtn_boa_pf">
+                      Submit
+                    </button>
+                    </a>
+                    </form>
+                  </center>
+                  </div>
+              </div>
+          </div>
+          </div>
+
+
+          </div>
+
     </div>
 </div>
 
 @push('scripts')
 <script>
+
+$(function () { 
+  $("#rateYo").rateYo({
+    rating: 0,
+    fullStar: true
+  });
+});
+
 $('#datatableUser tbody').on( 'click', '.detail', function () {
     var id = $(this).data('id');
     $.ajax({
@@ -93,38 +135,107 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
     $("#productDetail").modal();
 }); 
 
+
+$('#datatableUser tbody').on( 'click', '.review', function () {
+    var id = $(this).data('id');
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/dataorder') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(data)
+      {
+        if(data != 0)
+        {
+          var obj = JSON.parse(data);
+          var id = "";
+          var agent_id = "";
+
+          id = (obj.order_id);
+          agent_id = (obj.agent_id);
+
+          $(".modal-body #id").val(id);  
+          $(".modal-body #agent_id").val(agent_id);
+        }
+      }
+    });
+  
+    $("#modalreview").modal();
+});
+
+
 $('#productDetail').on('hidden.bs.modal', function (e) {
   $(".modal-body #name").html("");
   $(".modal-body #qty").html("");
   $(".modal-body #price").html("");
 })
 
-function edit(id)
-{
-  window.location = "{{ URL::to('/edit/order') . '/' }}" + id;
-}
+$('#modalreview').on('hidden.bs.modal', function (e) {
+  $(".modal-body #id").val("");
+  $(".modal-body #agent_id").val("");
+})
 
-function receive (id)
+function reviewandreceive()
 {
+  var $rateYo = $("#rateYo").rateYo();
+  var rating = $rateYo.rateYo("rating");
+  var id = $('#id').val();
+  var agent_id = $('#agent_id').val();
+  if($('#review').val() != null)
+  {
+    var review = $('#review').val();
+  }
+  else
+  {
+    var review = ""; 
+  }
+
+  alert(rating+"-"+id+"-"+agent_id+"-"+review);
+
+
   $.ajax({
     url: '{{URL("/receive")}}',
     type: 'POST',
-    data: {id: id},
+    data: {id: id, agent_id:agent_id, rating: rating, review:review},
     beforeSend: function(request){
       return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
       },
   })
   .success(function(data)
   {
-    $("#"+id+"sending").prop("disabled", true);
-    $("#"+id+"sending").text("Received");
-    $("#"+id+"sending").css("background-color", "red");
     location.reload();
   })
   .fail(function(){
     alert('error');
   })
 }
+
+function edit(id)
+{
+  window.location = "{{ URL::to('/edit/order') . '/' }}" + id;
+}
+
+// function receive (id)
+// {
+//   $.ajax({
+//     url: '{{URL("/receive")}}',
+//     type: 'POST',
+//     data: {id: id},
+//     beforeSend: function(request){
+//       return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+//       },
+//   })
+//   .success(function(data)
+//   {
+//     $("#"+id+"sending").prop("disabled", true);
+//     $("#"+id+"sending").text("Received");
+//     $("#"+id+"sending").css("background-color", "red");
+//     location.reload();
+//   })
+//   .fail(function(){
+//     alert('error');
+//   })
+// }
 
 $(function() {
     var table = $('#datatableUser').DataTable({
@@ -159,14 +270,14 @@ $(function() {
 
               if(ship > sunday)
               {
-                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +
-                '<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="receive(' + row.order_id + ')" >' + 'Receive' + '</button>' + '<br><br>' +
-                '<button class="btn btn-primary" id="'+ row.order_id +'sending" onclick="edit(' + row.order_id + ')" >' + 'Edit' + '</button>';
+                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' + 
+                '@if(Auth::user()->status_user == 1)<button data-toggle="modal" class="btn btn-warning review" data-id="'+ row.order_id +'" data-agent="'+  row.agent_id +'">' + 'Diterima' + '</button>' + '<br><br> @endif' +
+                '<button class="btn btn-primary" id="'+ row.order_id +'sending" onclick="edit(' + row.order_id + ')" >' + 'Ubah Order' + '</button>';
               }
               else
               {
-                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +
-                '<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="receive(' + row.order_id + ')" >' + 'Receive' + '</button>';
+                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
+                '<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="receive(' + row.order_id + ')" >' + 'Diterima' + '</button>';
               }
             }
           },         

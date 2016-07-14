@@ -76,7 +76,7 @@
                             <label class="col-md-4 control-label">Nomor rekening</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Nomor rekening yang Anda gunakan" name="bank_account">
+                                <input type="text" class="form-control" placeholder="Nomor rekening yang Anda gunakan" name="bank_account" onkeypress="return isNumber(event)">
 
                                 @if ($errors->has('bank_account'))
                                     <span class="help-block">
@@ -109,6 +109,16 @@
 
 @push('scripts')
 <script type="text/javascript">
+
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+          return false;
+        }
+        return true;
+    }
+
     $(function() {
         var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd' }).val();
 

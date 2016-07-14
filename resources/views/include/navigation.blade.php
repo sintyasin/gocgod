@@ -26,7 +26,7 @@
 							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
 
 							<!-- <li><a href="{{ url('/cart') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart</a></li> -->
-							<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Cari Agent</a></li>
+							<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Cari Agen</a></li>
 
 
 

@@ -74,6 +74,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
 	Route::post('edit_profile', 'MemberController@edit_profile');
 	Route::post('edit_password', 'MemberController@edit_password');
+	Route::post('change_bank', 'MemberController@change_bank');
 	Route::get('customerorder', 'TransactionController@getOrderList');
 	Route::get('agent/current/order', 'TransactionController@getCurrentOrderList');
 	Route::get('customerorder/data', array('as' => 'customerorderlist.data', 
@@ -83,6 +84,8 @@ Route::group(['middleware' => 'user'], function () {
 			'uses' =>'TransactionController@getHistoryOrderData'));
 	Route::post('dataorderproduct', 'TransactionController@getProductOrder');
 	Route::post('sending', 'TransactionController@sending');
+
+	Route::post('dataorder', 'TransactionController@getOrder');
 
 
 	Route::post('receive', 'TransactionController@receive');

@@ -11,7 +11,7 @@
 		<div class="col-md-6">
 			<div class="find_location">
 			
-				<div class="title_location"> {{$agent->name}} </div>
+				<div class="title_location"> {{$agent->name}}  <span></span></div>
 				<div class="data_location" style="padding-left: 10px;">
 					 
 					 {{$agent->address}} <br>
@@ -26,4 +26,17 @@
 		@endforeach
 	</div>
 </div>
+
+@push('scripts')
+<script type="text/javascript">
+$(function () {
+ 
+  $("#rateYo").rateYo({
+    rating: 3.2,
+    readOnly: true
+  });
+});
+</script>
+@endpush
+
 @stop
