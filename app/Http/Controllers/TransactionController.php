@@ -408,7 +408,6 @@ class TransactionController extends Controller
       }
       $query->save();
     }
-
   }
 
   //=============================== CHECKOUT SUBSCRIBER 
