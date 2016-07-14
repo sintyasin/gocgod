@@ -246,7 +246,7 @@ class TransactionController extends Controller
 
     Cart::destroy();
 
-    if(empty($order->payment_method))//firstpay
+    if($order->payment_method == null || $order->payment_method == 'null')//firstpay
       return redirect('/payment/confirm/'.$order->order_id);
     else if($order->payment_method == 0) //kalo bank transfer langsung ke payment
       return redirect('/payment/'.$order->order_id);
