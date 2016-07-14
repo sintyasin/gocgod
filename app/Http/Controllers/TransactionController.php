@@ -245,7 +245,7 @@ class TransactionController extends Controller
     }
 
     Cart::destroy();
-    
+
     if(is_null($order->payment_method))//firstpay
       return redirect('/payment/confirm/'.$order->order_id);
     else if($order->payment_method == 0) //kalo bank transfer langsung ke payment
@@ -307,10 +307,11 @@ class TransactionController extends Controller
   //redirect dari firstpay
   public function payment(Request $request)
   {
-    $xml = simplexml_load_string($request->getContent());    
-    $id = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
+    $input = $request->all();
 
-    $data['order'] = TxOrder::find($id);
+    $id = filter_var($input['idorder'], FILTER_SANITIZE_STRING);
+
+    $data['order'] = TxOrder::where('group_id', $idOrder)->first();
 
     $data['status_payment'] = '';
     $data['payment_method'] = '';
@@ -318,7 +319,7 @@ class TransactionController extends Controller
     $amount = $data['order']->total;
     $signature = md5('gocgod' . 'gocgod123'. $id . $amount);
 
-    if($signature == $xml->signature)
+    if($signature == $input['signature'])
     {
       $data['orderdetail'] = \DB::table('transaction__order_detail')
                     ->select(\DB::raw('SUM(quantity) as quantity'))
@@ -345,9 +346,9 @@ class TransactionController extends Controller
       if($payment_method == 1) $data['payment_method'] = 'ATM Bersama';
       else if($payment_method == 4) $data['payment_method'] = 'Credit Card';
 
-      if($xml->payment_status == 1) $data['status_payment'] = 'Pending';
-      else if($xml->payment_status == 2) $data['status_payment'] = 'Paid';
-      else if($xml->payment_status == 3) $data['status_payment'] = 'Failed';
+      if($input['payment_status'] == 1) $data['status_payment'] = 'Pending';
+      else if($input['payment_status'] == 2) $data['status_payment'] = 'Paid';
+      else if($input['payment_status'] == 3) $data['status_payment'] = 'Failed';
 
       $member = Member::find($data['order']->customer_id);
 
@@ -363,7 +364,7 @@ class TransactionController extends Controller
       return redirect('home');
   }
 
-  public function getNotification(Request $data)
+  /*public function getNotification(Request $data)
   {
     $xml = simplexml_load_string($data->getContent());
     
@@ -380,33 +381,42 @@ class TransactionController extends Controller
       $query->save();
     }
 
-  }
+  }*/
 
   public function getResponse(Request $data)
   {
     $xml = simplexml_load_string($data->getContent());
     
     $idOrder = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
-    $paymentChannel = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
 
-    $query = TxOrder::find($idOrder);
-    $amount = $query->total;
+    $query = TxOrder::where('group_id', $idOrder)->get();
+    $amount = $query[0]->total;
 
     $signature = md5('gocgod' . 'gocgod123'. $idOrder . $amount);
 
     //update database kalo dia belum bayar & payment channelnya sama
-    if($signature == $xml->signature && $query->status_payment == 0 && $query->payment_method == $paymentChannel)
+    if($signature == $xml->signature)
     {
-      //berhasil
-      if($xml->payment_status == 2)
+      foreach ($query as $order)
       {
-        $query->status_payment = 1;
-      }
-      else if($xml->payment_status == 3) //gagal
-      {
-        $query->status_payment = -1;
-      }
-      $query->save();
+        //pending
+        if($xml->payment_status == 1)
+        {
+          $order->payment_method = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
+          $order->payment_account = filter_var($xml->idpaymentcode, FILTER_SANITIZE_STRING);
+          $order->bank_code = filter_var($xml->idbankcode, FILTER_SANITIZE_STRING);
+          $order->save();
+        }
+        else if($xml->payment_status == 2) //berhasil
+        {
+          $order->status_payment = 1;
+        }
+        else if($xml->payment_status == 3) //gagal
+        {
+          $order->status_payment = -1;
+        }
+        $order->save(); 
+      }      
     }
   }
 
