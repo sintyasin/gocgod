@@ -311,7 +311,7 @@ class TransactionController extends Controller
 
     $id = filter_var($input['idorder'], FILTER_SANITIZE_STRING);
 
-    $data['order'] = TxOrder::where('group_id', $idOrder)->first();
+    $data['order'] = TxOrder::where('group_id', $id)->first();
 
     $data['status_payment'] = '';
     $data['payment_method'] = '';
