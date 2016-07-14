@@ -273,17 +273,39 @@ class TransactionController extends Controller
                             ->get(['varian_name', 'price', 'quantity']);
     $data['agent'] = Member::where('id', $data['order']->agent_id)
                             ->get(['name']);
+    
+    $query = Member::where('id', $data['order']->customer_id)
+                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
+                                  ->get(['city_name']);
 
 
-    $user = 0;
-    Mail::send('page.email', $data, function ($m) {
-        $m->from('hello@app.com', 'Your Application');
+    $data['customerCity'] = $query[0]->city_name;
 
-        $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
-    });
+    $signature = 'gocgod' . 'gocgod123' . $data['order']->group_id . $data['order']->total;
+    
+    $data['signature'] = md5($signature);
+        
+    if($data['order'] == 'banktransfer')
+    {
+      Mail::send('page.email', $data, function ($m) {
+          $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+
+          $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+      });
+    }
 
     return view('page.summary', $data);
+  }
 
+  public function getNotification(Request $data)
+  {
+    //dd($data);
+    //\Log::info($data);
+    //echo 'ok';
+    \DB::table('master__user_activations')->insert(
+        ['user_id' => 999]
+    );
+    return 'a';
   }
 
   //=============================== CHECKOUT SUBSCRIBER 
