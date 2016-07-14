@@ -32,7 +32,7 @@ Route::get('findalocation', 'MemberController@readAgent');
 Route::get('becomeanagent', 'MemberController@bank');
 Route::post('request_agent', 'MemberController@request_agent');
 
-//Route::auth();
+
 Route::post('login', 'Auth\AuthController@login');
 Route::get('logout', 'Auth\AuthController@logout');
 Route::get('register', 'Auth\AuthController@showRegistrationForm');
@@ -44,6 +44,11 @@ Route::post('password/reset', 'Auth\PasswordController@reset');
 
 Route::get('user/activation/{token}', array('as' => 'user.activate',
 	'uses' => 'Auth\AuthController@activateUser'));
+
+//buat integrasi first pay
+Route::post('notification', 'TransactionController@getNotification');
+Route::post('response', 'TransactionController@getResponse');
+Route::post('payment', 'TransactionController@payment');
 
 Route::group(['middleware' => 'user'], function () {
 	Route::get('myorder', 'TransactionController@getOrderListCustomer');
@@ -69,7 +74,8 @@ Route::group(['middleware' => 'user'], function () {
 	Route::post('updatecart_single/', 'TransactionController@updatecart_single');
 	Route::post('deletecart_single/', 'TransactionController@deletecart_single');
 	Route::post('order_single', 'TransactionController@order_single');
-	Route::get('banktransfer/{id}', 'TransactionController@banktransfer');
+	Route::get('payment/confirm/{id}', 'TransactionController@paymentConfirm');
+	Route::get('payment/{id}', 'TransactionController@banktransfer');
 	Route::get('profile/{id}', 'MemberController@showbalance');
 	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
 	Route::post('edit_profile', 'MemberController@edit_profile');
@@ -93,8 +99,6 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
 		'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
 	Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryCustomer');
-
-	Route::post('notification', 'TransactionController@getNotification');
 });
 
 
