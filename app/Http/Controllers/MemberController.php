@@ -151,9 +151,18 @@ class MemberController extends Controller
     	foreach($data['queryAgent'] as $tmp)
     	{
     		$data['queryCity'][$i] = City::find($tmp->city_id); 
-			// \DB::table('master__city')->where('city_id', 1)->first();
+            $data['rating'][$i] = \DB::table('master__agent_rating')
+                        ->select(\DB::raw('sum(rating)/count(rating) as rate'))
+                        ->groupBy('agent_id')
+                        ->having('agent_id', '=', $tmp->id)
+                        ->get();
+            
             $i++;
     	}
+        
+        
+
+
     	// dd($data);
     	return view('page.findalocation', $data);
 
