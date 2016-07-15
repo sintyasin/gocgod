@@ -63,6 +63,7 @@ class ProductController extends Controller
         $data['contact'] = AboutUs::first();
         $data['query_testimonial'] = ProductTestimonial::where('varian_id', $id)
                                                         ->where('approval', 1)
+                                                        ->orderBy('testimonial_id', 'desc')
                                                         ->get();
     	$data['query'] = Product::where('varian_id', $id)->first();
         $data['queryCategory'] = ProductCategory::find($data['query']->category_id);
