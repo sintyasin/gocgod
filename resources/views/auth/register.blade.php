@@ -57,7 +57,7 @@
                             <label class="col-md-4 control-label">Kode Pos</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="kodepos" value="{{ old('kodepos') }}">
+                                <input type="text" class="form-control" name="kodepos" value="{{ old('kodepos') }}" onkeypress="return isNumber(event)">
 
                                 @if ($errors->has('kodepos'))
                                     <span class="help-block">
@@ -72,7 +72,7 @@
                             <label class="col-md-4 control-label">Tanggal Lahir</label>
 
                             <div class="col-md-1">
-                                <input type="text" class="form-control" placeholder="dd" name="hari" value="{{ old('hari') }}">
+                                <input type="text" class="form-control" placeholder="dd" name="hari" value="{{ old('hari') }}" onkeypress="return isNumber(event)">
                                 @if ($errors->has('hari'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('hari') }}</strong>
@@ -111,7 +111,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <input type="text" class="form-control" placeholder="yyyy" name="tahun" value="{{ old('tahun') }}">
+                                <input type="text" class="form-control" placeholder="yyyy" name="tahun" value="{{ old('tahun') }}" onkeypress="return isNumber(event)">
                                 @if ($errors->has('tahun'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('tahun') }}</strong>
@@ -137,7 +137,7 @@
                             <label class="col-md-4 control-label">Telepon</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="telepon" value="{{ old('telepon') }}">
+                                <input type="text" class="form-control" name="telepon" value="{{ old('telepon') }}" onkeypress="return isNumber(event)">
 
                                 @if ($errors->has('telepon'))
                                     <span class="help-block">
@@ -235,6 +235,16 @@
 </div>
 @push('scripts')
 <script type="text/javascript">
+    
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
     $(function() {
         var date = $('#datepicker').datepicker({ 
             dateFormat: 'yy-mm-dd',
@@ -244,13 +254,13 @@
         $( "#datepicker" ).datepicker();
     });
   
-  function check() {
-    var e = document.getElementById('city');
-    if (e.options[e.selectedIndex].value == 0) {
-        document.getElementById('newcity').style.display = 'block';
+    function check() {
+        var e = document.getElementById('city');
+        if (e.options[e.selectedIndex].value == 0) {
+            document.getElementById('newcity').style.display = 'block';
+        }
+        else document.getElementById('newcity').style.display = 'none';
     }
-    else document.getElementById('newcity').style.display = 'none';
-  }
 </script>
 @endpush
 @endsection

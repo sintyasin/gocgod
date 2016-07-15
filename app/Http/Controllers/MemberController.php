@@ -166,11 +166,37 @@ class MemberController extends Controller
 		$data['querybalance'] = Balance::where('agent_id', $id)
 								->orderBy('created_at', 'desc')
 								->get();
+        $data['bank'] = Bank::all();
 
         $data['city'] = City::all();
 
 		return view('page.profile', $data);
     }  
+
+    public function change_bank(Request $input)
+    {
+        $v = Validator::make($input->all(),[
+            'bank' => 'required|numeric',
+            'bank_account' => 'required'
+            ]);
+
+        $bank = filter_var($input['bank'], FILTER_SANITIZE_STRING);
+        $bank_account = filter_var($input['bank_account'], FILTER_SANITIZE_STRING);
+
+        if($v->fails())
+        {
+            return redirect('/profile/'.Auth::user()->id)->withErrors($v->errors())->withInput();
+        }
+        else
+        {
+            $req = Member::find(Auth::user()->id);
+            $req->bank_id = $bank;
+            $req->bank_account = $bank_account;
+            $req->save();
+        }
+
+        return redirect('/profile/'.Auth::user()->id);
+    }
 
     public function withdrawMoney(Request $data)
     {
@@ -191,7 +217,7 @@ class MemberController extends Controller
     		$money = filter_var($input['money'], FILTER_SANITIZE_STRING);
     		if($balance < $money)
     		{
-    			return redirect('/profile/'.Auth::user()->id)->withErrors('Not valid!')->withInput();
+    			return redirect('/profile/'.Auth::user()->id)->with('error', 'Silahkan memasukkan jumlah uang kurang atau sama dengan deposit Anda')->withErrors($v->errors())->withInput();
     		}
     		else
     		{
@@ -208,7 +234,7 @@ class MemberController extends Controller
     		}
     	}
 
-    	return redirect('/profile/'.Auth::user()->id);
+    	return redirect('/profile/'.Auth::user()->id)->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');;
     }
 
     public function edit_password(Request $request)

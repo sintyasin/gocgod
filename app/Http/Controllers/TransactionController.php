@@ -23,6 +23,7 @@ use App\CutOffDate;
 use Session;
 use App\AboutUs;
 use Mail;
+use App\AgentRating;
 
 class ProductDataOrder
 {
@@ -809,6 +810,32 @@ class TransactionController extends Controller
     ->make(true);
   }
 
+  public function getOrder(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+      'id' => 'required'
+      ]);
+
+    if ($v->fails())
+    {
+      return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+
+    $order = TxOrder::find($id);
+
+    if(isset($order))
+    {
+      $json = json_encode($order);
+
+      return $json;
+    }
+    else return 0;
+
+  }
+
   public function getProductOrder(Request $request)
   {
     $v = Validator::make($request->all(), [
@@ -882,7 +909,7 @@ class TransactionController extends Controller
                             // ->leftJoin('transaction__order_detail as order', 'order_id', '=', 'order.order_id')
     ->where('c.id', Auth::user()->id)
     ->where('status_confirmed', 0)
-    ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+    ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.id as agent_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
 
 
 
@@ -897,6 +924,8 @@ class TransactionController extends Controller
     })
     ->make(true);
   }
+
+
 
   public function getProductOrderCustomer(Request $request)
   {
@@ -943,12 +972,32 @@ class TransactionController extends Controller
 
   public function receive(Request $request)
   {
+
+    $v = Validator::make($request->all(), [
+      'id' => 'required',
+      'agent_id' => 'required',
+      'rating' => 'required|numeric'
+      ]);
+
     $input = $request->all();
     $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+    $agent_id = filter_var($input['agent_id'], FILTER_SANITIZE_STRING);
+    $rate = intval(filter_var($input['rating'], FILTER_SANITIZE_STRING));
+    $review = filter_var($input['review'], FILTER_SANITIZE_STRING);
+    $cust_id = filter_var(Auth::user()->id, FILTER_SANITIZE_STRING);
+    
 
     $order = Txorder::find($id);
     $order->status_confirmed = 1;
     $order->save();
+
+    
+    $rating = new AgentRating;
+    $rating->agent_id = $agent_id;
+    $rating->customer_id = $cust_id;
+    $rating->rating = $rate;
+    $rating->comment = $review;
+    $rating->save();
 
     return redirect('customerorder');
   }
@@ -1091,12 +1140,12 @@ class TransactionController extends Controller
 
     return Datatables::of($data['query'])
     ->editColumn('status_payment', function($data){ 
-      if($data->status_payment == 0) return "Unpaid";
-      else if($data->status_payment == 1) return "Paid";
+      if($data->status_payment == 0) return "Belum Dibayar";
+      else if($data->status_payment == 1) return "Sudah Dibayar";
     })
     ->editColumn('status_shipping', function($data){ 
-      if($data->status_shipping == 0) return "Processed";
-      else if($data->status_shipping == 1) return "Sent";
+      if($data->status_shipping == 0) return "Sedang diproses";
+      else if($data->status_shipping == 1) return "Sudah dikirim";
     })
     ->make(true);
   }
