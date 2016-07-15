@@ -42,14 +42,25 @@
 	<hr style="width: 200px; float:left;">
 	<p style="padding-top:20px;"> Id Pesanan: 
 	
+	<?php $i = 0; ?>
 	@foreach($order_a as $id)
-	@if($id->order_id == $order_a[0]->order_id)
+	@if($i == 0)
+		<span style="font-weight: bold;">{{$order_a[0]->order_id}} </span>
 	@else
-	<span style="font-weight: bold;">{{$id->order_id}}, </span>
-	@endif 
+		<span style="font-weight: bold;">{{$id->order_id}}, </span>
+	@endif
+	<?php $i++; ?>
 	@endforeach
-	<span style="font-weight: bold;">{{$order_a[0]->order_id}} </span>
-	<br> Tanggal Pemesanan: <span style="font-weight: bold;">{{$order->order_date}} </span> <br> Agen: <span style="font-weight: bold;"> {{$agent[0]->name}} </span></p>
+	
+	<br> Tanggal Pemesanan: <span style="font-weight: bold;">
+		<!-- ini subscribe -->
+		@if(count($order) > 1)
+			{{$order[0]->order_date}} 
+		<!-- ini beli single -->
+		@else
+			{{$order->order_date}} 
+		@endif
+	</span> <br> Agen: <span style="font-weight: bold;"> {{$agent[0]->name}} </span></p>
 
 	<div class="container" style="width:100%;">
 	<table>

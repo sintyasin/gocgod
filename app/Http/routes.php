@@ -74,6 +74,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::post('deletecart_single/', 'TransactionController@deletecart_single');
 	Route::post('order_single', 'TransactionController@order_single');
 	Route::get('payment/confirm/{id}', 'TransactionController@paymentConfirm');
+	Route::get('payment/subscribe/confirm/{groupId}', 'TransactionController@paymentConfirmSubscribe');
 	Route::get('payment/{id}', 'TransactionController@banktransfer');
 	Route::get('profile/{id}', 'MemberController@showbalance');
 	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
