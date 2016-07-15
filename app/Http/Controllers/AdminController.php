@@ -497,6 +497,7 @@ class AdminController extends Controller
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('shipping_date', '>=', $monday)
             ->where('shipping_date', '<=', $sunday)
+            ->where('status_payment', '=', 1)
             ->groupBy('Agent', 'Product')
             ->get();
 
@@ -510,6 +511,7 @@ class AdminController extends Controller
               ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
               ->where('shipping_date', '>=', $monday)
               ->where('shipping_date', '<=', $sunday)
+              ->where('status_payment', '=', 1)
               ->groupBy('Product')
               ->get();
 

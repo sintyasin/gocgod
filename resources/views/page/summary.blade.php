@@ -41,10 +41,10 @@
               <br>
 
               <!-- total - shipping fee, soalnya total udh termasuk shipping fee -->
-              <p class="plxLogin"><font size="3">Total Harga Produk : Rp {{number_format($order[0]->total - $order[0]->shipping_fee, 2, ',','.')}}</font> </p>
+              <p class="plxLogin"><font size="3">Total Harga Produk (per Minggu) : Rp {{number_format($order[0]->total - $order[0]->shipping_fee, 2, ',','.')}}</font> </p>
               <p class="plxLogin"><font size="3">Ongkos Kirim  : Rp {{number_format($order[0]->shipping_fee, 2, ',','.')}}</font> </p>
               <hr>
-              <p class="plxLogin"><font size="4">Total  : Rp {{number_format($order[0]->total, 2, ',','.')}}</font> </p>
+              <p class="plxLogin"><font size="4">Total  : Rp {{number_format($orderprice[0]->total_price, 2, ',','.')}}</font> </p>
               
               <p class="plxLogin"><font size="3">Silahkan transfer ke <br>GOCGOD<br></font> </p>
               <a href="{{ url('/menu') }}"><input type="button" style="width:150px;" value="Kembali Berbelanja"></a>

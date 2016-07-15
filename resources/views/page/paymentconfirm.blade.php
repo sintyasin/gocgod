@@ -64,7 +64,7 @@
 
             <input type=hidden name="idcustomer" value="{{$order->customer_id}}" >
             <input type=hidden name="idproduct" value="1">
-            <input type=hidden name="interval" value="10">
+            <input type=hidden name="interval" value="1440">
 
             <input type=hidden name="customer_address" value="{{Auth::user()->address}}">
             <input type=hidden name="customer_city" value="{{$customerCity}}">
