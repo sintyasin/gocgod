@@ -157,8 +157,9 @@
       <br>
       <h4><b>
       Notes : <br>
-      0 = Unconfirmed / Unpaid <br>
-      1 = Confirmed / Paid <br>
+      0 &nbsp; = Unconfirmed / Unpaid <br>
+      1 &nbsp; = Confirmed / Paid <br>
+      -1 = Failed <br>
       </b></h4>
       <br><br>
     </div>

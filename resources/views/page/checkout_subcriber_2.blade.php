@@ -90,7 +90,7 @@
               <label for="Date">Tanggal Pengiriman </label><br>
               <input type="text" class="form-control" name='request_date' placeholder='Contoh = 2016-05-31 (tahun-bulan-tanggal)' autocomplete="off" id="datepicker"/>   
 
-              <label>Hari pengiriman akan sama dengan hari dari tanggal pengiriman pertama yang dipilih. <br> Anda dapat mengubah tanggal pengiriman pada minggu selanjutnya di menu "Orderku".</label>
+              <label>Hari pengiriman akan sama dengan hari dari tanggal pengiriman pertama yang dipilih. <br> Anda dapat mengubah tanggal pengiriman pada minggu selanjutnya di menu "Pesananku".</label>
               <br><br>  
               <label for="payment">Pembayaran</label>
               <br>
