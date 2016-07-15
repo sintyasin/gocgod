@@ -71,7 +71,7 @@
 	<br>
 	<p style="font-weight:bold; font-size:20px;">Informasi Pembayaran</p>
 	<hr style="width: 200px; float:left;">
-	<p style="padding-top:20px; "> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span>
+	<p style="padding-top:20px; font-size:30px;"> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span>
 	<br>
 	Silahkan segera melakukan pembayaran.
 	</p>

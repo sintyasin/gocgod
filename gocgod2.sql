@@ -18,7 +18,7 @@
 --
 -- Current Database: `gocgod`
 --
-
+SET FOREIGN_KEY_CHECKS=0;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/ `gocgod` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
 USE `gocgod`;
@@ -738,3 +738,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2016-07-14 16:45:38
+SET FOREIGN_KEY_CHECKS=1;

@@ -45,28 +45,20 @@
 													<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
 														<label class="sr-only" for="inputemail">Alamat Email</label>
 														<input type="email" class="form-control" id="inputemail" name="email_masuk" placeholder="gocgod@gocgod.com" value="{{ old('email') }}" required>
-														@if ($errors->has('email_masuk'))
-														<script type="text/javascript">
-															alert('False Email or Password');
-														</script>
-														<!-- 						                                    
-																<span class="help-block">
-						                                        <strong>{{ $errors->first('email') }}</strong>
-						                                     	window.alert("False Email or Password");
-						                                    </span>
-						                                -->						                                    @endif
 						                            </div>
 						                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
 						                            	<label class="sr-only" for="inputpassword">Password</label>
 						                            	<input type="password" class="form-control" id="inputpassword" placeholder="Password" name="password_masuk" required>
-						                            	@if ($errors->has('password_masuk'))
-						                            	<script type="text/javascript">
-						                            		alert('Alamat Email atau Password Salah!');
-						                            	</script>
+						                            	@if (isset($errors))
+						                            		@if($errors->has('password_masuk') || $errors->has('email_masuk'))
+							                            	<script type="text/javascript">
+							                            		alert('Alamat Email atau Password Salah!');
+							                            	</script>
 						                                    <!-- <span class="help-block">
 						                                        <strong>{{ $errors->first('password') }}</strong>
 						                                    </span> -->
 						                                    @endif
+					                                    @endif
 
 						                                    <div class="checkbox text-center">
 																 <label>
