@@ -497,6 +497,7 @@ class AdminController extends Controller
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('shipping_date', '>=', $monday)
             ->where('shipping_date', '<=', $sunday)
+            ->where('status_payment', '=', 1)
             ->groupBy('Agent', 'Product')
             ->get();
 
@@ -510,6 +511,7 @@ class AdminController extends Controller
               ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
               ->where('shipping_date', '>=', $monday)
               ->where('shipping_date', '<=', $sunday)
+              ->where('status_payment', '=', 1)
               ->groupBy('Product')
               ->get();
 
@@ -584,6 +586,7 @@ class AdminController extends Controller
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->where('order_date', '>=', $first)
             ->where('order_date', '<=', $last)
+            ->where('status_payment', '=', 1)
             ->groupBy(DB::raw('name WITH ROLLUP'))
             ->get();
 
@@ -631,6 +634,7 @@ class AdminController extends Controller
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('order_date', '>=', $first)
             ->where('order_date', '<=', $last)
+            ->where('status_payment', '=', 1)
             ->groupBy('Date')
             ->orderBy('Date')
             ->get();
@@ -692,6 +696,7 @@ class AdminController extends Controller
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
             ->where('order_date', '>=', $first)
             ->where('order_date', '<=', $last)
+            ->where('status_payment', '=', 1)
             ->groupBy('Agent')
             ->orderBy('Agent')
             ->get();

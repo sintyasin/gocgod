@@ -21,7 +21,7 @@
         <!-- ================================================================================================ -->
           <div id="">
           <Center>
-            <p class='form_head'>Rincian Pembelanjaan</p>
+            <p class='form_head'>Rincian Pembayaran</p>
               <label for="phone">Nama Pelanggan</label> <br>
               <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
               <label for="address">Alamat Pengiriman</label> <br>
