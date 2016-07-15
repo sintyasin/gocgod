@@ -584,8 +584,8 @@ class AdminController extends Controller
             ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
-            ->where('order_date', '>=', $first)
-            ->where('order_date', '<=', $last)
+            ->where('DATE(order_date)', '>=', $first)
+            ->where('DATE(order_date)', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy(DB::raw('name WITH ROLLUP'))
             ->get();
@@ -628,12 +628,12 @@ class AdminController extends Controller
     $data['active'] = 'txReport';
 
     $query = DB::table('transaction__order')
-            ->select('order_date as Date' , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + shipping_fee) as Omzet'), 'shipping_fee as Shipping', DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select(DB::raw('DATE(order_date) as Date') , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + SUM(shipping_fee)) as Omzet'), DB::raw('SUM(shipping_fee) as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
-            ->where('order_date', '>=', $first)
-            ->where('order_date', '<=', $last)
+            ->where('DATE(order_date)', '>=', $first)
+            ->where('DATE(order_date)', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy('Date')
             ->orderBy('Date')
@@ -690,12 +690,12 @@ class AdminController extends Controller
     $data['active'] = 'agentReport';
 
     $query = DB::table('transaction__order')
-            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + shipping_fee) as Omzet'), 'shipping_fee as Shipping', DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + SUM(shipping_fee)) as Omzet'), DB::raw('SUM(shipping_fee) as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
-            ->where('order_date', '>=', $first)
-            ->where('order_date', '<=', $last)
+            ->where('DATE(order_date)', '>=', $first)
+            ->where('DATE(order_date)', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy('Agent')
             ->orderBy('Agent')

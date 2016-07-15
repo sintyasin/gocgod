@@ -65,7 +65,7 @@
 
   <div class="row">
     <div class="col-lg-12 text-center">
-        <h3><b>Transaction Report from {{$start}} to {{$end}}</b></h3>
+        <h3><b>Agent Report from {{$start}} to {{$end}}</b></h3>
     </div>
   </div>
 
