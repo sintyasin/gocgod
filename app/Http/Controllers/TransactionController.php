@@ -353,9 +353,10 @@ class TransactionController extends Controller
       $data['contact'] = AboutUs::first();
       $data['order_a'] = TxOrder::where('group_id', $id)->get();
       $data['orderprice'] = \DB::table('transaction__order')
-                    ->select('total as total_price')
-                    ->where('group_id', '=', $id)
-                    ->get();
+                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->groupBy('group_id')
+                      ->having('group_id', '=', $groupId)
+                      ->get();
 
       $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order'][0]->order_id)
                               ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
