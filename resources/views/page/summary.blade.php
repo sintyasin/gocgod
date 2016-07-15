@@ -23,7 +23,7 @@
           <Center>
 
             <!-- ini subscribe -->
-            @if(count($order) > 1)
+            @if(is_a($order, 'Illuminate\Database\Eloquent\Collection'))
               <p class='form_head'>Rincian Pembayaran</p>
                 <label for="phone">Nama Pelanggan</label> <br>
                 <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>

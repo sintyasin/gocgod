@@ -82,24 +82,46 @@
 			<br>
 			<p style="font-weight:bold; font-size:20px;">Informasi Pembayaran</p>
 			<hr style="width: 200px; float:left;">
-			<p style="padding-top:20px;">Ongkos Kirim: Rp {{number_format($order->shipping_fee)}}<span style=" font-size:30px;"><br> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span> </span> </p>
+
+			@if(is_a($order, 'Illuminate\Database\Eloquent\Collection'))
+				<p style="padding-top:20px;">Ongkos Kirim: Rp {{number_format($order[0]->shipping_fee)}}<span style=" font-size:30px;"><br> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span> </span> </p>
 
 
-			<br>
-			<p style="font-weight:bold; font-size:20px;">Cara Pembayaran </p>
-			<hr style="width: 200px; float:left;">
-			<p>
-			<br>
-			@if($order->payment_method == 0)
-			Silahkan segera melakukan pembayaran dengan <span style="font-weight:bold"> Tranfer </span> uang sesuai dengan total pembayaran ke rekening.
-			<br>
-			<span style="font-size:20px"> GOCGOD</span>
-			@elseif($order->payment_method == 1)
-			Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> ATM BERSAMA </span> dengan cara:
-			@elseif($order->payment_method == 4)
-			Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> dengan cara:
-			<br>
+				<br>
+				<p style="font-weight:bold; font-size:20px;">Cara Pembayaran </p>
+				<hr style="width: 200px; float:left;">
+				<p>
+				<br>
+				@if($order[0]->payment_method == 0)
+				Silahkan segera melakukan pembayaran dengan <span style="font-weight:bold"> Tranfer </span> uang sesuai dengan total pembayaran ke rekening.
+				<br>
+				<span style="font-size:20px"> GOCGOD</span>
+				@elseif($order[0]->payment_method == 1)
+				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> ATM BERSAMA </span> dengan cara:
+				@elseif($order[0]->payment_method == 4)
+				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> dengan cara:
+				<br>
 
+				@endif
+			@else
+				<p style="padding-top:20px;">Ongkos Kirim: Rp {{number_format($order->shipping_fee)}}<span style=" font-size:30px;"><br> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span> </span> </p>
+
+
+				<br>
+				<p style="font-weight:bold; font-size:20px;">Cara Pembayaran </p>
+				<hr style="width: 200px; float:left;">
+				<p>
+				<br>
+				@if($order->payment_method == 0)
+				Silahkan segera melakukan pembayaran dengan <span style="font-weight:bold"> Tranfer </span> uang sesuai dengan total pembayaran ke rekening.
+				<br>
+				<span style="font-size:20px"> GOCGOD</span>
+				@elseif($order->payment_method == 1)
+				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> ATM BERSAMA </span> dengan cara:
+				@elseif($order->payment_method == 4)
+				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> dengan cara:
+				<br>
+				@endif
 			@endif
 
 			</p>
