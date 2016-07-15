@@ -102,6 +102,8 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('historymyorder/data', array('as' => 'orderlistHistoryCustomer.data', 
 		'uses' =>'TransactionController@getOrderDataHistoryCustomer'));
 	Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryCustomer');
+
+	Route::post('confirmation_pay', 'TransactionController@confirmation_pay');
 });
 
 

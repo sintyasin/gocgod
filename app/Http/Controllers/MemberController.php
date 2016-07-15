@@ -146,24 +146,17 @@ class MemberController extends Controller
     public function readAgent()
     {
         $data['contact'] = AboutUs::first();
-    	$data['queryAgent'] = Member::where('status_user', 0)->get();
-    	$i=0;
-    	foreach($data['queryAgent'] as $tmp)
-    	{
-    		$data['queryCity'][$i] = City::find($tmp->city_id); 
-            $data['rating'][$i] = \DB::table('master__agent_rating')
-                        ->select(\DB::raw('sum(rating)/count(rating) as rate'))
-                        ->groupBy('agent_id')
-                        ->having('agent_id', '=', $tmp->id)
-                        ->get();
-            
-            $i++;
-    	}
-        
-        
 
 
+        $data['agent'] = \DB::table('master__member as m')
+                    ->leftJoin('master__agent_rating as ar', 'ar.agent_id', '=','m.id')
+                    ->leftJoin('master__city as c', 'c.city_id', '=', 'm.city_id')
+                    ->select(\DB::raw('sum(rating)/count(rating) as rate'), 'name', 'address', 'phone', 'email', 'city_name')
+                    ->where('status_user', 0)
+                    ->groupBy('agent_id')
+                    ->get();
     	// dd($data);
+
     	return view('page.findalocation', $data);
 
 
@@ -243,7 +236,7 @@ class MemberController extends Controller
     		}
     	}
 
-    	return redirect('/profile/'.Auth::user()->id)->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');;
+    	return redirect('/profile/'.Auth::user()->id)->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');
     }
 
     public function edit_password(Request $request)
