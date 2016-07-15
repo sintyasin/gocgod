@@ -10,7 +10,18 @@
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
               <strong>Pesanan berhasil diubah!</strong>
             </div>
+         @elseif (session('error'))
+         <div class="alert alert-danger fade in">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>{{ session('error') }}</strong>
+        </div>
+        @elseif(session('ok'))
+        <div class="alert alert-success fade in">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>{{ session('ok') }}</strong>
+        </div>
         @endif
+
           <div class="col-lg-12">
             <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
               <thead>
@@ -84,6 +95,49 @@
           </div>
           </div>
 
+          <div class="modal fade" id="paid" tabindex="-1" role="dialog" aira-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal_header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <center>Konfirmasi Pembayaran</center>
+                  </div>
+
+                  <div class="modal-body">
+                  <center>
+                    <form role="form" method="POST" action="{{ url('confirmation_pay') }}">
+                    {!! csrf_field() !!}
+                    <input type="hidden" name="id_pay" id="id_pay" />
+                    <input type="hidden" name="total" id="total" />
+
+                    <p> <span>Nama Akun Pembayaran</span>
+                    <input type="text" autocomplete="off" class="form-control" name="pay_accountname">
+                    </p>
+
+                    <p> <span>Nomor Akun</span>
+                    <input type="text" class="form-control" name="pay_accountnumber" autocomplete="off" onkeypress="return isNumber(event)">
+                    </p>
+
+                    <p> <span>Total Uang</span>
+                    <input type="text" autocomplete="off" class="form-control" name="pay_amount" onkeypress="return isNumber(event)">
+                    </p>
+
+                    <p> <span>Tanggal Pembayaran</span>
+                    <input type="text" name="payment_date" class="form-control" id="datepicker" autocomplete="off" onkeypress="return isNumber(event)">
+                    </p>
+                    
+                    <a>
+                    <button type="submit" class="boaBtn_boa_pf">
+                      Submit
+                    </button>
+                    </a>
+                    </form>
+                  </center>
+                  </div>
+              </div>
+          </div>
+          </div>
+
 
           </div>
 
@@ -92,12 +146,25 @@
 
 @push('scripts')
 <script>
+function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    }
+    return true;
+}
 
 $(function () { 
   $("#rateYo").rateYo({
     rating: 0,
     fullStar: true
   });
+});
+
+$(function() {
+    var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd'}).val();
+    $( "#datepicker" ).datepicker();
 });
 
 $('#datatableUser tbody').on( 'click', '.detail', function () {
@@ -163,6 +230,17 @@ $('#datatableUser tbody').on( 'click', '.review', function () {
     $("#modalreview").modal();
 });
 
+$('#datatableUser tbody').on( 'click', '.pay', function () {
+    var id = $(this).data('id');
+    var total = $(this).data('total');
+
+    $(".modal-body #id_pay").val(id);
+    $(".modal-body #total").val(total);
+    
+    $("#paid").modal();
+});
+
+
 
 $('#productDetail').on('hidden.bs.modal', function (e) {
   $(".modal-body #name").html("");
@@ -213,6 +291,25 @@ function reviewandreceive()
 function edit(id)
 {
   window.location = "{{ URL::to('/edit/order') . '/' }}" + id;
+}
+
+function paid(id)
+{
+  $.ajax({
+    url: '{{URL("/paid")}}',
+    type: 'POST',
+    data: {id: id},
+    beforeSend: function(request){
+      return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      },
+  })
+  .success(function(data)
+  {
+    location.reload();
+  })
+  .fail(function(){
+    alert('error');
+  })
 }
 
 // function receive (id)
@@ -268,16 +365,39 @@ $(function() {
               ship.setHours(0,0,0,0);
               sunday.setHours(0,0,0,0);
 
+              var pay;
+              if(row.confirmation_status == 0 && row.status_payment == 'Belum dibayar')
+              {
+                pay = '<button class="btn btn-success pay" data-toggle="modal" data-id="'+ row.group_id+'" data-total="'+row.total+'">' + 'Konfirm Bayar' + '</button> <br><br>';
+              }
+              else
+              {
+                pay = '';
+              }
+              var get;
+              if(<?php echo Auth::user()->status_user ?> == 1 && (row.status_payment == 'Sudah dibayar' || row.confirmation_status == 1))
+              {
+                get = '<button data-toggle="modal" class="btn btn-warning review" data-id="'+ row.order_id +'" data-agent="'+  row.agent_id +'">' + 'Diterima' + '</button>' + '<br><br>'
+              }
+              else
+              {
+                get = '';
+              }
+
               if(ship > sunday)
               {
-                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' + 
-                '@if(Auth::user()->status_user == 1)<button data-toggle="modal" class="btn btn-warning review" data-id="'+ row.order_id +'" data-agent="'+  row.agent_id +'">' + 'Diterima' + '</button>' + '<br><br> @endif' +
+               
+                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
+                pay +
+                get +
+                '@if(Auth::user()->status_user == 1) @endif' +
                 '<button class="btn btn-primary" id="'+ row.order_id +'sending" onclick="edit(' + row.order_id + ')" >' + 'Ubah Order' + '</button>';
               }
               else
               {
                 return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
-                '<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="receive(' + row.order_id + ')" >' + 'Diterima' + '</button>';
+                pay+
+                get;
               }
             }
           },         

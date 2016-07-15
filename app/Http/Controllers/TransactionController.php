@@ -24,6 +24,7 @@ use Session;
 use App\AboutUs;
 use Mail;
 use App\AgentRating;
+use App\TxOrderConfirmation;
 
 class ProductDataOrder
 {
@@ -296,13 +297,13 @@ class TransactionController extends Controller
     $data['status_payment'] = 'Pending';
     $data['payment_method'] = 'Bank Transfer';
 
-    Mail::send('page.email', $data, function ($m) {
-        $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+    // Mail::send('page.email', $data, function ($m) {
+    //     $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
-        $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
-    });
+    //     $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+    // });
 
-    return view('page.summary', $data);
+    return view('page.email', $data);
   }
 
   //redirect dari firstpay
@@ -884,25 +885,29 @@ class TransactionController extends Controller
 
   public function getOrderDataCustomer(Request $request)
   {
-
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
     ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
     ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
-                            // ->leftJoin('transaction__order_detail as order', 'order_id', '=', 'order.order_id')
+    ->leftJoin('transaction__order_confirmation as oc', 'oc.group_id', '=', 'transaction__order.group_id')
     ->where('c.id', Auth::user()->id)
-    ->where('status_confirmed', 0)
-    ->get(['order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.id as agent_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
-
-
+    ->where(function ($query) {
+                $query->where('status_confirmed', '!=', 1)
+                      ->orWhere('confirmation_status', '!=', 1);
+            })
+    ->get(['order_id', 'shipping_fee', 'total' ,'transaction__order.group_id', 'shipping_date', 'status_shipping', 'a.id as agent_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who', 'oc.group_id as idid','confirmation_status']);
 
     return Datatables::of($data['query'])
     ->editColumn('status_payment', function($data){ 
-      if($data->status_payment == 0) return "Belum dibayar";
-      else if($data->status_payment == 1) return "Sudah dibayar";
+      if($data->status_payment == 0 && $data->confirmation_status == 0) return "Belum dibayar";
+      else if($data->status_payment == 1 || $data->confirmation_status == 1) return "Sudah dibayar";
     })
     ->editColumn('status_shipping', function($data){ 
       if($data->status_shipping == 0) return "Sedang diproses";
       else if($data->status_shipping == 1) return "Sudah dikirim";
+    })
+    ->editColumn('confirmation_status', function($data){ 
+      if($data->confirmation_status == 0) return "0";
+      else if($data->confirmation_status == 1) return "1";
     })
     ->make(true);
   }
@@ -982,6 +987,45 @@ class TransactionController extends Controller
     $rating->save();
 
     return redirect('customerorder');
+  }
+
+  public function confirmation_pay(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id_pay' => 'required',
+        'total' => 'required|numeric',
+        'pay_accountname' => 'required',
+        'pay_accountnumber' => 'required|numeric',
+        'pay_amount' => 'required|numeric',
+        'payment_date' => 'required',
+    ]);
+
+    $input = $request->all();
+
+    $group_id = filter_var($input['id_pay'], FILTER_SANITIZE_STRING);
+    $payment_date = filter_var($input['payment_date'], FILTER_SANITIZE_STRING);
+    $account_name = filter_var($input['pay_accountname'], FILTER_SANITIZE_STRING);
+    $account_number = filter_var($input['pay_accountnumber'], FILTER_SANITIZE_STRING);
+    $total = intval(filter_var($input['total'], FILTER_SANITIZE_STRING));
+    $amount = intval(filter_var($input['pay_amount'], FILTER_SANITIZE_STRING));
+
+    if($amount < $total)
+    {
+      return redirect('/myorder/')->with('error', 'Jumlah uang kurang, silahkan cek kembali total pembelanjaan Anda');
+    }
+    else
+    {
+      $confirm = new TxOrderConfirmation;
+      $confirm->group_id = $group_id;
+      $confirm->payment_date = $payment_date;
+      $confirm->account_name = $account_name;
+      $confirm->account_number = $account_number;
+      $confirm->amount = $amount;
+      $confirm->save();
+
+      return redirect('/myorder/')->with('ok', 'Konfirmasi pembayaran akan segera di proses!');
+    }
+
   }
 
   public function postEditOrderCustomer(Request $request)
