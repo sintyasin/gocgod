@@ -273,34 +273,13 @@ class TransactionController extends Controller
     return view('page.paymentconfirm', $data);
   }
 
-  public function paymentConfirmSubscribe($groupId)
-  {
-    $data['order'] = TxOrder::where('group_id', $groupId)->first();
-    $data['total'] = \DB::table('transaction__order')
-                      ->select(\DB::raw('SUM(total) as total_price'))
-                      ->groupBy('group_id')
-                      ->having('group_id', '=', $groupId)
-                      ->get();
-
-    $data['contact'] = AboutUs::first();
-    
-    $query = Member::where('id', $data['order']->customer_id)
-                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
-                                  ->get(['city_name']);
-
-
-    $data['customerCity'] = $query[0]->city_name;
-
-    $signature = 'gocgod' . 'gocgod123' . $groupId . $data['total'][0]->total_price;
-    
-    $data['signature'] = md5($signature);
-        
-    return view('page.paymentconfirm', $data);
-  }
-
   public function banktransfer($id)
   {
     $data['order'] = TxOrder::find($id);
+    $data['orderdetail'] = \DB::table('transaction__order_detail')
+                  ->select(\DB::raw('SUM(quantity) as quantity'))
+                  ->groupBy('order_id')
+                  ->get();
     $data['contact'] = AboutUs::first();
     $data['order_a'] = TxOrder::where('order_id', $id)->get();
     $data['orderprice'] = \DB::table('transaction__order')
@@ -318,13 +297,13 @@ class TransactionController extends Controller
     $data['status_payment'] = 'Pending';
     $data['payment_method'] = 'Bank Transfer';
 
-    // Mail::send('page.email', $data, function ($m) {
-    //     $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+    Mail::send('page.email', $data, function ($m) {
+        $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
-    //     $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
-    // });
+        $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+    });
 
-    return view('page.email', $data);
+    return view('page.summary', $data);
   }
 
   //redirect dari firstpay
@@ -334,42 +313,38 @@ class TransactionController extends Controller
 
     $id = filter_var($input['idorder'], FILTER_SANITIZE_STRING);
 
-    $data['order'] = TxOrder::where('group_id', $id)->get();
+    $data['order'] = TxOrder::where('group_id', $id)->first();
 
     $data['status_payment'] = '';
     $data['payment_method'] = '';
 
-    $amount = 0;
-    if(count($data['order']) > 1) //berarti subscribe
-      foreach ($data['order'] as  $value) {
-        $amount += $value->total;
-      }
-    else //beli single
-      $amount = $data['order'][0]->total;
-
+    $amount = $data['order']->total;
     $signature = md5('gocgod' . 'gocgod123'. $id . $amount);
 
     if($signature == $input['signature'])
     {
+      $data['orderdetail'] = \DB::table('transaction__order_detail')
+                    ->select(\DB::raw('SUM(quantity) as quantity'))
+                    ->groupBy('order_id')
+                    ->get();
       $data['contact'] = AboutUs::first();
-      $data['order_a'] = TxOrder::where('group_id', $id)->get();
+      $data['order_a'] = TxOrder::where('order_id', $id)->get();
       $data['orderprice'] = \DB::table('transaction__order')
-                      ->select(\DB::raw('SUM(total) as total_price'))
-                      ->groupBy('group_id')
-                      ->having('group_id', '=', $groupId)
-                      ->get();
+                    ->select('total as total_price')
+                    ->where('order_id', '=', $id)
+                    ->get();
 
-      $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order'][0]->order_id)
+      $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
                               ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
                               ->get(['varian_name', 'price', 'quantity']);
           
-      $data['agent'] = Member::where('id', $data['order'][0]->agent_id)
+      $data['agent'] = Member::where('id', $data['order']->agent_id)
                               ->get(['name']);
 
 
 
 
-      $payment_method = $data['order'][0]->payment_method;
+      $payment_method = $data['order']->payment_method;
       if($payment_method == 1) $data['payment_method'] = 'ATM Bersama';
       else if($payment_method == 4) $data['payment_method'] = 'Credit Card';
 
@@ -377,7 +352,7 @@ class TransactionController extends Controller
       else if($input['payment_status'] == 2) $data['status_payment'] = 'Paid';
       else if($input['payment_status'] == 3) $data['status_payment'] = 'Failed';
 
-      $member = Member::find($data['order'][0]->customer_id);
+      $member = Member::find($data['order']->customer_id);
 
       Mail::send('page.email', $data, function ($m) use ($member) {
           $m->from('gocgod@gocgod.com', 'noreply-gocgod');
@@ -398,14 +373,7 @@ class TransactionController extends Controller
     $idOrder = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
 
     $query = TxOrder::where('group_id', $idOrder)->get();
-
-    $amount = 0;
-    if(count($query) > 1) //berarti subscribe
-      foreach ($query as  $value) {
-        $amount += $value->total;
-      }
-    else //beli single
-      $amount = $query[0]->total;
+    $amount = $query[0]->total;
 
     $signature = md5('gocgod' . 'gocgod123'. $idOrder . $amount);
 
@@ -420,12 +388,13 @@ class TransactionController extends Controller
           $order->payment_method = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
           $order->payment_account = filter_var($xml->idpaymentcode, FILTER_SANITIZE_STRING);
           $order->bank_code = filter_var($xml->idbankcode, FILTER_SANITIZE_STRING);
+          $order->save();
         }
-        else if($xml->payment_status == 2 && $xml->payment_channel == $order->payment_method && $order->status_payment == 0) //berhasil
+        else if($xml->payment_status == 2) //berhasil
         {
           $order->status_payment = 1;
         }
-        else if($xml->payment_status == 3 && $xml->payment_channel == $order->payment_method && $order->status_payment == 0) //gagal
+        else if($xml->payment_status == 3) //gagal
         {
           $order->status_payment = -1;
         }
@@ -571,6 +540,21 @@ class TransactionController extends Controller
       } 
     }
 
+    /*$rowid = Cart::search(array('id' => $data->id));
+
+    if($rowid){
+      $item = Cart::get($rowid[0]);
+      Cart::update($rowid[0], $item->qty + $data->qty);
+    }
+    else{
+      Cart::add([
+        'id'=> $data->id, 
+        'qty' => $data->qty,
+        'name' => $data->name,
+        'price' => $data->price,
+        ]);
+    }*/
+
     $data['contact'] = AboutUs::first();
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)
@@ -638,7 +622,7 @@ class TransactionController extends Controller
 
     if ($v->fails())
     {
-      return redirect('checkout_subcriber');
+      return redirect('checkout_subcriber_2/')->withErrors($v->errors())->withInput();
     }
 
     $input = $request->all();
@@ -649,12 +633,12 @@ class TransactionController extends Controller
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
     $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
-    $week = intval(filter_var($input['week'], FILTER_SANITIZE_STRING));
+    $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
     $shipping_fee = 0;
     $who = 'subcriber';
     $total = Cart::total();
 
-    $a = TxOrder::orderBy('group_id', 'desc')->first(); 
+    $a = TxOrder::orderBy('group_id', 'desc')->first();
     $group;
 
     if(empty($a))
@@ -663,6 +647,7 @@ class TransactionController extends Controller
     {
       $group = $a->group_id + 1;
     }    
+
     
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
@@ -704,11 +689,11 @@ class TransactionController extends Controller
 
     if($input['payment'] == 0)
     {
-      return redirect('/summary/'. $group);
+      return redirect('/summary/'.$a->group_id);
     }
     else if($input['payment'] == 1)
     {
-      return redirect('payment/subscribe/confirm/' . $group);
+      return redirect('/#');
     }
 
   }
@@ -739,6 +724,7 @@ class TransactionController extends Controller
     });
 
     return view('page.summary1', $data);
+
   }
 
 

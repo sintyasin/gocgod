@@ -98,7 +98,47 @@
 				<span style="font-size:20px"> GOCGOD</span>
 				@elseif($order[0]->payment_method == 1)
 				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> ATM BERSAMA </span> dengan cara:
-				@elseif($order[0]->payment_method == 4)
+				<br>
+				<br>
+				<span style="font-weight:bold"> ATM BCA/ Jaringan Prima </span><br>
+				1. &nbsp;&nbsp;Masukkan Kartu Debit anda ke dalam mesin ATM.<br>
+				2. &nbsp;&nbsp;Pilih Bahasa<br>
+				3. &nbsp;&nbsp;Masukkan PIN<br>
+				4. &nbsp;&nbsp;Pilih &quot;Transaksi Lainnya.&quot;<br>
+				5. &nbsp;&nbsp;Pilih Transfer<br>
+				6. &nbsp;&nbsp;Pilih &quot;Ke Rek Bank Lain&quot;<br>
+				7. &nbsp;&nbsp;Masukkan Kode Institusi (987) Kemudian Tekan &quot;Benar&quot;.<br>
+				8. &nbsp;&nbsp;Masukkan jumlah pembayaran sesuai yang ditagihkan (harus sama). Jika berbeda, transaksi akan digagalkan.<br>
+				9. &nbsp;&nbsp;Masukkan Kode Pembayaran ATM (sesuai yang ditampilkan di samping) kemudian tekan &quot;Benar&quot;.<br>
+				10. Muncul layar konfirmasi transfer yang berisi:<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Kode Pembayaran ATM<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Nama Customer<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Jumlah yang akan dibayar<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jika sudah benar, tekan &quot;Benar&quot;.<br>
+				11. Transaksi sudah selesai.<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anda akan menerima struk sebagai bukti transaksi.
+
+				<br>
+				<br>
+				<span style="font-weight:bold"> ATM MANDIRI/ Jaringan ATM Bersama </span><br>
+				1. &nbsp;&nbsp;Masukkan Kartu Debit anda ke dalam mesin ATM.<br>
+				2. &nbsp;&nbsp;Pilih Bahasa<br>
+				3. &nbsp;&nbsp;Masukkan PIN<br>
+				4. &nbsp;&nbsp;Pilih &quot;Transaksi Lainnya.&quot;<br>
+				5. &nbsp;&nbsp;Pilih Transfer<br>
+				6. &nbsp;&nbsp;Pilih &quot;Ke Rekening Bank Lain ATM Bersama/Link&quot;.<br>
+				7. &nbsp;&nbsp;Masukkan Kode Institusi (987) disambung Kode Pembayaran ATM, kemudian tekan &quot;Benar&quot;.<br>
+				8. &nbsp;&nbsp;Masukkan jumlah pembayaran sesuai yang ditagihkan (harus sama). Jika berbeda, transaksi akan digagalkan.<br>
+				9. &nbsp;&nbsp;Kosongkan nomor referensi transfer kemudian tekan &quot;Benar&quot;.<br>
+				10. Muncul layar konfirmasi transfer yang berisi:<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Kode Pembayaran ATM<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Nama Customer<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Jumlah yang akan dibayar<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jika sudah benar, tekan &quot;Benar&quot;.<br>
+				11. Transaksi sudah selesai.<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anda akan menerima struk sebagai bukti transaksi.
+
+				@elseif($order->payment_method == 4)
 				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> dengan cara:
 				<br>
 
@@ -118,9 +158,50 @@
 				<span style="font-size:20px"> GOCGOD</span>
 				@elseif($order->payment_method == 1)
 				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> ATM BERSAMA </span> dengan cara:
+				<br>
+				<br>
+				<span style="font-weight:bold"> ATM BCA/ Jaringan Prima </span><br>
+				1. &nbsp;&nbsp;Masukkan Kartu Debit anda ke dalam mesin ATM.<br>
+				2. &nbsp;&nbsp;Pilih Bahasa<br>
+				3. &nbsp;&nbsp;Masukkan PIN<br>
+				4. &nbsp;&nbsp;Pilih &quot;Transaksi Lainnya.&quot;<br>
+				5. &nbsp;&nbsp;Pilih Transfer<br>
+				6. &nbsp;&nbsp;Pilih &quot;Ke Rek Bank Lain&quot;<br>
+				7. &nbsp;&nbsp;Masukkan Kode Institusi (987) Kemudian Tekan &quot;Benar&quot;.<br>
+				8. &nbsp;&nbsp;Masukkan jumlah pembayaran sesuai yang ditagihkan (harus sama). Jika berbeda, transaksi akan digagalkan.<br>
+				9. &nbsp;&nbsp;Masukkan Kode Pembayaran ATM (sesuai yang ditampilkan di samping) kemudian tekan &quot;Benar&quot;.<br>
+				10. Muncul layar konfirmasi transfer yang berisi:<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Kode Pembayaran ATM<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Nama Customer<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Jumlah yang akan dibayar<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jika sudah benar, tekan &quot;Benar&quot;.<br>
+				11. Transaksi sudah selesai.<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anda akan menerima struk sebagai bukti transaksi.
+
+				<br>
+				<br>
+				<span style="font-weight:bold"> ATM MANDIRI/ Jaringan ATM Bersama </span><br>
+				1. &nbsp;&nbsp;Masukkan Kartu Debit anda ke dalam mesin ATM.<br>
+				2. &nbsp;&nbsp;Pilih Bahasa<br>
+				3. &nbsp;&nbsp;Masukkan PIN<br>
+				4. &nbsp;&nbsp;Pilih &quot;Transaksi Lainnya.&quot;<br>
+				5. &nbsp;&nbsp;Pilih Transfer<br>
+				6. &nbsp;&nbsp;Pilih &quot;Ke Rekening Bank Lain ATM Bersama/Link&quot;.<br>
+				7. &nbsp;&nbsp;Masukkan Kode Institusi (987) disambung Kode Pembayaran ATM, kemudian tekan &quot;Benar&quot;.<br>
+				8. &nbsp;&nbsp;Masukkan jumlah pembayaran sesuai yang ditagihkan (harus sama). Jika berbeda, transaksi akan digagalkan.<br>
+				9. &nbsp;&nbsp;Kosongkan nomor referensi transfer kemudian tekan &quot;Benar&quot;.<br>
+				10. Muncul layar konfirmasi transfer yang berisi:<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Kode Pembayaran ATM<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Nama Customer<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Jumlah yang akan dibayar<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Jika sudah benar, tekan &quot;Benar&quot;.<br>
+				11. Transaksi sudah selesai.<br>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anda akan menerima struk sebagai bukti transaksi.
+
 				@elseif($order->payment_method == 4)
 				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> dengan cara:
 				<br>
+
 				@endif
 			@endif
 
