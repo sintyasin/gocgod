@@ -46,7 +46,6 @@ Route::get('user/activation/{token}', array('as' => 'user.activate',
 	'uses' => 'Auth\AuthController@activateUser'));
 
 //buat integrasi first pay
-//Route::post('notification', 'TransactionController@getNotification');
 Route::post('response', 'TransactionController@getResponse');
 Route::post('payment', 'TransactionController@payment'); //buat redirect dari firstpay
 

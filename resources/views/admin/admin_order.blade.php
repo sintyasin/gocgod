@@ -274,6 +274,7 @@ $(function() {
         processing: true,
         serverSide: true,
         bFilter : false,
+        order: [[ 3, "desc" ]],
         ajax: {
             url: '{!! route('orderlist.data') !!}',
             data: function (d) {

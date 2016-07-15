@@ -364,25 +364,6 @@ class TransactionController extends Controller
       return redirect('home');
   }
 
-  /*public function getNotification(Request $data)
-  {
-    $xml = simplexml_load_string($data->getContent());
-    
-    $idOrder = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
-
-    $query = TxOrder::find($idOrder);
-    $amount = $query->total;
-
-    $signature = md5('gocgod' . 'gocgod123'. $idOrder . $amount);
-    if($signature == $xml->signature)
-    {
-      $query->payment_method = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
-      $query->payment_account = filter_var($xml->idpaymentcode, FILTER_SANITIZE_STRING);
-      $query->save();
-    }
-
-  }*/
-
   public function getResponse(Request $data)
   {
     $xml = simplexml_load_string($data->getContent());
@@ -416,7 +397,8 @@ class TransactionController extends Controller
           $order->status_payment = -1;
         }
         $order->save(); 
-      }      
+      }  
+      echo "CONTINUE";
     }
   }
 

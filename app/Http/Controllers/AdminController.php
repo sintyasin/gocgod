@@ -939,7 +939,7 @@ class AdminController extends Controller
 
                 if ($request->has('id')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['order_id'], $request->id) !== false) return true;
+                        if($row['order_id'] == $request->id) return true;
                         return false;
                     });
                 }
@@ -947,14 +947,14 @@ class AdminController extends Controller
                 //buat group id
                 if ($request->has('gId')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['group_id'], $request->gId) !== false) return true;
+                        if($row['group_id'] == $request->gId) return true;
                         return false;
                     });
                 }
 
                 if ($request->has('payment')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['status_payment'], $request->payment) !== false) return true;
+                        if($row['status_payment'] == $request->payment) return true;
                         return false;
                     });
                 }
@@ -962,14 +962,14 @@ class AdminController extends Controller
                 //kofirmasi penerimaan barang
                 if ($request->has('confirm')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['status_confirmed'], $request->confirm) !== false) return true;
+                        if($row['status_confirmed'] == $request->confirm) return true;
                         return false;
                     });
                 }
 
                 if ($request->has('ship')) {
                     $instance->collection = $instance->collection->filter(function ($row) use ($request) {
-                        if(stripos($row['status_shipping'], $request->ship) !== false) return true;
+                        if($row['status_shipping'] == $request->ship) return true;
                         return false;
                     });
                 }
@@ -982,7 +982,8 @@ class AdminController extends Controller
                 }
             })
     ->editColumn('payment_method', function($data){ 
-        if($data->payment_method == 0) return "Bank Transfer";
+        if(is_null($data->payment_method)) return "";
+        else if($data->payment_method == 0) return "Bank Transfer";
         else if($data->payment_method == 1) return "ATM Bersama";
         else if($data->payment_method == 4) return "Credit Card";
     })
@@ -1109,7 +1110,7 @@ class AdminController extends Controller
       $confirm->confirmation_status = 1;
       $confirm->save();
 
-      $order = txOrder::where('group_id', $id)->get();
+      $order = TxOrder::where('group_id', $confirm->group_id)->get();
       foreach ($order as $data) {
         $data->status_payment = 1;
         $data->save();
