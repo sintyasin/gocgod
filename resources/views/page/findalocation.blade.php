@@ -11,7 +11,7 @@
 		<div class="col-md-6">
 			<div class="find_location">
 			
-				<div class="title_location"> {{$agent->name}}  <span></span></div>
+				<div class="title_location"> {{$agent->name}}  <span> - <span style="font-size:15px; color:red;"> Rating: {{number_format($rating[$i][0]->rate, 2)}}/5</span> <!-- <div id="rateYo" value="{{$rating[$i][0]->rate}}"></div> --></span></div>
 				<div class="data_location" style="padding-left: 10px;">
 					 
 					 {{$agent->address}} <br>
@@ -32,7 +32,7 @@
 $(function () {
  
   $("#rateYo").rateYo({
-    rating: 3.2,
+    rating: $("#rateYo").val(),
     readOnly: true
   });
 });
