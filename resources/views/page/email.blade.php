@@ -54,7 +54,7 @@
 
 		<br> Tanggal Pemesanan: <span style="font-weight: bold;">
 		<!-- ini subscribe -->
-		@if(count($order) > 1)
+		@if(is_a($order, 'Illuminate\Database\Eloquent\Collection'))
 			{{$order[0]->order_date}} 
 		<!-- ini beli single -->
 		@else
