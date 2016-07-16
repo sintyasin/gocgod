@@ -404,9 +404,9 @@
                 @endif</td>
                 <td>@if($query->balance_type == 0 && $query->statusTransfer == 0)
                   Sedang diproses
-                  @elseif ($query->balance_type == 0 && $query->statusTransfer == 1)
-                  Sudah di transfer
-                  @endif
+                @elseif ($query->balance_type == 0 && $query->statusTransfer == 1)
+                Sudah di transfer
+                @endif
                 </td>
 
                 <?php $i++;?>

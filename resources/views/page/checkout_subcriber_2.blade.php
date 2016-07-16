@@ -55,13 +55,20 @@
         <!-- ================================================================================================ -->
           <div id="delivery_address">
           <Center>
-            <p class='form_head'> Data Pelanggan <p>
+            <p class='form_head'> Data Pelanggan </p>
+              <div class="col-md-6 col-md-offset-3">
               <label for="name">Nama Pelanggan</label> <br>
-              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
+              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center; width:100%"/>
+              </div>
+
+              <div class="col-md-6 col-md-offset-3">
               <label for="address">Alamat Pengiriman</label> <br>
-              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center;"/>
-              <label for="address">Kota</label> <br>
-              <select class="form-control" id="city" name="city" >
+              <textarea type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center; width:100%"/> </textarea>
+              </div>
+              
+              <div class="col-md-offset-3 col-md-3  ">
+              <label for="address" s>Kota</label> <br>
+              <select class="form-control" id="city" name="city" style="width:100%;">
                 @foreach($city as $data)
                   @if(Auth::user()->city_id == $data->city_id)
                     <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
@@ -70,10 +77,16 @@
                   @endif
                 @endforeach
               </select>
+              </div>
+              
+              <div class="col-md-3">
               <label for="zipcode">Kode Pos Pengiriman</label> <br>
-              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%; float:left;"/>
+              </div>
+              
+              <div class="col-md-6 col-md-offset-3">
               <label for="Agent">Pilih Agent</label> <br>
-              <select class="form-control" id="agent" name="agent" >
+              <select class="form-control" id="agent" name="agent" style="width:100%" >
               @foreach($agent as $data)
                 @if(Auth::user()->city_id == $data->city_id)
                   <option value="{{ $data->id }}" selected >{{$data->name}} - {{ $data->city_name }}</option>
@@ -82,17 +95,22 @@
                 @endif
               @endforeach
               </select>
+              </div>
               
-
+              <div class="col-md-offset-3 col-md-3  ">
               <label for="week">Berlangganan Berapa Minggu?</label><br>
-              <input type="number" min="2" value="2" class="form-control" name='week'/>
+              <input type="number" min="2" value="2" class="form-control" name='week' style="width:100%"/>
+              </div>
 
+              <div class="col-md-3">
               <label for="Date">Tanggal Pengiriman </label><br>
-              <input type="text" class="form-control" name='request_date' placeholder='Contoh = 2016-05-31 (tahun-bulan-tanggal)' autocomplete="off" id="datepicker"/>   
+              <input type="text" class="form-control" name='request_date' placeholder='Contoh = 2016-05-31 (tahun-bulan-tanggal)' autocomplete="off" id="datepicker" style="width:100%;"/>   
+              </div>
 
               <label>Hari pengiriman akan sama dengan hari dari tanggal pengiriman pertama yang dipilih. <br> Anda dapat mengubah tanggal pengiriman pada minggu selanjutnya di menu "Pesananku".</label>
               <br><br>  
-              <label for="payment">Pembayaran</label>
+              <hr>
+              <label for="payment" style="font-size:20px;">Pembayaran</label>
               <br>
               <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label> 
               <input type="radio" name="payment" id="payment" value="1"> <label>FirstPay</label><br>  

@@ -54,13 +54,23 @@
         <!-- ================================================================================================ -->
           <div id="delivery_address">
           <Center>
+            <div class="col-md-12">
             <p class='form_head'>Data Pelanggan</p>
-              <label for="phone">Nama Pelanggan</label> <br>
-              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
+            
+
+              <div class="col-md-6 col-md-offset-3">
+              <label for="name">Nama Pelanggan</label> <br>
+              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center; width:100%"/>
+              </div>
+
+              <div class="col-md-6 col-md-offset-3">
               <label for="address">Alamat Pengiriman</label> <br>
-              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center;"/>
+              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center; width: 100%;"/>
+              </div>
+
+              <div class="col-md-offset-3 col-md-3  ">              
               <label for="address">Kota</label> <br>
-              <select class="form-control" id="city" name="city" >
+              <select class="form-control" id="city" name="city" style="width:100%">
                 @foreach($city as $data)
                   @if(Auth::user()->city_id == $data->city_id)
                     <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
@@ -69,10 +79,16 @@
                   @endif
                 @endforeach
               </select>
+              </div>
+
+              <div class="col-md-3">
               <label for="zipcode">Kode Pos Pengiriman</label> <br>
-              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center;"/>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%;"/>
+              </div>
+
+              <div class="col-md-6 col-md-offset-3">
               <label for="Agent">Pilih Agent</label> <br>
-              <select class="form-control" id="agent" name="agent" >
+              <select class="form-control" id="agent" name="agent" style="width:100%" >
               @foreach($agent as $data)
                 @if(Auth::user()->city_id == $data->city_id)
                   <option value="{{ $data->id }}" selected >{{$data->name}} - {{ $data->city_name }}</option>
@@ -81,13 +97,21 @@
                 @endif
               @endforeach
               </select>
-              
+              </div>
+
+              <div class="col-md-6 col-md-offset-3">
               <label for="Date">Tanggal Pengiriman</label><br>
-              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker" autocomplete="off" /> 
-              <label for="payment">Pembayaran</label>
+              <input type="text" class="form-control" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' id="datepicker" autocomplete="off" style="width:100%;" />
+              </div> 
+
+              <br><br> 
+              <div class="col-md-12">
+              <label for="payment" style="font-size:20px;">Pembayaran</label>
               <br>
-              <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label> 
+              <input type="radio" name="payment" id="payment" value="0" checked> <label>Bank Transfer     </label>
+               
               <input type="radio" name="payment" id="payment" value="1"> <label>FirstPay</label><br>  
+              
             <br>
             <br>
 
@@ -96,16 +120,22 @@
 
             <input type="button" value="Previous" onclick="show_prev('product_details','bar1');">
             <input type="submit" value="Submit" style="color:white; border: solid white;">
+            </div>
+            </div>
           </Center>
           </div>
           </div>
           
 
         </form>
+
     </div>
     @endif
+    
   </div>
 </div>
+<br>
+<br>
 <!-- End checkout content -->
 @push('scripts')
 <script>
