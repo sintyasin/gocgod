@@ -591,8 +591,8 @@ class AdminController extends Controller
             ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
-            ->where('DATE(order_date)', '>=', $first)
-            ->where('DATE(order_date)', '<=', $last)
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy(DB::raw('name WITH ROLLUP'))
             ->get();
@@ -634,13 +634,36 @@ class AdminController extends Controller
 
     $data['active'] = 'txReport';
 
+    $shippingQuery = DB::table('transaction__order')
+              ->select('shipping_fee', 'group_id')
+              ->where('order_date', '>=', $first)
+              ->where('order_date', '<=', $last)
+              ->where('status_payment', '=', 1)
+              ->get();
+
+    $shipping = 0;
+    $groupId = -1;
+    foreach ($shippingQuery as $value) {
+      if($groupId == -1)
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+      else if($value->group_id == $groupId) continue;
+      else
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+    }
+    
     $query = DB::table('transaction__order')
-            ->select(DB::raw('DATE(order_date) as Date') , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + SUM(shipping_fee)) as Omzet'), DB::raw('SUM(shipping_fee) as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select(DB::raw('DATE(order_date) as Date') , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + ' . $shipping . ') as Omzet'), DB::raw($shipping . ' as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
-            ->where('DATE(order_date)', '>=', $first)
-            ->where('DATE(order_date)', '<=', $last)
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy('Date')
             ->orderBy('Date')
@@ -696,13 +719,36 @@ class AdminController extends Controller
 
     $data['active'] = 'agentReport';
 
+    $shippingQuery = DB::table('transaction__order')
+              ->select('shipping_fee', 'group_id')
+              ->where('order_date', '>=', $first)
+              ->where('order_date', '<=', $last)
+              ->where('status_payment', '=', 1)
+              ->get();
+
+    $shipping = 0;
+    $groupId = -1;
+    foreach ($shippingQuery as $value) {
+      if($groupId == -1)
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+      else if($value->group_id == $groupId) continue;
+      else
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+    }
+
     $query = DB::table('transaction__order')
-            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + SUM(shipping_fee)) as Omzet'), DB::raw('SUM(shipping_fee) as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + ' . $shipping . ') as Omzet'), DB::raw($shipping . ' as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
-            ->where('DATE(order_date)', '>=', $first)
-            ->where('DATE(order_date)', '<=', $last)
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy('Agent')
             ->orderBy('Agent')
@@ -1125,9 +1171,18 @@ class AdminController extends Controller
 
     $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
 
-    $confirm = TxOrderConfirmation::find($id);
-    $confirm->confirmation_status = 1;
-    $confirm->save();       
+    DB::transaction(function() use ($id)
+    {
+      $confirm = TxOrderConfirmation::find($id);
+      $confirm->confirmation_status = 1;
+      $confirm->save();
+
+      $order = TxOrder::where('group_id', $confirm->group_id)->get();
+      foreach ($order as $data) {
+        $data->status_payment = 1;
+        $data->save();
+      }
+    });
 
     return 1;
   }

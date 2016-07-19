@@ -63,7 +63,7 @@
 
               <div class="col-md-6 col-md-offset-3">
               <label for="address">Alamat Pengiriman</label> <br>
-              <textarea type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center; width:100%"/> </textarea>
+              <textarea type="text" class="form-control" name="address" style="text-align:center; width:100%"/> {{ Auth::user()->address }} </textarea>
               </div>
               
               <div class="col-md-offset-3 col-md-3  ">
