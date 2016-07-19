@@ -55,10 +55,10 @@ $(function() {
             { data: 'name', name: 'name', title:'Name' },
             { data: 'address', name: 'address', title:'Address' },
             { data: 'city_name', name: 'city_name', title:'City' },
-            { data: 'zipcode', name: 'zipcode', title:'Zip Code' },
             { data: 'date_of_birth', name: 'date_of_birth', title:'Date of birth' },            
             { data: 'email', name: 'email', title:'Email' },
             { data: 'phone', name: 'phone', title:'Phone' },
+            { data: 'rating', name: 'rating', title:'Rating' },
             { data: 'verification', name: 'verification', title:'Verification' },
             { data: 'balance', name: 'balance', title:'Balance' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Actions', render: function(data, type, row) {
@@ -67,6 +67,7 @@ $(function() {
             { data: 'bank_account', name: 'bank_account', title:'Account Number' },
             { data: 'bank_name', name: 'bank_name', title:'Bank' },
             { data: 'country', name: 'country', title:'Country' },
+            { data: 'zipcode', name: 'zipcode', title:'Zip Code' },
         ]
     });
 });
