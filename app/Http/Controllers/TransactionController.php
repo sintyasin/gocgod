@@ -622,7 +622,8 @@ class TransactionController extends Controller
 
     if ($v->fails())
     {
-      return redirect('checkout_subcriber_2/')->withErrors($v->errors())->withInput();
+      //return redirect('checkout_subcriber_2/')->withErrors($v->errors())->withInput();
+      return redirect('checkout_subcriber/')->withErrors($v->errors())->withInput();
     }
 
     $input = $request->all();
@@ -633,10 +634,11 @@ class TransactionController extends Controller
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
     $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
-    $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
+    $week = intval(filter_var($input['week'], FILTER_SANITIZE_STRING));
     $shipping_fee = 0;
     $who = 'subcriber';
-    $total = Cart::total();
+    $total = Cart::total() * $week;
+
 
     $a = TxOrder::orderBy('group_id', 'desc')->first();
     $group;
@@ -669,6 +671,10 @@ class TransactionController extends Controller
       $order->total = $total + $shipping_fee;
       $order->who = $who;
       $order->order_date = $order_date;
+      if($input['payment'] == 0) //bank transfer.   kalo firstpay ga ush diisi dulu (biarin null)
+      {
+        $order->payment_method = 0;
+      }
       $order->save();
       date_add($date_shipping,date_interval_create_from_date_string("+7 days"));
       $date = date_format($date_shipping,"Y-m-d");
@@ -686,14 +692,18 @@ class TransactionController extends Controller
     }
     Cart::destroy();
     
+    /*if(is_null($order->payment_method))//firstpay
+      return redirect('/payment/confirm/'.$order->order_id);
+    else if($order->payment_method == 0) //kalo bank transfer langsung ke payment
+      return redirect('/payment/'.$order->order_id);*/
 
     if($input['payment'] == 0)
     {
-      return redirect('/summary/'.$a->group_id);
+      return redirect('/summary/' . $order->group_id);
     }
     else if($input['payment'] == 1)
     {
-      return redirect('/#');
+      return redirect('/payment/subscribe/confirm/' . $order->group_id);
     }
 
   }
@@ -702,7 +712,7 @@ class TransactionController extends Controller
   {
     $data['order'] = TxOrder::where('group_id', $id)->first();
     $data['orderprice'] = \DB::table('transaction__order')
-                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->select('total as total_price')
                       ->groupBy('group_id')
                       ->having('group_id', '=', $id)
                       ->get();
@@ -727,6 +737,24 @@ class TransactionController extends Controller
 
   }
 
+  public function paymentConfirmSubscribe($groupId)
+  {
+    $data['order'] = TxOrder::where('group_id', $groupId)->first();
+    $data['contact'] = AboutUs::first();
+    
+    $query = Member::where('id', $data['order']->customer_id)
+                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
+                                  ->get(['city_name']);
+
+
+    $data['customerCity'] = $query[0]->city_name;
+
+    $signature = 'gocgod' . 'gocgod123' . $data['order']->group_id . $data['order']->total;
+    
+    $data['signature'] = md5($signature);
+        
+    return view('page.paymentconfirm', $data);
+  }
 
   //================================== CUSTOMER ORDER DATA - AGENT
   public function getOrderList()
@@ -974,14 +1002,14 @@ class TransactionController extends Controller
     $cust_id = filter_var(Auth::user()->id, FILTER_SANITIZE_STRING);
     
 
-    DB::transaction(function() use ($date)
+    \DB::transaction(function() use ($id, $agent_id, $rate, $review, $cust_id)
     {
       $order = Txorder::find($id);
       $order->status_confirmed = 1;
       $order->save();
 
       $count = TxOrder::where('group_id', $order->group_id)->count();
-      $total = ($order->total / $count) * 0.1;
+      $total = (($order->total / $count) - ($order->shipping_fee / $count )) * 0.1;
 
       $balance = new Balance;
       $balance->agent_id = $order->agent_id;

@@ -268,7 +268,7 @@ function reviewandreceive()
     var review = ""; 
   }
 
-  alert(rating+"-"+id+"-"+agent_id+"-"+review);
+  //alert(rating+"-"+id+"-"+agent_id+"-"+review);
 
 
   $.ajax({
@@ -281,6 +281,7 @@ function reviewandreceive()
   })
   .success(function(data)
   {
+    //alert(data);
     location.reload();
   })
   .fail(function(){

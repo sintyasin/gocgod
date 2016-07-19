@@ -55,6 +55,10 @@
           </div>
         </div>
 
+        <div class="col-lg-12">
+          <br>
+          <input class="btn btn-primary" type="submit" value="Submit" />
+        </div>
       </form>
     </div>
   </div>
