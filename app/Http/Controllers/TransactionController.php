@@ -273,6 +273,31 @@ class TransactionController extends Controller
     return view('page.paymentconfirm', $data);
   }
 
+  public function paymentConfirmSubscribe($groupId)
+  {
+    $data['order'] = TxOrder::where('group_id', $groupId)->first();
+    $data['total'] = \DB::table('transaction__order')
+                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->groupBy('group_id')
+                      ->having('group_id', '=', $groupId)
+                      ->get();
+
+    $data['contact'] = AboutUs::first();
+    
+    $query = Member::where('id', $data['order']->customer_id)
+                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
+                                  ->get(['city_name']);
+
+
+    $data['customerCity'] = $query[0]->city_name;
+
+    $signature = 'gocgod' . 'gocgod123' . $groupId . $data['total'][0]->total_price;
+    
+    $data['signature'] = md5($signature);
+        
+    return view('page.paymentconfirm', $data);
+  }
+
   public function banktransfer($id)
   {
     $data['order'] = TxOrder::find($id);
@@ -691,11 +716,6 @@ class TransactionController extends Controller
       }
     }
     Cart::destroy();
-    
-    /*if(is_null($order->payment_method))//firstpay
-      return redirect('/payment/confirm/'.$order->order_id);
-    else if($order->payment_method == 0) //kalo bank transfer langsung ke payment
-      return redirect('/payment/'.$order->order_id);*/
 
     if($input['payment'] == 0)
     {
@@ -737,24 +757,7 @@ class TransactionController extends Controller
 
   }
 
-  public function paymentConfirmSubscribe($groupId)
-  {
-    $data['order'] = TxOrder::where('group_id', $groupId)->first();
-    $data['contact'] = AboutUs::first();
-    
-    $query = Member::where('id', $data['order']->customer_id)
-                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
-                                  ->get(['city_name']);
-
-
-    $data['customerCity'] = $query[0]->city_name;
-
-    $signature = 'gocgod' . 'gocgod123' . $data['order']->group_id . $data['order']->total;
-    
-    $data['signature'] = md5($signature);
-        
-    return view('page.paymentconfirm', $data);
-  }
+  
 
   //================================== CUSTOMER ORDER DATA - AGENT
   public function getOrderList()

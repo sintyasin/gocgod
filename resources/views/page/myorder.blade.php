@@ -268,9 +268,6 @@ function reviewandreceive()
     var review = ""; 
   }
 
-  //alert(rating+"-"+id+"-"+agent_id+"-"+review);
-
-
   $.ajax({
     url: '{{URL("/receive")}}',
     type: 'POST',
@@ -281,7 +278,6 @@ function reviewandreceive()
   })
   .success(function(data)
   {
-    //alert(data);
     location.reload();
   })
   .fail(function(){
