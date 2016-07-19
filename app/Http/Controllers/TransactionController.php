@@ -974,17 +974,34 @@ class TransactionController extends Controller
     $cust_id = filter_var(Auth::user()->id, FILTER_SANITIZE_STRING);
     
 
-    $order = Txorder::find($id);
-    $order->status_confirmed = 1;
-    $order->save();
+    DB::transaction(function() use ($date)
+    {
+      $order = Txorder::find($id);
+      $order->status_confirmed = 1;
+      $order->save();
 
-    
-    $rating = new AgentRating;
-    $rating->agent_id = $agent_id;
-    $rating->customer_id = $cust_id;
-    $rating->rating = $rate;
-    $rating->comment = $review;
-    $rating->save();
+      $count = TxOrder::where('group_id', $order->group_id)->count();
+      $total = ($order->total / $count) * 0.1;
+
+      $balance = new Balance;
+      $balance->agent_id = $order->agent_id;
+      $balance->amountMoney = $total;
+      $balance->balance_type = 1;
+      $balance->order_id = $order->order_id;
+      $balance->statusTransfer = 0;
+      $balance->save();
+
+      $agent = Member::find($order->agent_id);
+      $agent->balance = $agent->balance + $total;
+      $agent->save();
+      
+      $rating = new AgentRating;
+      $rating->agent_id = $agent_id;
+      $rating->customer_id = $cust_id;
+      $rating->rating = $rate;
+      $rating->comment = $review;
+      $rating->save();
+    });
 
     return redirect('customerorder');
   }
