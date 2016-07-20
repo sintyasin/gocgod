@@ -368,8 +368,8 @@ class TransactionController extends Controller
       $data['agent'] = Member::where('id', $data['order']->agent_id)
                               ->get(['name']);
 
-
-
+      $data['week'] = TxOrder::where('group_id', $id)->count();
+      $data['totalperweek'] = $data['order']->total / $data['week'];
 
       $payment_method = $data['order']->payment_method;
       if($payment_method == 1) 
