@@ -12,6 +12,13 @@
       </div>
     @else
     <div class="stepper">
+      @if (session('error'))
+        <div class="alert alert-danger fade in">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong>{{ session('error') }}</strong>
+        </div>
+      @endif
+
       <div id="wrapper_progress">
         <br>
         <div class="col-md-12 col-xs-12">
@@ -64,6 +71,13 @@
               <div class="col-md-6 col-md-offset-3">
               <label for="address">Alamat Pengiriman</label> <br>
               <textarea type="text" class="form-control" name="address" style="text-align:center; width:100%"/> {{ Auth::user()->address }} </textarea>
+              
+              @if ($errors->has('address'))
+                <span class="help-block">
+                    <strong style="color:#ff3333;">{{ $errors->first('address') }}</strong>
+                </span>
+              @endif
+
               </div>
               
               <div class="col-md-offset-3 col-md-3  ">
@@ -81,7 +95,14 @@
               
               <div class="col-md-3">
               <label for="zipcode">Kode Pos Pengiriman</label> <br>
-              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%; float:left;"/>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%; float:left;" onkeypress="return isNumber(event)"/>
+              
+              @if ($errors->has('zipcode'))
+                <span class="help-block">
+                    <strong style="color:#ff3333;">{{ $errors->first('zipcode') }}</strong>
+                </span>
+              @endif
+
               </div>
               
               <div class="col-md-6 col-md-offset-3">
@@ -105,6 +126,13 @@
               <div class="col-md-3">
               <label for="Date">Tanggal Pengiriman </label><br>
               <input type="text" class="form-control" name='request_date' placeholder='Contoh = 2016-05-31 (tahun-bulan-tanggal)' autocomplete="off" id="datepicker" style="width:100%;"/>   
+              
+              @if ($errors->has('request_date'))
+                <span class="help-block">
+                    <strong style="color:#ff3333;">{{ $errors->first('request_date') }}</strong>
+                </span>
+              @endif
+
               </div>
 
               <label>Hari pengiriman akan sama dengan hari dari tanggal pengiriman pertama yang dipilih. <br> Anda dapat mengubah tanggal pengiriman pada minggu selanjutnya di menu "Pesananku".</label>
@@ -143,6 +171,15 @@
   $(document).ready(function() {
       tabel();
   } );
+
+  function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
 
   function tabel()
    {

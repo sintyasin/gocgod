@@ -90,6 +90,7 @@ $(function() {
         processing: true,
         serverSide: true,
         bFilter : false,
+        order : [[3,'desc']],
         ajax: {
             url: '{!! route('orderlistHistoryCustomer.data') !!}',
         },
