@@ -47,7 +47,7 @@
 		@if($i == 0)
 			<span style="font-weight: bold;">{{$order_a[0]->order_id}} </span>
 		@else
-			<span style="font-weight: bold;">{{$id->order_id}}, </span>
+			<span style="font-weight: bold;">,{{$id->order_id}} </span>
 		@endif
 		<?php $i++; ?>
 		@endforeach
@@ -85,7 +85,6 @@
 
 			@if(is_a($order, 'Illuminate\Database\Eloquent\Collection'))
 				<p style="padding-top:20px;">Ongkos Kirim: Rp {{number_format($order[0]->shipping_fee)}}<span style=" font-size:30px;"><br> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span> </span> </p>
-
 
 				<br>
 				<p style="font-weight:bold; font-size:20px;">Cara Pembayaran </p>

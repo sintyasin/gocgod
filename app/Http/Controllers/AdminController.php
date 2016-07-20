@@ -1581,7 +1581,7 @@ class AdminController extends Controller
           ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
           ->leftJoin('master__agent_rating', 'master__member.id', '=', 'master__agent_rating.agent_id')
           ->where('status_user', 0)
-          ->groupBy('agent_id')
+          ->groupBy('id')
           ->get();
 
 

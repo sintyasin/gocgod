@@ -208,6 +208,7 @@ class TransactionController extends Controller
       $group = $a->group_id + 1;
     }    
 
+    $group = rand();
     
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
@@ -277,7 +278,7 @@ class TransactionController extends Controller
   {
     $data['order'] = TxOrder::where('group_id', $groupId)->first();
     $data['total'] = \DB::table('transaction__order')
-                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->select('total as total_price')
                       ->groupBy('group_id')
                       ->having('group_id', '=', $groupId)
                       ->get();
@@ -338,12 +339,12 @@ class TransactionController extends Controller
 
     $id = filter_var($input['idorder'], FILTER_SANITIZE_STRING);
 
-    $data['order'] = TxOrder::where('group_id', $id)->first();
+    $data['order'] = TxOrder::where('group_id', $id)->get();
 
     $data['status_payment'] = '';
     $data['payment_method'] = '';
 
-    $amount = $data['order']->total;
+    $amount = $data['order'][0]->total;
     $signature = md5('gocgod' . 'gocgod123'. $id . $amount);
 
     if($signature == $input['signature'])
@@ -353,23 +354,23 @@ class TransactionController extends Controller
                     ->groupBy('order_id')
                     ->get();
       $data['contact'] = AboutUs::first();
-      $data['order_a'] = TxOrder::where('order_id', $id)->get();
+      $data['order_a'] = TxOrder::where('group_id', $id)->get();
       $data['orderprice'] = \DB::table('transaction__order')
                     ->select('total as total_price')
-                    ->where('order_id', '=', $id)
+                    ->where('group_id', '=', $id)
                     ->get();
 
-      $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
+      $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order'][0]->order_id)
                               ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
                               ->get(['varian_name', 'price', 'quantity']);
           
-      $data['agent'] = Member::where('id', $data['order']->agent_id)
+      $data['agent'] = Member::where('id', $data['order'][0]->agent_id)
                               ->get(['name']);
 
 
 
 
-      $payment_method = $data['order']->payment_method;
+      $payment_method = $data['order'][0]->payment_method;
       if($payment_method == 1) $data['payment_method'] = 'ATM Bersama';
       else if($payment_method == 4) $data['payment_method'] = 'Credit Card';
 
@@ -377,7 +378,7 @@ class TransactionController extends Controller
       else if($input['payment_status'] == 2) $data['status_payment'] = 'Paid';
       else if($input['payment_status'] == 3) $data['status_payment'] = 'Failed';
 
-      $member = Member::find($data['order']->customer_id);
+      $member = Member::find($data['order'][0]->customer_id);
 
       Mail::send('page.email', $data, function ($m) use ($member) {
           $m->from('gocgod@gocgod.com', 'noreply-gocgod');
@@ -675,6 +676,7 @@ class TransactionController extends Controller
       $group = $a->group_id + 1;
     }    
 
+    $group = rand();
     
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
