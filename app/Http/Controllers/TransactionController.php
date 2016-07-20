@@ -519,8 +519,7 @@ class TransactionController extends Controller
     return response()->json(compact('response'));
   }
 
-
-  public function order_details(Request $data)
+  public function addtocartSubscribe(Request $data)
   {
     $totalProduct = count(Product::all());
 
@@ -535,16 +534,19 @@ class TransactionController extends Controller
 
     if($v->fails())
     {
-      return redirect('checkout_subcriber')->with('error', 'Error. Data yang anda masukkan tidak valid');
+      //return redirect('checkout_subcriber')->with('error', 'Error. Data yang anda masukkan tidak valid');
+      return 0;
     }
 
     $input = $data->all();
 
     //masukkin data ke cart
     for ($i=0; $i < $totalProduct; $i++) {
+
+      $id = filter_var($input[$i.'-id'], FILTER_SANITIZE_STRING);
+      
       if($input[$i.'-qty_subcriber'] > 0)
       {
-        $id = filter_var($input[$i.'-id'], FILTER_SANITIZE_STRING);
         $qty = intval(filter_var($input[$i.'-qty_subcriber'], FILTER_SANITIZE_STRING));
         $name = filter_var($input[$i.'-name'], FILTER_SANITIZE_STRING);
         $price = floatval(filter_var($input[$i.'-price'], FILTER_SANITIZE_STRING));
@@ -564,9 +566,18 @@ class TransactionController extends Controller
           'price' => $price,
           ]);
         }
-      } 
+      }
+      else
+      {
+        $rowid = Cart::search(array('id' => $id));
+
+        if($rowid){
+          Cart::remove($rowid[0]);
+        }
+      }
     }
 
+    return 1;
     /*$rowid = Cart::search(array('id' => $data->id));
 
     if($rowid){
@@ -581,7 +592,11 @@ class TransactionController extends Controller
         'price' => $data->price,
         ]);
     }*/
+  }
 
+
+  public function order_details()
+  {
     $data['contact'] = AboutUs::first();
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)
@@ -649,7 +664,7 @@ class TransactionController extends Controller
 
     if ($v->fails())
     {
-      return redirect('checkout_subcriber/')->with('error', 'Error. Data yang anda masukkan tidak valid');
+      return redirect('orderall_checkout')->with('error', 'Error. Data yang anda masukkan tidak valid')->withErrors($v->errors())->withInput();
     }
 
     $input = $request->all();

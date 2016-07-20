@@ -105,7 +105,6 @@
 
   function check()
   {
-
     var rows = <?php if(isset($a)) echo $a; ?>;
     var bisaNext = false;
     for (var i = 0; i < rows; i++) 
@@ -119,7 +118,26 @@
     }
 
     if(bisaNext)
-      document.getElementById('orderForm').submit();
+    {
+      $.ajax({
+        type: "POST",
+        url: "{{ URL::to('addtocartsubscribe') }}",
+        data: $("#orderForm").serialize(),
+        success:
+        function(data)
+        {
+          if(data == 0)
+          {
+            var data = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Data yang Anda masukkan tidak valid</strong></div>';
+            document.getElementById('alert').innerHTML = data;
+          }
+          else
+          {
+            location.href = "orderall_checkout";
+          }
+        }
+      });
+    }
     else
     {
       var data = '<div class="alert alert-danger fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Anda harus membeli minimal 1 produk</strong></div>';
