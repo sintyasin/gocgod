@@ -20,61 +20,34 @@
         <!-- ================================================================================================ -->
         <!-- ================================================================================================ -->
           <div id="">
-          <Center>
+          <Center>            
+            <p class='form_head'>Rincian Pembayaran</p>
+              <label for="phone">Nama Pelanggan</label> <br>
+              <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
+              <label for="address">Alamat Pengiriman</label> <br>
+              <input disabled type="text" class="form-control" name="address" value="{{ $order->ship_address}}" style="text-align:center;"/>
+              @if($order->who == 'single')
+              <label for="Date">Tanggal Pengiriman</label><br>
+              <input disabled type="text" class="form-control" name='request_date' value="{{$order->shipping_date}}" /> 
+              @endif
+              <label for="payment">Pembayaran</label>
+              <br>
+              <input disabled type="text" class="form-control" name="address" value="{{$payment_method}}" style="text-align:center;"/><br>  
+              <label for="payment">Status Pembayaran</label>
+              <br>
+              <input disabled type="text" class="form-control" name="address" value="{{$status_payment}}" style="text-align:center;"/><br>  
+            <br>
+            <br>
 
-            <!-- ini subscribe -->
-            @if(is_a($order, 'Illuminate\Database\Eloquent\Collection'))
-              <p class='form_head'>Rincian Pembayaran</p>
-                <label for="phone">Nama Pelanggan</label> <br>
-                <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
-                <label for="address">Alamat Pengiriman</label> <br>
-                <input disabled type="text" class="form-control" name="address" value="{{ $order[0]->ship_address}}" style="text-align:center;"/>
-                <label for="Date">Tanggal Pengiriman</label><br>
-                <input disabled type="text" class="form-control" name='request_date' value="{{$order[0]->shipping_date}}" id="datepicker" autocomplete="off" /> 
-                <label for="payment">Pembayaran</label>
-                <br>
-                <input disabled type="text" class="form-control" name="address" value="{{$payment_method}}" style="text-align:center;"/><br>  
-                <label for="payment">Status Pembayaran</label>
-                <br>
-                <input disabled type="text" class="form-control" name="address" value="{{$status_payment}}" style="text-align:center;"/><br>  
-              <br>
-              <br>
-
-              <!-- total - shipping fee, soalnya total udh termasuk shipping fee -->
-              <p class="plxLogin"><font size="3">Total Harga Produk (per Minggu) : Rp {{number_format($order[0]->total - $order[0]->shipping_fee, 2, ',','.')}}</font> </p>
-              <p class="plxLogin"><font size="3">Ongkos Kirim  : Rp {{number_format($order[0]->shipping_fee, 2, ',','.')}}</font> </p>
-              <hr>
-              <p class="plxLogin"><font size="4">Total  : Rp {{number_format($orderprice[0]->total_price, 2, ',','.')}}</font> </p>
-              
-              <p class="plxLogin"><font size="3">Silahkan transfer ke <br>GOCGOD<br></font> </p>
-              <a href="{{ url('/menu') }}"><input type="button" style="width:150px;" value="Kembali Berbelanja"></a>
-            <!-- ini beli single -->
-            @else
-              <p class='form_head'>Rincian Pembayaran</p>
-                <label for="phone">Nama Pelanggan</label> <br>
-                <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center;"/>
-                <label for="address">Alamat Pengiriman</label> <br>
-                <input disabled type="text" class="form-control" name="address" value="{{ $order->ship_address}}" style="text-align:center;"/>
-                <label for="Date">Tanggal Pengiriman</label><br>
-                <input disabled type="text" class="form-control" name='request_date' value="{{$order->shipping_date}}" id="datepicker" autocomplete="off" /> 
-                <label for="payment">Pembayaran</label>
-                <br>
-                <input disabled type="text" class="form-control" name="address" value="{{$payment_method}}" style="text-align:center;"/><br>  
-                <label for="payment">Status Pembayaran</label>
-                <br>
-                <input disabled type="text" class="form-control" name="address" value="{{$status_payment}}" style="text-align:center;"/><br>  
-              <br>
-              <br>
-
-              <!-- total - shipping fee, soalnya total udh termasuk shipping fee -->
-              <p class="plxLogin"><font size="3">Total Harga Produk : Rp {{number_format($order->total - $order->shipping_fee, 2, ',','.')}}</font> </p>
-              <p class="plxLogin"><font size="3">Ongkos Kirim  : Rp {{number_format($order->shipping_fee, 2, ',','.')}}</font> </p>
-              <hr>
-              <p class="plxLogin"><font size="4">Total  : Rp {{number_format($order->total, 2, ',','.')}}</font> </p>
-              
-              <p class="plxLogin"><font size="3">Silahkan transfer ke <br>GOCGOD<br></font> </p>
-              <a href="{{ url('/menu') }}"><input type="button" style="width:150px;" value="Kembali Berbelanja"></a>
-            @endif
+            <!-- total - shipping fee, soalnya total udh termasuk shipping fee -->
+            <p class="plxLogin"><font size="3">Total Harga Produk : Rp {{number_format($order->total - $order->shipping_fee, 2, ',','.')}}</font> </p>
+            <p class="plxLogin"><font size="3">Ongkos Kirim  : Rp {{number_format($order->shipping_fee, 2, ',','.')}}</font> </p>
+            <hr>
+            <p class="plxLogin"><font size="4">Total  : Rp {{number_format($order->total, 2, ',','.')}}</font> </p>
+            
+            <p class="plxLogin"><font size="3">Silahkan transfer ke <br>GOCGOD<br></font> </p>
+            <a href="{{ url('/menu') }}"><input type="button" style="width:150px;" value="Kembali Berbelanja"></a>
+            
           </Center>
           </div>
           </div>

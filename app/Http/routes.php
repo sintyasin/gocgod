@@ -67,7 +67,6 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('customercart', 'TransactionController@customerCart');
 	Route::post('updatecart/', 'TransactionController@updatecart');
 	Route::post('deletecart/', 'TransactionController@deletecart');
-	Route::get('summary/{id}', 'TransactionController@summary');
 
 
 
@@ -78,6 +77,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('payment/confirm/{id}', 'TransactionController@paymentConfirm');
 	Route::get('payment/subscribe/confirm/{groupId}', 'TransactionController@paymentConfirmSubscribe');
 	Route::get('payment/{id}', 'TransactionController@banktransfer');
+	Route::get('payment/subscribe/{Gid}', 'TransactionController@banktransferSubscribe');
 	Route::get('profile/{id}', 'MemberController@showbalance');
 	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
 	Route::post('edit_profile', 'MemberController@edit_profile');
