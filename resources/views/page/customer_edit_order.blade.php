@@ -10,8 +10,12 @@
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
               <strong>Total harga tidak boleh melebihi total harga sebelumnya!</strong>
             </div>
-            
-            @endif
+        @elseif(Session('dateError'))
+            <div class="alert alert-danger fade in">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <strong>{{ session('dateError') }}</strong>
+            </div>
+        @endif
 
           <center>
           <div class="col-lg-12">
@@ -32,7 +36,7 @@
                 <label class="col-md-1 control-label">Total Harga</label>
 
                 <div class="col-md-5">
-                    <input disabled type="text" class="form-control" value="Rp {{number_format($total_price[0]->total, 2, ',', '.')}}">
+                    <input disabled type="text" class="form-control" value="Rp {{number_format($total_price, 2, ',', '.')}}">
                 </div>
             </div>
 

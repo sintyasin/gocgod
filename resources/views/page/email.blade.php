@@ -83,6 +83,7 @@
 			<p style="font-weight:bold; font-size:20px;">Informasi Pembayaran</p>
 			<hr style="width: 200px; float:left;">
 
+			<!-- ini bayar pake firstpay -->
 			@if(is_a($order, 'Illuminate\Database\Eloquent\Collection'))
 				<p style="padding-top:20px;">Ongkos Kirim: Rp {{number_format($order[0]->shipping_fee)}}<span style=" font-size:30px;"><br> Total: <span style="font-weight: bold; color:red;">Rp {{number_format($orderprice[0]->total_price, 2,',','.')}} </span> </span> </p>
 

@@ -18,7 +18,7 @@ var table = $('#customerDatatable').DataTable({
         columns: [
             { data: 'order_id', name: 'order_id', title:'Id Pesanan' },
             { data: 'customer', name: 'customer', title:'Pelanggan' },
-            { data: 'shipping_date', name: 'shipping_date', title:'Tanggal Pesanan', sType: 'date' },
+            { data: 'shipping_date', name: 'shipping_date', title:'Tanggal Pengiriman', sType: 'date' },
             { data: 'phone', name: 'phone', title:'Telepon' },
             { data: 'ship_address', name: 'ship_address', title:'Alamat Pengiriman' },
             { data: 'city_name', name: 'city_name', title:'Kota' },            

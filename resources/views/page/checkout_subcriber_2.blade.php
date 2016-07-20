@@ -120,7 +120,7 @@
             <br>
 
             <input type="button" value="Back" onclick="show_prev('product_details','bar3');">
-            <input type="submit" value="Kirim" style="color:white; border: solid white;">
+            <!-- <input type="submit" value="Kirim" style="color:white; border: solid white;"> -->
           </Center>
           </div>
           </div>

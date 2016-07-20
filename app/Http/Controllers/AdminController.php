@@ -77,7 +77,7 @@ class AdminController extends Controller
                       ->where('status_shipping', 1)
                       ->where('status_payment', 1)
                       ->where('shipping_date', '<=', $date)
-                      ->get(['order_id', 'agent_id', 'total', 'group_id']);
+                      ->get(['order_id', 'agent_id', 'total', 'group_id', 'shipping_fee']);
 
       //UPDATE KONFIRMASI USER
       DB::update('UPDATE transaction__order
@@ -90,7 +90,7 @@ class AdminController extends Controller
       //INSERT DATA KE TX BALANCE DAN AGENT
       foreach ($query as $data) {
         $count = TxOrder::where('group_id', $data->group_id)->count();
-        $total = ($data->total / $count) * 0.1;
+        $total = (($data->total - $data->shipping_fee) / $count ) * 0.1;
 
         $balance = new Balance;
         $balance->agent_id = $data->agent_id;
