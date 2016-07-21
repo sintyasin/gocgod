@@ -324,7 +324,7 @@ class TransactionController extends Controller
     $data['status_payment'] = 'Pending';
     $data['payment_method'] = 'Bank Transfer';
 
-    Mail::send('page.email', $data, function ($m) {
+    Mail::send('page.email_order', $data, function ($m) {
         $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
         $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
@@ -388,7 +388,7 @@ class TransactionController extends Controller
 
       $member = Member::find($data['order']->customer_id);
 
-      Mail::send('page.email', $data, function ($m) use ($member) {
+      Mail::send('page.email_order', $data, function ($m) use ($member) {
           $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
           $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
@@ -776,7 +776,7 @@ class TransactionController extends Controller
     $data['status_payment'] = 'Pending';
     $data['payment_method'] = 'Bank Transfer';
 
-    Mail::send('page.email', $data, function ($m) {
+    Mail::send('page.email_order', $data, function ($m) {
         $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
         $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
