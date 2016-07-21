@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Contracts\Auth\PasswordBroker as PasswordBrokerContract;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Config;
+use App\AboutUs;
+use Mail;
 
 class AdminPasswordController extends Controller
 {
@@ -86,5 +89,44 @@ class AdminPasswordController extends Controller
         }
 
         return property_exists($this, 'redirectTo') ? $this->redirectTo : 'admin/order';
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $this->validateSendResetLinkEmail($request);
+
+        $broker = $this->getBroker();
+
+        $credentials = $this->getSendResetLinkEmailCredentials($request);
+        $user = Password::broker()->getUser($credentials);
+
+        $response;
+
+        if (is_null($user)) {
+            $response = PasswordBrokerContract::INVALID_USER;
+        }
+        else
+        {
+            $data['token'] = Password::broker()->createToken($user);
+            $data['email'] = $user->email;
+            $data['name'] = $user->name;
+            $data['contact'] = AboutUs::first();
+
+            Mail::send('admin.email_reset_password', $data, function ($m) use ($user) {
+              $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+
+              $m->to($user->email, $user->name)->subject('Atur ulang password GoCGoD.com Anda');
+            });
+            
+            $response = PasswordBrokerContract::RESET_LINK_SENT;
+        }        
+
+        switch ($response) {
+            case Password::RESET_LINK_SENT:
+                return $this->getSendResetLinkEmailSuccessResponse($response);
+            case Password::INVALID_USER: 
+            default: 
+                return $this->getSendResetLinkEmailFailureResponse($response);
+        }
     }
 }

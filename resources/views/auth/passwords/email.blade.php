@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading"><div class="font_padding"> Reset Your Password Here! </div></div>
+                <div class="panel-heading"><div class="font_padding"> Atur Ulang Password Anda! </div></div>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -18,7 +18,7 @@
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">E-Mail Address</label>
+                            <label class="col-md-4 control-label">Alamat Email</label>
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" value="{{ old('email') }}">
@@ -35,7 +35,7 @@
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="font_forgot">
                                 <button type="submit" class="checkPageBtn">
-                                    <i class="fa fa-btn fa-envelope"></i> Send Password Reset Link
+                                    <i class="fa fa-btn fa-envelope"></i> Kirim
                                 </button>
                                 </div>
                             </div>

@@ -31,13 +31,16 @@ class ActivationService
 
         $token = $this->activationRepo->createActivation($user);
 
-        $link = route('user.activate', $token);
-        $text = sprintf('Aktifkan akun Anda dengan klik link berikut %s', $link);
+        $link = route('user.activate', $token);        
+        
+        $data['name'] = $user->name;
+        $data['link'] = $link;
+        $data['contact'] = AboutUs::first();
+        
+        Mail::send('page.email_verifikasi', $data, function ($m) use ($user) {
+          $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
-        Mail::raw($text, function($message) use ($user, $text, $sender)
-        {
-            $message->from($sender, 'go C go D');
-            $message->to($user->email)->subject('Aktivasi akun goCgoD');
+          $m->to($user->email, $user->name)->subject('Aktivasi akun goCgoD');
         });
     }
 
