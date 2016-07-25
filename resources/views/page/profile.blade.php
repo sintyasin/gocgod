@@ -8,15 +8,23 @@
     <div class="col-md-3">
       
       @if(Auth::user()->status_user == 0)
+      <div class="col-xs-12">
+      <center>
       <button type="button" class="boaBtn_boa_pf" onclick="show_balance('profile')">
         Informasi Akun
       </button>
+      </center>
+      </div>
       @endif
 
       <!-- Button trigger modal -->
+      <div class="col-xs-12">
+      <center>
       <button type="button" class="boaBtn_boa_pf" data-toggle="modal" data-target="#myModal">
         Ubah Informasi
       </button>
+      </center>
+      </div>
 
       <!-- Modal -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -156,9 +164,13 @@
 
 
       <!-- Button trigger modal -->
+      <div class="col-xs-12">
+      <center>
       <button type="button" class="boaBtn_boa_pf" data-toggle="modal" data-target="#myPassword">
         Ubah Password
       </button>
+      </center>
+      </div>
 
       <!-- Modal -->
       <div class="modal fade" id="myPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -230,9 +242,13 @@
       </div>
 
       @if(Auth::user()->status_user == 0)
+      <div class="col-xs-12">
+      <Center>
       <button type="button" data-toggle="modal" data-target="#bankinformation" class="boaBtn_boa_pf">
         Ubah Informasi Bank
       </button>
+      </Center>
+      </div>
 
       <div class="modal fade" id="bankinformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -297,11 +313,11 @@
         </div>
       </div>
 
-
-
+      <center>
       <button type="button" class="boaBtn_boa_pf" onclick="show_balance('balance')">
         Total Uang
       </button>
+      </center>
       @endif
     </div>
 

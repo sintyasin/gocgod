@@ -30,6 +30,6 @@
 <img src={{ URL::asset("assets/images/howtobuy/006.png") }} class='figure-img img-fluid' alt='Image'>
 <hr style="color:black;">
 <center>
-<h1>6</h1><h2>Rincian dan Pembayaran/h2>
+<h1>6</h1><h2>Rincian dan Pembayaran</h2>
 </center>
 <img src={{ URL::asset("assets/images/howtobuy/007.png") }} class='figure-img img-fluid' alt='Image'>
