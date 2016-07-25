@@ -17,15 +17,20 @@
 						<a href="{{ url('/home') }}"><img src="{{ URL::asset('assets/images/logo/logo.png') }}" alt="Logo" /></a>
 					</div>
 				</div>
-				<div class="col-sm-11">
-					<div class="header_top_right text-right">
+				<div class="col-sm-11 col-xs-12 ">
+					<div class="header_top_right text-center">
+						<div class="col-sm-9">
 						<ul class="nav navbar-nav navbar-right">
+						
 							<li><a href="#"><i class="fa fa-facebook"></i></a></li>
 							<li><a href="#"><i class="fa fa-twitter"></i></a></li>
 							<li><a href="https://www.instagram.com/gocgod.id/"><i class="fa fa-instagram"></i></a></li>
 							<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+						</ul>
+						</div>
 
-							<!-- <li><a href="{{ url('/cart') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart</a></li> -->
+						<div class="col-sm-3">
+							<ul class="nav navbar-nav navbar-center">
 							<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Cari Agen</a></li>
 
 
@@ -80,6 +85,7 @@
 									</div>
 								</li>
 							</ul>
+							</div>
 	                    @else
 	                        <li class="dropdown">
 	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -93,10 +99,8 @@
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Keluar</div></a></li>
 	                            </ul>
 	                        </li>
+	                        </div>
 	                    @endif
-
-	                    <li><p>  </p> </li>
-						<li><p>  </p> </li>
 					</ul>
 				</div>
 			</div>
@@ -116,10 +120,7 @@
 							@if(!Auth::guest() && Auth::user()->status_user == 0)
 							<li><a href="{{ url('/customerorder')}}">PESANAN PELANGGAN</a></li>
 							@endif	
-							<li class="shop_icon"><a href="#" data-toggle="modal" data-target="#checkout"><img src="{{ URL::asset('assets/images/menu_icon_img.png') }}" alt="" /><span>{{Cart::count()}}</span> Shopping Cart</a></li>
-							<!-- <li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
-
-							<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
+							<li class="shop_icon"><a href="#" data-toggle="modal" data-target="#checkout"><img src="{{ URL::asset('assets/images/cart.png') }}" alt="" /><span>{{Cart::count()}}</span> Shopping Cart</a></li>
 						</ul>
 					</nav>
 				</div>
@@ -128,13 +129,8 @@
 	</div>
 </div>
 
-	<!-- <div class="top_bottom_headercustom">
-		<div class="row">
-			<div class="col-sm-12 col-sm-6">
-			</div>
-		</div>
-	</div> -->
 </header>
+
 <!-- mobile-menu-area start -->
 <div class="mobile-menu-area">
 	<div class="container">
@@ -149,13 +145,10 @@
 					<li><a href="{{ url('/becomeanagent') }}">BERGABUNG MENJADI AGEN</a></li>
 					@endif
 					<li><a href="{{ url('/faq') }}">FAQ</a></li>
-					<!-- <li><a href="{{ url('/checkout') }}">CHECK OUT</a></li> -->
 					@if(!Auth::guest() && Auth::user()->status_user == 0)
 					<li><a href="{{ url('/customerorder')}}">PESANAN PELANGGAN</a></li>
 					@endif
 					<li><a href="#" data-toggle="modal" data-target="#checkout"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>SHOPPING CART</a></li>
-<!-- 					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
-					
 				</ul>
 			</nav>
 		</div>

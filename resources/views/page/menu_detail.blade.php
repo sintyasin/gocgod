@@ -81,11 +81,13 @@
 
 					<div class="panel sauget-accordion">
 						<div id="headingFive" role="tab" class="panel-heading">
+							
 							<h4 class="panel-title">
 							<a class="btn" aria-controls="orderReview" aria-expanded="false" href="#review" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-									Klik disini untuk memberikan ulasan produk
-								</a>
+							Klik untuk memberikan ulasan
+							</a>
 							</h4>
+
 						</div>
 						<div aria-labelledby="headingFive" role="tabpanel" class="panel-collapse collapse" id="review" aria-expanded="false">
 							<div class="content-info">
@@ -130,13 +132,6 @@
 
 						<div class="row">
 							<div class="col-md-12">
-								<!-- <span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star"></span>
-								<span class="glyphicon glyphicon-star-empty"></span> -->
-								
-								
 								{{$query_member[$i]->name}}
 								<span class="pull-right">{{$testi->created_at}}</span>
 								<p>{{$testi->testimonial}}</p>
@@ -156,7 +151,10 @@
 			              </div>
 			              <div class="modal-body">
 			                <center>
-			                <a href={{ url("/menu") }} class="cartBtn"> Kembali Berbelanja </a>  &nbsp;&nbsp;&nbsp;
+			                <a href={{ url("/menu") }} class="cartBtn"> Kembali Berbelanja </a>
+			                
+			                <br>
+			                <br>
 			                <a href="#" class="cartBtn" data-toggle="modal" data-target="#checkout" data-dismiss="modal"> Lanjutkan Ke Pembayaran</a>
 			                </center>
 
