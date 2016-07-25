@@ -77,7 +77,7 @@ class AdminController extends Controller
                       ->where('status_shipping', 1)
                       ->where('status_payment', 1)
                       ->where('shipping_date', '<=', $date)
-                      ->get(['order_id', 'agent_id', 'total']);
+                      ->get(['order_id', 'agent_id', 'total', 'group_id', 'shipping_fee']);
 
       //UPDATE KONFIRMASI USER
       DB::update('UPDATE transaction__order
@@ -87,15 +87,22 @@ class AdminController extends Controller
                   AND status_payment = 1 
                   AND shipping_date <= ?', [$date]);
 
-      //INSERT DATA KE TX BALANCE
+      //INSERT DATA KE TX BALANCE DAN AGENT
       foreach ($query as $data) {
+        $count = TxOrder::where('group_id', $data->group_id)->count();
+        $total = (($data->total - $data->shipping_fee) / $count ) * 0.1;
+
         $balance = new Balance;
         $balance->agent_id = $data->agent_id;
-        $balance->amountMoney = $data->total;
+        $balance->amountMoney = $total;
         $balance->balance_type = 1;
         $balance->order_id = $data->order_id;
         $balance->statusTransfer = 0;
         $balance->save();
+
+        $agent = Member::find($data->agent_id);
+        $agent->balance = $agent->balance + $total;
+        $agent->save();
       }
     });
   }
@@ -584,8 +591,8 @@ class AdminController extends Controller
             ->select('p.varian_name as name', DB::raw('SUM(d.quantity) as quantity'), DB::raw('SUM(d.varian_price * d.quantity) as price'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
-            ->where('DATE(order_date)', '>=', $first)
-            ->where('DATE(order_date)', '<=', $last)
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy(DB::raw('name WITH ROLLUP'))
             ->get();
@@ -627,13 +634,36 @@ class AdminController extends Controller
 
     $data['active'] = 'txReport';
 
+    $shippingQuery = DB::table('transaction__order')
+              ->select('shipping_fee', 'group_id')
+              ->where('order_date', '>=', $first)
+              ->where('order_date', '<=', $last)
+              ->where('status_payment', '=', 1)
+              ->get();
+
+    $shipping = 0;
+    $groupId = -1;
+    foreach ($shippingQuery as $value) {
+      if($groupId == -1)
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+      else if($value->group_id == $groupId) continue;
+      else
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+    }
+    
     $query = DB::table('transaction__order')
-            ->select(DB::raw('DATE(order_date) as Date') , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + SUM(shipping_fee)) as Omzet'), DB::raw('SUM(shipping_fee) as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select(DB::raw('DATE(order_date) as Date') , DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + ' . $shipping . ') as Omzet'), DB::raw($shipping . ' as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
-            ->where('DATE(order_date)', '>=', $first)
-            ->where('DATE(order_date)', '<=', $last)
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy('Date')
             ->orderBy('Date')
@@ -689,13 +719,36 @@ class AdminController extends Controller
 
     $data['active'] = 'agentReport';
 
+    $shippingQuery = DB::table('transaction__order')
+              ->select('shipping_fee', 'group_id')
+              ->where('order_date', '>=', $first)
+              ->where('order_date', '<=', $last)
+              ->where('status_payment', '=', 1)
+              ->get();
+
+    $shipping = 0;
+    $groupId = -1;
+    foreach ($shippingQuery as $value) {
+      if($groupId == -1)
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+      else if($value->group_id == $groupId) continue;
+      else
+      {
+        $shipping += $value->shipping_fee;
+        $groupId = $value->group_id;  
+      }
+    }
+
     $query = DB::table('transaction__order')
-            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + SUM(shipping_fee)) as Omzet'), DB::raw('SUM(shipping_fee) as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
+            ->select('m.name as Agent', DB::raw('COUNT(DISTINCT transaction__order.order_id) as Total_Order'), DB::raw('SUM(d.quantity) as Quantity'), DB::raw('(SUM(d.varian_price * d.quantity) + ' . $shipping . ') as Omzet'), DB::raw($shipping . ' as Shipping'), DB::raw('SUM(d.varian_price * d.quantity) as Net'))
             ->leftJoin('transaction__order_detail as d', 'd.order_id', '=', 'transaction__order.order_id')
             ->leftJoin('product__varian as p', 'p.varian_id', '=', 'd.varian_id')
             ->leftJoin('master__member as m', 'm.id', '=', 'transaction__order.agent_id')
-            ->where('DATE(order_date)', '>=', $first)
-            ->where('DATE(order_date)', '<=', $last)
+            ->where('order_date', '>=', $first)
+            ->where('order_date', '<=', $last)
             ->where('status_payment', '=', 1)
             ->groupBy('Agent')
             ->orderBy('Agent')
@@ -1001,7 +1054,7 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->where('order_id', $id)
-                            ->get(['status_shipping' ,'order_id', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
+                            ->get(['status_shipping' , 'group_id' ,'order_id', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
     
     $data['active'] = 'txOrder';
 
@@ -1027,11 +1080,19 @@ class AdminController extends Controller
     $payment = filter_var($input['payment'], FILTER_SANITIZE_STRING);
     $ship = filter_var($input['ship'], FILTER_SANITIZE_STRING);
 
-    $order = TxOrder::find($id);
-    $order->status_confirmed = $confirmed;
-    $order->status_payment = $payment;
-    $order->status_shipping = $ship;
-    $order->save();
+    $tmp = TxOrder::find($id);
+    $order = TxOrder::where('group_id', $tmp->group_id)->get();
+
+    DB::transaction(function() use ($order, $confirmed, $payment, $ship)
+    {
+      foreach ($order as $data) {
+        $data->status_confirmed = $confirmed;
+        $data->status_payment = $payment;
+        $data->status_shipping = $ship;
+        $data->save();
+      }
+    });
+
     Session::flash('update', 1);
 
     return redirect('admin/order');
@@ -1089,7 +1150,8 @@ class AdminController extends Controller
 
   public function getOrderConfirmData()
   {
-    $data['query'] = TxOrderConfirmation::get(['confirmation_id', 'group_id', 'payment_date', 'amount', 'account_name', 'account_number', 'confirmation_status']);
+    $data['query'] = TxOrderConfirmation::where('confirmation_status', 0)
+                                        ->get(['confirmation_id', 'group_id', 'payment_date', 'amount', 'account_name', 'account_number', 'confirmation_status']);
         
     return Datatables::of($data['query'])
     ->make(true); 
@@ -1120,7 +1182,7 @@ class AdminController extends Controller
         $data->status_payment = 1;
         $data->save();
       }
-    });         
+    });
 
     return 1;
   }
@@ -1513,13 +1575,39 @@ class AdminController extends Controller
 
   public function getAgentData()
   {
-      $data['query'] = Member::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
-                            ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
-                            ->where('status_user', 0)
-                            ->get(['country', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name']);
-        
-      return Datatables::of($data['query'])
-      ->make(true);
+    $query = DB::table('master__member')
+          ->select(DB::raw('AVG(rating) as rating'),'country', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name')
+          ->leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+          ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
+          ->leftJoin('master__agent_rating', 'master__member.id', '=', 'master__agent_rating.agent_id')
+          ->where('status_user', 0)
+          ->groupBy('id')
+          ->get();
+
+
+    $data['query'] = new Collection;
+
+    foreach ($query as $value) {
+      $data['query']->push([
+            'country'         => $value->country,
+            'zipcode'       => $value->zipcode,
+            'bank_name'      => $value->bank_name,
+            'id'      => $value->id,
+            'name'      => $value->name,
+            'address'      => $value->address,
+            'date_of_birth'      => $value->date_of_birth,
+            'email'      => $value->email,
+            'phone'      => $value->phone,
+            'verification'      => $value->verification,
+            'balance'      => $value->balance,
+            'bank_account'      => $value->bank_account,
+            'city_name'      => $value->city_name,
+            'rating'      => $value->rating,
+        ]);
+    }
+    
+    return Datatables::of($data['query'])
+    ->make(true);
   }
 
   public function getEditAgent($id)
@@ -1564,7 +1652,7 @@ class AdminController extends Controller
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
                             ->where('transaction__order.agent_id', $id)
-                            ->get(['order_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'group_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
         
     return Datatables::of($data['query'])
     ->make(true);
@@ -1577,7 +1665,7 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->where('order_id', $id)
-                            ->get(['order_id', 'a.id as AId', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
+                            ->get(['order_id', 'group_id', 'a.id as AId', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
 
     return view('admin.admin_edit_agent_tx', $data);
   }
@@ -1601,10 +1689,17 @@ class AdminController extends Controller
     $confirmed = filter_var($input['confirmed'], FILTER_SANITIZE_STRING);
     $AId = filter_var($AId, FILTER_SANITIZE_STRING);
 
-    $tx = TxOrder::find($orderId);
-    $tx->status_payment = $payment;
-    $tx->status_confirmed = $confirmed;
-    $tx->save();
+    $tmp = TxOrder::find($orderId);
+    $order = TxOrder::where('group_id', $tmp->group_id)->get();
+
+    DB::transaction(function() use ($order, $confirmed, $payment)
+    {
+      foreach ($order as $data) {
+        $data->status_confirmed = $confirmed;
+        $data->status_payment = $payment;
+        $data->save();
+      }
+    });
     Session::flash('update', 1);
 
     return redirect('/admin/edit/agent/' . $AId);
@@ -1669,7 +1764,7 @@ class AdminController extends Controller
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
                             ->where('transaction__order.customer_id', $id)
-                            ->get(['order_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'group_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
         
     return Datatables::of($data['query'])
     ->make(true);
@@ -1682,7 +1777,7 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->where('order_id', $id)
-                            ->get(['order_id', 'c.id as CId', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
+                            ->get(['order_id', 'group_id', 'c.id as CId', 'c.name as cust', 'a.name as agent', 'order_date', 'status_payment' ,'status_confirmed']);
 
     return view('admin.admin_edit_customer_tx', $data);
   }
@@ -1705,10 +1800,18 @@ class AdminController extends Controller
     $confirmed = filter_var($input['confirmed'], FILTER_SANITIZE_STRING);
     $CId = filter_var($CId, FILTER_SANITIZE_STRING);
 
-    $tx = TxOrder::find($orderId);
-    $tx->status_payment = $payment;
-    $tx->status_confirmed = $confirmed;
-    $tx->save();
+    $tmp = TxOrder::find($orderId);
+    $order = TxOrder::where('group_id', $tmp->group_id)->get();
+
+    DB::transaction(function() use ($order, $confirmed, $payment)
+    {
+      foreach ($order as $data) {
+        $data->status_confirmed = $confirmed;
+        $data->status_payment = $payment;
+        $data->save();
+      }
+    });
+
     Session::flash('update', 1);
 
     return redirect('/admin/edit/customer/' . $CId);
@@ -1942,7 +2045,14 @@ class AdminController extends Controller
 
             //ambil group id
             $orderData = TxOrder::orderBy('order_id', 'desc')->first();
-            $groupId = ($orderData->group_id) + 1;
+            $groupId;
+
+            if(empty($orderData))
+              $groupId = 1;
+            else
+            {
+              $groupId = ($orderData->group_id) + 1;
+            }    
 
             //bikin order
             $order = new TxOrder();
@@ -1996,7 +2106,14 @@ class AdminController extends Controller
 
           //ambil group id
           $orderData = TxOrder::orderBy('order_id', 'desc')->first();
-          $groupId = ($orderData->group_id) + 1;
+          $groupId;
+
+          if(empty($orderData))
+            $groupId = 1;
+          else
+          {
+            $groupId = ($orderData->group_id) + 1;
+          }    
 
           //bikin order
           $order = new TxOrder();

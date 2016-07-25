@@ -48,6 +48,20 @@
         {!! csrf_field() !!}
 
         <div class="form-group">
+            <label class="col-md-1 control-label">Order ID</label>
+            <div class="col-md-5">
+              <input type="text" class='form-control' value="{{$query[0]->order_id}}" disabled />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-1 control-label">Group ID</label>
+            <div class="col-md-5">
+              <input type="text" class='form-control' value="{{$query[0]->group_id}}" disabled />
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-md-1 control-label">Customer</label>
             <div class="col-md-5">
               <input type="text" class='form-control' value="{{$query[0]->cust}}" disabled />
@@ -73,12 +87,18 @@
 
             <div class="col-md-5">
                 <select class="form-control" name="payment">
-                    @if($query[0]->status_payment == 0)
+                     @if($query[0]->status_payment == 0)
                         <option value="0" selected>Unpaid</option>
                         <option value="1">Paid</option>
+                        <option value="-1">Failed</option>
                     @elseif($query[0]->status_payment == 1)
                         <option value="0">Unpaid</option>
                         <option value="1" selected>Paid</option>
+                        <option value="-1">Failed</option>
+                     @elseif($query[0]->status_payment == -1)
+                        <option value="0">Unpaid</option>
+                        <option value="1" >Paid</option>
+                        <option value="-1" selected>Failed</option>
                     @endif
                 </select>
 

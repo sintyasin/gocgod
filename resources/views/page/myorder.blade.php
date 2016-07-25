@@ -8,7 +8,7 @@
         @if(Session::has('success'))
             <div class="alert alert-success fade in">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>Pesanan berhasil diubah!</strong>
+              <strong>{{ session('success') }}</strong>
             </div>
          @elseif (session('error'))
          <div class="alert alert-danger fade in">
@@ -268,9 +268,6 @@ function reviewandreceive()
     var review = ""; 
   }
 
-  alert(rating+"-"+id+"-"+agent_id+"-"+review);
-
-
   $.ajax({
     url: '{{URL("/receive")}}',
     type: 'POST',
@@ -339,7 +336,7 @@ $(function() {
         processing: true,
         serverSide: true,
         bFilter : false,
-        order : [[0,'desc']],
+        order : [[3,'asc']],
         ajax: {
             url: '{!! route('orderlistCustomer.data') !!}',
         },

@@ -102,18 +102,6 @@
       <div class="col-lg-12">
         <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
           <thead>
-            <tr>
-              <th>Order Id</th>
-              <th>Customer</th>
-              <th>Agent</th>
-              <th>Order Date</th>
-              <th>Ship Address</th>
-              <th>City</th>
-              <th>Type</th>
-              <th>Payment Status</th>
-              <th>Confirmed Status</th>
-              <th>Action</th>
-            </tr>
           </thead>
           <tbody>
           </tbody>
@@ -199,6 +187,7 @@ $(function() {
     var table = $('#datatableUser').DataTable({
         processing: true,
         serverSide: true,
+        order: [[0, 'desc']],
         ajax: {
             url: '{!! route('agenttx.data') !!}',
             data: function (d) {
@@ -210,6 +199,7 @@ $(function() {
             { data: 'customer', name: 'customer', title:'Customer' },
             { data: 'agent', name: 'agent', title:'Agent' },
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
+            { data: 'group_id', name: 'group_id', title:'Group Id' },
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
             { data: 'city_name', name: 'city_name', title:'City' },            
             { data: 'who', name: 'who', title:'Type' },

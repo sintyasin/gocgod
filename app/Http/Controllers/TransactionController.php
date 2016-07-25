@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use Cart;
+use Redirect;
 use App\Http\Requests;
 use App\Product;
 use App\Banner;
@@ -171,12 +172,12 @@ class TransactionController extends Controller
       'city' => 'required|numeric',
       'agent' => 'required|numeric',
       'request_date' =>  'required|max:10',
-      'zipcode' => 'required|max:50',
+      'zipcode' => 'required|numeric',
       ]);
 
     if ($v->fails())
     {
-      return redirect('checkout_singlebuyer/')->withErrors($v->errors())->withInput();
+      return redirect('checkout_singlebuyer/')->withErrors($v->errors())->withInput()->with('error', 'Error. Data yang anda masukkan tidak valid');
     }
 
     $input = $request->all();
@@ -208,6 +209,7 @@ class TransactionController extends Controller
       $group = $a->group_id + 1;
     }    
 
+    $group = rand();
     
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
@@ -273,6 +275,31 @@ class TransactionController extends Controller
     return view('page.paymentconfirm', $data);
   }
 
+  public function paymentConfirmSubscribe($groupId)
+  {
+    $data['order'] = TxOrder::where('group_id', $groupId)->first();
+    $data['total'] = \DB::table('transaction__order')
+                      ->select('total as total_price')
+                      ->groupBy('group_id')
+                      ->having('group_id', '=', $groupId)
+                      ->get();
+
+    $data['contact'] = AboutUs::first();
+    
+    $query = Member::where('id', $data['order']->customer_id)
+                                  ->leftJoin('master__city as c', 'c.city_id', '=', 'master__member.city_id')
+                                  ->get(['city_name']);
+
+
+    $data['customerCity'] = $query[0]->city_name;
+
+    $signature = 'gocgod' . 'gocgod123' . $groupId . $data['total'][0]->total_price;
+    
+    $data['signature'] = md5($signature);
+        
+    return view('page.paymentconfirm', $data);
+  }
+
   public function banktransfer($id)
   {
     $data['order'] = TxOrder::find($id);
@@ -297,7 +324,7 @@ class TransactionController extends Controller
     $data['status_payment'] = 'Pending';
     $data['payment_method'] = 'Bank Transfer';
 
-    Mail::send('page.email', $data, function ($m) {
+    Mail::send('page.email_order', $data, function ($m) {
         $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
         $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
@@ -328,10 +355,10 @@ class TransactionController extends Controller
                     ->groupBy('order_id')
                     ->get();
       $data['contact'] = AboutUs::first();
-      $data['order_a'] = TxOrder::where('order_id', $id)->get();
+      $data['order_a'] = TxOrder::where('group_id', $id)->get();
       $data['orderprice'] = \DB::table('transaction__order')
                     ->select('total as total_price')
-                    ->where('order_id', '=', $id)
+                    ->where('group_id', '=', $id)
                     ->get();
 
       $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
@@ -341,11 +368,18 @@ class TransactionController extends Controller
       $data['agent'] = Member::where('id', $data['order']->agent_id)
                               ->get(['name']);
 
-
-
+      $data['week'] = TxOrder::where('group_id', $id)->count();
+      $data['totalperweek'] = $data['order']->total / $data['week'];
 
       $payment_method = $data['order']->payment_method;
-      if($payment_method == 1) $data['payment_method'] = 'ATM Bersama';
+      if($payment_method == 1) 
+      {
+        $data['payment_method'] = 'ATM Bersama';
+
+        $data['bankcode'] = $data['order']->bank_code;
+        $data['paymentaccount'] = $data['order']->payment_account;
+        
+      }
       else if($payment_method == 4) $data['payment_method'] = 'Credit Card';
 
       if($input['payment_status'] == 1) $data['status_payment'] = 'Pending';
@@ -354,7 +388,7 @@ class TransactionController extends Controller
 
       $member = Member::find($data['order']->customer_id);
 
-      Mail::send('page.email', $data, function ($m) use ($member) {
+      Mail::send('page.email_order', $data, function ($m) use ($member) {
           $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
           $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
@@ -492,8 +526,7 @@ class TransactionController extends Controller
     return response()->json(compact('response'));
   }
 
-
-  public function order_details(Request $data)
+  public function addtocartSubscribe(Request $data)
   {
     $totalProduct = count(Product::all());
 
@@ -508,16 +541,19 @@ class TransactionController extends Controller
 
     if($v->fails())
     {
-      return redirect('checkout_subcriber')->with('error', 'Error. Data yang anda masukkan tidak valid');
+      //return redirect('checkout_subcriber')->with('error', 'Error. Data yang anda masukkan tidak valid');
+      return 0;
     }
 
     $input = $data->all();
 
     //masukkin data ke cart
     for ($i=0; $i < $totalProduct; $i++) {
+
+      $id = filter_var($input[$i.'-id'], FILTER_SANITIZE_STRING);
+      
       if($input[$i.'-qty_subcriber'] > 0)
       {
-        $id = filter_var($input[$i.'-id'], FILTER_SANITIZE_STRING);
         $qty = intval(filter_var($input[$i.'-qty_subcriber'], FILTER_SANITIZE_STRING));
         $name = filter_var($input[$i.'-name'], FILTER_SANITIZE_STRING);
         $price = floatval(filter_var($input[$i.'-price'], FILTER_SANITIZE_STRING));
@@ -537,9 +573,18 @@ class TransactionController extends Controller
           'price' => $price,
           ]);
         }
-      } 
+      }
+      else
+      {
+        $rowid = Cart::search(array('id' => $id));
+
+        if($rowid){
+          Cart::remove($rowid[0]);
+        }
+      }
     }
 
+    return 1;
     /*$rowid = Cart::search(array('id' => $data->id));
 
     if($rowid){
@@ -554,7 +599,11 @@ class TransactionController extends Controller
         'price' => $data->price,
         ]);
     }*/
+  }
 
+
+  public function order_details()
+  {
     $data['contact'] = AboutUs::first();
     $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
     ->where('status_user', 0)
@@ -622,7 +671,7 @@ class TransactionController extends Controller
 
     if ($v->fails())
     {
-      return redirect('checkout_subcriber_2/')->withErrors($v->errors())->withInput();
+      return redirect('orderall_checkout')->with('error', 'Error. Data yang anda masukkan tidak valid')->withErrors($v->errors())->withInput();
     }
 
     $input = $request->all();
@@ -633,10 +682,11 @@ class TransactionController extends Controller
     $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
     $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
     $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
-    $week = filter_var($input['week'], FILTER_SANITIZE_STRING);
+    $week = intval(filter_var($input['week'], FILTER_SANITIZE_STRING));
     $shipping_fee = 0;
-    $who = 'subcriber';
-    $total = Cart::total();
+    $who = 'subscriber';
+    $total = Cart::total() * $week;
+
 
     $a = TxOrder::orderBy('group_id', 'desc')->first();
     $group;
@@ -648,6 +698,7 @@ class TransactionController extends Controller
       $group = $a->group_id + 1;
     }    
 
+    $group = rand();
     
     $date_shipping = new \DateTime($shipping_date);
     $date = date_format($date_shipping,"Y-m-d"); 
@@ -669,6 +720,10 @@ class TransactionController extends Controller
       $order->total = $total + $shipping_fee;
       $order->who = $who;
       $order->order_date = $order_date;
+      if($input['payment'] == 0) //bank transfer.   kalo firstpay ga ush diisi dulu (biarin null)
+      {
+        $order->payment_method = 0;
+      }
       $order->save();
       date_add($date_shipping,date_interval_create_from_date_string("+7 days"));
       $date = date_format($date_shipping,"Y-m-d");
@@ -685,48 +740,52 @@ class TransactionController extends Controller
       }
     }
     Cart::destroy();
-    
 
     if($input['payment'] == 0)
     {
-      return redirect('/summary/'.$a->group_id);
+      return redirect('/payment/subscribe/' . $order->group_id);
     }
     else if($input['payment'] == 1)
     {
-      return redirect('/#');
+      return redirect('/payment/subscribe/confirm/' . $order->group_id);
     }
 
   }
 
-  public function summary($id)
+  public function banktransferSubscribe($Gid)
   {
-    $data['order'] = TxOrder::where('group_id', $id)->first();
+    $data['order'] = TxOrder::where('group_id', $Gid)->first();
     $data['orderprice'] = \DB::table('transaction__order')
-                      ->select(\DB::raw('SUM(total) as total_price'))
+                      ->select('total as total_price')
                       ->groupBy('group_id')
-                      ->having('group_id', '=', $id)
+                      ->having('group_id', '=', $Gid)
                       ->get();
                       
+    $data['week'] = TxOrder::where('group_id', $Gid)->count();
+    $data['totalperweek'] = $data['order']->total / $data['week'];
+
     $data['contact'] = AboutUs::first();
 
-    $data['order_a'] = TxOrder::where('group_id', $id)->get();
+    $data['order_a'] = TxOrder::where('group_id', $Gid)->get();
     $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order_a'][0]->order_id)
                             ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
                             ->get(['varian_name', 'price', 'quantity']);
     $data['agent'] = Member::where('id', $data['order_a'][0]->agent_id)
                             ->get(['name']);
 
+    $data['status_payment'] = 'Pending';
+    $data['payment_method'] = 'Bank Transfer';
 
-    Mail::send('page.email', $data, function ($m) {
+    Mail::send('page.email_order', $data, function ($m) {
         $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
         $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
     });
 
-    return view('page.summary1', $data);
-
+    return view('page.summary', $data);
   }
 
+  
 
   //================================== CUSTOMER ORDER DATA - AGENT
   public function getOrderList()
@@ -974,17 +1033,34 @@ class TransactionController extends Controller
     $cust_id = filter_var(Auth::user()->id, FILTER_SANITIZE_STRING);
     
 
-    $order = Txorder::find($id);
-    $order->status_confirmed = 1;
-    $order->save();
+    \DB::transaction(function() use ($id, $agent_id, $rate, $review, $cust_id)
+    {
+      $order = Txorder::find($id);
+      $order->status_confirmed = 1;
+      $order->save();
 
-    
-    $rating = new AgentRating;
-    $rating->agent_id = $agent_id;
-    $rating->customer_id = $cust_id;
-    $rating->rating = $rate;
-    $rating->comment = $review;
-    $rating->save();
+      $count = TxOrder::where('group_id', $order->group_id)->count();
+      $total = (($order->total - $order->shipping_fee) / $count ) * 0.1;
+
+      $balance = new Balance;
+      $balance->agent_id = $order->agent_id;
+      $balance->amountMoney = $total;
+      $balance->balance_type = 1;
+      $balance->order_id = $order->order_id;
+      $balance->statusTransfer = 0;
+      $balance->save();
+
+      $agent = Member::find($order->agent_id);
+      $agent->balance = $agent->balance + $total;
+      $agent->save();
+      
+      $rating = new AgentRating;
+      $rating->agent_id = $agent_id;
+      $rating->customer_id = $cust_id;
+      $rating->rating = $rate;
+      $rating->comment = $review;
+      $rating->save();
+    });
 
     return redirect('customerorder');
   }
@@ -1026,6 +1102,45 @@ class TransactionController extends Controller
       return redirect('/myorder/')->with('ok', 'Konfirmasi pembayaran akan segera di proses!');
     }
 
+  }  
+
+  public function getEditOrderCustomer($id)
+  {
+    $data['contact'] = AboutUs::first();
+    $id = filter_var($id, FILTER_SANITIZE_STRING);
+    $query = TxOrder::find($id);
+
+    date_default_timezone_set('Asia/Jakarta');
+    $sunday = date("Y-m-d", strtotime("sunday"));
+    $sunday = new \DateTime($sunday);
+
+    $ship = new \DateTime($query->shipping_date);
+    
+    if($ship <= $sunday)
+      return redirect('myorder');
+    else
+    {
+      $data['query'] = $query;
+
+      $ship = date_format($ship,"Y-m-d");
+      $data['monday'] = date('Y-m-d', strtotime("-7 days", strtotime("next monday", strtotime($ship))));
+      $data['sunday'] = date('Y-m-d', strtotime("+6 days", strtotime($data['monday'])));
+      $data['name_product'] = TxOrder::leftJoin('transaction__order_detail as od', 'transaction__order.order_id', '=', 'od.order_id')
+                              ->leftJoin('product__varian as pv', 'od.varian_id','=', 'pv.varian_id')
+                              ->where('od.order_id', $id)
+                              ->get(['pv.varian_name as vn','od.varian_id as varian_id', 'pv.price as price', 'od.quantity as qty']);
+      $data['total_quantity'] = \DB::table('transaction__order_detail')
+                  ->where('order_id', $id)
+                  ->sum('quantity');
+
+      $order = TxOrder::find($id);
+      $count = TxOrder::where('group_id', $order->group_id)->count();
+
+      $data['total_price'] = ($order->total - $order->shipping_fee) / $count;
+      $data['product_all'] = Product::all();
+      
+      return view('page.customer_edit_order', $data);
+    }
   }
 
   public function postEditOrderCustomer(Request $request)
@@ -1048,6 +1163,17 @@ class TransactionController extends Controller
 
     
     $order = TxOrder::find($id);
+
+    //cek dulu dia masukkin datanya sesuai range minggu itu / engga
+    date_default_timezone_set('Asia/Jakarta');
+    $date = date_format(new \DateTime($order->shipping_date), "Y-m-d");
+
+    $monday = date('Y-m-d', strtotime("-7 days", strtotime("next monday", strtotime($date))));
+    $sunday = date('Y-m-d', strtotime("+6 days", strtotime($monday)));
+    
+    if($ship < $monday || $ship > $sunday)
+      return redirect('/edit/order' . '/' . $id)->with('dateError', 'Tanggal pengiriman yang baru harus dalam minggu yang sama dengan tanggal pengiriman sebelumnya!');
+
     $order->shipping_date = $ship;
     $order->save();
     $detailorder = \DB::table('transaction__order_detail')
@@ -1057,8 +1183,11 @@ class TransactionController extends Controller
     //   ->select(\DB::raw('sum(varian_price * quantity) AS price'))
     //   ->where('order_id', $id)
     //   ->first();
-    $total_price = TxOrder::where('order_id', $id)
-                ->get(['total']);     
+    
+    //cek dulu dia ada brapa transaksi
+    $count = TxOrder::where('group_id', $order->group_id)->count();
+    $total_price = ($order->total - $order->shipping_fee) / $count;
+
     $total_product = Product::all();
     $orderdetail = TxOrderDetail::where('order_id', $id)->get();
     
@@ -1074,7 +1203,7 @@ class TransactionController extends Controller
       }
     }
 
-    if($tmp_total> $total_price[0]->total)
+    if($tmp_total> $total_price)
     {
       Session::flash('error', 1);
       return redirect('edit/order' . '/' . $id);
@@ -1097,50 +1226,12 @@ class TransactionController extends Controller
 
         }
 
-
-
-        Session::flash('success', 1);
+        Session::flash('success', 'Pesanan ID ' . $id . ' berhasil diubah!');
       });
 
     }
 
     return redirect('myorder');
-  }
-
-  public function getEditOrderCustomer($id)
-  {
-    $data['contact'] = AboutUs::first();
-    $id = filter_var($id, FILTER_SANITIZE_STRING);
-    $query = TxOrder::find($id);
-
-
-    $sunday = date("Y-m-d", strtotime("sunday"));
-    $sunday = new \DateTime($sunday);
-
-    $ship = new \DateTime($query->shipping_date);
-    
-    if($ship <= $sunday)
-      return redirect('myorder');
-    else
-    {
-      $data['query'] = $query;
-
-      $ship = date_format($ship,"Y-m-d");
-      $data['monday'] = date('Y-m-d', strtotime("-7 days", strtotime("next monday", strtotime($ship))));
-      $data['sunday'] = date('Y-m-d', strtotime("+6 days", strtotime($data['monday'])));
-      $data['name_product'] = TxOrder::leftJoin('transaction__order_detail as od', 'transaction__order.order_id', '=', 'od.order_id')
-                              ->leftJoin('product__varian as pv', 'od.varian_id','=', 'pv.varian_id')
-                              ->where('od.order_id', $id)
-                              ->get(['pv.varian_name as vn','od.varian_id as varian_id', 'pv.price as price', 'od.quantity as qty']);
-      $data['total_quantity'] = \DB::table('transaction__order_detail')
-                  ->where('order_id', $id)
-                  ->sum('quantity');
-      $data['total_price'] = TxOrder::where('order_id', $id)
-                              ->get(['total']);
-      $data['product_all'] = Product::all();
-      
-      return view('page.customer_edit_order', $data);
-    }
   }
 
   //=========================== HISTORY ORDER
