@@ -43,10 +43,16 @@
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                   <h4 class="modal-title" style="color:black;">Perincian Produk</h4>
                 </div>
-                <div class="modal-body">
-                  <div id="name" style="color:black; min-height:30px; width:80px; float:left;"></div>
-                  <div id="qty" style="color:black; min-height:30px; width:80px; margin-left:80px; float:left;"></div>
-                  <div id="price" style="color:black; min-height:30px; width:150px; margin-left:240px;"></div>
+                <div class="modal-body" style="color:black;">
+                  <div class="col-md-4 col-xs-5">
+                  <div id="name"></div>
+                  </div>
+                  <div class="col-md-3 col-xs-2">
+                  <div id="qty"></div>
+                  </div>
+                  <div class="col-md-4 col-xs-5">
+                  <div id="price"></div>
+                  </div>
                   <table id="ProductDetail" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
                     <thead>
                     </thead>

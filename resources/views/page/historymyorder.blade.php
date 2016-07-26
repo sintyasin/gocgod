@@ -27,9 +27,15 @@
                   <h4 class="modal-title" style="color:black;">Perincian Produk</h4>
                 </div>
                 <div class="modal-body" style="color:black;">
-                  <div id="name" style="min-height:30px; width:80px; float:left;"></div>
-                  <div id="qty" style="min-height:30px; width:80px; margin-left:80px; float:left;"></div>
-                  <div id="price" style="min-height:30px; width:150px; margin-left:240px;"></div>
+                  <div class="col-md-4 col-xs-5">
+                  <div id="name"></div>
+                  </div>
+                  <div class="col-md-3 col-xs-2">
+                  <div id="qty"></div>
+                  </div>
+                  <div class="col-md-4 col-xs-5">
+                  <div id="price"></div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
