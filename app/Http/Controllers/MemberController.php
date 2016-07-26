@@ -162,10 +162,10 @@ class MemberController extends Controller
 
     }
 
-    public function showbalance($id)
+    public function profile()
     {
         $data['contact'] = AboutUs::first();
-		$data['querybalance'] = Balance::where('agent_id', $id)
+		$data['querybalance'] = Balance::where('agent_id', Auth::user()->id)
 								->orderBy('created_at', 'desc')
 								->get();
         $data['bank'] = Bank::all();
@@ -174,6 +174,19 @@ class MemberController extends Controller
 
 		return view('page.profile', $data);
     }  
+
+    public function table_total()
+    {
+        $data['querybalance'] = Balance::where('agent_id', Auth::user()->id)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+        return view('page.total', $data);
+    }
+
+    public function data_profile()
+    {
+        return view('page.data_user');
+    }
 
     public function change_bank(Request $input)
     {
