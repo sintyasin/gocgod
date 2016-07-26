@@ -44,14 +44,14 @@
           <div id="subcriber">
             <br>
             <p class='form_head'>Pilih Produk</p>
-            <table class="display table table-striped table-bordered dt-responsive" width="100%">
+            <table id="tabel" class="display" cellspacing="0" width="100%">
               <thead>
                 <tr>
                   <th>Produk</th>
+                  <th>Kuantitas</th>
+                  <th>Harga</th>
                   <th>Gambar</th>
                   <th>Deskripsi</th>
-                  <th>Harga</th>
-                  <th>Kuantitas</th>
                 </tr>
               </thead>
               <tbody>
@@ -59,13 +59,7 @@
                 @foreach ($query_menu as $items)
                   <tr>
                     <td> {{$items->varian_name}} </td>
-                    <td> <img  src={{URL('assets/images/product') . '/' . $items->category_name . '/' .  $items->picture}} /> </td>
-                    <td style="text-align: justify"> {{$items->description}} </td>
-                    <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
                     <td>
-                      <input type="hidden" value="{{$items->varian_name}}" id = "{{ $a.'-name' }}" name = "{{ $a.'-name' }}">
-                      <input type="hidden" value="{{$items->varian_id}}" id = "{{ $a.'-id' }}" name = "{{ $a.'-id' }}">
-                      <input type="hidden" value="{{$items->price}}" id = "{{ $a.'-price' }}" name = "{{ $a.'-price' }}">
                       <input type="number" min="0" maxlength="2" id="{{ $a.'-qty_subcriber' }}" name = "{{ $a.'-qty_subcriber' }}" value="0" style="width:60px; color:black; text-align: center;">
                       @foreach(Cart::content() as $cart)
                       @if($cart->id == $items->varian_id)
@@ -76,6 +70,13 @@
                       @endif
                       @endforeach
                     </td>
+                    <td> Rp {{number_format($items->price, 2, ',', '.')}} </td>
+                    <td> <img  src={{URL('assets/images/product') . '/' . $items->category_name . '/' .  $items->picture}} /> </td>
+                    <td style="text-align: justify"> {{$items->description}} </td>
+                    
+                    <input type="hidden" value="{{$items->varian_name}}" id = "{{ $a.'-name' }}" name = "{{ $a.'-name' }}">
+                    <input type="hidden" value="{{$items->varian_id}}" id = "{{ $a.'-id' }}" name = "{{ $a.'-id' }}">
+                    <input type="hidden" value="{{$items->price}}" id = "{{ $a.'-price' }}" name = "{{ $a.'-price' }}">
                   </tr>
                   <?php $a++?>
                 @endforeach
@@ -99,8 +100,41 @@
 <script>
   $(document).ready(function() {
       var table = $('table.display').DataTable( {
-        "autoWidth": false
+        'columnDefs': [
+         {
+            'targets': [1],
+            'render': function(data, type, row, meta){
+               if(type === 'display'){
+                  var api = new $.fn.dataTable.Api(meta.settings);
+
+                  var $el = $('input', api.cell({ row: meta.row, column: meta.col }).node());
+
+                  var $html = $(data).wrap('<div/>').parent();
+
+                  if($el.prop('tagName') === 'INPUT'){
+                     $('input', $html).attr('value', $el.val());
+                  } 
+
+                  data = $html.html();
+               }
+               return data;
+            }
+         }
+      ],
+      'responsive': true
       } );
+
+
+      // Update original input/select on change in child row
+     $('#tabel tbody').on('keyup change', '.child input, .child select, .child textarea', function(e){
+         var $el = $(this);
+         var rowIdx = $el.closest('ul').data('dtr-index');
+         var colIdx = $el.closest('li').data('dtr-index');
+         var cell = table.cell({ row: rowIdx, column: colIdx }).node();
+         $('input', cell).val($el.val());
+     });
+
+
   } );
 
   function check()
