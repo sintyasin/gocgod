@@ -6,15 +6,13 @@
 		<h2>Cara Berbelanja</h2>
 
 			<div class="row">
-		    <div class="col-md-12 col-xs-12">
-	    	  <center>
+		    <div class="col-md-12">
 		      <!-- Nav tabs -->
 		      <ul class="nav nav-tabs" role="tablist">
 		        <li role="presentation" class="active"><a href="#" onclick="first()" aria-controls="home" role="tab" data-toggle="tab">Perkenalan</a></li>
 		        <li role="presentation"><a href="#" onclick="single()" aria-controls="profile" role="tab" data-toggle="tab">Sekali Beli</a></li>
 		      	<li role="presentation"><a href="#" onclick="subcriber()" aria-controls="profile" role="tab" data-toggle="tab">Berlangganan</a></li>
 		      </ul>
-		      </center>
 		    </div>
 
 		    <div class="col-lg-12">

@@ -8,23 +8,19 @@
     <div class="col-md-3">
       
       @if(Auth::user()->status_user == 0)
-      <div class="col-xs-12">
       <center>
       <button type="button" class="boaBtn_boa_pf" onclick="show_balance('profile')">
         Informasi Akun
       </button>
       </center>
-      </div>
       @endif
 
       <!-- Button trigger modal -->
-      <div class="col-xs-12">
       <center>
       <button type="button" class="boaBtn_boa_pf" data-toggle="modal" data-target="#myModal">
         Ubah Informasi
       </button>
       </center>
-      </div>
 
       <!-- Modal -->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -164,13 +160,11 @@
 
 
       <!-- Button trigger modal -->
-      <div class="col-xs-12">
       <center>
       <button type="button" class="boaBtn_boa_pf" data-toggle="modal" data-target="#myPassword">
         Ubah Password
       </button>
       </center>
-      </div>
 
       <!-- Modal -->
       <div class="modal fade" id="myPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -242,13 +236,11 @@
       </div>
 
       @if(Auth::user()->status_user == 0)
-      <div class="col-xs-12">
       <Center>
       <button type="button" data-toggle="modal" data-target="#bankinformation" class="boaBtn_boa_pf">
         Ubah Informasi Bank
       </button>
       </Center>
-      </div>
 
       <div class="modal fade" id="bankinformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -377,7 +369,7 @@
 </div>
 
 <div id="balance">
-  <div class = "col-md-8">
+  <div class = "col-xs-12 col-md-8">
     <div class="box box-primary" >
       <div class="box-body box-profile">
         
@@ -390,7 +382,7 @@
         
         <br>
         <?php $i=0; ?>
-        <table id="" class="display table table-striped table-bordered dt-responsive" width="100%">
+        <table class="display table table-striped table-bordered dt-responsive" width="80%" cellspacing="0">
           <thead>
             <tr>
               <th></th>
@@ -412,31 +404,30 @@
               @elseif ($query->balance_type == 1)
               Pemasukan
               @endif</td>
-              <td>Rp {{number_format($query->amountMoney, 0, ',', '.')}}</td>
-              <td>@if($query->balance_type == 0)
-                .
-                @elseif ($query->balance_type == 1)
-                From Order {{$query->status}}
-                @endif</td>
-                <td>@if($query->balance_type == 0 && $query->statusTransfer == 0)
-                  Sedang diproses
-                @elseif ($query->balance_type == 0 && $query->statusTransfer == 1)
-                Sudah di transfer
-                @endif
-                </td>
-
-                <?php $i++;?>
-                
-              </tbody>
+            <td>Rp {{number_format($query->amountMoney, 0, ',', '.')}}</td>
+            <td>@if($query->balance_type == 0)
+              .
+              @elseif ($query->balance_type == 1)
+              From Order {{$query->status}}
+              @endif</td>
+              <td>@if($query->balance_type == 0 && $query->statusTransfer == 0)
+                Sedang diproses
+              @elseif ($query->balance_type == 0 && $query->statusTransfer == 1)
+              Sudah di transfer
               @endif
-              @endforeach
+              </td>
+
+            <?php $i++;?>      
+          </tbody>
+          @endif
+          @endforeach
 
 
-            </table>
-          </div>
-        </div>
+        </table>
       </div>
     </div>
+  </div>
+</div>
 
     <div class="modal fade" id="withdrawMoney" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">

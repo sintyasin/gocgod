@@ -70,6 +70,7 @@ button.boaBtn,a.boaBtn {
   transition: all 0.3s ease 0s;
   font-family: nexa_blackregular;
 }
+
 @media only screen and (max-width: 400px) {
   .boa_title{
     font-size:1.3em;
@@ -83,9 +84,9 @@ button.boaBtn,a.boaBtn {
     font-size: 0.8em;
   }
 
-  .slider_area
+  .banner21
   {
-    display: none;
+    font-size: 20px;
   }
 }
 
