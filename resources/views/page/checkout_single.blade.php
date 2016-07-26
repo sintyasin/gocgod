@@ -1,4 +1,4 @@
-  @extends('layout.main_layout')
+@extends('layout.main_layout')
 
 @section('content')
 <!-- Start checkout content -->
