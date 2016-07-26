@@ -48,7 +48,7 @@
               </div>
 
               <p class="plxLogin"><font size="3">Total Harga</font></p>
-              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 2, ',', '.')}}</span></b></font></p>                                             
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 0, ',', '.')}}</span></b></font></p>                                             
             </div>
             <br>
             <div id="alert">
@@ -95,7 +95,7 @@
               
               <div class="col-md-3">
               <label for="zipcode">Kode Pos Pengiriman</label> <br>
-              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%; float:left;" onkeypress="return isNumber(event)"/>
+              <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%;" onkeypress="return isNumber(event)"/>
               
               @if ($errors->has('zipcode'))
                 <span class="help-block">
@@ -221,8 +221,9 @@
           },
     })
     .success(function(data){
-      $('#'+x+'-subtotal').html(data.response.subtotal);
-      $('#total-cart').html(data.response.total);
+      $('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
+      $('.dtr-data').find('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
+      $('#total-cart').html(data.response.total.toLocaleString());
       alert("Update Data berhasil!");
     })
     .fail(function(){
@@ -247,7 +248,7 @@
       })
       .success(function(data){
         tabel();
-        $('#total-cart').html(data.response.total);
+        $('#total-cart').html(data.response.total.toLocaleString());
         alert("Delete Data berhasil!");
       })
       .fail(function(){

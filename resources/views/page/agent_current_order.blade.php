@@ -28,11 +28,11 @@ var table = $('#customerDatatable').DataTable({
 
             if(row.status_shipping == 0){
 
-              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Send' + '</button>';
+              return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Send' + '</button></div>';
             }
             else
             {
-                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button disabled class="btn btn-warning" style="background-color:red" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Sent' + '</button>';
+                return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button disabled class="btn btn-warning" style="background-color:red" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Sent' + '</button></div>';
             } 
             }
         }

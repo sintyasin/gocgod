@@ -309,28 +309,6 @@ function paid(id)
   })
 }
 
-// function receive (id)
-// {
-//   $.ajax({
-//     url: '{{URL("/receive")}}',
-//     type: 'POST',
-//     data: {id: id},
-//     beforeSend: function(request){
-//       return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-//       },
-//   })
-//   .success(function(data)
-//   {
-//     $("#"+id+"sending").prop("disabled", true);
-//     $("#"+id+"sending").text("Received");
-//     $("#"+id+"sending").css("background-color", "red");
-//     location.reload();
-//   })
-//   .fail(function(){
-//     alert('error');
-//   })
-// }
-
 $(function() {
     var table = $('#datatableUser').DataTable({
         processing: true,
@@ -384,17 +362,17 @@ $(function() {
               if(ship > sunday)
               {
                
-                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
+                return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
                 pay +
                 get +
                 '@if(Auth::user()->status_user == 1) @endif' +
-                '<button class="btn btn-primary" id="'+ row.order_id +'sending" onclick="edit(' + row.order_id + ')" >' + 'Ubah Order' + '</button>';
+                '<button class="btn btn-primary" id="'+ row.order_id +'sending" onclick="edit(' + row.order_id + ')" >' + 'Ubah Order' + '</button></div>';
               }
               else
               {
-                return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
+                return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
                 pay+
-                get;
+                get + '</div>';
               }
             }
           },         
@@ -402,9 +380,6 @@ $(function() {
         ],
     });
 });
-
- // '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>'
-
 </script>
 @endpush
 @stop
