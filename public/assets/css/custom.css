@@ -84,9 +84,14 @@ button.boaBtn,a.boaBtn {
     font-size: 0.8em;
   }
 
-  .banner21
+  .padding_slider
   {
-    font-size: 20px;
+    display: none !important;
+  }
+
+  .padding_slider_1
+  {
+    display: inline !important;
   }
 }
 
@@ -162,6 +167,11 @@ PADDING!!
 ====================
 */
 .padding_slider{
+}
+
+.padding_slider_1
+{
+  display: none;
 }
 
 .padding_outer{
@@ -588,7 +598,7 @@ figure:hover figcaption {
 */
 #login-dp{
 	float: right;
-    min-width: 250px !important;
+    min-width: 200px !important;
     padding: 14px 14px 0;
     overflow:hidden;
     background-color:rgba(255,255,255,.8);

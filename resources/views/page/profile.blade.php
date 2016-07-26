@@ -9,7 +9,7 @@
       
       @if(Auth::user()->status_user == 0)
       <center>
-      <button type="button" class="boaBtn_boa_pf" onclick="show_balance('profile')">
+      <button type="button" role="presentation" class="boaBtn_boa_pf" onclick="data()">
         Informasi Akun
       </button>
       </center>
@@ -144,10 +144,12 @@
                 </div>
 
                 <div class="form-group">
-                  <div class="col-md-offset-4">
+                  <div class="col-md-12">
+                  <Center>
                     <button type="submit" class="btn btn-primary">SUBMIT</button>     
                     &nbsp; &nbsp;
-                    <a href={{ URL('profile/'.Auth::user()->id) }} class="btn btn-default">Cancel</a>
+                    <a href={{ URL('profile/') }} class="btn btn-default">Cancel</a>
+                  </Center>
                   </div>
                 </div>
               </form>
@@ -222,11 +224,14 @@
               </div>
 
               <div class="form-group">
-                <div class="col-md-offset-4">
+                <div class="col-md-12">
+                <center>
                   <button type="submit" class="btn btn-primary">SUBMIT</button>     
                   &nbsp; &nbsp;
-                  <a href={{ URL('profile/'.Auth::user()->id) }} class="btn btn-default">Cancel</a>
+                  <a href={{ URL('profile/') }} class="btn btn-default">Cancel</a>
+                </center>
                 </div>
+
               </div>
               {!! Form::close() !!}
 
@@ -293,9 +298,12 @@
                 </div>
 
                 <div class="form-group">
-                  <div class="col-md-6 col-md-offset-4">
-                    <button type="submit" class="checkPageBtn"> SUBMIT
-                    </button>
+                  <div class="col-md-12">
+                  <center>
+                    <button type="submit" class="btn btn-primary">SUBMIT</button>     
+                    &nbsp; &nbsp;
+                    <a href={{ URL('profile') }} class="btn btn-default">Cancel</a>
+                  </center>
                   </div>
                 </div>
               </form>
@@ -306,128 +314,15 @@
       </div>
 
       <center>
-      <button type="button" class="boaBtn_boa_pf" onclick="show_balance('balance')">
+      <button type="button" class="boaBtn_boa_pf" role="presentation" onclick="balance()">
         Total Uang
       </button>
       </center>
       @endif
     </div>
 
-    <div id="profile">
-    	<div class = "col-md-8">
-       <div class="box box-primary" >
-        <div class="box-body box-profile">
-         @if (session('error'))
-         <div class="alert alert-danger fade in">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ session('error') }}</strong>
-        </div>
-        @elseif(session('success'))
-        <div class="alert alert-success fade in">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>{{ session('success') }}</strong>
-        </div>
-        @endif
-        <h3 class="profile-username text-center"> {{Auth::user()->name}} </h3>
-        <p class="text-muted text-center"> 
-          @if (Auth::user()->status_user == 1)
-          Pelanggan
-          @else
-          Agen
-          @endif
-        </p>
-        <center>
-          <ul class="list-group list-group-unbordered">
-            <li class="list-group-item">
-              Alamat: &nbsp;<b> {{Auth::user()->address}}</b>
-            </li>
-            <li class="list-group-item">
-              Kode Pos: &nbsp;<b> {{Auth::user()->zipcode}}</b>
-            </li>
-            <li class="list-group-item">
-              Tanggal Lahir: &nbsp;<b> {{Auth::user()->date_of_birth}}</b>
-            </li>
-            <li class="list-group-item">
-              Telepon:&nbsp;<b> {{Auth::user()->phone}}</b>
-            </li>
-            <li class="list-group-item">
-              Email: &nbsp;<b> {{Auth::user()->email}}</b>
-            </li>
-            @if(Auth::user()->status_user==0)
-            <li class="list-group-item">
-             Akun Bank: &nbsp;<b> {{Auth::user()->bank_account}}</b>
-           </li>
-           <li class="list-group-item">
-             Jumlah: &nbsp;<b> Rp {{Auth::user()->balance}}</b>
-           </li>
-           @endif
-         </ul>
-       </center>
-     </div>
-   </div>
- </div>
-</div>
-
-<div id="balance">
-  <div class = "col-xs-12 col-md-8">
-    <div class="box box-primary" >
-      <div class="box-body box-profile">
-        
-
-        <h3 class="profile-username text-center"> {{Auth::user()->name}} - Jumlah Uang </h3>
-        <p class="text-muted text-center" style="font-weight: bold;"> Rp {{number_format(Auth::user()->balance,0, ',' , '.')}} </p>
-        <center>
-          <button type="button" class="boaBtnProfile" data-toggle="modal" data-target="#withdrawMoney"> Penarikan Uang </button>
-        </center>
-        
-        <br>
-        <?php $i=0; ?>
-        <table class="display table table-striped table-bordered dt-responsive" width="80%" cellspacing="0">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Tanggal</th>
-              <th>Tipe</th>
-              <th>Jumlah</th>
-              <th>Deskripsi</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          @foreach($querybalance as $query)
-          @if($query->balance_type == 0 || $query->balance_type == 1)
-          <tbody>
-            
-            <td>{{$i+1}}</td>
-            <td>{{$query->created_at}}</td>
-            <td>@if($query->balance_type == 0)
-              Penarikan
-              @elseif ($query->balance_type == 1)
-              Pemasukan
-              @endif</td>
-            <td>Rp {{number_format($query->amountMoney, 0, ',', '.')}}</td>
-            <td>@if($query->balance_type == 0)
-              .
-              @elseif ($query->balance_type == 1)
-              From Order {{$query->status}}
-              @endif</td>
-              <td>@if($query->balance_type == 0 && $query->statusTransfer == 0)
-                Sedang diproses
-              @elseif ($query->balance_type == 0 && $query->statusTransfer == 1)
-              Sudah di transfer
-              @endif
-              </td>
-
-            <?php $i++;?>      
-          </tbody>
-          @endif
-          @endforeach
-
-
-        </table>
-      </div>
+    <div id="profile">	
     </div>
-  </div>
-</div>
 
     <div class="modal fade" id="withdrawMoney" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -458,15 +353,13 @@
               </div>
 
               <div class="form-group">
+                <div class="col-md-12">
                 <center>
-                  <div class="col-md-12">
-                    <br>
-                    <br>
-                    <button type="submit" class="checkPageBtn">
-                      SUBMIT
-                    </button>
-                  </div>
+                  <button type="submit" class="btn btn-primary">SUBMIT</button>     
+                  &nbsp; &nbsp;
+                  <a href={{ URL('profile/') }} class="btn btn-default">Cancel</a>
                 </center>
+                </div>
               </div>
             </form>
           </div>
@@ -481,6 +374,38 @@
 @push('scripts')
 <script>
 
+  $(document).ready(function(){
+    data();
+  });
+
+  function balance()
+   {
+    $.ajax({
+      type: "GET",
+      url: "{{ URL::to('table_total')}}",
+      success:
+      function(data)
+      {
+        $('#profile').html(data);
+      }
+    });
+   }
+
+   function data()
+   {
+    $.ajax({
+      type: "GET",
+      url: "{{ URL::to('data_profile')}}",
+      success:
+      function(data)
+      {
+        $('#profile').html(data);
+      }
+    });
+   }
+
+
+
   function isNumber(evt) {
     evt = (evt) ? evt : window.event;
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -489,12 +414,6 @@
     }
     return true;
   }
-
-  $(document).ready(function() {
-    $('table.display').DataTable( {
-      "autoWidth": false
-    } );
-  } );
 
   function check() {
     var e = document.getElementById('city');

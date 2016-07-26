@@ -93,7 +93,7 @@
 	                            </a>
 
 	                            <ul class="dropdown-menu" role="menu">
-	                            	<li><a href="{{ url('/profile/'.Auth::user()->id) }}"><div class="padding_outer_profile">Informasi Akun</div></a></li>
+	                            	<li><a href="{{ url('/profile') }}"><div class="padding_outer_profile">Informasi Akun</div></a></li>
 	                            	<li><a href="{{ url('/myorder') }}"><div class="padding_outer_profile">Pesananku</div></a></li>
 	                            	<li><a href="{{ url('/historymyorder') }}"><div class="padding_outer_profile">Riwayat Pesanan</div></a></li>
 	                                <li><a href="{{ url('/logout') }}"><div class="padding_outer_profile">Keluar</div></a></li>

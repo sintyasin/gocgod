@@ -13,6 +13,9 @@
 <div class="padding_slider">
 	@include('include.slide')
 </div>
+<div class="padding_slider_1">
+	<img src="{{ URL::asset('assets/images/mobile.png') }}" alt="Logo" />
+</div>
 <div class="boa">
 	<div class="boa_title">
 		Be Our Member and Subcribe Our Product!

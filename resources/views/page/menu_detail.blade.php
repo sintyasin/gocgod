@@ -84,7 +84,7 @@
 							
 							<h4 class="panel-title">
 							<a class="btn" aria-controls="orderReview" aria-expanded="false" href="#review" data-parent="#accordion" data-toggle="collapse" class="collapsed">
-							Klik untuk memberikan ulasan
+							Beri Ulasan Produk
 							</a>
 							</h4>
 
@@ -134,8 +134,11 @@
 							<div class="col-md-12">
 								{{$query_member[$i]->name}}
 								<span class="pull-right">{{$testi->created_at}}</span>
-								<p>{{$testi->testimonial}}</p>
-								
+
+								<p style="-ms-word-break: break-all; word-break: break-all; word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto;">
+								{{$testi->testimonial}}
+								</p>
+
 							</div>
 						</div>
 						<?php $i++; ?>

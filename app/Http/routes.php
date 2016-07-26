@@ -78,7 +78,9 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('payment/subscribe/confirm/{groupId}', 'TransactionController@paymentConfirmSubscribe');
 	Route::get('payment/{id}', 'TransactionController@banktransfer');
 	Route::get('payment/subscribe/{Gid}', 'TransactionController@banktransferSubscribe');
-	Route::get('profile/{id}', 'MemberController@showbalance');
+	Route::get('profile', 'MemberController@profile');
+	Route::get('table_total', 'MemberController@table_total');
+	Route::get('data_profile', 'MemberController@data_profile');
 	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
 	Route::post('edit_profile', 'MemberController@edit_profile');
 	Route::post('edit_password', 'MemberController@edit_password');

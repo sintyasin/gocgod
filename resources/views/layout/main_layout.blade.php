@@ -63,14 +63,11 @@
     <script src="https://cdn.datatables.net/responsive/2.0.2/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.0.2/js/responsive.bootstrap.min.js"></script>
     @stack('scripts')
-    <!-- bootstrap js -->
-    <!-- <script src="{{ URL::asset('assets/js/bootstrap.min.js') }}"></script> -->
     <!-- revolution js -->
     <script type="text/javascript" src="{{ URL::asset('assets/lib/rs-plugin/js/jquery.themepunch.tools.min.js') }}"></script>   
     <script type="text/javascript" src="{{ URL::asset('assets/lib/rs-plugin/js/jquery.themepunch.revolution.min.js') }}"></script>
     <script src="{{ URL::asset('assets/lib/rs-plugin/rs.home.js') }}"></script>
     <!-- rating -->
-    <!-- <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.min.js') }}"></script> -->
     <script type="text/javascript" src="{{ URL::asset('assets/js/jquery.rateyo.min.js') }}"></script>
     <!-- search-box js -->
     <script src="{{ URL::asset('assets/js/search-box.js') }}"></script>
@@ -82,7 +79,6 @@
     <script src="{{ URL::asset('assets/js/main.js') }}"></script>
     <!-- stepper -->
     <script src="{{ URL::asset('assets/js/slidingco.form.js')}}"></script>
-    <script src="{{ URL::asset('assets/js/slidingprofile.js')}}"></script>
 
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
