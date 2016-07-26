@@ -23,118 +23,6 @@ use Hash;
 
 class MemberController extends Controller
 {
-	/*public function getLoginMember()
-    {
-        $data['contact'] = AboutUs::first();
-    	return view('testing.loginMember', $data);
-    }
-    
-    public function postLoginMember(LoginRequest $request)
-    {
-    	$email = $request->input('email');
-    	$password = Hash::make($request->input('password'));
-    	
-    	$query = AdminModel::where('email', '=', $email);
-
-    	if (Hash::check($query->password, $password))
-		{
-		    echo "login";
-		}
-		else
-		{
-			echo "gagal";
-		}
-    }
-
-    public function getRegisterMember()
-    {
-        $data['contact'] = AboutUs::first();
-    	return view('testing.registerMember', $data);
-    }
-
-    public function getRegisterAdmin()
-    {
-        $data['contact'] = AboutUs::first();
-    	return view('testing.registerAdmin', $data);
-    }
-
-    public function postRegisterAdmin(SignUpRequest $request)
-    {
-		$name = $request->input('name');
-		$address = $request->input('address');
-		$cityId = $request->input('city');
-
-		$dob = $request->input('dob');
-		$email = $request->input('email');
-		$phone = $request->input('phone');
-		$password = Hash::make($request->input('password'));
-
-		echo $name . " " . $cityId;
-
-		
-		$user = new AdminModel;
-		$user->name = $name;
-		$user->city_id = $cityId;
-		$user->address = $address;
-		$user->date_of_birth = $dob;
-		$user->email = $email;
-		$user->phone = $phone;
-		$user->password = $password;
-		$user->save();
-    }
-
-    public function postRegisterMember(SignUpRequest $request)
-    {
-		$name = $request->input('name');
-		$cityId = $request->input('city');
-
-		$address = $request->input('address');
-		$dob = $request->input('dob');
-		$email = $request->input('email');
-		$phone = $request->input('phone');
-		$password = Hash::make($request->input('password'));
-		$bank = $request->input('bank');
-		$status = $request->input('status');
-
-		echo $name . " " . $cityId;
-
-		
-		$user = new MemberModel;
-		$user->email = $email;
-		$user->city_id = $cityId;
-		$user->password = $password;
-
-		
-		$user->name = $name;
-		$user->address = $address;
-		$user->date_of_birth = $dob;
-		$user->phone = $phone;
-		$user->bank_account = $bank;
-		$user->status_user = $status;
-		$user->save();
-    }*/
-
-    public function a()
-    {
-        $data['order'] = TxOrder::where('group_id', 23)->first();
-        $data['orderprice'] = \DB::table('transaction__order')
-                      ->select(\DB::raw('SUM(total) as total_price'))
-                      ->groupBy('group_id')
-                      ->having('group_id', '=', 23)
-                      ->get();
-
-        $data['order_a'] = TxOrder::where('group_id', 23)->get();
-        $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order_a'][0]->order_id)
-                                ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
-                                ->get(['varian_name', 'price', 'quantity']);
-        $data['agent'] = Member::where('id', $data['order_a'][0]->agent_id)
-                                ->get(['name']);
-
-
-        // dd($data['orderdetails']);
-
-        return view('page.email', $data);
-    }
     public function readDataMember($id)
     {
         $data['contact'] = AboutUs::first();
@@ -155,11 +43,8 @@ class MemberController extends Controller
                     ->where('status_user', 0)
                     ->groupBy('agent_id')
                     ->get();
-    	// dd($data);
 
     	return view('page.findalocation', $data);
-
-
     }
 
     public function profile()
@@ -200,7 +85,7 @@ class MemberController extends Controller
 
         if($v->fails())
         {
-            return redirect('/profile/'.Auth::user()->id)->withErrors($v->errors())->withInput();
+            return redirect('/profile')->withErrors($v->errors())->withInput();
         }
         else
         {
@@ -210,7 +95,7 @@ class MemberController extends Controller
             $req->save();
         }
 
-        return redirect('/profile/'.Auth::user()->id);
+        return redirect('/profile');
     }
 
     public function withdrawMoney(Request $data)
@@ -221,7 +106,7 @@ class MemberController extends Controller
 
     	if($v->fails())
     	{
-    		return redirect('/profile/'.Auth::user()->id)->withErrors($v->errors())->withInput();
+    		return redirect('/profile')->withErrors($v->errors())->withInput();
     	}
     	else
     	{
@@ -232,7 +117,7 @@ class MemberController extends Controller
     		$money = filter_var($input['money'], FILTER_SANITIZE_STRING);
     		if($balance < $money)
     		{
-    			return redirect('/profile/'.Auth::user()->id)->with('error', 'Silahkan memasukkan jumlah uang kurang atau sama dengan deposit Anda')->withErrors($v->errors())->withInput();
+    			return redirect('/profile')->with('error', 'Silahkan memasukkan jumlah uang kurang atau sama dengan deposit Anda')->withErrors($v->errors())->withInput();
     		}
     		else
     		{
@@ -249,7 +134,7 @@ class MemberController extends Controller
     		}
     	}
 
-    	return redirect('/profile/'.Auth::user()->id)->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');
+    	return redirect('/profile')->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');
     }
 
     public function edit_password(Request $request)
