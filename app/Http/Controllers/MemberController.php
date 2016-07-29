@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Validator;
+use Response;
 use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
 use App\Member;
@@ -23,54 +24,45 @@ use Hash;
 
 class MemberController extends Controller
 {
-    public function readDataMember($id)
+    //---------------- PROFILE - Informasi Akun -----------------
+    public function profile(Request $request)
     {
         $data['contact'] = AboutUs::first();
-    	$data['query'] = Member::find($id);
-
-    	return view('page.myaccount', $data);
-    }
-
-    public function readAgent()
-    {
-        $data['contact'] = AboutUs::first();
-
-
-        $data['agent'] = \DB::table('master__member as m')
-                    ->leftJoin('master__agent_rating as ar', 'ar.agent_id', '=','m.id')
-                    ->leftJoin('master__city as c', 'c.city_id', '=', 'm.city_id')
-                    ->select(\DB::raw('sum(rating)/count(rating) as rate'), 'name', 'address', 'phone', 'email', 'city_name')
-                    ->where('status_user', 0)
-                    ->groupBy('agent_id')
-                    ->get();
-
-    	return view('page.findalocation', $data);
-    }
-
-    public function profile()
-    {
-        $data['contact'] = AboutUs::first();
-		$data['querybalance'] = Balance::where('agent_id', Auth::user()->id)
-								->orderBy('created_at', 'desc')
-								->get();
+        $data['querybalance'] = Balance::where('agent_id', Auth::user()->id)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
         $data['bank'] = Bank::all();
-
         $data['city'] = City::all();
 
-		return view('page.profile', $data);
-    }  
+        if($request->wantsJson())
+        {
+            $response = array(
+                'type' => 'OK-PROFILE Informasi Akun',
+                'data' => array($data['querybalance'], $data['bank'], $data['city']));
+            return Response::json(compact('response'));
+        }
 
-    public function table_total()
+        return view('page.profile', $data);
+    }
+
+    public function data_profile(Request $request)
+    {
+        return view('page.data_user');
+    }
+
+    public function table_total(Request $request)
     {
         $data['querybalance'] = Balance::where('agent_id', Auth::user()->id)
                                 ->orderBy('created_at', 'desc')
                                 ->get();
+        if($request->wantsJson())
+        {
+            $response = array(
+                'type' => 'OK-PROFILE Deposit',
+                'data' => $data['querybalance']);
+            return Response::json(compact('response'));
+        }
         return view('page.total', $data);
-    }
-
-    public function data_profile()
-    {
-        return view('page.data_user');
     }
 
     public function change_bank(Request $input)
@@ -100,46 +92,46 @@ class MemberController extends Controller
 
     public function withdrawMoney(Request $data)
     {
-    	$v = Validator::make($data->all(),[
-    		'money' => 'required|numeric',
-    		]);
+        $v = Validator::make($data->all(),[
+            'money' => 'required|numeric',
+            ]);
 
-    	if($v->fails())
-    	{
-    		return redirect('/profile')->withErrors($v->errors())->withInput();
-    	}
-    	else
-    	{
-    		$input = $data->all();
+        if($v->fails())
+        {
+            return redirect('/profile')->withErrors($v->errors())->withInput();
+        }
+        else
+        {
+            $input = $data->all();
 
-    		$id = Auth::user()->id;
-    		$balance = Auth::user()->balance;
-    		$money = filter_var($input['money'], FILTER_SANITIZE_STRING);
-    		if($balance < $money)
-    		{
-    			return redirect('/profile')->with('error', 'Silahkan memasukkan jumlah uang kurang atau sama dengan deposit Anda')->withErrors($v->errors())->withInput();
-    		}
-    		else
-    		{
-    			$withdraw = new Balance;
-    			$withdraw->agent_id = $id;
-    			$withdraw->amountMoney = $money;
-    			$withdraw->balance_type = 0;
-    			$withdraw->statusTransfer = 0;
-    			$withdraw->save();
+            $id = Auth::user()->id;
+            $balance = Auth::user()->balance;
+            $money = filter_var($input['money'], FILTER_SANITIZE_STRING);
+            if($balance < $money)
+            {
+                return redirect('/profile')->with('error', 'Silahkan memasukkan jumlah uang kurang atau sama dengan deposit Anda')->withErrors($v->errors())->withInput();
+            }
+            else
+            {
+                $withdraw = new Balance;
+                $withdraw->agent_id = $id;
+                $withdraw->amountMoney = $money;
+                $withdraw->balance_type = 0;
+                $withdraw->statusTransfer = 0;
+                $withdraw->save();
 
-    			\DB::table('master__member')
-		            ->where('id', Auth::user()->id)
-		            ->update(['balance' => $balance-$money]);
-    		}
-    	}
+                \DB::table('master__member')
+                    ->where('id', Auth::user()->id)
+                    ->update(['balance' => $balance-$money]);
+            }
+        }
 
-    	return redirect('/profile')->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');
+        return redirect('/profile')->with('success', 'Permintaan pengambilan uang Anda akan segera diproses!');
     }
 
     public function edit_password(Request $request)
     {
-    	$v = Validator::make($request->all(), [
+        $v = Validator::make($request->all(), [
             'pass' => 'required',
             'newpassword' => 'required|min:3|confirmed',
             'newpassword_confirmation' => 'required',
@@ -170,7 +162,7 @@ class MemberController extends Controller
 
     public function edit_profile(Request $request)
     {
-    	 $v = Validator::make($request->all(), [
+         $v = Validator::make($request->all(), [
             'city' => 'required|numeric',
             'address' => 'required|max:500',
             'zipcode' => 'required|max:50',
@@ -218,6 +210,36 @@ class MemberController extends Controller
         return redirect('/profile/'.Auth::user()->id);
     }
 
+    public function readDataMember($id)
+    {
+        $data['contact'] = AboutUs::first();
+    	$data['query'] = Member::find($id);
+
+        
+
+    	return view('page.myaccount', $data);
+    }
+
+    public function readAgent()
+    {
+        $data['contact'] = AboutUs::first();
+
+
+        $data['agent'] = \DB::table('master__member as m')
+                    ->leftJoin('master__agent_rating as ar', 'ar.agent_id', '=','m.id')
+                    ->leftJoin('master__city as c', 'c.city_id', '=', 'm.city_id')
+                    ->select(\DB::raw('sum(rating)/count(rating) as rate'), 'name', 'address', 'phone', 'email', 'city_name')
+                    ->where('status_user', 0)
+                    ->groupBy('agent_id')
+                    ->get();
+
+    	return view('page.findalocation', $data);
+    }
+
+      
+
+    
+
     public function bank()
     {
         $data['contact'] = AboutUs::first();
@@ -259,3 +281,4 @@ class MemberController extends Controller
         return redirect('becomeanagent')->with('success', 'Permintaan menjadi agen telah diterima, pihak Goc God akan menghubungi anda');
     }
 }
+?>

@@ -7,7 +7,7 @@
 		
 		<div class="col-md-3 col-xs-12">
 			<div class="labout">
-				<img src={{URL::asset("assets/images/product/". $queryCategory->category_name . "/" . $query->picture)}} style="height:260px;">
+				<img src={{URL::asset("assets/images/product/". $query->category_name . "/" . $query->picture)}} style="height:260px;">
 			</div>
 		</div>
 
@@ -126,13 +126,12 @@
 
 					<hr>
 
-					<?php $i=0; ?>
 					@foreach($query_testimonial as $testi)
 					<div class="reviews_comment">
 
 						<div class="row">
 							<div class="col-md-12">
-								{{$query_member[$i]->name}}
+								{{$testi->name}}
 								<span class="pull-right">{{$testi->created_at}}</span>
 
 								<p style="-ms-word-break: break-all; word-break: break-all; word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto;">
@@ -141,7 +140,6 @@
 
 							</div>
 						</div>
-						<?php $i++; ?>
 					</div>
 					@endforeach
 
