@@ -81,7 +81,7 @@ function kecamatan()
 {
   $.ajax({
     type: "GET",
-    url: "{{ URL::to('/admin/shipping/province') }}",
+    url: "{{ URL::to('/admin/shipping/district') }}",
     success:
     function(data)
     {

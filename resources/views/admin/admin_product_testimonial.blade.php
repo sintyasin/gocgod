@@ -90,7 +90,7 @@ function deleteSelectedTestimoni()
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           rows_selected = [];
           alert('Data has been deleted');
         }

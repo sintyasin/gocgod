@@ -58,7 +58,7 @@ function deleteBanner(name, id)
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           alert('Banner has been deleted');
         }
         else alert('Failed');

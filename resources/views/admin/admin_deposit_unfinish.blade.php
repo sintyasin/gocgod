@@ -40,7 +40,7 @@ function process(id, name, amount)
             success:
             function(data)
             {
-              if(data) table.ajax.reload();
+              if(data) table.ajax.reload(null, false);
               else alert('Failed');
             }
           });

@@ -45,6 +45,8 @@
         </ul>
       </li>
 
+      <li class="header">AGENT'S DEPOSIT AND FEE</li>
+
       <li class=" <?php if($active == 'deposit') echo 'active'; ?> ">
         <a href= {{URL('admin/deposit')}} >
           <i class="fa fa-money"></i> <span>Deposit Withdrawal</span>
@@ -55,43 +57,9 @@
         <a href= {{URL('admin/agent/fee')}} >
           <i class="fa fa-paypal"></i> <span>Agent Fee</span>
         </a>
-      </li>
+      </li>      
 
-      <li class=" <?php if($active == 'shippingScope') echo 'active'; ?> ">
-        <a href= {{URL('admin/shipping/scope')}} >
-          <i class="fa fa-ship"></i> <span>Scope of Shipping</span>
-        </a>
-      </li>
-
-      <li class=" <?php if($active == 'bankList' || $active == 'insertBank') echo 'active'; ?> treeview">
-        <a href="#">
-          <i class="fa fa-bank"></i> <span>Bank</span> <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <li class=" <?php if($active == 'bankList') echo 'active'; ?> "><a href={{ URL('/admin/bank/list') }}><i class="fa fa-circle-o"></i> Bank List</a></li>
-          <li class=" <?php if($active == 'insertBank') echo 'active'; ?> "><a href={{ URL('/admin/insert/bank') }} ><i class="fa fa-circle-o"></i> Insert Bank</a></li>
-        </ul>
-      </li>
-
-      <li class=" <?php if($active == 'faqList' || $active == 'insertFaq') echo 'active'; ?> treeview">
-        <a href="#">
-          <i class="fa fa-question"></i> <span>FAQ</span> <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <li class=" <?php if($active == 'faqList') echo 'active'; ?> "><a href={{ URL('/admin/faq/list') }}><i class="fa fa-circle-o"></i> Faq List</a></li>
-          <li class=" <?php if($active == 'insertFaq') echo 'active'; ?> "><a href={{ URL('/admin/insert/faq') }} ><i class="fa fa-circle-o"></i> Insert New</a></li>
-        </ul>
-      </li>
-
-      <li class=" <?php if($active == 'cityList' || $active == 'insertCity') echo 'active'; ?> treeview">
-        <a href="#">
-          <i class="fa fa-globe"></i> <span>City</span> <i class="fa fa-angle-left pull-right"></i>
-        </a>
-        <ul class="treeview-menu">
-          <li class=" <?php if($active == 'cityList') echo 'active'; ?> "><a href={{ URL('/admin/city/list') }}><i class="fa fa-circle-o"></i> City List</a></li>
-          <li class=" <?php if($active == 'insertCity') echo 'active'; ?> "><a href={{ URL('/admin/insert/city') }} ><i class="fa fa-circle-o"></i> Insert City</a></li>
-        </ul>
-      </li>
+      <li class="header">ORDER DATA</li>
 
       <li class=" <?php if($active == 'txOrder') echo 'active'; ?> ">
         <a href= {{URL('admin/order')}} >
@@ -119,6 +87,34 @@
           <li class=" <?php if($active == 'txReport') echo 'active'; ?> "><a href={{ URL('/admin/report/tx?dateStart=&dateEnd=') }}><i class="fa fa-circle-o"></i> Transaction Report</a></li>
           <li class=" <?php if($active == 'productReport') echo 'active'; ?> "><a href={{ URL('/admin/report/product?dateStart=&dateEnd=') }} ><i class="fa fa-circle-o"></i> Product Report</a></li>
           <li class=" <?php if($active == 'agentReport') echo 'active'; ?> "><a href={{ URL('/admin/report/agent?dateStart=&dateEnd=') }} ><i class="fa fa-circle-o"></i> Agent Report</a></li>
+        </ul>
+      </li>
+
+      <li class="header">MISCELLANEOUS</li>
+
+      <li class=" <?php if($active == 'shippingScope') echo 'active'; ?> ">
+        <a href= {{URL('admin/shipping/scope')}} >
+          <i class="fa fa-globe"></i> <span>Scope of Shipping</span>
+        </a>
+      </li>
+
+      <li class=" <?php if($active == 'bankList' || $active == 'insertBank') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-bank"></i> <span>Bank</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'bankList') echo 'active'; ?> "><a href={{ URL('/admin/bank/list') }}><i class="fa fa-circle-o"></i> Bank List</a></li>
+          <li class=" <?php if($active == 'insertBank') echo 'active'; ?> "><a href={{ URL('/admin/insert/bank') }} ><i class="fa fa-circle-o"></i> Insert Bank</a></li>
+        </ul>
+      </li>
+
+      <li class=" <?php if($active == 'faqList' || $active == 'insertFaq') echo 'active'; ?> treeview">
+        <a href="#">
+          <i class="fa fa-question"></i> <span>FAQ</span> <i class="fa fa-angle-left pull-right"></i>
+        </a>
+        <ul class="treeview-menu">
+          <li class=" <?php if($active == 'faqList') echo 'active'; ?> "><a href={{ URL('/admin/faq/list') }}><i class="fa fa-circle-o"></i> Faq List</a></li>
+          <li class=" <?php if($active == 'insertFaq') echo 'active'; ?> "><a href={{ URL('/admin/insert/faq') }} ><i class="fa fa-circle-o"></i> Insert New</a></li>
         </ul>
       </li>
 

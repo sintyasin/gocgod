@@ -63,7 +63,7 @@ function deleteFaq(name, id)
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           alert('FAQ has been deleted');
         }
         else alert('Failed');

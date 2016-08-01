@@ -9,13 +9,14 @@
 var table = $('#datatableUser').DataTable({
     processing: true,
     serverSide: true,
-    ajax: '{!! route('province.data') !!}',
+    ajax: '{!! route('city.data') !!}',
     columns: [
-        { data: 'province_id', name: 'province_id', title:'Province Id' },
+        { data: 'city_id', name: 'city_id', title:'City Id' },
+        { data: 'city_name', name: 'city_name', title:'City Name' },
         { data: 'province_name', name: 'province_name', title:'Province Name' },
         { data: 'status', name: 'status', title:'Status' },
         {className: "dt-center", width:"17%", name: 'actions', title: 'Action', render: function(data, type, row) {
-            var data = "'" + row.province_id + "','" + row.province_name + "','province'";
+            var data = "'" + row.city_id + "','" + row.city_name + "','city'";
             
             if(row.status == 0)
                 return '<a class="btn btn-success" onclick="process(' + data + ')" >' + 'Terjangkau' + '</a>';
