@@ -51,7 +51,7 @@ Route::get('user/activation/{token}', array('as' => 'user.activate',
 Route::post('response', 'TransactionController@getResponse');
 Route::post('payment', 'TransactionController@payment'); //buat redirect dari firstpay
 
-Route::group(['middleware' => 'user'], function () {
+// Route::group(['middleware' => 'user'], function () {
 	Route::get('myorder', 'TransactionController@getOrderListCustomer');
 	Route::get('myorder/data', array('as' => 'orderlistCustomer.data', 
 	'uses' =>'TransactionController@getOrderDataCustomer'));
@@ -108,7 +108,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::post('historydatamyorder', 'TransactionController@getProductOrderHistoryCustomer');
 
 	Route::post('confirmation_pay', 'TransactionController@confirmation_pay');
-});
+// });
 
 
 

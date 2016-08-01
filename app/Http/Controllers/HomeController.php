@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Response;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Faq;
@@ -27,18 +28,37 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    //---------------- HOME -----------------
+    public function index(Request $request)
     {
         $data['contact'] = AboutUs::first();
         $data['query'] = Banner::all();
 
+        if($request->wantsJson())
+        {
+            $response = array(
+                'type' => 'OK-CONTACT',
+                'data' => $data['contact']);
+            return Response::json(compact('response'));
+        }
+
         return view('page.home', $data);
     }
 
-    public function faq_question()
+    //---------------- FAQ -----------------
+    public function faq_question(Request $request)
     {
         $data['contact'] = AboutUs::first();
         $data['query_faq'] = faq::all();
+
+        if($request->wantsJson())
+        {
+            $response = array(
+                'type' => 'OK-FAQ',
+                'data' => $data['query_faq']);
+            return Response::json(compact('response'));
+        }
+
         return view('page.faq', $data);
     }
 }

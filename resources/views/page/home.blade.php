@@ -9,6 +9,10 @@
 	<div class="alert alert-danger">
 	    {{ session('login') }}
 	</div>
+@elseif (session('success_product_sample'))
+	<div class="alert alert-success">
+	    {{ session('success_product_sample') }}
+	</div>
 @endif
 <div class="padding_slider">
 	@include('include.slide')
