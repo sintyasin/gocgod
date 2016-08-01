@@ -59,6 +59,14 @@ class ProductController extends Controller
             return Response::json(compact('response'));
         }
 
+        if ($request->wantsJson()) {
+            $response = array(
+                'type' => 'OK-001',
+                'message' => 'sample message',
+                'data' => Product::all());
+            return Response::json(compact('response'));
+        }
+        
     	return view('page.menu', $data);
     }
 
@@ -81,6 +89,17 @@ class ProductController extends Controller
             $response = array(
                 'type' => 'OK-MENU DETAIL',
                 'data' => array($data['query'], $data['query_testimonial']));
+            return Response::json(compact('response'));
+        }
+
+        if ($request->wantsJson()) {
+            $response = array(
+                'type' => 'OK-001',
+                'message' => 'sample message',
+                'data' => array(
+                    'detail' => $data['query'],
+                    'testimonial' => $data['query_testimonial']
+                    ));
             return Response::json(compact('response'));
         }
 
