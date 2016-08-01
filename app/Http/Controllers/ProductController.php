@@ -8,6 +8,7 @@ use Validator;
 use Session;
 use Cart;
 use Auth;
+use Response;
 use App\Http\Requests;
 use App\Product;
 use App\ProductCategory;
@@ -43,7 +44,7 @@ class ProductController extends Controller
         return view('page.howtobuysubcriber');
     }
 
-    public function getMenu()
+    public function getMenu(Request $request)
     {
         $data['contact'] = AboutUs::first();
     	$data['query'] = Product::paginate(12);
@@ -54,11 +55,19 @@ class ProductController extends Controller
             $data['queryCategory'][$i] = ProductCategory::find($tmp->category_id);
             $i++;
         }
+
+        if ($request->wantsJson()) {
+            $response = array(
+                'type' => 'OK-001',
+                'message' => 'sample message',
+                'data' => Product::all());
+            return Response::json(compact('response'));
+        }
         
     	return view('page.menu', $data);
     }
 
-    public function getMenuDetail($id)
+    public function getMenuDetail($id, Request $request)
     {
         $data['contact'] = AboutUs::first();
         $data['query_testimonial'] = ProductTestimonial::where('varian_id', $id)
@@ -72,6 +81,17 @@ class ProductController extends Controller
         {
             $data['query_member'][$i] = Member::find($tmp->id);
             $i++;
+        }
+
+        if ($request->wantsJson()) {
+            $response = array(
+                'type' => 'OK-001',
+                'message' => 'sample message',
+                'data' => array(
+                    'detail' => $data['query'],
+                    'testimonial' => $data['query_testimonial']
+                    ));
+            return Response::json(compact('response'));
         }
 
         return view('page.menu_detail', $data);

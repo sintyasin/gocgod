@@ -26,6 +26,7 @@ use App\AboutUs;
 use Mail;
 use App\AgentRating;
 use App\TxOrderConfirmation;
+use App\AgentFee;
 
 class ProductDataOrder
 {
@@ -1039,8 +1040,10 @@ class TransactionController extends Controller
       $order->status_confirmed = 1;
       $order->save();
 
+      $percent = AgentFee::first();
+
       $count = TxOrder::where('group_id', $order->group_id)->count();
-      $total = (($order->total - $order->shipping_fee) / $count ) * 0.1;
+      $total = (($order->total - $order->shipping_fee) / $count ) * ($percent->fee / 100);
 
       $balance = new Balance;
       $balance->agent_id = $order->agent_id;

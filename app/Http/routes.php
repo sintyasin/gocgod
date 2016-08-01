@@ -341,6 +341,34 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('process/agent/request', 
 		'AdminController@getProcessAgentRequest'
 	);
+	Route::get('agent/fee', 
+		'AdminController@getAgentFee'
+	);
+	Route::post('post/agent/fee', 
+		'AdminController@postAgentFee'
+	);
+
+	//SHIPPING SCOPE
+	Route::get('shipping/scope', 
+		'AdminController@getShippingScope'
+	);
+	Route::post('process/shipping/scope', 
+		'AdminController@getProcessShippingScope'
+	);
+	Route::get('shipping/province', 
+		'AdminController@getProvince'
+	);
+	Route::get('shipping/province/data', 
+		array('as' => 'province.data', 
+			'uses' =>'AdminController@getProvinceData')
+	);
+	Route::get('shipping/province', 
+		'AdminController@getProvince'
+	);
+	Route::get('shipping/province/data', 
+		array('as' => 'province.data', 
+			'uses' =>'AdminController@getProvinceData')
+	);
 
 	//BANK
 	Route::get('bank/list', 

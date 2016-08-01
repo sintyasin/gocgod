@@ -38,6 +38,9 @@ use App\Member;
 use App\Banner;
 use App\Balance;
 use App\TxOrderConfirmation;
+use App\AgentFee;
+use App\District;
+use App\Province;
 
 class SampleDetailData
 {
@@ -87,10 +90,12 @@ class AdminController extends Controller
                   AND status_payment = 1 
                   AND shipping_date <= ?', [$date]);
 
+      $percent = AgentFee::first();
+
       //INSERT DATA KE TX BALANCE DAN AGENT
       foreach ($query as $data) {
         $count = TxOrder::where('group_id', $data->group_id)->count();
-        $total = (($data->total - $data->shipping_fee) / $count ) * 0.1;
+        $total = (($data->total - $data->shipping_fee) / $count ) * ($percent->fee / 100);
 
         $balance = new Balance;
         $balance->agent_id = $data->agent_id;
@@ -105,6 +110,55 @@ class AdminController extends Controller
         $agent->save();
       }
     });
+  }
+
+  //SHIPPING SCOPE
+  public function getShippingScope()
+  {
+    $data['active'] = 'shippingScope';
+
+    return view('admin.admin_shipping_scope', $data);
+  }
+
+  public function getProcessShippingScope(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id' => 'required',
+        'type' => 'required'
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+    $input = $request->all();
+
+    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+    $type = filter_var($input['type'], FILTER_SANITIZE_STRING);
+
+    //kalo provinsi, ga usah ubah status yang lain
+    if($type == 'provinsi')
+    {
+      $provinsi = Province::find($id);
+      if($provinsi->status == 0) $provinsi->status = 1;
+      else $provinsi->status = 0;
+      $provinsi->save();
+    }
+
+    return 1;
+  }
+
+  public function getProvince()
+  {
+    return view('admin.admin_shipping_provinsi');
+  }
+
+  public function getProvinceData()
+  {
+    $data['query'] = Province::get(['province_id', 'province_name', 'status']);
+    
+    return Datatables::of($data['query'])
+    ->make(true);
   }
 
   //DEPOSTI WITHDRAWAL
@@ -1703,6 +1757,38 @@ class AdminController extends Controller
     Session::flash('update', 1);
 
     return redirect('/admin/edit/agent/' . $AId);
+  }
+
+  public function getAgentFee()
+  {
+    $data['active'] = "agentFee";
+    $data['query'] = AgentFee::first();
+
+      return view('admin.admin_agent_fee', $data);
+  }
+
+  public function postAgentFee(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'fee'       => 'required|numeric|min:1|max:100'
+    ]);    
+
+    if ($v->fails())
+    {
+        return redirect('/admin/agent/fee')->withErrors($v->errors());
+    }    
+
+    $input = $request->all();
+
+    $fee = filter_var($input['fee'], FILTER_SANITIZE_STRING);
+
+    $agentFee = AgentFee::first();
+    $agentFee->fee = $fee;
+    $agentFee->save();
+
+    Session::flash('update', 1);
+
+    return redirect('/admin/agent/fee/');
   }
 
   public function getCustomerList()
