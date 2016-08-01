@@ -341,6 +341,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('process/agent/request', 
 		'AdminController@getProcessAgentRequest'
 	);
+	Route::post('agent/request/detail', 
+		'AdminController@getAgentRequestDetail'
+	);
 	Route::get('agent/fee', 
 		'AdminController@getAgentFee'
 	);
@@ -355,6 +358,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('process/shipping/scope', 
 		'AdminController@getProcessShippingScope'
 	);
+	//provinsi
 	Route::get('shipping/province', 
 		'AdminController@getProvince'
 	);
@@ -362,12 +366,21 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 		array('as' => 'province.data', 
 			'uses' =>'AdminController@getProvinceData')
 	);
-	Route::get('shipping/province', 
-		'AdminController@getProvince'
+	//CITY
+	Route::get('shipping/city', 
+		'AdminController@getCity'
 	);
-	Route::get('shipping/province/data', 
-		array('as' => 'province.data', 
-			'uses' =>'AdminController@getProvinceData')
+	Route::get('shipping/city/data', 
+		array('as' => 'city.data', 
+			'uses' =>'AdminController@getCityData')
+	);
+	//DISTRICT
+	Route::get('shipping/district', 
+		'AdminController@getDistrict'
+	);
+	Route::get('shipping/district/data', 
+		array('as' => 'district.data', 
+			'uses' =>'AdminController@getDistrictData')
 	);
 
 	//BANK
@@ -416,31 +429,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	);
 	Route::post('post/faq', 
 		'AdminController@postInsertFaq'
-	);
-
-
-	//CITY
-	Route::get('city/list', 
-		'AdminController@getCityList'
-	);
-	Route::get('city/data', 
-		array('as' => 'citylist.data', 
-			'uses' =>'AdminController@getCityData')
-	);
-	Route::get('edit/city/{id}', 
-		'AdminController@getEditCity'
-	);
-	Route::post('post/edit/city/{id}', 
-		'AdminController@postEditCity'
-	);
-	Route::post('delete/city', 
-		'AdminController@deleteCity'
-	);
-	Route::get('insert/city', 
-		'AdminController@insertCity'
-	);
-	Route::post('post/city', 
-		'AdminController@postInsertCity'
 	);
 
 	//ABOUT US

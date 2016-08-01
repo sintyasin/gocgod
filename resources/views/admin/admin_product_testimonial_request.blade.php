@@ -71,7 +71,7 @@ function reject(id, name, testi)
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           alert('Data has been rejected');
         }
         else alert('Failed');
@@ -93,7 +93,7 @@ function approve(id, name, testi)
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           alert('Data has been approved');
         }
         else alert('Failed');
@@ -118,7 +118,7 @@ function rejectSelected()
         {
           if(success)
           {
-            table.draw();
+            table.draw(false);
             rows_selected = [];
             alert('Data has been rejected');
           }
@@ -145,7 +145,7 @@ function approveSelected()
         {
           if(success)
           {
-            table.draw();
+            table.draw(false);
             rows_selected = [];
             alert('Data has been approved');
           }

@@ -68,13 +68,12 @@ function deleteProduct(name, id)
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           alert('Data has been deleted');
         }
         else alert('Failed');
       }
     });
-    //window.location = "{{ URL::to('/admin/delete/product') }}" + "/" + id;
   } 
 }
 

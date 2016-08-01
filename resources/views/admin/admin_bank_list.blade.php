@@ -62,7 +62,7 @@ function deleteBank(name, id)
       {
         if(success)
         {
-          table.draw();
+          table.draw(false);
           alert('Data has been deleted');
         }
         else alert('Failed');

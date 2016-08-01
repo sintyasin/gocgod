@@ -41,6 +41,8 @@ use App\TxOrderConfirmation;
 use App\AgentFee;
 use App\District;
 use App\Province;
+use App\AgentDay;
+use App\AgentShip;
 
 class SampleDetailData
 {
@@ -137,12 +139,52 @@ class AdminController extends Controller
     $type = filter_var($input['type'], FILTER_SANITIZE_STRING);
 
     //kalo provinsi, ga usah ubah status yang lain
-    if($type == 'provinsi')
+    if($type == 'province')
     {
       $provinsi = Province::find($id);
       if($provinsi->status == 0) $provinsi->status = 1;
       else $provinsi->status = 0;
       $provinsi->save();
+    }
+    else if($type == 'city')
+    {
+      DB::transaction(function() use ($id)
+      {
+        $city = City::find($id);
+        if($city->status == 0) $city->status = 1;
+        else $city->status = 0;
+        $city->save();
+
+        //kalo city di enabled, berarti provinsinya jg di enabled
+        if($city->status == 1)
+        {
+          $provinsi = Province::find($city->province_id);
+          $provinsi->status = 1;
+          $provinsi->save();
+        }
+      });
+    }
+    else if($type == 'district')
+    {
+      DB::transaction(function() use ($id)
+      {
+        $district = District::find($id);
+        if($district->status == 0) $district->status = 1;
+        else $district->status = 0;
+        $district->save();        
+
+        //kalo district di enabled, berarti city dan provinsinya jg di enabled
+        if($district->status == 1)
+        {
+          $city = City::find($district->city_id);
+          $city->status = 1;
+          $city->save();
+
+          $provinsi = Province::find($city->province_id);
+          $provinsi->status = 1;
+          $provinsi->save();
+        }
+      });
     }
 
     return 1;
@@ -157,6 +199,34 @@ class AdminController extends Controller
   {
     $data['query'] = Province::get(['province_id', 'province_name', 'status']);
     
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getCity()
+  {
+    return view('admin.admin_shipping_city');
+  }  
+
+  public function getCityData()
+  {
+    $data['query'] = City::leftJoin('master__province as p', 'p.province_id', '=', 'master__city.province_id')
+                         ->get(['city_id', 'province_name', 'city_name', 'master__city.status']);
+        
+    return Datatables::of($data['query'])
+    ->make(true);
+  }
+
+  public function getDistrict()
+  {
+    return view('admin.admin_shipping_district');
+  }  
+
+  public function getDistrictData()
+  {
+    $data['query'] = District::leftJoin('master__city as c', 'c.city_id', '=', 'master__district.city_id')
+                             ->get(['district_id', 'city_name', 'district_name', 'master__district.status']);
+        
     return Datatables::of($data['query'])
     ->make(true);
   }
@@ -1307,102 +1377,7 @@ class AdminController extends Controller
     Session::flash('update', 1);
 
     return redirect('admin/aboutus');
-  }
-  
-
-  public function getCityList()
-  {
-    $data['active'] = "cityList";
-
-    return view('admin.admin_city', $data);
   }  
-
-  public function getCityData()
-  {
-    $data['query'] = City::get(['city_id', 'city_name']);
-        
-    return Datatables::of($data['query'])
-    ->make(true);
-  }
-
-  public function getEditCity($id)
-  {
-    $data['query'] = City::find($id);
-    $data['active'] = 'cityList';
-
-    return view('admin.admin_edit_city', $data);
-  }
-
-  public function postEditCity(Request $request, $id)
-  {
-    $v = Validator::make($request->all(), [
-        'city'       => 'required|max:250',
-    ]);
-
-    if ($v->fails())
-    {
-        return redirect('/admin/edit/city/' . $id)->withErrors($v->errors())->withInput();
-    }    
-
-    $input = $request->all();
-
-    $inputCity = filter_var($input['city'], FILTER_SANITIZE_STRING);
-
-    $city = City::find($id);
-    $city->city_name = $inputCity;
-    $city->save();
-    Session::flash('update', 1);
-    return redirect('/admin/city/list');
-  }
-
-  public function deleteCity(Request $request)
-  {
-    $v = Validator::make($request->all(), [
-        'id' => 'required'
-    ]);
-
-    if ($v->fails())
-    {
-        return 0;
-    }    
-    $input = $request->all();
-
-    $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-         
-    City::find($id)->delete();
-    Session::flash('delete', 1);
-
-    return 1;
-  }
-
-  public function insertCity()
-  {
-    $data['active'] = "insertCity";
-
-    return view('admin.admin_insert_city', $data);
-  }
-
-  public function postInsertCity(Request $request)
-  {
-    $v = Validator::make($request->all(), [
-        'city'       => 'required|max:250',
-    ]);
-
-    if ($v->fails())
-    {
-        return redirect('/admin/insert/city')->withErrors($v->errors())->withInput();
-    }    
-
-    $input = $request->all();
-
-    $inputCity = filter_var($input['city'], FILTER_SANITIZE_STRING);
-
-    $city = new City();
-    $city->city_name = $inputCity;
-    $city->save();
-    Session::flash('success', 1);
-    return redirect('/admin/insert/city');
-  }
 
   public function getReviewAgent()
   {
@@ -1540,10 +1515,61 @@ class AdminController extends Controller
                                 ->leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
                                 ->leftJoin('master__bank', 'master__bank.bank_id', '=', 'master__member.bank_id')
                                 ->where('status_confirm', 0)
-                                ->get(['reqagent_id', 'name', 'date_of_birth', 'city_name', 'address', 'phone', 'email', 'bank_name', 'master__req_agent.bank_account as accno']);
+                                ->get(['reqagent_id', 'member_id', 'name', 'date_of_birth', 'city_name', 'address', 'phone', 'email', 'bank_name', 'master__req_agent.bank_account as accno']);
         
       return Datatables::of($data['query'])
       ->make(true);
+  }
+
+  public function getAgentRequestDetail(Request $request)
+  {
+    $v = Validator::make($request->all(), [
+        'id'    => 'required|numeric',
+    ]);
+
+    if ($v->fails())
+    {
+        return 0;
+    }    
+
+    $id = filter_var($request->id, FILTER_SANITIZE_STRING);
+
+    $agent = Member::find($id);
+
+    if(!empty($agent))
+    {
+      $data['name'] = $agent->name;
+
+      //cek hari apa aja dia bisa kirim
+      $array;
+      $day = AgentDay::where('agent_id', $agent->id)->orderBy('day', 'asc')->get(); 
+      for ($i=0; $i < count($day) ; $i++) { 
+        $array[$i] = $day[$i]->day;
+      }
+      $data['day'] = $array;
+
+      //cek dia bisa kirim kemana aja
+      $array = array();
+      $ship = AgentShip::leftJoin('master__province as p', 'p.province_id', '=', 'master__agent_ship.province_id')
+                       ->leftJoin('master__city as c', 'c.city_id', '=', 'master__agent_ship.city_id')
+                       ->leftJoin('master__district as d', 'd.district_id', '=', 'master__agent_ship.district_id')
+                       ->where('agent_id', $agent->id)
+                       ->orderBy('master__agent_ship.district_id', 'asc')
+                       ->select('province_name', 'city_name', 'district_name')->get();
+
+      for ($i=0; $i < count($ship) ; $i++) { 
+        $array[$i] = array(
+            'province' => $ship[$i]->province_name,
+            'city' => $ship[$i]->city_name,
+            'district' => $ship[$i]->district_name
+          );
+      }
+      $data['ship'] = $array;
+
+      return $data;
+    }    
+
+    return 0;
   }
 
   public function getProcessAgentRequest(Request $request)
@@ -1573,6 +1599,38 @@ class AdminController extends Controller
         }
         else if($action == "approve")
         {
+          DB::transaction(function() use ($id)
+          {
+            $request = Req_agent::find($id);
+            $request->status_confirm = 1;
+
+            $agentId = $request->member_id;
+            $agent = Member::find($agentId);
+            $agent->status_user = 0;
+            $agent->bank_id = $request->bank_id;
+            $agent->bank_account = $request->bank_account;
+            $agent->balance = 0;
+
+            $agent->save();
+            $request->save();
+
+            Session::flash('approve', 1);
+          });
+        }
+      }
+    }
+    else
+    {
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      if($action == "reject")
+      {
+        Req_agent::find($id)->delete();
+        Session::flash('reject', 1);
+      }
+      else if($action == "approve")
+      {
+        DB::transaction(function() use ($id)
+        {
           $request = Req_agent::find($id);
           $request->status_confirm = 1;
 
@@ -1587,33 +1645,7 @@ class AdminController extends Controller
           $request->save();
 
           Session::flash('approve', 1);
-        }
-      }
-    }
-    else
-    {
-      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-      if($action == "reject")
-      {
-        Req_agent::find($id)->delete();
-        Session::flash('reject', 1);
-      }
-      else if($action == "approve")
-      {
-        $request = Req_agent::find($id);
-        $request->status_confirm = 1;
-
-        $agentId = $request->member_id;
-        $agent = Member::find($agentId);
-        $agent->status_user = 0;
-        $agent->bank_id = $request->bank_id;
-        $agent->bank_account = $request->bank_account;
-        $agent->balance = 0;
-
-        $agent->save();
-        $request->save();
-
-        Session::flash('approve', 1);
+        });
       }
     }
 
@@ -1630,14 +1662,15 @@ class AdminController extends Controller
   public function getAgentData()
   {
     $query = DB::table('master__member')
-          ->select(DB::raw('AVG(rating) as rating'),'country', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name')
+          ->select(DB::raw('AVG(rating) as rating'),'country', 'province_name', 'district_name', 'active_agent', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name')
           ->leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
           ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
+          ->leftJoin('master__district as d', 'master__member.district_id', '=', 'd.district_id')
+          ->leftJoin('master__province as p', 'master__member.province_id', '=', 'p.province_id')
           ->leftJoin('master__agent_rating', 'master__member.id', '=', 'master__agent_rating.agent_id')
           ->where('status_user', 0)
           ->groupBy('id')
           ->get();
-
 
     $data['query'] = new Collection;
 
@@ -1657,6 +1690,9 @@ class AdminController extends Controller
             'bank_account'      => $value->bank_account,
             'city_name'      => $value->city_name,
             'rating'      => $value->rating,
+            'active_agent'      => $value->active_agent,
+            'province_name'      => $value->province_name,
+            'district_name'      => $value->district_name,
         ]);
     }
     

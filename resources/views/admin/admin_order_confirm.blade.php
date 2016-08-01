@@ -51,7 +51,7 @@ function confirmation(id)
       success:
       function(success)
       {
-        if(success) table.draw();
+        if(success) table.draw(false);
         else alert('Failed');
       }
     });
