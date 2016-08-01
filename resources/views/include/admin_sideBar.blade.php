@@ -51,6 +51,18 @@
         </a>
       </li>
 
+      <li class=" <?php if($active == 'agentFee') echo 'active'; ?> ">
+        <a href= {{URL('admin/agent/fee')}} >
+          <i class="fa fa-paypal"></i> <span>Agent Fee</span>
+        </a>
+      </li>
+
+      <li class=" <?php if($active == 'shippingScope') echo 'active'; ?> ">
+        <a href= {{URL('admin/shipping/scope')}} >
+          <i class="fa fa-ship"></i> <span>Scope of Shipping</span>
+        </a>
+      </li>
+
       <li class=" <?php if($active == 'bankList' || $active == 'insertBank') echo 'active'; ?> treeview">
         <a href="#">
           <i class="fa fa-bank"></i> <span>Bank</span> <i class="fa fa-angle-left pull-right"></i>
