@@ -9,7 +9,6 @@ use Validator;
 use Session;
 use Cart;
 use Auth;
-use Response;
 use App\Http\Requests;
 use App\Product;
 use App\ProductCategory;
