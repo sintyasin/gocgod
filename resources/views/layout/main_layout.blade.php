@@ -7,6 +7,10 @@
     <meta name="_token" content="{{ csrf_token()}}"/>
     <title>go C go D</title>
 
+    <!-- dropdown search -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{URL::asset('assets/css/bootstrap-select.css')}}">
+
     <!-- Datatables css -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.0.2/css/responsive.bootstrap.min.css">
 <!--     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css"> -->
@@ -79,6 +83,8 @@
     <script src="{{ URL::asset('assets/js/main.js') }}"></script>
     <!-- stepper -->
     <script src="{{ URL::asset('assets/js/slidingco.form.js')}}"></script>
+    <!-- dropdown select -->
+    <script src="{{ URL::asset('assets/js/bootstrap-select.js')}}"></script>
 
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script> -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

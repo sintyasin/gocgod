@@ -39,6 +39,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('provinsi') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label">Provinsi</label>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" name="nama" value="{{ old('nama') }}">
+
+                                @if ($errors->has('nama'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('nama') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('alamat') ? ' has-error' : '' }}">
                             <label class="col-md-4 control-label">Alamat</label>
 
