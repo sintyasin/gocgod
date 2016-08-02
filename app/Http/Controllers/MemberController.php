@@ -10,6 +10,7 @@ use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
 use App\Member;
 use App\Admin;
+use App\District;
 use App\City;
 use App\Balance;
 use Auth;
@@ -24,6 +25,42 @@ use Hash;
 
 class MemberController extends Controller
 {
+    //---------------- PROFILE - Daerah -----------------
+    public function city(Request $request)
+    {
+        $v = Validator::make($request->all(),[
+          'id' =>'required|numeric',
+        ]);
+
+      if($v->fails())
+        {
+            return "Not completed data";
+        }
+
+      $input = $request->all();
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      $data['city'] = City::where('province_id', $id)->get();
+      return view('page.city', $data);
+    }
+
+    public function district(Request $request)
+    {
+      $v = Validator::make($request->all(),[
+          'id' =>'required|numeric',
+        ]);
+
+      if($v->fails())
+        {
+            return "Not completed data";
+        }
+
+      $input = $request->all();
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      $data['district'] = District::where('city_id', $id)->get();
+
+      return view ('page.district', $data);
+    }
+
     //---------------- PROFILE - Informasi Akun -----------------
     public function profile(Request $request)
     {
