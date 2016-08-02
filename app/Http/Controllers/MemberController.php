@@ -10,6 +10,7 @@ use App\Http\Requests\SignUpRequest;
 use App\Http\Requests\LoginRequest;
 use App\Member;
 use App\Admin;
+use App\Province;
 use App\District;
 use App\City;
 use App\Balance;
@@ -69,7 +70,9 @@ class MemberController extends Controller
                                 ->orderBy('created_at', 'desc')
                                 ->get();
         $data['bank'] = Bank::all();
-        $data['city'] = City::all();
+        $data['province'] = Province::all();
+        $data['city'] = City::where('city_id', AUth::user()->city_id)->first();
+        $data['district'] = District::where('district_id', Auth::user()->district_id)->first();
 
         if($request->wantsJson())
         {
@@ -84,7 +87,10 @@ class MemberController extends Controller
 
     public function data_profile(Request $request)
     {
-        return view('page.data_user');
+        $data['province'] = Province::where('province_id', AUth::user()->province_id)->first();
+        $data['city'] = City::where('city_id', AUth::user()->city_id)->first();
+        $data['district'] = District::where('district_id', Auth::user()->district_id)->first();
+        return view('page.data_user', $data);
     }
 
     public function table_total(Request $request)
@@ -200,7 +206,9 @@ class MemberController extends Controller
     public function edit_profile(Request $request)
     {
          $v = Validator::make($request->all(), [
-            'city' => 'required|numeric',
+            'provinsi' => 'required|numeric',
+            'kota' => 'required|numeric',
+            'kecamatan' => 'required|numeric',
             'address' => 'required|max:500',
             'zipcode' => 'required|max:50',
             'phone' => 'numeric',
@@ -214,37 +222,41 @@ class MemberController extends Controller
 
         $input = $request->all();
 
-        $city = filter_var($input['city'], FILTER_SANITIZE_STRING);
+        $province = filter_var($input['provinsi'], FILTER_SANITIZE_STRING);
+        $city = filter_var($input['kota'], FILTER_SANITIZE_STRING);
+        $district = filter_var($input['kecamatan'], FILTER_SANITIZE_STRING);
         $address = filter_var($input['address'], FILTER_SANITIZE_STRING);
         $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
         $phone = filter_var($input['phone'], FILTER_SANITIZE_STRING);
         $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
         
 
-        //kalo new city, berarti insert dulu city barunya
-        if($city == 0)
-        {
-          $newcity = filter_var($input['newcity'], FILTER_SANITIZE_STRING);
+        // //kalo new city, berarti insert dulu city barunya
+        // if($city == 0)
+        // {
+        //   $newcity = filter_var($input['newcity'], FILTER_SANITIZE_STRING);
           
-          $data = new City;
-          $data->city_name = $newcity;
-          $data->save();
-        }
+        //   $data = new City;
+        //   $data->city_name = $newcity;
+        //   $data->save();
+        // }
 
 
         $member = Member::find(Auth()->user()->id);
         $member->date_of_birth = Auth::user()->date_of_birth;
 
-        if($city == 0)
-            $member->city_id = $data->city_id;
-        else
-            $member->city_id = $city;
+        // if($city == 0)
+        //     $member->city_id = $data->city_id;
+        // else
+        $member->province_id = $province;
+        $member->district_id = $district;
+        $member->city_id = $city;
         $member->address = $address;
         $member->zipcode = $zipcode;
         $member->phone = $phone;
         $member->email = $email;
         $member->save();
-        return redirect('/profile/'.Auth::user()->id);
+        return redirect('/profile/');
     }
 
     public function readDataMember($id)
