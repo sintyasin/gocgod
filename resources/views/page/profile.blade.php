@@ -56,35 +56,61 @@
                   </div>
                 </div>
 
-                <div class="form-group{{ $errors->has('city') || $errors->first('newcity') ? ' has-error' : '' }}">
-                  <label class="col-md-4 control-label">Kota</label>
+                <div class="form-group{{ $errors->has('provinsi') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label" for="Province">Provinsi</label>
 
-                  <div class="col-md-8">
-                    <select onclick="javascript:check();" class="form-control" id="city" name="city" >
-                      @foreach($city as $data)
-                      @if(Auth::user()->city_id == $data->city_id)
-                      <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
-                      @else
-                      <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
-                      @endif
-                      @endforeach
-                      <option value="0">Kota Baru</option>
-                    </select>
-                    <div id="newcity" style="display:none;">
-                      <br>
-                      <input type='text' class="form-control" name="newcity" >
+                    <div class="col-md-8">
+                        <select id="basic" name="provinsi" class="province selectpicker show-tick form-control" data-live-search="true">
+                          @foreach($province as $data)
+                          @if(Auth::user()->province_id == $data->province_id)
+                          <option value="{{ $data->province_id }}" selected >{{ $data->province_name }}</option>
+                          @else
+                          <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                          @endif
+                          @endforeach
+                        </select>
+
+
+                        @if ($errors->has('provinsi'))
+                            <span class="help-block">
+                                <strong>Provinsi harus diisi</strong>
+                            </span>
+                        @endif
                     </div>
-                    @if ($errors->has('city'))
-                    <span class="help-block">
-                      <strong>{{ $errors->first('city') }}</strong>
-                    </span>
-                    @endif
-                    @if ($errors->has('newcity'))
-                    <span class="help-block">
-                      <strong>{{ $errors->first('newcity') }}</strong>
-                    </span>
-                    @endif
-                  </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('kota') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label" for="city">Kota</label>
+
+                    <div class="col-md-8">
+                        <select id="basic_city" name="kota" class="city selectpicker show-tick form-control" data-live-search="true">
+                          <option value="{{$city->city_id}}" selected="selected">{{$city->city_name}}</option>
+                        </select>
+
+
+                        @if ($errors->has('kota'))
+                            <span class="help-block">
+                                <strong>Kota harus diisi</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group{{ $errors->has('kecamatan') ? ' has-error' : '' }}">
+                    <label class="col-md-4 control-label" for="district">Kecamatan</label>
+
+                    <div class="col-md-8">
+                        <select id="basic_district" name="kecamatan" class="district selectpicker show-tick form-control" data-live-search="true">
+                          <option value="{{$district->district_id}}" selected="selected">{{$district->district_name}}</option>
+                        </select>
+
+
+                        @if ($errors->has('kecamatan'))
+                            <span class="help-block">
+                                <strong>Kecamatan harus diisi</strong>
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
                 <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
@@ -376,6 +402,51 @@
 
   $(document).ready(function(){
     data();
+    $(".province").change(function()
+      {
+        var id=$(this).val();
+        $(".city").find('option').remove();
+        $(".district").find('option').remove();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('city')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_city").html(html)
+            .selectpicker('refresh');
+
+            $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+            .selectpicker('refresh');
+          } 
+        });
+      });
+
+
+      $(".city").change(function()
+      {
+        var id=$(this).val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('district')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_district").html(html)
+            .selectpicker('refresh');
+          } 
+        });
+      });
   });
 
   function balance()
