@@ -73,87 +73,26 @@
               </div>
 
               <div class="col-md-offset-3 col-md-3">
-              <label for="Agent">Pilih Provinsi</label> <br>
-              <select id="basic" class="selectpicker show-tick form-control" data-live-search="true" style="width:100%">
-                <option value="">State</option>
-                <option value="AL">Alabama</option>
-                <option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option>
-                <option value="AR">Arkansas</option>
-                <option value="CA">California</option>
-                <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option>
-                <option value="DE">Delaware</option>
-                <option value="DC">District Of Columbia</option>
-                <option value="FL">Florida</option>
-                <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option>
-                <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option>
-                <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option>
-                <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option>
-                <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option>
-                <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option>
-                <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option>
-                <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option>
-                <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option>
-                <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option>
-                <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option>
-                <option value="NY">New York</option>
-                <option value="NC">North Carolina</option>
-                <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option>
-                <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option>
-                <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option>
-                <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option>
-                <option value="TN">Tennessee</option>
-                <option value="TX">Texas</option>
-                <option value="UT">Utah</option>
-                <option value="VT">Vermont</option>
-                <option value="VA">Virginia</option>
-                <option value="WA">Washington</option>
-                <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option>
-                <option value="WY">Wyoming</option>
-              </select>
-              <!-- </select> -->
-              </div>
-
-
-              <div class="col-md-6 col-md-offset-3">
-              <label for="address">Alamat Pengiriman</label> <br>
-              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center; width: 100%;"/>
-
-              @if ($errors->has('address'))
-                <span class="help-block">
-                    <strong style="color:#ff3333;">{{ $errors->first('address') }}</strong>
-                </span>
-              @endif
-
-              </div>
-
-              <div class="col-md-offset-3 col-md-3  ">              
-              <label for="address">Kota</label> <br>
-              <select class="form-control" id="city" name="city" style="width:100%">
-                @foreach($city as $data)
-                  @if(Auth::user()->city_id == $data->city_id)
-                    <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
-                  @else
-                    <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
-                  @endif
+              <label for="Province">Pilih Provinsi</label> <br>
+              <select id="basic" name="province" class="province selectpicker show-tick form-control" data-live-search="true">
+                <option selected="selected">-- Pilih Provinsi --</option>
+                @foreach($province as $data)
+                  <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
                 @endforeach
+              </select>
+              </div>
+
+              <div class="col-md-3">
+              <label for="City">Pilih Kota</label> <br>
+              <select id="basic_city" name="city" class="city selectpicker show-tick form-control" data-live-search="true">  
+                <option selected="selected">-- Pilih Kota --</option>
+              </select>
+              </div>
+
+              <div class="col-md-offset-3 col-md-3">
+              <label for="district">Pilih Kecamatan</label> <br>
+              <select id="basic_district" name="district" class="district selectpicker show-tick form-control" data-live-search="true">
+                <option selected="selected">-- Pilih Kecamatan --</option>
               </select>
               </div>
 
@@ -166,67 +105,18 @@
                     <strong style="color:#ff3333;">{{ $errors->first('zipcode') }}</strong>
                 </span>
               @endif
-
               </div>
 
               <div class="col-md-6 col-md-offset-3">
-              <label for="Agent">Pilih Kecamatan</label> <br>
-<!--               <select class="form-control" id="agent" name="agent" style="width:100%" > -->
-              <select class="ui search dropdown">
-                <option value="">State</option>
-                <option value="AL">Alabama</option>
-                <option value="AK">Alaska</option>
-                <option value="AZ">Arizona</option>
-                <option value="AR">Arkansas</option>
-                <option value="CA">California</option>
-                <option value="CO">Colorado</option>
-                <option value="CT">Connecticut</option>
-                <option value="DE">Delaware</option>
-                <option value="DC">District Of Columbia</option>
-                <option value="FL">Florida</option>
-                <option value="GA">Georgia</option>
-                <option value="HI">Hawaii</option>
-                <option value="ID">Idaho</option>
-                <option value="IL">Illinois</option>
-                <option value="IN">Indiana</option>
-                <option value="IA">Iowa</option>
-                <option value="KS">Kansas</option>
-                <option value="KY">Kentucky</option>
-                <option value="LA">Louisiana</option>
-                <option value="ME">Maine</option>
-                <option value="MD">Maryland</option>
-                <option value="MA">Massachusetts</option>
-                <option value="MI">Michigan</option>
-                <option value="MN">Minnesota</option>
-                <option value="MS">Mississippi</option>
-                <option value="MO">Missouri</option>
-                <option value="MT">Montana</option>
-                <option value="NE">Nebraska</option>
-                <option value="NV">Nevada</option>
-                <option value="NH">New Hampshire</option>
-                <option value="NJ">New Jersey</option>
-                <option value="NM">New Mexico</option>
-                <option value="NY">New York</option>
-                <option value="NC">North Carolina</option>
-                <option value="ND">North Dakota</option>
-                <option value="OH">Ohio</option>
-                <option value="OK">Oklahoma</option>
-                <option value="OR">Oregon</option>
-                <option value="PA">Pennsylvania</option>
-                <option value="RI">Rhode Island</option>
-                <option value="SC">South Carolina</option>
-                <option value="SD">South Dakota</option>
-                <option value="TN">Tennessee</option>
-                <option value="TX">Texas</option>
-                <option value="UT">Utah</option>
-                <option value="VT">Vermont</option>
-                <option value="VA">Virginia</option>
-                <option value="WA">Washington</option>
-                <option value="WV">West Virginia</option>
-                <option value="WI">Wisconsin</option>
-                <option value="WY">Wyoming</option>
-              </select>
-              <!-- </select> -->
+              <label for="address">Alamat Pengiriman</label> <br>
+              <input type="text" class="form-control" name="address" value="{{ Auth::user()->address }}" style="text-align:center; width: 100%;"/>
+
+              @if ($errors->has('address'))
+                <span class="help-block">
+                    <strong style="color:#ff3333;">{{ $errors->first('address') }}</strong>
+                </span>
+              @endif
+
               </div>
 
               <div class="col-md-6 col-md-offset-3">
@@ -278,12 +168,58 @@
 <script>
   $(document).ready(function() {
       tabel();
+      $(".province").change(function()
+      {
+        $(".city").find('option').remove();
+        $(".district").find('option').remove();
+        var id=$(this).val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('get_city')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_city").html(html)
+            .selectpicker('refresh');
+
+            $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+            .selectpicker('refresh');
+          } 
+        });
+      });
+
+
+      $(".city").change(function()
+      {
+        var id=$(this).val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('get_district')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_district").html(html)
+            .selectpicker('refresh');
+          } 
+        });
+      });
   } );
 
    $(function() {
         var date = $('#datepicker').datepicker({ dateFormat: 'yy-mm-dd', minDate: <?php echo "'". $start."'"; ?>  }).val();
         $( "#datepicker" ).datepicker();
     });
+
 
    function isNumber(evt) {
         evt = (evt) ? evt : window.event;

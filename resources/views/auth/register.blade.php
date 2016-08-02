@@ -40,14 +40,54 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('provinsi') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Provinsi</label>
+                            <label class="col-md-4 control-label" for="Province">Provinsi</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="nama" value="{{ old('nama') }}">
+                                <select id="basic" name="provinsi" class="province selectpicker show-tick form-control" data-live-search="true">
+                                  <option selected="selected">-- Pilih Provinsi --</option>
+                                  @foreach($province as $data)
+                                  <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                                @endforeach
+                                </select>
 
-                                @if ($errors->has('nama'))
+
+                                @if ($errors->has('provinsi'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('nama') }}</strong>
+                                        <strong>Provinsi harus diisi</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('kota') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="city">Kota</label>
+
+                            <div class="col-md-6">
+                                <select id="basic_city" name="kota" class="city selectpicker show-tick form-control" data-live-search="true">
+                                  <option selected="selected">-- Pilih Kota --</option>
+                                </select>
+
+
+                                @if ($errors->has('kota'))
+                                    <span class="help-block">
+                                        <strong>Kota harus diisi</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('kecamatan') ? ' has-error' : '' }}">
+                            <label class="col-md-4 control-label" for="district">Kecamatan</label>
+
+                            <div class="col-md-6">
+                                <select id="basic_district" name="kecamatan" class="district selectpicker show-tick form-control" data-live-search="true">
+                                  <option selected="selected">-- Pilih Kecamatan --</option>
+                                </select>
+
+
+                                @if ($errors->has('kecamatan'))
+                                    <span class="help-block">
+                                        <strong>Kecamatan harus diisi</strong>
                                     </span>
                                 @endif
                             </div>
@@ -202,34 +242,6 @@
                                 @endif
                             </div>
                         </div>
-
-                        <div class="form-group{{ $errors->has('kota') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">Kota</label>
-
-                            <div class="col-md-6">
-                                <select onclick="javascript:check();" class='form-control' id="city" name='kota'>
-                                @foreach($city as $data)
-                                    <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
-                                @endforeach
-                                  <option value="0">Kota Baru</option>
-                              </select>
-                              <div id="newcity" style="display:none;">
-                                <br>
-                                <input type='text' class="form-control" placeholder="Nama kota" name="kotabaru" >
-                              </div>
-                              @if ($errors->has('kota'))
-                              <span class="help-block">
-                                  <strong>{{ $errors->first('kota') }}</strong>
-                              </span>
-                              @endif
-                              @if ($errors->has('kotabaru'))
-                              <span class="help-block">
-                                  <strong>{{ $errors->first('kotabaru') }}</strong>
-                              </span>
-                              @endif
-                            </div>
-                        </div>
-
                        
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
@@ -249,7 +261,54 @@
 </div>
 @push('scripts')
 <script type="text/javascript">
-    
+    $(document).ready(function() {
+      $(".province").change(function()
+      {
+        var id=$(this).val();
+        $(".city").find('option').remove();
+        $(".district").find('option').remove();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('city')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_city").html(html)
+            .selectpicker('refresh');
+
+            $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+            .selectpicker('refresh');
+          } 
+        });
+      });
+
+
+      $(".city").change(function()
+      {
+        var id=$(this).val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('district')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_district").html(html)
+            .selectpicker('refresh');
+          } 
+        });
+      });
+  } );
+
     function isNumber(evt) {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;

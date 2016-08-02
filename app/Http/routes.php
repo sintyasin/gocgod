@@ -38,6 +38,8 @@ Route::post('request_agent', 'MemberController@request_agent');
 Route::post('login', 'Auth\AuthController@login');
 Route::get('logout', 'Auth\AuthController@logout');
 Route::get('register', 'Auth\AuthController@showRegistrationForm');
+Route::post('city', 'MemberController@city');
+Route::post('district', 'MemberController@district');
 Route::post('register', 'Auth\AuthController@register');
 Route::get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
 Route::post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
@@ -71,6 +73,8 @@ Route::post('payment', 'TransactionController@payment'); //buat redirect dari fi
 
 
 	Route::get('checkout_singlebuyer', 'TransactionController@order_details_single');
+	Route::post('get_city', 'TransactionController@get_city');
+	Route::post('get_district', 'TransactionController@get_district');
 	Route::post('updatecart_single/', 'TransactionController@updatecart_single');
 	Route::post('deletecart_single/', 'TransactionController@deletecart_single');
 	Route::post('order_single', 'TransactionController@order_single');

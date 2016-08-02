@@ -68,41 +68,49 @@
               <input disabled type="text" class="form-control" name="name" value="{{ Auth::user()->name }}" style="text-align:center; width:100%"/>
               </div>
 
-              <div class="col-md-6 col-md-offset-3">
-              <label for="address">Alamat Pengiriman</label> <br>
-              <textarea type="text" class="form-control" name="address" style="text-align:center; width:100%"/> {{ Auth::user()->address }} </textarea>
-              
-              @if ($errors->has('address'))
-                <span class="help-block">
-                    <strong style="color:#ff3333;">{{ $errors->first('address') }}</strong>
-                </span>
-              @endif
-
-              </div>
-              
-              <div class="col-md-offset-3 col-md-3  ">
-              <label for="address" s>Kota</label> <br>
-              <select class="form-control" id="city" name="city" style="width:100%;">
-                @foreach($city as $data)
-                  @if(Auth::user()->city_id == $data->city_id)
-                    <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
-                  @else
-                    <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
-                  @endif
+              <div class="col-md-offset-3 col-md-3">
+              <label for="Province">Pilih Provinsi</label> <br>
+              <select id="basic" name="province" class="province selectpicker show-tick form-control" data-live-search="true">
+                <option selected="selected">-- Pilih Provinsi --</option>
+                @foreach($province as $data)
+                  <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
                 @endforeach
               </select>
               </div>
-              
+
+              <div class="col-md-3">
+              <label for="City">Pilih Kota</label> <br>
+              <select id="basic_city" name="city" class="city selectpicker show-tick form-control" data-live-search="true">  
+                <option selected="selected">-- Pilih Kota --</option>
+              </select>
+              </div>
+
+              <div class="col-md-offset-3 col-md-3">
+              <label for="district">Pilih Kecamatan</label> <br>
+              <select id="basic_district" name="district" class="selectpicker show-tick form-control" data-live-search="true">
+                <option selected="selected">-- Pilih Kecamatan --</option>
+              </select>
+              </div>
+
               <div class="col-md-3">
               <label for="zipcode">Kode Pos Pengiriman</label> <br>
               <input type="text" class="form-control" name="zipcode" value="{{ Auth::user()->zipcode }}" style="text-align:center; width:100%;" onkeypress="return isNumber(event)"/>
-              
+
               @if ($errors->has('zipcode'))
                 <span class="help-block">
                     <strong style="color:#ff3333;">{{ $errors->first('zipcode') }}</strong>
                 </span>
               @endif
+              </div>
 
+              <div class="col-md-6 col-md-offset-3">
+              <label for="address">Alamat Pengiriman</label> <br>
+              <textarea type="text" class="form-control" name="address" style="text-align:center; width:100%"/> {{ Auth::user()->address }} </textarea>
+              @if ($errors->has('address'))
+                <span class="help-block">
+                    <strong style="color:#ff3333;">{{ $errors->first('address') }}</strong>
+                </span>
+              @endif
               </div>
               
               <div class="col-md-6 col-md-offset-3">
@@ -170,6 +178,51 @@
 <script>
   $(document).ready(function() {
       tabel();
+      $(".province").change(function()
+      {
+        var id=$(this).val();
+        $(".city").find('option').remove();
+        $(".district").find('option').remove();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('get_city')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_city").html(html)
+            .selectpicker('refresh');
+
+            $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+            .selectpicker('refresh');
+          } 
+        });
+      });
+
+
+      $(".city").change(function()
+      {
+        var id=$(this).val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('get_district')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+          },
+          cache: false,
+          success: function(html)
+          {
+            $("#basic_district").html(html)
+            .selectpicker('refresh');
+          } 
+        });
+      });
   } );
 
   function isNumber(evt) {

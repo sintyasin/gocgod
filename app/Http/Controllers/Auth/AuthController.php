@@ -13,6 +13,7 @@ use Cart;
 use Auth;
 use App\AboutUs;
 use App\ActivationService;
+use App\Province;
 
 class AuthController extends Controller
 {
@@ -83,7 +84,7 @@ class AuthController extends Controller
             return view($this->registerView);
         }
         $data['contact'] = AboutUs::first();
-        $data['city'] = City::all();
+        $data['province'] = province::all();
 
         return view('auth.register', $data);
     }
@@ -216,6 +217,8 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:master__member',
             'passwords' => 'required|min:3|confirmed',
             'kota' => 'required|numeric',
+            'provinsi' => 'required|numeric',
+            'kecamatan' => 'required|numeric', 
         ]);
     }
 
@@ -231,27 +234,28 @@ class AuthController extends Controller
         //ambil data ulang tahun
         $dob = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
 
-        if($data['kota'] == 0)
-        {
-            $newcity = filter_var($data['kotabaru'], FILTER_SANITIZE_STRING);
+        // if($data['kota'] == 0)
+        // {
+        //     $newcity = filter_var($data['kotabaru'], FILTER_SANITIZE_STRING);
 
-            $city = new City;
-            $city->city_name = $newcity;
-            $city->save();
+        //     $city = new City;
+        //     $city->city_name = $newcity;
+        //     $city->save();
 
-            return Member::create([
-                'name' => $data['nama'],
-                'address' => $data['alamat'],
-                'zipcode' => $data['kodepos'],
-                'date_of_birth' => $dob,
-                'phone' => $data['telepon'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['passwords']),
-                'city_id' => $city->city_id,
-            ]);
-        }
-        else
-        {
+        //     return Member::create([
+        //         'name' => $data['nama'],
+        //         'address' => $data['alamat'],
+        //         'zipcode' => $data['kodepos'],
+        //         'date_of_birth' => $dob,
+        //         'phone' => $data['telepon'],
+        //         'email' => $data['email'],
+        //         'password' => bcrypt($data['passwords']),
+        //         'city_id' => $city->city_id,
+
+        //     ]);
+        // }
+        // else
+        // {
             return Member::create([
                 'name' => $data['nama'],
                 'address' => $data['alamat'],
@@ -261,7 +265,9 @@ class AuthController extends Controller
                 'email' => $data['email'],
                 'password' => bcrypt($data['passwords']),
                 'city_id' => $data['kota'],
+                'province_id' => $data['provinsi'],
+                'district_id' => $data['kecamatan'],
             ]);
-        }
+        // }
     }
 }

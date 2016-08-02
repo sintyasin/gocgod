@@ -28,6 +28,8 @@ use Mail;
 use App\AgentRating;
 use App\TxOrderConfirmation;
 use App\AgentFee;
+use App\Province;
+use App\District;
 
 class ProductDataOrder
 {
@@ -36,11 +38,43 @@ class ProductDataOrder
     public $price;
 }
 
-
-
-
 class TransactionController extends Controller
 {
+    public function get_city(Request $request)
+    {
+      $v = Validator::make($request->all(),[
+          'id' =>'required|numeric',
+        ]);
+
+      if($v->fails())
+        {
+            return "Not completed data";
+        }
+
+      $input = $request->all();
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      $data['city'] = City::where('province_id', $id)->where('status', 1)->get();
+      return view('page.city', $data);
+    }
+
+    public function get_district(Request $request)
+    {
+      $v = Validator::make($request->all(),[
+          'id' =>'required|numeric',
+        ]);
+
+      if($v->fails())
+        {
+            return "Not completed data";
+        }
+
+      $input = $request->all();
+      $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
+      $data['district'] = District::where('city_id', $id)->where('status', 1)->get();
+
+      return view ('page.district', $data);
+    }
+
     public function customerCart()
     {
         return view('page.customercart');
@@ -126,7 +160,8 @@ class TransactionController extends Controller
         $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
                         ->where('status_user', 0)
                         ->get();
-
+        $data['province'] = Province::where('status', 1)->get();
+        
         $start = "";
         date_default_timezone_set('Asia/Jakarta');
         if(date("l") == "Friday")
@@ -167,7 +202,6 @@ class TransactionController extends Controller
             }
         }
         $data['start'] = $start;
-        $data['city'] = City::all();
 
         if($request->wantsJson())
         {
@@ -185,8 +219,10 @@ class TransactionController extends Controller
     {
         $v = Validator::make($request->all(),[
             'address' => 'required|max:500',
+            'province' => 'required|numeric',
+            'district' => 'required|numeric',
             'city' => 'required|numeric',
-            'agent' => 'required|numeric',
+            // 'agent' => 'required|numeric',
             'request_date' =>  'required|max:10',
             'zipcode' => 'required|numeric',
             ]);
@@ -199,8 +235,10 @@ class TransactionController extends Controller
         $input = $request->all();
 
         $customer_id = Auth::user()->id;
-        $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
+        // $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
         $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
+        $province_id = filter_var($input['province'], FILTER_SANITIZE_STRING);
+        $district_id = filter_var($input['district'], FILTER_SANITIZE_STRING);
         $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
         $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
         $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
@@ -236,9 +274,11 @@ class TransactionController extends Controller
 
         $order = new TxOrder;
         $order->customer_id = $customer_id;
-        $order->agent_id = $agent_id;
+        $order->agent_id = 3;
         $order->ship_address = $ship_address;
         $order->ship_city_id = $ship_city_id;
+        $order->province_id = $province_id;
+        $order->district_id = $district_id;
         $order->zipcode = $zipcode;
         $order->shipping_date = $date;
         $order->group_id = $group;
@@ -297,11 +337,11 @@ class TransactionController extends Controller
         $data['status_payment'] = 'Pending';
         $data['payment_method'] = 'Bank Transfer';
 
-        Mail::send('page.email_order', $data, function ($m) {
-            $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+        // Mail::send('page.email_order', $data, function ($m) {
+        //     $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
-            $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
-        });
+        //     $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+        // });
 
         if($request->wantsJson())
         {
@@ -590,6 +630,7 @@ class TransactionController extends Controller
         $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
                         ->where('status_user', 0)
                         ->get();
+        $data['province'] = Province::where('status', 1)->get();
 
         $start = "";
         date_default_timezone_set('Asia/Jakarta');
@@ -649,6 +690,8 @@ class TransactionController extends Controller
     {
         $v = Validator::make($request->all(),[
           'address' => 'required|max:500',
+          'province' => 'required|numeric',
+          'district' => 'required|numeric',
           'city' => 'required|numeric',
           'zipcode' => 'required|max:50',
           'agent' => 'required|numeric',
@@ -666,6 +709,8 @@ class TransactionController extends Controller
         $customer_id = Auth::user()->id;
         $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
         $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
+        $province_id = filter_var($input['province'], FILTER_SANITIZE_STRING);
+        $district_id = filter_var($input['district'], FILTER_SANITIZE_STRING);
         $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
         $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
         $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
@@ -699,6 +744,8 @@ class TransactionController extends Controller
             $order->agent_id = $agent_id;
             $order->ship_address = $ship_address;
             $order->ship_city_id = $ship_city_id;
+            $order->province_id = $province_id;
+            $order->district_id = $district_id;
             $order->zipcode = $zipcode;
             $order->shipping_date = $date;
             $order->group_id = $group;

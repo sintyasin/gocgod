@@ -893,3 +893,12 @@ figure:hover figcaption {
 {
   display:none;
 }
+
+.bs-searchbox input[type="text"]
+{
+  width: 100% !important;
+}
+
+.dropdown-menu>li>a:hover {
+    background-color: #B0C4DE !important;
+}
