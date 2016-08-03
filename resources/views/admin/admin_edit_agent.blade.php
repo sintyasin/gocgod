@@ -87,35 +87,37 @@
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-3">
+            <div class="col-md-offset-2">
                 <button type="submit" class="btn btn-primary">Submit</button> 
                 &nbsp; &nbsp;
-                <a href="{{ URL::to('admin/agent/list') }}" class="btn btn-default">Cancel</a>                              
+                <a href="{{ URL::to('admin/agent/list') }}" class="btn btn-default">Cancel</a>
+                <br><br>
+                <button type="button" onclick="agentCoverage({{$query->id}})" class="btn btn-warning">Shipping Coverage</button>                          
             </div>
         </div>
       </form>
+    </div>
 
-      <div class="col-lg-12">
-        <h2>Order Transaction</h2> <br>
-      </div>
+    <div class="col-lg-12">
+      <h2>Order Transaction</h2> <br>
+    </div>
 
-      <div class="col-lg-12">
-        <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
-          <thead>
-          </thead>
-          <tbody>
-          </tbody>
-          <tfoot>
-          </tfoot>
-        </table>
-      </div>
+    <div class="col-lg-12">
+      <table id="datatableUser" class="table table-striped table-bordered dt-responsive" width="100%" cellspacing="0">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
     </div>
 
     <!-- Modal -->
     <div id="productDetail" class="modal fade" role="dialog">
       <div class="modal-dialog">
 
-        <!-- Modal content-->
+        <!-- Modal product detail-->
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -133,11 +135,94 @@
 
       </div>
     </div>
+
+    <!-- Modal agent shipping coverage -->
+    <div id="agentDetail" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><b>Agent Detail</b></h4>
+          </div>
+          <div class="modal-body">
+            <div id="name" style="min-height:30px; width:100%;"></div>
+            <div id="day" style="min-height:30px; width:100%;"></div>
+            <div id="ship" style="min-height:30px; width:100%;"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div><!-- /.row -->
 </section><!-- /.content -->
 
 @push('scripts')
 <script>
+function agentCoverage(id)
+{
+    $.ajax({
+      type: "POST",
+      url: "{{ URL::to('/admin/agent/request/detail') }}",
+      data: {id:id, _token:"<?php echo csrf_token(); ?>"},
+      success:
+      function(data)
+      {
+        if(data != 0)
+        {
+          var day = "<h4><b>Available day(s)</b></h4>";
+          for(var i=0; i<data.day.length; i++)
+          {
+            switch(data.day[i]) {
+              case 1:
+                day += 'Senin';
+                break;
+              case 2:
+                day += 'Selasa';
+                break;
+              case 3:
+                day += 'Rabu';
+                break;
+              case 4:
+                day += 'Kamis';
+                break;
+              case 5:
+                day += 'Jumat';
+                break;
+              case 6:
+                day += 'Sabtu';
+                break;
+              case 7:
+                day += 'Minggu';
+                break;
+            } 
+            //kalo bukan data terakhir kasih koma (,)
+            if(i != data.day.length - 1) day += ', ';
+          }
+
+          var ship = "<br><h4><b>Shipping coverage</b></h4>";
+          for(var i=0; i<data.ship.length; i++)
+          {
+            ship += data.ship[i]['province'] + '<br>' + data.ship[i]['city'] + '<br>' + data.ship[i]['district'];
+
+            //kalo bukan data terakhir kasih koma (,)
+            if(i != data.ship.length - 1) ship += '<br><br>';
+          }
+
+          $(".modal-body #name").html(data.name);
+          $(".modal-body #day").html(day);
+          $(".modal-body #ship").html(ship);
+        }
+      }
+    });
+    $("#agentDetail").modal();
+}
+
 $('#datatableUser tbody').on( 'click', '.detail', function () {
     var id = $(this).data('id');
     $.ajax({

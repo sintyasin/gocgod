@@ -180,33 +180,6 @@
       
 
   }
-
-  function addtosubcriber(x)
-  {
-    var quantity = $('#'+x+'-qty_subcriber').val();
-    var name = $('#'+x+'-name').val();
-    var price = $('#'+x+'-price').val();
-    var id = $('#'+x+'-id').val();
-    
-    if (quantity < 1) alert('You are still not purchase this products!');
-    else{
-    $.ajax({
-      url: '{{ URL("/addtocartsubcriber")}}',
-      type: 'POST',
-      data: {id: id, qty: quantity, name: name, price: price},
-      beforeSend: function(request){
-        return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-      },
-    })
-    .success(function(data){
-      $("#button_"+x).prop("disabled",true);
-      alert('Added to cart!');
-    })
-    .fail(function(){
-      alert('error');
-    })
-    }
-  }
 </script>
 @endpush
 @stop

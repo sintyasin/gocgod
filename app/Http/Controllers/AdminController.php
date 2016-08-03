@@ -923,7 +923,7 @@ class AdminController extends Controller
   public function getAddAdmin()
   {
     $data['active'] = 'addAdmin';
-    $data['city'] = City::all();
+    $data['province'] = Province::all();
 
     return view('admin.admin_add_admin', $data);
   }
@@ -934,7 +934,9 @@ class AdminController extends Controller
         'name' => 'required|max:100',
         'password' => 'required|min:3|confirmed',
         'dob' => 'required',
-        'city' => 'required|numeric',
+        'provinsi' => 'required|numeric',
+        'kota' => 'required|numeric',
+        'kecamatan' => 'required|numeric',
         'address' => 'required|max:500',
         'phone' => 'numeric',
         'email' => 'required|email|unique:master__admin,email',
@@ -951,22 +953,14 @@ class AdminController extends Controller
     $name = filter_var($input['name'], FILTER_SANITIZE_STRING);
     $pass = Hash::make($input['password']);
     $dob = filter_var($input['dob'], FILTER_SANITIZE_STRING);
-    $city = filter_var($input['city'], FILTER_SANITIZE_STRING);
+    $province = filter_var($input['provinsi'], FILTER_SANITIZE_STRING);
+    $district = filter_var($input['kecamatan'], FILTER_SANITIZE_STRING);
+    $city = filter_var($input['kota'], FILTER_SANITIZE_STRING);
     $address = filter_var($input['address'], FILTER_SANITIZE_STRING);
     $phone = filter_var($input['phone'], FILTER_SANITIZE_STRING);
     $super = filter_var($input['super'], FILTER_SANITIZE_STRING);
     $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
     $info = filter_var($input['info'], FILTER_SANITIZE_STRING);
-
-    //kalo new city, berarti insert dulu city barunya
-    if($city == 0)
-    {
-      $newcity = filter_var($input['newcity'], FILTER_SANITIZE_STRING);
-      
-      $data = new City;
-      $data->city_name = $newcity;
-      $data->save();
-    }
 
     $admin = new Admin();
     $admin->name = $name;
@@ -976,10 +970,9 @@ class AdminController extends Controller
     $admin->address = $address;
     $admin->phone = $phone;
     $admin->super = $super;
-    if($city == 0)
-        $admin->city_id = $data->city_id;
-    else
-        $admin->city_id = $city;
+    $admin->province_id = $province;
+    $admin->city_id = $city;
+    $admin->district_id = $district;
     $admin->save();
 
     $data = new AdminInfo();
@@ -1541,7 +1534,7 @@ class AdminController extends Controller
       $data['name'] = $agent->name;
 
       //cek hari apa aja dia bisa kirim
-      $array;
+      $array = array();
       $day = AgentDay::where('agent_id', $agent->id)->orderBy('day', 'asc')->get(); 
       for ($i=0; $i < count($day) ; $i++) { 
         $array[$i] = $day[$i]->day;
@@ -1594,7 +1587,12 @@ class AdminController extends Controller
          
         if($action == "reject")
         {
-          Req_agent::find($id)->delete();
+          $agent = Req_agent::find($id);
+          
+          AgentDay::where('agent_id', $agent->member_id)->delete();
+          AgentShip::where('agent_id', $agent->member_id)->delete();
+
+          $agent->delete();
           Session::flash('reject', 1);
         }
         else if($action == "approve")
@@ -1624,7 +1622,12 @@ class AdminController extends Controller
       $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
       if($action == "reject")
       {
-        Req_agent::find($id)->delete();
+        $agent = Req_agent::find($id);
+          
+        AgentDay::where('agent_id', $agent->member_id)->delete();
+        AgentShip::where('agent_id', $agent->member_id)->delete();
+
+        $agent->delete();
         Session::flash('reject', 1);
       }
       else if($action == "approve")
@@ -1662,7 +1665,7 @@ class AdminController extends Controller
   public function getAgentData()
   {
     $query = DB::table('master__member')
-          ->select(DB::raw('AVG(rating) as rating'),'country', 'province_name', 'district_name', 'active_agent', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name')
+          ->select(DB::raw('AVG(rating) as rating'),'country', 'province_name', 'district_name', 'zipcode' ,'bank_name', 'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'balance', 'bank_account','city_name')
           ->leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
           ->leftJoin('master__bank', 'master__member.bank_id', '=', 'master__bank.bank_id')
           ->leftJoin('master__district as d', 'master__member.district_id', '=', 'd.district_id')
@@ -1690,7 +1693,6 @@ class AdminController extends Controller
             'bank_account'      => $value->bank_account,
             'city_name'      => $value->city_name,
             'rating'      => $value->rating,
-            'active_agent'      => $value->active_agent,
             'province_name'      => $value->province_name,
             'district_name'      => $value->district_name,
         ]);
@@ -1703,6 +1705,13 @@ class AdminController extends Controller
   public function getEditAgent($id)
   {
     $data['query'] = Member::find($id);
+    $data['day'] = AgentDay::where('agent_id', $id)->orderBy('day', 'asc')->get();
+    $data['ship'] = AgentShip::leftJoin('master__province as p', 'p.province_id', '=', 'master__agent_ship.province_id')
+                       ->leftJoin('master__city as c', 'c.city_id', '=', 'master__agent_ship.city_id')
+                       ->leftJoin('master__district as d', 'd.district_id', '=', 'master__agent_ship.district_id')
+                       ->where('agent_id', $id)
+                       ->orderBy('master__agent_ship.district_id', 'asc')
+                       ->select('province_name', 'city_name', 'district_name')->get(); 
     $data['active'] = "userAgentList";
 
     return view('admin.admin_edit_agent', $data);
@@ -1837,8 +1846,10 @@ class AdminController extends Controller
   public function getCustomerData()
   {
       $data['query'] = Member::leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
+                            ->leftJoin('master__district as d', 'master__member.district_id', '=', 'd.district_id')
+                            ->leftJoin('master__province as p', 'master__member.province_id', '=', 'p.province_id')
                             ->where('status_user', 1)
-                            ->get(['country', 'zipcode' ,'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'city_name']);
+                            ->get(['country', 'zipcode' ,'id', 'name', 'address', 'master__member.city_id', 'date_of_birth', 'email', 'phone', 'verification', 'city_name', 'district_name', 'province_name']);
         
       return Datatables::of($data['query'])
       ->make(true);

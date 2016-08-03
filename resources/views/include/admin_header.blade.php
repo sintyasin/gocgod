@@ -4,7 +4,7 @@
   <!-- mini logo for sidebar mini 50x50 pixels -->
   <a style="color:white;" href={{URL('admin/product/list')}}><span class="logo-mini"><b>Go</b></span></a>
   <!-- logo for regular state and mobile devices -->
-  <a style="color:white;" href={{URL('admin/product/list')}}><span class="logo-lg"><b>Admin</b>goCgoD</span></a>
+  <a style="color:white;" href={{URL('admin/order')}}><span class="logo-lg"><b>Admin</b>goCgoD</span></a>
 </span>
 <!-- Header Navbar: style can be found in header.less -->
 <nav class="navbar navbar-static-top" role="navigation">

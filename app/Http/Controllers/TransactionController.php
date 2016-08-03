@@ -222,7 +222,6 @@ class TransactionController extends Controller
             'province' => 'required|numeric',
             'district' => 'required|numeric',
             'city' => 'required|numeric',
-            // 'agent' => 'required|numeric',
             'request_date' =>  'required|max:10',
             'zipcode' => 'required|numeric',
             ]);
@@ -235,13 +234,12 @@ class TransactionController extends Controller
         $input = $request->all();
 
         $customer_id = Auth::user()->id;
-        // $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
         $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
         $province_id = filter_var($input['province'], FILTER_SANITIZE_STRING);
         $district_id = filter_var($input['district'], FILTER_SANITIZE_STRING);
         $ship_city_id = filter_var($input['city'], FILTER_SANITIZE_STRING);
         $zipcode = filter_var($input['zipcode'], FILTER_SANITIZE_STRING);
-        $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);
+        $shipping_date = filter_var($input['request_date'], FILTER_SANITIZE_STRING);        
         
         if(Cart::count() >= 5)
         {
@@ -272,9 +270,36 @@ class TransactionController extends Controller
         $date_order = new  \DateTime();
         $order_date = date_format($date_order, "Y-m-d H:i:s");
 
+        if(Auth::user()->status_user == 0) //kalo dia agen, berarti ordernya ke diri dia sendiri
+            $agent_id = Auth::user()->id;
+        else
+        {
+            $available_agent = Member::leftJoin('master__agent_ship as s', 'id', '=', 's.agent_id')
+                          ->leftJoin('master__agent_day as d', 'id', '=', 'd.agent_id')
+                          ->where('s.district_id', $district_id)
+                          ->where('d.day', date('N', strtotime($shipping_date)))
+                          ->get(['id']);
+
+            if(!$available_agent->isEmpty())
+            {
+                for ($i=0; $i < count($available_agent); $i++) { 
+                    $array[$i] = $available_agent[$i]->id;
+                }
+                $agent = TxOrder::select('agent_id', \DB::raw('COUNT(order_id)'))
+                               ->whereIn('agent_id', $array)
+                               ->orderBy('COUNT(order_id)', 'asc')
+                               ->groupBy('agent_id')
+                               ->first();
+
+                $agent_id = $agent->agent_id;
+            }
+            else 
+                $agent_id = 0;
+        }
+        
         $order = new TxOrder;
         $order->customer_id = $customer_id;
-        $order->agent_id = 3;
+        $order->agent_id = $agent_id;
         $order->ship_address = $ship_address;
         $order->ship_city_id = $ship_city_id;
         $order->province_id = $province_id;
@@ -476,43 +501,6 @@ class TransactionController extends Controller
     }
 
     //=============================== CHECKOUT SUBSCRIBER =============================== 
-    //---------------- BERLANGGANAN - add cart -----------------
-    public function addtocartsubcriber(Request $data)
-    {
-        $v = Validator::make($data->all(),[
-            'qty' =>'required|numeric',
-            ]);
-        if($v->fails())
-        {
-            return "Not completed data";
-        }
-
-        $rowid = Cart::search(array('id' => $data->id));
-
-        if($rowid){
-            $item = Cart::get($rowid[0]);
-            Cart::update($rowid[0], $item->qty + $data->qty);
-        }
-        else{
-            Cart::add([
-              'id'=> $data->id, 
-              'qty' => $data->qty,
-              'name' => $data->name,
-              'price' => $data->price,
-              ]);
-        }
-        $total = Cart::total();
-        $response = array(
-          'id' => $data->id,
-          'qty' => $data->qty,
-          'name' => $data->name,
-          'price' => $data->price,
-          'total' => $total
-          );
-
-        return response()->json(compact('response'));
-    }
-
     //---------------- BERLANGGANAN - update cart -----------------
     public function updatecart(Request $data)
     {
@@ -694,7 +682,6 @@ class TransactionController extends Controller
           'district' => 'required|numeric',
           'city' => 'required|numeric',
           'zipcode' => 'required|max:50',
-          'agent' => 'required|numeric',
           'week' => 'required|numeric',
           'request_date' =>  'required|max:10',
           ]);
@@ -707,7 +694,6 @@ class TransactionController extends Controller
         $input = $request->all();
 
         $customer_id = Auth::user()->id;
-        $agent_id = filter_var($input['agent'], FILTER_SANITIZE_STRING);
         $ship_address = filter_var($input['address'], FILTER_SANITIZE_STRING);
         $province_id = filter_var($input['province'], FILTER_SANITIZE_STRING);
         $district_id = filter_var($input['district'], FILTER_SANITIZE_STRING);
@@ -737,6 +723,34 @@ class TransactionController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $date_order = new  \DateTime();
         $order_date = date_format($date_order, "Y-m-d H:i:s");
+
+        if(Auth::user()->status_user == 0) //kalo dia agen, berarti ordernya ke diri dia sendiri
+            $agent_id = Auth::user()->id;
+        else
+        {
+            $available_agent = Member::leftJoin('master__agent_ship as s', 'id', '=', 's.agent_id')
+                          ->leftJoin('master__agent_day as d', 'id', '=', 'd.agent_id')
+                          ->where('s.district_id', $district_id)
+                          ->where('d.day', date('N', strtotime($shipping_date)))
+                          ->get(['id']);
+
+            if(!$available_agent->isEmpty())
+            {
+                for ($i=0; $i < count($available_agent); $i++) { 
+                    $array[$i] = $available_agent[$i]->id;
+                }
+                $agent = TxOrder::select('agent_id', \DB::raw('COUNT(order_id)'))
+                               ->whereIn('agent_id', $array)
+                               ->orderBy('COUNT(order_id)', 'asc')
+                               ->groupBy('agent_id')
+                               ->first();
+
+                $agent_id = $agent->agent_id;
+            }
+            else 
+                $agent_id = 0;
+        }
+
         for($i = 0; $i < $week; $i++)
         {
             $order = new TxOrder;

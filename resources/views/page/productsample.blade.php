@@ -38,38 +38,38 @@
                     <center>
                     <p class='form_head'>Event Details</p>
                     <p>Event Name</p>
-                    <input type="text" name='event_name' placeholder='Event Name'/>
+                    <input type="text" name='event_name' placeholder='Event Name' value="{{old('event_name')}}" />
                     @if ($errors->has('event_name'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('event_name') }}</strong>
+                        <strong style="color:#ff3333;">{{ $errors->first('event_name') }}</strong>
                     </span>
                     @endif
                     <p>Event Date</p>
-                    <input type="text" name='event_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker"/>
+                    <input type="text" name='event_date' placeholder='Example = 2016-05-31 (year-month-day)' value="{{old('event_date')}}" autocomplete="off" id="datepicker"/>
                     @if ($errors->has('event_date'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('event_date') }}</strong>
+                        <strong style="color:#ff3333;">{{ $errors->first('event_date') }}</strong>
                     </span>
                     @endif
                     <p>Event Venue</p>
-                    <input type="text" name='event_venue' placeholder='Event Venue'/>
+                    <input type="text" name='event_venue' placeholder='Event Venue' value="{{old('event_venue')}}"/>
                     @if ($errors->has('event_venue'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('event_venue') }}</strong>
+                        <strong style="color:#ff3333;">{{ $errors->first('event_venue') }}</strong>
                     </span>
                     @endif
                     <p>Event Description</p>
-                    <input type="text" name='event_description' placeholder='Event Description'/>
+                    <input type="text" name='event_description' placeholder='Event Description' value="{{old('event_description')}}"/>
                     @if ($errors->has('event_description'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('event_description') }}</strong>
+                        <strong style="color:#ff3333;">{{ $errors->first('event_description') }}</strong>
                     </span>
                     @endif
                     <p>Shipping Date</p>
-                    <input type="text" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' autocomplete="off" id="datepicker1"/>
+                    <input type="text" name='request_date' placeholder='Example = 2016-05-31 (year-month-day)' value="{{old('request_date')}}" autocomplete="off" id="datepicker1"/>
                     @if ($errors->has('request_date'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('request_date') }}</strong>
+                        <strong style="color:#ff3333;">{{ $errors->first('request_date') }}</strong>
                     </span>
                     @endif
                     <br>

@@ -113,7 +113,7 @@
               @endif
               </div>
               
-              <div class="col-md-6 col-md-offset-3">
+              <!-- <div class="col-md-6 col-md-offset-3">
               <label for="Agent">Pilih Agent</label> <br>
               <select class="form-control" id="agent" name="agent" style="width:100%" >
               @foreach($agent as $data)
@@ -124,7 +124,7 @@
                 @endif
               @endforeach
               </select>
-              </div>
+              </div> -->
               
               <div class="col-md-offset-3 col-md-3  ">
               <label for="week">Berlangganan Berapa Minggu?</label><br>

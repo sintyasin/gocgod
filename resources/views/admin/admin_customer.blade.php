@@ -51,17 +51,19 @@ $(function() {
         columns: [
             { data: 'id', name: 'id', title:'Customer Id' },
             { data: 'name', name: 'name', title:'Name' },
-            { data: 'address', name: 'address', title:'Address' },
+            { data: 'address', width:"100%", name: 'address', title:'Address' },
             { data: 'city_name', name: 'city_name', title:'City' },
             { data: 'country', name: 'country', title:'Country' },
             { data: 'zipcode', name: 'zipcode', title:'Zip Code' },
-            { data: 'date_of_birth', name: 'date_of_birth', title:'Date of birth' },            
+            { data: 'date_of_birth', name: 'date_of_birth', title:'Date of birth' },   
             { data: 'email', name: 'email', title:'Email' },
             { data: 'phone', name: 'phone', title:'Phone' },
-            { data: 'verification', name: 'verification', title:'Verification' },
+            { data: 'province_name', name: 'province_name', title:'Province' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Actions', render: function(data, type, row) {
               return '<a class="btn btn-warning" onclick="editCustomer(' + row.id + ')" >' + 'Edit' + '</a>';
-            } }
+            } },         
+            { data: 'district_name', name: 'district_name', title:'District' },
+            { data: 'verification', name: 'verification', title:'Verification' },
         ]
     });
 });
