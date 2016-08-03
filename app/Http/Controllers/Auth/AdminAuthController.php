@@ -121,8 +121,8 @@ class AdminAuthController extends Controller
     {
         $data['query'] = auth('admin')->user();
         $data['province'] = Province::all();
-        $data['city'] = City::where('city_id', auth('admin')->user()->city_id)->first();
-        $data['district'] = District::where('district_id', auth('admin')->user()->district_id)->first();
+        $data['city'] = City::where('province_id', auth('admin')->user()->province_id)->get();
+        $data['district'] = District::where('city_id', auth('admin')->user()->city_id)->get();
         
         return view('admin.admin_edit_profile', $data);
     }

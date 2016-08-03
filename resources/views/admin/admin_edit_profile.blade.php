@@ -94,7 +94,13 @@
 
             <div class="col-md-8">
                 <select id="basic_city" name="kota" class="city selectpicker show-tick form-control" data-live-search="true">
-                  <option value="{{$city->city_id}}" selected="selected">{{$city->city_name}}</option>
+                  @foreach($city as $data)
+                      @if(auth('admin')->user()->city_id == $data->city_id)
+                        <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
+                      @else
+                        <option value="{{$data->city_id}}" id="{{$data->city_id}}">{{ $data->city_name}}</option>
+                      @endif
+                  @endforeach
                 </select>
 
 
@@ -111,7 +117,13 @@
 
             <div class="col-md-8">
                 <select id="basic_district" name="kecamatan" class="district selectpicker show-tick form-control" data-live-search="true">
-                  <option value="{{$district->district_id}}" selected="selected">{{$district->district_name}}</option>
+                  @foreach($district as $data)
+                      @if(auth('admin')->user()->district_id == $data->district_id)
+                        <option value="{{ $data->district_id }}" selected >{{ $data->district_name }}</option>
+                      @else
+                        <option value="{{$data->district_id}}" id="{{$data->district_id}}">{{ $data->district_name}}</option>
+                      @endif
+                  @endforeach
                 </select>
 
 

@@ -26,13 +26,13 @@
             Alamat: &nbsp;<b> {{Auth::user()->address}}</b>
           </li>
           <li class="list-group-item">
-            Kecamatan: &nbsp;<b> {{$district->district_name}}</b>
+            Provinsi: &nbsp;<b> {{$province->province_name}}</b>
           </li>
           <li class="list-group-item">
             Kota: &nbsp;<b> {{$city->city_name}}</b>
           </li>
           <li class="list-group-item">
-            Provinsi: &nbsp;<b> {{$province->province_name}}</b>
+            Kecamatan: &nbsp;<b> {{$district->district_name}}</b>
           </li>
           <li class="list-group-item">
             Kode Pos: &nbsp;<b> {{Auth::user()->zipcode}}</b>

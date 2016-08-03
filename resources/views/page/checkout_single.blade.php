@@ -48,9 +48,14 @@
               </div>
 
               <p>*Gratis ongkos kirim untuk pembelian dengan total kuantitas lebih dari 5</p>
-              <br>
+              @if(Cart::count() < 5)
+                <div id='shipping'>
+                  <p class="plxLogin"><font size="3">Ongkos Kirim</font></p>
+                  <p class="plxLogin"><font size="4"><b>Rp <span id="shipping-fee"> {{number_format($shipping_fee, 0, ',', '.')}}</span></b></font></p>
+                </div>
+              @endif
               <p class="plxLogin"><font size="3">Total Harga</font></p>
-              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total(), 0, ',', '.')}}</span></b></font></p>                                             
+              <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total() + $shipping_fee, 0, ',', '.')}}</span></b></font></p>
             </div>
             <br>
             <div id="alert">
@@ -76,24 +81,55 @@
               <label for="Province">Pilih Provinsi</label> <br>
               <select id="basic" name="province" class="province selectpicker show-tick form-control" data-live-search="true">
                 <option selected="selected">-- Pilih Provinsi --</option>
-                @foreach($province as $data)
-                  <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
-                @endforeach
+                  @foreach($province as $data)
+                    @if(Auth::user()->province_id == $data->province_id)
+                      <option value="{{ $data->province_id }}" selected >{{ $data->province_name }}</option>
+                    @else
+                      <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                    @endif
+                  @endforeach
               </select>
+                @if ($errors->has('provinsi'))
+                    <span class="help-block">
+                        <strong>Provinsi harus diisi</strong>
+                    </span>
+                @endif
               </div>
 
               <div class="col-md-3">
               <label for="City">Pilih Kota</label> <br>
               <select id="basic_city" name="city" class="city selectpicker show-tick form-control" data-live-search="true">  
-                <option selected="selected">-- Pilih Kota --</option>
+                @foreach($city as $data)
+                    @if(Auth::user()->city_id == $data->city_id)
+                      <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
+                    @else
+                      <option value="{{$data->city_id}}" id="{{$data->city_id}}">{{ $data->city_name}}</option>
+                    @endif
+                @endforeach
               </select>
+                @if ($errors->has('kota'))
+                    <span class="help-block">
+                        <strong>Kota harus diisi</strong>
+                    </span>
+                @endif
               </div>
 
               <div class="col-md-offset-3 col-md-3">
               <label for="district">Pilih Kecamatan</label> <br>
               <select id="basic_district" name="district" class="district selectpicker show-tick form-control" data-live-search="true">
-                <option selected="selected">-- Pilih Kecamatan --</option>
+                @foreach($district as $data)
+                    @if(Auth::user()->district_id == $data->district_id)
+                      <option value="{{ $data->district_id }}" selected >{{ $data->district_name }}</option>
+                    @else
+                      <option value="{{$data->district_id}}" id="{{$data->district_id}}">{{ $data->district_name}}</option>
+                    @endif
+                @endforeach
               </select>
+                @if ($errors->has('kecamatan'))
+                    <span class="help-block">
+                        <strong>Kecamatan harus diisi</strong>
+                    </span>
+                @endif
               </div>
 
               <div class="col-md-3">
@@ -261,6 +297,10 @@
       $('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
       $('.dtr-data').find('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
       $('#total-cart').html(data.response.total.toLocaleString());
+      if(data.response.shipping_fee > 0)
+      {
+        $('shipping-fee')
+      }
       alert("Update Data berhasil!");
     })
     .fail(function(){

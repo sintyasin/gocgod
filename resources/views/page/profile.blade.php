@@ -22,7 +22,7 @@
       </button>
       </center>
 
-      <!-- Modal -->
+      <!-- Modal Ubah Informasi-->
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -62,14 +62,13 @@
                     <div class="col-md-8">
                         <select id="basic" name="provinsi" class="province selectpicker show-tick form-control" data-live-search="true">
                           @foreach($province as $data)
-                          @if(Auth::user()->province_id == $data->province_id)
-                          <option value="{{ $data->province_id }}" selected >{{ $data->province_name }}</option>
-                          @else
-                          <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
-                          @endif
+                            @if(Auth::user()->province_id == $data->province_id)
+                              <option value="{{ $data->province_id }}" selected >{{ $data->province_name }}</option>
+                            @else
+                              <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                            @endif
                           @endforeach
                         </select>
-
 
                         @if ($errors->has('provinsi'))
                             <span class="help-block">
@@ -84,9 +83,14 @@
 
                     <div class="col-md-8">
                         <select id="basic_city" name="kota" class="city selectpicker show-tick form-control" data-live-search="true">
-                          <option value="{{$city->city_id}}" selected="selected">{{$city->city_name}}</option>
+                          @foreach($city as $data)
+                              @if(Auth::user()->city_id == $data->city_id)
+                                <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
+                              @else
+                                <option value="{{$data->city_id}}" id="{{$data->city_id}}">{{ $data->city_name}}</option>
+                              @endif
+                          @endforeach
                         </select>
-
 
                         @if ($errors->has('kota'))
                             <span class="help-block">
@@ -101,9 +105,14 @@
 
                     <div class="col-md-8">
                         <select id="basic_district" name="kecamatan" class="district selectpicker show-tick form-control" data-live-search="true">
-                          <option value="{{$district->district_id}}" selected="selected">{{$district->district_name}}</option>
+                          @foreach($district as $data)
+                              @if(Auth::user()->district_id == $data->district_id)
+                                <option value="{{ $data->district_id }}" selected >{{ $data->district_name }}</option>
+                              @else
+                                <option value="{{$data->district_id}}" id="{{$data->district_id}}">{{ $data->district_name}}</option>
+                              @endif
+                          @endforeach
                         </select>
-
 
                         @if ($errors->has('kecamatan'))
                             <span class="help-block">
@@ -194,7 +203,7 @@
       </button>
       </center>
 
-      <!-- Modal -->
+      <!-- Modal Ubah Password-->
       <div class="modal fade" id="myPassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -273,6 +282,7 @@
       </button>
       </Center>
 
+      <!-- Modal Ubah Informasi Bank-->
       <div class="modal fade" id="bankinformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
@@ -350,6 +360,7 @@
     <div id="profile">	
     </div>
 
+    <!-- Modal Withdraw money / penarikan uang-->
     <div class="modal fade" id="withdrawMoney" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
