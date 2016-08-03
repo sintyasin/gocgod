@@ -65,7 +65,6 @@ Route::post('payment', 'TransactionController@payment'); //buat redirect dari fi
 	Route::get('checkout_subcriber', 'ProductController@getAllMenu');
 	Route::get('orderall_checkout', 'TransactionController@order_details');
 	Route::post('orderall', 'TransactionController@orderall');
-	Route::post('addtocartsubcriber/', 'TransactionController@addtocartsubcriber');
 	Route::get('customercart', 'TransactionController@customerCart');
 	Route::post('updatecart/', 'TransactionController@updatecart');
 	Route::post('deletecart/', 'TransactionController@deletecart');

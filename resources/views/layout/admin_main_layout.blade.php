@@ -3,11 +3,16 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="_token" content="{{csrf_token()}}" />
     <title>Admin goCgoD</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     
     <!-- CSS -->
+    <!-- dropdown search -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{URL::asset('assets/css/bootstrap-select.css')}}">
+
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="{{ URL::asset('assets/css/bootstrap.min.css') }}">
     <!-- datatables -->    
@@ -86,9 +91,9 @@
     <!-- CK Editor -->
     <script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
     <!-- Bootstrap WYSIHTML5 -->
-
     
-
+    <!-- dropdown select -->
+    <script src="{{ URL::asset('assets/js/bootstrap-select.js')}}"></script>
 
   </body>
 </html>
