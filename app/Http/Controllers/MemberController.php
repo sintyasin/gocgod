@@ -73,8 +73,8 @@ class MemberController extends Controller
                                 ->get();
         $data['bank'] = Bank::all();
         $data['province'] = Province::all();
-        $data['city'] = City::where('city_id', AUth::user()->city_id)->first();
-        $data['district'] = District::where('district_id', Auth::user()->district_id)->first();
+        $data['city'] = City::where('province_id', Auth::user()->province_id)->get();
+        $data['district'] = District::where('city_id', Auth::user()->city_id)->get();
 
         if($request->wantsJson())
         {
@@ -89,8 +89,8 @@ class MemberController extends Controller
 
     public function data_profile(Request $request)
     {
-        $data['province'] = Province::where('province_id', AUth::user()->province_id)->first();
-        $data['city'] = City::where('city_id', AUth::user()->city_id)->first();
+        $data['province'] = Province::where('province_id', Auth::user()->province_id)->first();
+        $data['city'] = City::where('city_id', Auth::user()->city_id)->first();
         $data['district'] = District::where('district_id', Auth::user()->district_id)->first();
         return view('page.data_user', $data);
     }
@@ -201,7 +201,7 @@ class MemberController extends Controller
         $member = Member::find(Auth()->user()->id);
         $member->password = Hash::make($request->newpassword);
         $member->save();
-        // dd($request->newpassword);
+        
         return redirect('/profile/'.Auth::user()->id);
     }
 

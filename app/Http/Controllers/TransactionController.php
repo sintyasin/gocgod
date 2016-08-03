@@ -125,10 +125,13 @@ class TransactionController extends Controller
             Cart::update($data->rowId, $qty);
             $subtotal = $product->price * $qty;
             $total = Cart::total();
+            if(Cart::count() < 5) $shipping_fee = 10000;
+            else $shipping_fee = 0;
 
             $response = array(
               'subtotal' => $subtotal,
-              'total' => $total);
+              'total' => $total,
+              'shipping_fee' => $shipping_fee);
 
             return response()->json(compact('response'));
         }
@@ -161,6 +164,14 @@ class TransactionController extends Controller
                         ->where('status_user', 0)
                         ->get();
         $data['province'] = Province::where('status', 1)->get();
+        $data['city'] = City::where('province_id', Auth::user()->province_id)->get();
+        $data['district'] = District::where('city_id', Auth::user()->city_id)->get();
+
+        $data['shipping_fee'] = 0;
+        if(Cart::count() < 5)
+        {
+            $data['shipping_fee'] = 10000;
+        }
         
         $start = "";
         date_default_timezone_set('Asia/Jakarta');
@@ -618,7 +629,10 @@ class TransactionController extends Controller
         $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
                         ->where('status_user', 0)
                         ->get();
+
         $data['province'] = Province::where('status', 1)->get();
+        $data['city'] = City::where('province_id', Auth::user()->province_id)->get();
+        $data['district'] = District::where('city_id', Auth::user()->city_id)->get();
 
         $start = "";
         date_default_timezone_set('Asia/Jakarta');
@@ -661,7 +675,6 @@ class TransactionController extends Controller
         }
         
         $data['start'] = $start;
-        $data['city'] = City::all();
 
         if($request->wantsJson())
         {
