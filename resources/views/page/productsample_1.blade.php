@@ -43,7 +43,7 @@
                     <div class="col-md-12">
                     <div class="col-md-4 col-md-offset-3">
                     <label>Product 1</label>
-                    <select name='0-product' style="width:80%;">
+                    <select name='0-product' style="width:70%;">
                     <?php $i = 1; ?>
                     @foreach ($query as $item)
                     <?php
@@ -84,21 +84,19 @@
         init_multifield(10, '.input_fields_wrap', '.add_field_button', 'user_music[]');
         init_multifield(10, '.input_fields_wrap2', '.add_field_button2', 'user_music2[]');
 
-
+        var max_fields = 100;  //maximum input boxes allowed
+        var x = 1; //initlal text box count
         function init_multifield(max, wrap, butt, fname_p) {
-            var max_fields = 5; //maximum input boxes allowed
             var wrapper = $(wrap); //Fields wrapper
             var add_button = $(butt); //Add button class
             var fname = fname_p;
 
-            var x = 1; //initlal text box count
-            
             $(add_button).click(function (e) { //on add input button click
                 e.preventDefault();
                 if (x < max_fields) { //max input box allowed
                     x++; //text box increment
 
-                    var cstring = '$(wrapper).append(\'<div class="col-md-12"><div class="col-md-4 col-md-offset-3"><label>Product '+ x +'&nbsp</label><select name="'+(x-1)+'-product" style="width:80%"><?php $i = 1; ?>@foreach ($query as $item)<?php echo "<option value= ". $item->varian_id . ">" . $item->varian_name . "</option>";$i++;?>@endforeach</select></div><div class="col-md-1"><input type="number" placeholder="quantity" style="width:80%;" min="1"  value="0" name="'+(x-1)+'-qty"/></div><a href="#" class="remove_field" style="color:white; margin-top:15px; float:left;">Remove</a></div>\');' //add input box
+                    var cstring = '$(wrapper).append(\'<div class="col-md-12"><div class="col-md-4 col-md-offset-3"><label>Product '+ x +'&nbsp</label><select name="'+(x-1)+'-product" style="width:70%"><?php $i = 1; ?>@foreach ($query as $item)<?php echo "<option value= ". $item->varian_id . ">" . $item->varian_name . "</option>";$i++;?>@endforeach</select></div><div class="col-md-1"><input type="number" placeholder="quantity" style="width:80%;" min="1"  value="0" name="'+(x-1)+'-qty"/></div><a href="#" class="remove_field" style="color:white; margin-top:15px; float:left;">Remove</a></div>\');' //add input box
                     eval(cstring);
                     
                 }
