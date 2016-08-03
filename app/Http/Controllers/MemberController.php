@@ -20,6 +20,8 @@ use App\Req_agent;
 use App\AboutUs;
 use App\Product;
 use App\TxOrder;
+use App\AgentDay;
+use App\AgentShip;
 use App\TxOrderDetail;
 
 use Hash;
@@ -285,14 +287,12 @@ class MemberController extends Controller
     	return view('page.findalocation', $data);
     }
 
-      
-
-    
 
     public function bank()
     {
         $data['contact'] = AboutUs::first();
         $data['bank'] = Bank::All();
+        $data['province'] = Province::where('status', 1)->get();
 
         $query = Req_agent::where('member_id', Auth::user()->id)->first();
 
@@ -306,9 +306,12 @@ class MemberController extends Controller
 
     public function request_agent(Request $request)
     {
+        
          $v = Validator::make($request->all(), [
             'bank' => 'required|numeric',
             'bank_account' => 'required|numeric',
+            'hari' => 'required|max:100',
+
         ]);
 
         if ($v->fails())
@@ -326,7 +329,18 @@ class MemberController extends Controller
         $req->member_id = $id;
         $req->bank_id = $bank;
         $req->bank_account = $bank_account;
-        $req->save();
+        $req->save(); 
+        
+        $hari = $input['hari'];
+        for($i=0; $i< count($hari); $i++)
+        {
+            $day = new AgentDay;
+            $day->agent_id = $id;
+            $day->day = $hari[$i];
+            $day->save();
+        }
+
+
         return redirect('becomeanagent')->with('success', 'Permintaan menjadi agen telah diterima, pihak Goc God akan menghubungi anda');
     }
 }
