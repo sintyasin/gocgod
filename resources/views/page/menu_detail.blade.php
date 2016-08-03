@@ -58,7 +58,7 @@
 							@if (Auth::guest())
 							<br>
 							@elseif (Auth::user()->status_user == 0)
-							<button class="cartBtnn"> <a href={{ URL('/productsample') }}>Contoh Produk </a></button>
+							<a href={{ URL('/productsample') }}> <button class="cartBtnn"> Contoh Produk </button> </a>
 							@else
 							<br>
 							@endif

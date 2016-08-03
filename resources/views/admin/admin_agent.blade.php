@@ -48,9 +48,6 @@
             <div id="name" style="min-height:30px; width:100%;"></div>
             <div id="day" style="min-height:30px; width:100%;"></div>
             <div id="ship" style="min-height:30px; width:100%;"></div>
-            <!-- <div id="name" style="min-height:30px; width:80px; float:left;"></div>
-            <div id="qty" style="min-height:30px; width:80px; margin-left:80px; float:left;"></div>
-            <div id="price" style="min-height:30px; width:150px; margin-left:240px;"></div> -->
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -151,7 +148,6 @@ $(function() {
             { data: 'email', name: 'email', title:'Email' },
             { data: 'phone', name: 'phone', title:'Phone' },
             { data: 'rating', name: 'rating', title:'Rating' },
-            { data: 'active_agent', name: 'active_agent', title:'Active Agent' },
             { data: 'balance', name: 'balance', title:'Balance' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Actions', render: function(data, type, row) {
               return '<a class="btn btn-warning" onclick="editAgent(' + row.id + ')" >' + 'Edit' + '</a><br><br>' + 

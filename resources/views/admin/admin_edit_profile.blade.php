@@ -66,33 +66,59 @@
             </div>
         </div>
 
-        <div class="form-group{{ $errors->has('city') || $errors->first('newcity') ? ' has-error' : '' }}">
-            <label class="col-md-2 control-label">City</label>
+        <div class="form-group{{ $errors->has('provinsi') ? ' has-error' : '' }}">
+            <label class="col-md-2 control-label" for="Province">Provinsi</label>
 
             <div class="col-md-8">
-                <select onclick="javascript:check();" class="form-control" id="city" name="city" >
-                  @foreach($city as $data)
-                    @if($query->city_id == $data->city_id)
-                      <option value="{{ $data->city_id }}" selected >{{ $data->city_name }}</option>
-                    @else
-                      <option value="{{ $data->city_id }}">{{ $data->city_name }}</option>
-                    @endif
+                <select id="basic" name="provinsi" class="province selectpicker show-tick form-control" data-live-search="true">
+                  @foreach($province as $data)
+                      @if(auth('admin')->user()->province_id == $data->province_id)
+                        <option value="{{ $data->province_id }}" selected >{{ $data->province_name }}</option>
+                      @else
+                        <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                      @endif
                   @endforeach
-                    <option value="0">New City</option>
-                </select>
-                <div id="newcity" style="display:none;">
-                  <br>
-                  <input type='text' class="form-control" placeholder="New city name" name="newcity" >
-                </div>
-                @if ($errors->has('city'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('city') }}</strong>
-                </span>
+              </select>
+
+
+                @if ($errors->has('provinsi'))
+                    <span class="help-block">
+                        <strong>Provinsi harus diisi</strong>
+                    </span>
                 @endif
-                @if ($errors->has('newcity'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('newcity') }}</strong>
-                </span>
+            </div>
+        </div>
+
+        <div class="form-group{{ $errors->has('kota') ? ' has-error' : '' }}">
+            <label class="col-md-2 control-label" for="city">Kota</label>
+
+            <div class="col-md-8">
+                <select id="basic_city" name="kota" class="city selectpicker show-tick form-control" data-live-search="true">
+                  <option value="{{$city->city_id}}" selected="selected">{{$city->city_name}}</option>
+                </select>
+
+
+                @if ($errors->has('kota'))
+                    <span class="help-block">
+                        <strong>Kota harus diisi</strong>
+                    </span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group{{ $errors->has('kecamatan') ? ' has-error' : '' }}">
+            <label class="col-md-2 control-label" for="district">Kecamatan</label>
+
+            <div class="col-md-8">
+                <select id="basic_district" name="kecamatan" class="district selectpicker show-tick form-control" data-live-search="true">
+                  <option value="{{$district->district_id}}" selected="selected">{{$district->district_name}}</option>
+                </select>
+
+
+                @if ($errors->has('kecamatan'))
+                    <span class="help-block">
+                        <strong>Kecamatan harus diisi</strong>
+                    </span>
                 @endif
             </div>
         </div>
@@ -215,22 +241,61 @@
 @push('scripts')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script>
-$(function() {
-    var date = $('#datepicker').datepicker({ 
-        dateFormat: 'yy-mm-dd',
-        maxDate: new Date
+$(document).ready(function() {
+$(".province").change(function()
+  {
+    var id=$(this).val();
+    $(".city").find('option').remove();
+    $(".district").find('option').remove();
+    $.ajax
+    ({
+      type: "POST",
+      url: "{{ URL::to('city')}}",
+      data: {id: id},
+      beforeSend: function(request){
+        return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      },
+      cache: false,
+      success: function(html)
+      {
+        $("#basic_city").html(html)
+        .selectpicker('refresh');
+
+        $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+        .selectpicker('refresh');
+      } 
+    });
+  });
+
+
+  $(".city").change(function()
+  {
+    var id=$(this).val();
+    $.ajax
+    ({
+      type: "POST",
+      url: "{{ URL::to('district')}}",
+      data: {id: id},
+      beforeSend: function(request){
+        return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      },
+      cache: false,
+      success: function(html)
+      {
+        $("#basic_district").html(html)
+        .selectpicker('refresh');
+      } 
+    });
+  });
+
+  var date = $('.datepicker').datepicker({ 
+    dateFormat: 'yy-mm-dd',
+    maxDate: new Date
     }).val();
 
-    $( "#datepicker" ).datepicker();
+    $( ".datepicker" ).datepicker();
 });
-
-function check() {
-  var e = document.getElementById('city');
-  if (e.options[e.selectedIndex].value == 0) {
-      document.getElementById('newcity').style.display = 'block';
-  }
-  else document.getElementById('newcity').style.display = 'none';
-}
 </script>
 @endpush
 @stop
+

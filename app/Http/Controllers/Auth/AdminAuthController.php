@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\Redirect;
 use Session;
 use Illuminate\Http\Request;
 
-use App\City;
 use App\Admin;
+use App\Province;
+use App\District;
+use App\City;
 use Hash;
 
 class AdminAuthController extends Controller
@@ -118,7 +120,9 @@ class AdminAuthController extends Controller
     public function getEditProfile()
     {
         $data['query'] = auth('admin')->user();
-        $data['city'] = City::all();
+        $data['province'] = Province::all();
+        $data['city'] = City::where('city_id', auth('admin')->user()->city_id)->first();
+        $data['district'] = District::where('district_id', auth('admin')->user()->district_id)->first();
         
         return view('admin.admin_edit_profile', $data);
     }
@@ -127,7 +131,9 @@ class AdminAuthController extends Controller
     {
         $v = Validator::make($request->all(), [
             'dob' => 'required',
-            'city' => 'required|numeric',
+            'provinsi' => 'required|numeric',
+            'kota' => 'required|numeric',
+            'kecamatan' => 'required|numeric',
             'address' => 'required|max:500',
             'phone' => 'numeric',
             'email' => 'required|email',
@@ -141,30 +147,19 @@ class AdminAuthController extends Controller
         $input = $request->all();
 
         $dob = filter_var($input['dob'], FILTER_SANITIZE_STRING);
-        $city = filter_var($input['city'], FILTER_SANITIZE_STRING);
+        $province = filter_var($input['provinsi'], FILTER_SANITIZE_STRING);
+        $district = filter_var($input['kecamatan'], FILTER_SANITIZE_STRING);
+        $city = filter_var($input['kota'], FILTER_SANITIZE_STRING);
         $address = filter_var($input['address'], FILTER_SANITIZE_STRING);
         $phone = filter_var($input['phone'], FILTER_SANITIZE_STRING);
         $email = filter_var($input['email'], FILTER_SANITIZE_STRING);
         
 
-        //kalo new city, berarti insert dulu city barunya
-        if($city == 0)
-        {
-          $newcity = filter_var($input['newcity'], FILTER_SANITIZE_STRING);
-          
-          $data = new City;
-          $data->city_name = $newcity;
-          $data->save();
-        }
-
-
         $admin = Admin::find(auth('admin')->user()->id);
         $admin->date_of_birth = $dob;
-
-        if($city == 0)
-            $admin->city_id = $data->city_id;
-        else
-            $admin->city_id = $city;
+        $admin->province_id = $province;
+        $admin->city_id = $city;
+        $admin->district_id = $district;
         $admin->address = $address;
         $admin->phone = $phone;
         $admin->email = $email;

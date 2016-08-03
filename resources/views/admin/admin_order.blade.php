@@ -302,7 +302,6 @@ $(function() {
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
             { data: 'group_id', name: 'group_id', title:'Group Id' },
             { data: 'shipping_date', name: 'shipping_date', title:'Shipping Date' },
-            { data: 'shipping_fee', name: 'shipping_fee', title:'Shipping Fee' },
             { data: 'total', name: 'total', title:'Total' },
             { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
             { data: 'status_confirmed', name: 'status_confirmed', title:'Customer Confirmation' },
@@ -310,7 +309,8 @@ $(function() {
             {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
               return '<br><a class="btn btn-warning" onclick="editOrder(' + row.order_id + ')" >' + 'Edit' + '</a> <br><br>' + 
                     '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
-            } },         
+            } },   
+            { data: 'shipping_fee', name: 'shipping_fee', title:'Shipping Fee' },      
             { data: 'payment_method', name: 'payment_method', title:'Payment Method' },
             { data: 'payment_account', name: 'payment_account', title:'Payment Account' },
             { data: 'bank_code', name: 'bank_code', title:'Bank Code' },
