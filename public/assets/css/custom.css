@@ -626,6 +626,28 @@ figure:hover figcaption {
         background-color: inherit;
         border-top:0 none;
     }
+    .caption{
+      width: 200px;
+      font-size: 10px;
+      line-height: 6px;
+    }
+    .title_cap{
+      font-family: nexa_blackregular;
+      padding-bottom: 7px;
+    }
+    h3.quick_h3{
+      font-size: 13px;
+      color: black;
+    }
+    button.cartBtn,a.cartBtn {
+      background: rgb(58, 75, 96) none repeat scroll 0 0;
+      border: medium none;
+      color: rgb(255, 255, 255);
+      line-height: 30px;
+      margin-bottom: 50px;
+      padding: 6px 10px;
+      transition: all 0.3s ease 0s;
+    }
 }
 
 /*
