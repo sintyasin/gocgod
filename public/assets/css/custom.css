@@ -31,6 +31,11 @@ CUSTOM!!
 	border: 1px solid #E3E3E3;
 	*/
 }
+
+
+.dropdown-backdrop {
+    display:none;
+}
 /*
 .googlemap_custom{
 	padding: 20px;

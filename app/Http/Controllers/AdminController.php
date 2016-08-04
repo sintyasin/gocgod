@@ -1587,13 +1587,16 @@ class AdminController extends Controller
          
         if($action == "reject")
         {
-          $agent = Req_agent::find($id);
-          
-          AgentDay::where('agent_id', $agent->member_id)->delete();
-          AgentShip::where('agent_id', $agent->member_id)->delete();
+          DB::transaction(function() use ($id)
+          {
+            $agent = Req_agent::find($id);
+            
+            AgentDay::where('agent_id', $agent->member_id)->delete();
+            AgentShip::where('agent_id', $agent->member_id)->delete();
 
-          $agent->delete();
-          Session::flash('reject', 1);
+            $agent->delete();
+            Session::flash('reject', 1);
+          });
         }
         else if($action == "approve")
         {
@@ -1622,13 +1625,16 @@ class AdminController extends Controller
       $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
       if($action == "reject")
       {
-        $agent = Req_agent::find($id);
-          
-        AgentDay::where('agent_id', $agent->member_id)->delete();
-        AgentShip::where('agent_id', $agent->member_id)->delete();
+        DB::transaction(function() use ($id)
+        {
+          $agent = Req_agent::find($id);
+            
+          AgentDay::where('agent_id', $agent->member_id)->delete();
+          AgentShip::where('agent_id', $agent->member_id)->delete();
 
-        $agent->delete();
-        Session::flash('reject', 1);
+          $agent->delete();
+          Session::flash('reject', 1);
+        });
       }
       else if($action == "approve")
       {
@@ -1988,8 +1994,6 @@ class AdminController extends Controller
 
     $input = $request->all();
 
-    /*$question = filter_var($input['question'], FILTER_SANITIZE_STRING);
-    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);*/
     $question = $input['question'];
     $question = str_replace('<p>', '', $question);
     $question = str_replace('</p>', '', $question);
@@ -2028,8 +2032,6 @@ class AdminController extends Controller
 
     $input = $request->all();
 
-    /*$question = filter_var($input['question'], FILTER_SANITIZE_STRING);
-    $answer = filter_var($input['answer'], FILTER_SANITIZE_STRING);*/
     $question = $input['question'];
     $question = str_replace('<p>', '', $question);
     $question = str_replace('</p>', '', $question);

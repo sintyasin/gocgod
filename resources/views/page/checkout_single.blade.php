@@ -19,7 +19,6 @@
       </div>
     @endif
 
-    <!-- hai -->
     <div class="stepper">
       <div id="wrapper_progress">
         <br>
@@ -27,8 +26,6 @@
           <span class='baricon'>1</span>
           <span id="bar1" class='progress_bar'></span>
           <span class='baricon'>2</span>
-          <!-- <span id="bar5" class='progress_bar'></span>
-          <span class='baricon'>6</span> -->
         </div>
         <br>
         <br>
@@ -48,12 +45,8 @@
               </div>
 
               <p>*Gratis ongkos kirim untuk pembelian dengan total kuantitas lebih dari 5</p>
-              @if(Cart::count() < 5)
-                <div id='shipping'>
-                  <p class="plxLogin"><font size="3">Ongkos Kirim</font></p>
-                  <p class="plxLogin"><font size="4"><b>Rp <span id="shipping-fee"> {{number_format($shipping_fee, 0, ',', '.')}}</span></b></font></p>
-                </div>
-              @endif
+              <p class="plxLogin"><font size="3">Ongkos Kirim</font></p>
+              <p class="plxLogin"><font size="4"><b>Rp <span id="shipping-fee"> {{number_format($shipping_fee, 0, ',', '.')}}</span></b></font></p>
               <p class="plxLogin"><font size="3">Total Harga</font></p>
               <p class="plxLogin"><font size="4"><b>Rp <span id="total-cart"> {{number_format(Cart::total() + $shipping_fee, 0, ',', '.')}}</span></b></font></p>
             </div>
@@ -296,11 +289,9 @@
     .success(function(data){
       $('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
       $('.dtr-data').find('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
-      $('#total-cart').html(data.response.total.toLocaleString());
-      if(data.response.shipping_fee > 0)
-      {
-        $('shipping-fee')
-      }
+      $('#total-cart').html((data.response.total + data.response.shipping_fee).toLocaleString());
+      $('#shipping-fee').html(data.response.shipping_fee.toLocaleString());
+      $('#cart-count').html(data.response.qty);
       alert("Update Data berhasil!");
     })
     .fail(function(){
@@ -327,6 +318,8 @@
       .success(function(data){
         tabel();
         $('#total-cart').html(data.response.total.toLocaleString());
+        $('#shipping-fee').html(data.response.shipping_fee.toLocaleString());
+        $('#cart-count').html(data.response.qty);
         alert("Delete Data berhasil!");
       })
       .fail(function(){

@@ -9,17 +9,19 @@
 		<div class="row">  
 			@foreach ($items as $item)
 				<div class='col-md-3 col-sm-4 col-xs-6'>
-					<figure class='cap-bot'>
-						<a href={{ url("/menu_detail/".$item->varian_id) }}><img src={{ URL::asset("assets/images/product/". $item->category_name . "/" . $item->picture) }} class='figure-img img-fluid' alt='Image'></a>
-						<!-- <div class="font_menu">
-						<a><strong> {{ $item->varian_name }} </strong></a>
-						</div> -->
-						<figcaption>
-							<div class="caption">
-							<div class="title_cap"> <b> {{ $item->varian_name }} </b> </div>
-							<small> Stock &nbsp; {{ $item->qty }} </small></div>
-						</figcaption>
-					</figure>
+					<a href={{ url("/menu_detail/".$item->varian_id) }}>
+						<figure class='cap-bot'>
+							<img src={{ URL::asset("assets/images/product/". $item->category_name . "/" . $item->picture) }} class='figure-img img-fluid' alt='Image'>
+							<!-- <div class="font_menu">
+							<a><strong> {{ $item->varian_name }} </strong></a>
+							</div> -->
+							<figcaption>
+								<div class="caption">
+								<div class="title_cap"> <b> {{ $item->varian_name }} </b> </div>
+								<small> Stock &nbsp; {{ $item->qty }} </small></div>
+							</figcaption>
+						</figure>
+					</a>
 				</div>
 			@endforeach
 		</div>
