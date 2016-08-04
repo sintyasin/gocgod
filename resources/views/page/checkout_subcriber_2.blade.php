@@ -18,7 +18,7 @@
           <strong>{{ session('error') }}</strong>
         </div>
       @endif
-      <!-- hai -->
+
       <div id="wrapper_progress">
         <br>
         <div class="col-md-12 col-xs-12">
@@ -27,8 +27,6 @@
           <span class='baricon'>2</span>
           <span id="bar2" class='progress_bar'></span>
           <span class='baricon'>3</span>
-          <!-- <span id="bar5" class='progress_bar'></span>
-          <span class='baricon'>6</span> -->
         </div>
         <br>
         <br>
@@ -295,6 +293,7 @@
       $('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
       $('.dtr-data').find('#'+x+'-subtotal').html('Rp ' + data.response.subtotal.toLocaleString());
       $('#total-cart').html(data.response.total.toLocaleString());
+      $('#cart-count').html(data.response.qty);
       alert("Update Data berhasil!");
     })
     .fail(function(){
@@ -320,6 +319,7 @@
       .success(function(data){
         tabel();
         $('#total-cart').html(data.response.total.toLocaleString());
+        $('#cart-count').html(data.response.qty);
         alert("Delete Data berhasil!");
       })
       .fail(function(){
