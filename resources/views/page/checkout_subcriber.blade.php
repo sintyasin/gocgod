@@ -36,7 +36,8 @@
         <br>
         <br>
       </div>
-            
+          
+      <!-- hai -->
       <form class="form-horizontal" id="orderForm" role="form" method="POST" action="{{ url('orderall_checkout') }}">
       {!! csrf_field() !!}
         
