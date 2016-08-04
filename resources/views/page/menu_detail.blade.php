@@ -143,6 +143,8 @@
 					</div>
 					@endforeach
 
+					<div class="reviews_comment" style="text-align:right; border-bottom: none;"> {!! $query_testimonial->render() !!} </div>
+
 					
 					<div class="modal fade" id="myModal_added" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
 			          <div class="modal-dialog" role="document">

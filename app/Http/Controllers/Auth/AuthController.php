@@ -105,7 +105,6 @@ class AuthController extends Controller
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
-            //dd($validator->errors());
             if($validator->errors()->has('hari') || $validator->errors()->has('bulan') || $validator->errors()->has('tahun'))
                 return redirect('register')->with('day', 'Format : dd')
                                            ->with('month', 'Pilih bulan')
@@ -130,9 +129,6 @@ class AuthController extends Controller
 
     public function activateUser($token)
     {
-        /*if ($user = $this->activationService->activateUser($token)) {
-            Auth::guard($this->getGuard())->login($user);
-        }*/
         $this->activationService->activateUser($token);
         return redirect('/home')->with('active', 'Akun sudah teraktivasi. Silahkan sign in.');
     }

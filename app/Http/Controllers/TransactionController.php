@@ -125,13 +125,15 @@ class TransactionController extends Controller
             Cart::update($data->rowId, $qty);
             $subtotal = $product->price * $qty;
             $total = Cart::total();
-            if(Cart::count() < 5) $shipping_fee = 10000;
+            $qty = Cart::count();
+            if($qty < 5) $shipping_fee = 10000;
             else $shipping_fee = 0;
 
             $response = array(
               'subtotal' => $subtotal,
               'total' => $total,
-              'shipping_fee' => $shipping_fee);
+              'shipping_fee' => $shipping_fee,
+              'qty' => $qty);
 
             return response()->json(compact('response'));
         }
@@ -150,8 +152,14 @@ class TransactionController extends Controller
         
         Cart::remove($data->rowId);
         $total = Cart::total();
+        $qty = Cart::count();
+        if($qty < 5) $shipping_fee = 10000;
+        else $shipping_fee = 0;
 
-        $response = array('total' => $total);
+        $response = array(
+            'total' => $total,
+            'shipping_fee' => $shipping_fee,
+            'qty' => $qty);
 
         return response()->json(compact('response'));
     }
@@ -290,19 +298,35 @@ class TransactionController extends Controller
                           ->where('s.district_id', $district_id)
                           ->where('d.day', date('N', strtotime($shipping_date)))
                           ->get(['id']);
-
+                          // dd($available_agent);
             if(!$available_agent->isEmpty())
             {
                 for ($i=0; $i < count($available_agent); $i++) { 
                     $array[$i] = $available_agent[$i]->id;
                 }
-                $agent = TxOrder::select('agent_id', \DB::raw('COUNT(order_id)'))
-                               ->whereIn('agent_id', $array)
-                               ->orderBy('COUNT(order_id)', 'asc')
-                               ->groupBy('agent_id')
-                               ->first();
+                //cari agen yg belum pernah dapet order
+                $null_orderid = Member::leftJoin('transaction__order as to', 'master__member.id', '=', 'to.agent_id')
+                                ->select('id', 'order_id')
+                                ->whereIn('id', $array)
+                                ->where('order_id', NULL)
+                                ->groupBy('id')
+                                ->first();
 
-                $agent_id = $agent->agent_id;
+                //kalo ada yg belum pernah dapet order, dia langsung dapet order
+                if(!is_null($null_orderid))
+                {
+                    $agent_id = $null_orderid->id;
+                }
+                else
+                {
+                    $agent = TxOrder::select('agent_id')
+                                   ->whereIn('agent_id', $array)
+                                   ->groupBy('agent_id') 
+                                   ->orderBy(\DB::raw('MAX(order_id)'), 'asc')
+                                   ->first();
+
+                    $agent_id = $agent->agent_id;
+                }
             }
             else 
                 $agent_id = 0;
@@ -373,11 +397,11 @@ class TransactionController extends Controller
         $data['status_payment'] = 'Pending';
         $data['payment_method'] = 'Bank Transfer';
 
-        // Mail::send('page.email_order', $data, function ($m) {
-        //     $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+        Mail::send('page.email_order', $data, function ($m) {
+            $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
-        //     $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
-        // });
+            $m->to(Auth::user()->email, Auth::user()->name)->subject('Pesanan Anda Telah Didaftarkan');
+        });
 
         if($request->wantsJson())
         {
@@ -536,10 +560,12 @@ class TransactionController extends Controller
             Cart::update($data->rowId, $qty);
             $subtotal = $product->price * $qty;
             $total = Cart::total();
+            $qty = Cart::count();
 
             $response = array(
               'subtotal' => $subtotal,
-              'total' => $total);
+              'total' => $total,
+              'qty' => $qty);
 
             return response()->json(compact('response'));
         }
@@ -558,7 +584,11 @@ class TransactionController extends Controller
         }
         Cart::remove($data->rowId);
         $total = Cart::total();
-        $response = array('total' => $total);
+        $qty = Cart::count();
+
+        $response = array(
+            'total' => $total,
+            'qty' => $qty);
 
         return response()->json(compact('response'));
     }
@@ -752,13 +782,29 @@ class TransactionController extends Controller
                 for ($i=0; $i < count($available_agent); $i++) { 
                     $array[$i] = $available_agent[$i]->id;
                 }
-                $agent = TxOrder::select('agent_id', \DB::raw('COUNT(order_id)'))
-                               ->whereIn('agent_id', $array)
-                               ->orderBy('COUNT(order_id)', 'asc')
-                               ->groupBy('agent_id')
-                               ->first();
+                //cari agen yg belum pernah dapet order
+                $null_orderid = Member::leftJoin('transaction__order as to', 'master__member.id', '=', 'to.agent_id')
+                                ->select('id', 'order_id')
+                                ->whereIn('id', $array)
+                                ->where('order_id', NULL)
+                                ->groupBy('id')
+                                ->first();
 
-                $agent_id = $agent->agent_id;
+                //kalo ada yg belum pernah dapet order, dia langsung dapet order
+                if(!is_null($null_orderid))
+                {
+                    $agent_id = $null_orderid->id;
+                }
+                else
+                {
+                    $agent = TxOrder::select('agent_id')
+                                   ->whereIn('agent_id', $array)
+                                   ->groupBy('agent_id')
+                                   ->orderBy(\DB::raw('MAX(order_id)'), 'asc')
+                                   ->first();
+
+                    $agent_id = $agent->agent_id;
+                }
             }
             else 
                 $agent_id = 0;

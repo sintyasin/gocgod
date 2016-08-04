@@ -78,7 +78,8 @@ class ProductController extends Controller
                                                         ->where('varian_id', $id)
                                                         ->where('approval', 1)
                                                         ->orderBy('testimonial_id', 'desc')
-                                                        ->get();
+                                                        ->paginate(5);
+                                                        //->get();
     	$data['query'] = Product::leftJoin('product__category as pc', 'product__varian.category_id', '=', 'pc.category_id')
                                 ->where('varian_id', $id)
                                 ->select('product__varian.description as description', 'picture', 'varian_name', 'price', 'qty' , 'weight', 'category_name', 'product__varian.varian_id as varian_id')
