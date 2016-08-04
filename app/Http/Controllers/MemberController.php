@@ -95,6 +95,18 @@ class MemberController extends Controller
         return view('page.data_user', $data);
     }
 
+    public function data_agent(Request $request)
+    {
+        $data['origin'] = AgentShip::leftJoin('master__province as mp', 'mp.province_id','=', 'master__agent_ship.province_id')
+            ->leftJoin('master__city as mc', 'mc.city_id', '=', 'master__agent_ship.city_id')
+            ->leftJoin('master__district as md', 'md.district_id', '=', 'master__district.district_id')
+            ->where('agent_id', Auth::user()->id);
+
+        $data['day'] = AgentDay::where('agent_id', Auth::user()->id);
+
+        return view('page.data_agent', $data);
+    }
+
     public function table_total(Request $request)
     {
         $data['querybalance'] = Balance::where('agent_id', Auth::user()->id)
@@ -193,7 +205,7 @@ class MemberController extends Controller
 
         if ($v->fails())
         {
-            return redirect('/profile/'.Auth::user()->id)->withErrors($v->errors())->withInput();
+            return redirect('/profile')->withErrors($v->errors())->withInput();
         }    
 
         $input = $request->all();
@@ -202,7 +214,7 @@ class MemberController extends Controller
         $member->password = Hash::make($request->newpassword);
         $member->save();
         
-        return redirect('/profile/'.Auth::user()->id);
+        return redirect('/profile/');
     }
 
     public function edit_profile(Request $request)
@@ -219,7 +231,7 @@ class MemberController extends Controller
 
         if ($v->fails())
         {
-            return redirect('/profile/'.Auth::user()->id)->withErrors($v->errors())->withInput();
+            return redirect('/profile')->withErrors($v->errors())->withInput();
         }    
 
         $input = $request->all();
@@ -311,6 +323,7 @@ class MemberController extends Controller
             'bank' => 'required|numeric',
             'bank_account' => 'required|numeric',
             'hari' => 'required|max:100',
+            ''
 
         ]);
 
@@ -338,6 +351,35 @@ class MemberController extends Controller
             $day->agent_id = $id;
             $day->day = $hari[$i];
             $day->save();
+        }
+
+        for($i=0; $i<20; $i++)
+        {
+            $vl = Validator::make($request->all, [
+                $i.'-provinsi' => 'required|number',
+                $i.'-kota' => 'required|number',
+                $i.'-kecamatan' => 'required|number',
+                $i.'-alamat' => 'required|500'
+                ]);
+
+            if($vl->fails())
+            {
+                continue;
+            }
+            else
+            {
+                $provinsi = filter_var($input['provinsi'], FILTER_SANITIZE_STRING);
+                $kota = filter_var($input['kota'], FILTER_SANITIZE_STRING);
+                $kecamatan = filter_var($input['kecamatan'], FILTER_SANITIZE_STRING);
+                // $alamat = filter_var($input['alamat'], FILTER_SANITIZE_STRING);
+
+                $daerah = new AgentShip;
+                $daerah->agent_id = Auth::user()->id;
+                $daerah->province_id = $provinsi;
+                $daerah->city_id = $kota;
+                $daerah->district_id = $kecamatan;
+                $daerah->save();
+            }
         }
 
 

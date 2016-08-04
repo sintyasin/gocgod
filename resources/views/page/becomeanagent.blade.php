@@ -42,104 +42,121 @@
 
           <!-- Modal -->
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-             <div class="modal-dialog" role="document">
-               <div class="modal-content">
-                 <div class="modal_header">
-                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                   BERGABUNG MENJADI AGEN
-               </div>
-               <div class="modal-body">
+           <div class="modal-dialog" role="document">
+             <div class="modal-content">
+               <div class="modal_header">
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                 BERGABUNG MENJADI AGEN
+             </div>
+             <div class="modal-body">
 
-                  <form class="form-horizontal" role="form" method="POST" action="{{ url('request_agent') }}">
-                    {!! csrf_field() !!}
+              <form class="form-horizontal" role="form" method="POST" action="{{ url('request_agent') }}">
+                {!! csrf_field() !!}
 
-                    <input type="hidden" value="0" name = "userType">                        
+                <input type="hidden" value="0" name = "userType">                        
 
-                    <div class="form-group{{ $errors->has('bank') ? ' has-error' : '' }}">
-                      <label class="col-md-4 control-label">Bank </label>
+                <div class="form-group{{ $errors->has('bank') ? ' has-error' : '' }}">
+                  <label class="col-md-4 control-label">Bank </label>
 
-                      <div class="col-md-6">
-                          <select class="form-control" name="bank" >
-                            @foreach($bank as $data)
-                            <option value="{{ $data->bank_id }}">{{ $data->bank_name }}</option>
-                            @endforeach
-                        </select>
-                        @if ($errors->has('bank'))
-                        <span class="help-block">
-                          <strong>{{ $errors->first('bank') }}</strong>
-                      </span>
-                      @endif
-                  </div>
-              </div>
-
-              <div class="form-group{{ $errors->has('bank_account') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Nomor rekening</label>
-
-                <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="Nomor rekening yang Anda gunakan" name="bank_account" onkeypress="return isNumber(event)">
-
-                    @if ($errors->has('bank_account'))
+                  <div class="col-md-6">
+                      <select class="form-control" name="bank" >
+                        @foreach($bank as $data)
+                        <option value="{{ $data->bank_id }}">{{ $data->bank_name }}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('bank'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('bank_account') }}</strong>
-                    </span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="form-group{{ $errors->has('hari') ? ' has-error' : '' }}">
-                <label class="col-md-4 control-label">Hari</label>
-                <div class="col-md-6">
-                    <select class="selectpicker" id="day" name="hari[]" multiple title="-- Pilih hari --">
-                      <option value="1">Senin</option>
-                      <option value="2">Selasa</option>
-                      <option value="3">Rabu</option>
-                      <option value="4">Kamis</option>
-                      <option value="5">Jumat</option>
-                      <option value="6">Sabtu</option>
-                      <option value="7">Minggu</option>
-                  </select>
-
-                  @if ($errors->has('hari'))
-                  <span class="help-block">
-                    <strong>Hari harus diisi</strong>
+                      <strong>{{ $errors->first('bank') }}</strong>
                   </span>
+                  @endif
+              </div>
+          </div>
+
+          <div class="form-group{{ $errors->has('bank_account') ? ' has-error' : '' }}">
+            <label class="col-md-4 control-label">Nomor rekening</label>
+
+            <div class="col-md-6">
+                <input type="text" class="form-control" placeholder="Nomor rekening yang Anda gunakan" name="bank_account" onkeypress="return isNumber(event)">
+
+                @if ($errors->has('bank_account'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('bank_account') }}</strong>
+                </span>
                 @endif
-                </div>
             </div>
+        </div>
 
-            <div class="input_fields_wrap">
-                <center>
-                <button class="add_field_button" style="width: 150px; min-height: 40px; border-radius: 5px;">Add More Product</button>
-                </center>
-                <div class="form-group{{ $errors->has('provinsi') ? ' has-error' : '' }}">
-                <br>
-                <label class="col-md-4 control-label">Provinsi</label>
-                <div class="col-md-6">
-                <select id="basic" name="province" class="province selectpicker show-tick form-control" data-live-search="true">
-                <option selected="selected">-- Pilih Provinsi --</option>
-                @foreach($province as $data)
-                  <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
-                @endforeach
+        <div class="form-group{{ $errors->has('hari') ? ' has-error' : '' }}">
+            <label class="col-md-4 control-label">Hari</label>
+            <div class="col-md-6">
+                <select class="selectpicker" id="day" name="hari[]" multiple title="-- Pilih hari --">
+                  <option value="1">Senin</option>
+                  <option value="2">Selasa</option>
+                  <option value="3">Rabu</option>
+                  <option value="4">Kamis</option>
+                  <option value="5">Jumat</option>
+                  <option value="6">Sabtu</option>
+                  <option value="7">Minggu</option>
+              </select>
+
+              @if ($errors->has('hari'))
+              <span class="help-block">
+                <strong>Hari harus diisi</strong>
+            </span>
+            @endif
+        </div>
+    </div>
+
+    <div class="input_fields_wrap">
+        <center>
+            <button class="add_field_button" style="width: 150px; min-height: 40px; border-radius: 5px; color:black;">Tambah Alamat</button>
+        </center>
+
+        <div class="form-group">
+            <br>
+            <label class="col-md-4 control-label">Provinsi</label>
+            <div class="col-md-6">
+                <select id="0-basic" name="0-provinsi" data-id="0" class="province selectpicker show-tick form-control" data-live-search="true" onchange="provinsi(0)">
+                    <option selected="selected">-- Pilih Provinsi --</option>
+                    @foreach($province as $data)
+                    <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                    @endforeach
                 </select>
-                </div>
-                </div>
+            </div>
+        </div>
 
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Kota</label>
+            <div class="col-md-6">
+                <select id="0-basic_city" name="0-kota" data-id="0" class="city selectpicker show-tick form-control" data-live-search="true" onchange="city(0)">
+                    <option selected="selected">-- Pilih Kota --</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Kecamatan</label>
+            <div class="col-md-6">
+                <select id="0-basic_district" name="0-kecamatan" data-id="0" class="district selectpicker show-tick form-control" data-live-search="true">
+                    <option selected="selected">-- Pilih Kecamatan --</option>
+                </select>
+            </div>
+        </div>
                 
-            </div>
+    </div>
 
+    <div class="form-group">
+        <div class="col-md-6 col-md-offset-4">
+            <button type="submit" class="checkPageBtn">
+                <i class="fa fa-btn fa-user"></i> DAFTAR
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
 
-                </div>
-            </div>
-
-
-            <div class="form-group">
-            <div class="col-md-6 col-md-offset-4">
-                <button type="submit" class="checkPageBtn">
-                    <i class="fa fa-btn fa-user"></i> DAFTAR
-                </button>
-            </div>
-            </div>
-    </form>
 </div>
 </div>
 </div>
@@ -147,57 +164,44 @@
 
 
 
-</div>
-</div>
 </div>
 
 @push('scripts')
 <script type="text/javascript">
-    // $(".day").change(function()
-    // {
-    //     var id=$(this).val();
-    //     $.ajax
-    //     ({
-    //       type: "POST",
-    //       url: "{{ URL::to('')}}",
-    //       data: {id: id},
-    //       beforeSend: function(request){
-    //         return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-    //     },
-    //     cache: false,
-    //     success: function(html)
-    //     {
-    //       $("#basic_city").html(html)
-    //         .selectpicker('refresh');
 
-    //       $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
-    //         .selectpicker('refresh');
-    //     } 
-    //     });
-    // });
 
     $(document).ready(function() {
 
-        init_multifield(10, '.input_fields_wrap', '.add_field_button', 'user_music[]');
-        init_multifield(10, '.input_fields_wrap2', '.add_field_button2', 'user_music2[]');
+        init_multifield('.input_fields_wrap', '.add_field_button');
 
-        var max_fields = 100;  //maximum input boxes allowed
+        var max_fields = 20;  //maximum input boxes allowed
         var x = 1; //initlal text box count
-        function init_multifield(max, wrap, butt, fname_p) {
+        function init_multifield(wrap, butt) {
             var wrapper = $(wrap); //Fields wrapper
             var add_button = $(butt); //Add button class
-            var fname = fname_p;
 
             $(add_button).click(function (e) { //on add input button click
                 e.preventDefault();
                 if (x < max_fields) { //max input box allowed
                     x++; //text box increment
+
+                    var provinsi= '<div class="form-group"><br><label class="col-md-4 control-label">Provinsi</label><div class="col-md-6"><select style="display:block !important;" id="'+(x-1)+'-basic" name="'+(x-1)+'-provinsi" data-id="'+(x-1)+'" class="province selectpicker show-tick form-control" data-live-search="true" onchange="provinsi(' + (x-1) + ')"><option selected="selected">-- Pilih Provinsi --</option>   @foreach($province as $data)<option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>@endforeach</select></div></div>';
+
+                    var kota= '<div class="form-group"><label class="col-md-4 control-label">Kota</label><div class="col-md-6"><select style="display:block !important;" id="'+(x-1)+'-basic_city" name="'+(x-1)+'-kota" data-id="'+(x-1)+'" class="city selectpicker show-tick form-control" data-live-search="true" onchange="city('+(x-1)+')"><option selected="selected">-- Pilih Kota --</option></select></div></div>';
+
+                    var kecamatan= '<div class="form-group"><label class="col-md-4 control-label">Kecamatan</label><div class="col-md-6"><select style="display:block !important;" id="'+(x-1)+'-basic_district" name="'+(x-1)+'-kecamatan" data-id="'+(x-1)+'" class="district selectpicker show-tick form-control" data-live-search="true"><option selected="selected">-- Pilih Kecamatan --</option></select></div><div class="col-md-2"><a href="#" class="remove_field" style="margin-top:15px; float:right;">Remove</a></div></div>';
+
+                    $(wrapper).append('<div class="col-md-12">' + provinsi + kota + kecamatan  +'</div>');
+
+                    $("#"+(x-1)+"-basic").selectpicker('refresh');
+                    $("#"+(x-1)+"-basic_city").selectpicker('refresh');
+                    $("#"+(x-1)+"-basic_district").selectpicker('refresh');
                 }
             });
 
             $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
                 e.preventDefault();
-                $(this).parent('div').remove();
+                $(this).parent('div').parent('div').parent('div').remove();
             })
         }
     });
@@ -211,6 +215,49 @@
         }
         return true;
     }
+
+    function provinsi(no)
+    {
+        var id = $('select[name=' + no + '-provinsi]').val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('get_city')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+        },
+        cache: false,
+        success: function(html)
+        {
+            $("#"+no+"-basic_city").html(html)
+            .selectpicker('refresh');
+
+            $("#"+no+"-basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+            .selectpicker('refresh');
+        } 
+        })
+    }
+
+    function city(no)
+    {
+        var id = $('select[name=' + no + '-kota]').val();
+        $.ajax
+        ({
+          type: "POST",
+          url: "{{ URL::to('get_district')}}",
+          data: {id: id},
+          beforeSend: function(request){
+            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+        },
+        cache: false,
+        success: function(html)
+        {
+            $("#"+no+"-basic_district").html(html)
+            .selectpicker('refresh');
+        } 
+        });
+    };
 
     // function register()
     // {
