@@ -252,7 +252,7 @@ class ProductController extends Controller
 
         $input = $request->all();
 
-        for($i=0; $i<5; $i++)
+        for($i=0; $i<100; $i++)
         {
             $v = Validator::make($request->all(),[
                 $i.'-product' => 'required|numeric',

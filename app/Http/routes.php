@@ -84,6 +84,7 @@ Route::post('payment', 'TransactionController@payment'); //buat redirect dari fi
 	Route::get('profile', 'MemberController@profile');
 	Route::get('table_total', 'MemberController@table_total');
 	Route::get('data_profile', 'MemberController@data_profile');
+	Route::get('data_agent', 'MemberController@data_agent');
 	Route::post('withdrawMoney', 'MemberController@withdrawMoney');
 	Route::post('edit_profile', 'MemberController@edit_profile');
 	Route::post('edit_password', 'MemberController@edit_password');

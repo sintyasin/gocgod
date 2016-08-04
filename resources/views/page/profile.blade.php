@@ -277,6 +277,12 @@
 
       @if(Auth::user()->status_user == 0)
       <Center>
+      <button type="button" role="presentation" class="boaBtn_boa_pf" onclick="dataagent()">
+        Informasi Agent
+      </button>
+      </Center>
+
+      <Center>
       <button type="button" data-toggle="modal" data-target="#bankinformation" class="boaBtn_boa_pf">
         Ubah Informasi Bank
       </button>
@@ -478,6 +484,19 @@
     $.ajax({
       type: "GET",
       url: "{{ URL::to('data_profile')}}",
+      success:
+      function(data)
+      {
+        $('#profile').html(data);
+      }
+    });
+   }
+
+   function dataagent()
+   {
+    $.ajax({
+      type: "GET",
+      url: "{{ URL::to('data_agent')}}",
       success:
       function(data)
       {

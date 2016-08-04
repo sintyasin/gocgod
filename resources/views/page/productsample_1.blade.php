@@ -37,6 +37,7 @@
                   <div id="sample_details">
                     <p class='form_head'>Request Product Sample</p>
                     <div class="col-md-12">
+                    
                     <div class="input_fields_wrap">
                     <button class="add_field_button" style=" width: 150px; min-height: 40px; border-radius: 5px; background-color:white;">Add More Product</button>
                     <br>
@@ -96,9 +97,7 @@
                 if (x < max_fields) { //max input box allowed
                     x++; //text box increment
 
-                    var cstring = '$(wrapper).append(\'<div class="col-md-12"><div class="col-md-4 col-md-offset-3"><label>Product '+ x +'&nbsp</label><select name="'+(x-1)+'-product" style="width:70%"><?php $i = 1; ?>@foreach ($query as $item)<?php echo "<option value= ". $item->varian_id . ">" . $item->varian_name . "</option>";$i++;?>@endforeach</select></div><div class="col-md-1"><input type="number" placeholder="quantity" style="width:80%;" min="1"  value="0" name="'+(x-1)+'-qty"/></div><a href="#" class="remove_field" style="color:white; margin-top:15px; float:left;">Remove</a></div>\');' //add input box
-                    eval(cstring);
-                    
+                    $(wrapper).append('<div class="col-md-12"><div class="col-md-4 col-md-offset-3"><label>Product '+ x +'&nbsp</label><select name="'+(x-1)+'-product" style="width:70%"><?php $i = 1; ?>@foreach ($query as $item)<?php echo "<option value= ". $item->varian_id . ">" . $item->varian_name . "</option>";$i++;?>@endforeach</select></div><div class="col-md-1"><input type="number" placeholder="quantity" style="width:80%;" min="1"  value="0" name="'+(x-1)+'-qty"/></div><a href="#" class="remove_field" style="color:white; margin-top:15px; float:left;">Remove</a></div>'); //add input box
                 }
             });
 
