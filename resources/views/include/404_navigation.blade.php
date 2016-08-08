@@ -18,7 +18,7 @@
 	</div> -->
 </header>
 <!-- mobile-menu-area start -->
-<div class="mobile-menu-area">
+<!-- <div class="mobile-menu-area">
 	<div class="container">
 		<div class="mobile-menu">
 			<nav id="dropdown">
@@ -26,11 +26,11 @@
 					<li><a href="{{ url('/home') }}">BERANDA</a></li>
 					
 					
-<!-- 					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li> -->
+					<li><a href="{{ url('/checkout') }}"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Check Out</a></li>
 					
 				</ul>
 			</nav>
 		</div>
 	</div>
-</div>
+</div> -->
 <!-- mobile-menu-area end -->

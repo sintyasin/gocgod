@@ -87,7 +87,7 @@
         </div>
 
         <div class="form-group{{ $errors->has('hari') ? ' has-error' : '' }}">
-            <label class="col-md-4 control-label">Hari</label>
+            <label class="col-md-4 control-label">Hari Pengiriman</label>
             <div class="col-md-6">
                 <select class="selectpicker" id="day" name="hari[]" multiple title="-- Pilih hari --">
                   <option value="1">Senin</option>
@@ -104,8 +104,8 @@
                 <strong>Hari harus diisi</strong>
             </span>
             @endif
+            </div>
         </div>
-    </div>
 
     <div class="input_fields_wrap">
         <center>
@@ -161,7 +161,6 @@
 </div>
 </div>
 </div>
-
 
 
 </div>

@@ -1611,6 +1611,7 @@ class AdminController extends Controller
 
             $agent->save();
             $request->save();
+            $request->delete(); //agar tidak error jika agent downgrade jadi cust
 
             Session::flash('approve', 1);
           });
@@ -1646,6 +1647,7 @@ class AdminController extends Controller
 
           $agent->save();
           $request->save();
+          $request->delete(); //agar tidak error jika agent downgrade jadi cust
 
           Session::flash('approve', 1);
         });
