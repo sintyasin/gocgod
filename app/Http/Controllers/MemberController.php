@@ -73,6 +73,13 @@ class MemberController extends Controller
                                 ->get();
         $data['bank'] = Bank::all();
         $data['province'] = Province::all();
+        $data['province_check'] = Province::where('status', 1)->get();
+        $data['origin'] = AgentShip::leftJoin('master__province as mp', 'mp.province_id','=', 'master__agent_ship.province_id')
+            ->leftJoin('master__city as mc', 'mc.city_id', '=', 'master__agent_ship.city_id')
+            ->leftJoin('master__district as md', 'md.district_id', '=', 'master__agent_ship.district_id')
+            ->where('agent_id', Auth::user()->id)
+            ->get(['master__agent_ship.province_id as province_id', 'master__agent_ship.city_id as city_id', 'master__agent_ship.district_id as district_id', 'province_name', 'city_name', 'district_name']);
+
         $data['city'] = City::where('province_id', Auth::user()->province_id)->get();
         $data['district'] = District::where('city_id', Auth::user()->city_id)->get();
 
@@ -99,11 +106,11 @@ class MemberController extends Controller
     {
         $data['origin'] = AgentShip::leftJoin('master__province as mp', 'mp.province_id','=', 'master__agent_ship.province_id')
             ->leftJoin('master__city as mc', 'mc.city_id', '=', 'master__agent_ship.city_id')
-            ->leftJoin('master__district as md', 'md.district_id', '=', 'master__district.district_id')
-            ->where('agent_id', Auth::user()->id);
+            ->leftJoin('master__district as md', 'md.district_id', '=', 'master__agent_ship.district_id')
+            ->where('agent_id', Auth::user()->id)
+            ->get(['province_name', 'city_name', 'district_name']);
 
-        $data['day'] = AgentDay::where('agent_id', Auth::user()->id);
-
+        $data['day'] = AgentDay::where('agent_id', Auth::user()->id)->get();
         return view('page.data_agent', $data);
     }
 
@@ -122,12 +129,116 @@ class MemberController extends Controller
         return view('page.total', $data);
     }
 
+    public function change_agentday(Request $input)
+    {
+        \DB::beginTransaction();
+        $v = Validator::make($input->all(),[
+            'hari' => 'required|max:100',
+            ]);
+
+        if($v->fails())
+        {
+            \DB::rollBack();
+            return redirect('/profile')->with('error', 'Perubahan data tidak berhasil!');
+        }
+
+        AgentDay::where('agent_id', Auth::user()->id)->delete();
+
+        $hari = $input['hari'];
+        for($i=0; $i< count($hari); $i++)
+        {
+            $day = new AgentDay;
+            $day->agent_id = Auth::user()->id;
+            $day->day = $hari[$i];
+            $day->save();
+        }
+
+        \DB::commit();
+
+        return redirect('/profile')->with('success', 'Perubahan data berhasil!');
+    }
+
+    public function change_agentorigin(Request $request)
+    {
+        \DB::beginTransaction();
+
+        AgentShip::where('agent_id', Auth::user()->id)->delete();
+
+        for($i=0; $i<20; $i++)
+        {
+            $vl = Validator::make($request->all(), [
+                $i.'-provinsi' => 'required|numeric',
+                $i.'-kota' => 'required|numeric',
+                $i.'-kecamatan' => 'required|numeric',
+                ]);
+
+            $input = $request->all();
+            $check_id = AgentShip::where('agent_id', Auth::user()->id)->get();
+            
+            if(!$check_id->isEmpty())
+            {
+                if($vl->fails())
+                {
+                    continue;
+                }
+                else
+                {
+
+                    $provinsi = filter_var($input[$i.'-provinsi'], FILTER_SANITIZE_STRING);
+                    $kota = filter_var($input[$i.'-kota'], FILTER_SANITIZE_STRING);
+                    $kecamatan = filter_var($input[$i.'-kecamatan'], FILTER_SANITIZE_STRING);
+                    // $alamat = filter_var($input['alamat'], FILTER_SANITIZE_STRING);
+
+                    $check = AgentShip::where('district_id', $kecamatan)->first();
+
+                    if(!is_null($check))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        $daerah = new AgentShip;
+                        $daerah->agent_id = Auth::user()->id;
+                        $daerah->province_id = $provinsi;
+                        $daerah->city_id = $kota;
+                        $daerah->district_id = $kecamatan;
+                        $daerah->save();
+                    }
+                }
+            }
+            else
+            {
+                if($vl->fails())
+                {
+                    \DB::rollBack();
+                    return redirect('/profile')->with('error', 'Data tidak valid, silahkan mendaftar ulang');
+                }
+
+                $provinsi = filter_var($input[$i.'-provinsi'], FILTER_SANITIZE_STRING);
+                $kota = filter_var($input[$i.'-kota'], FILTER_SANITIZE_STRING);
+                $kecamatan = filter_var($input[$i.'-kecamatan'], FILTER_SANITIZE_STRING);
+
+                $daerah = new AgentShip;
+                $daerah->agent_id = Auth::user()->id;
+                $daerah->province_id = $provinsi;
+                $daerah->city_id = $kota;
+                $daerah->district_id = $kecamatan;
+                $daerah->save();
+            }
+        }
+
+        \DB::commit();
+
+        return redirect('/profile')->with('success', 'Perubahan data berhasil!');   
+    }
+
     public function change_bank(Request $input)
     {
         $v = Validator::make($input->all(),[
             'bank' => 'required|numeric',
             'bank_account' => 'required'
             ]);
+
 
         $bank = filter_var($input['bank'], FILTER_SANITIZE_STRING);
         $bank_account = filter_var($input['bank_account'], FILTER_SANITIZE_STRING);
@@ -318,13 +429,13 @@ class MemberController extends Controller
 
     public function request_agent(Request $request)
     {
-        
-         $v = Validator::make($request->all(), [
+        AgentShip::where('Agent_id', Auth::user()->id)->delete();
+        AgentDay::where('Agent_id', Auth::user()->id)->delete();
+
+        $v = Validator::make($request->all(), [
             'bank' => 'required|numeric',
             'bank_account' => 'required|numeric',
             'hari' => 'required|max:100',
-            ''
-
         ]);
 
         if ($v->fails())
@@ -338,40 +449,57 @@ class MemberController extends Controller
         $bank = filter_var($input['bank'], FILTER_SANITIZE_STRING);
         $bank_account = filter_var($input['bank_account'], FILTER_SANITIZE_STRING);
 
-        $req = new Req_agent;
-        $req->member_id = $id;
-        $req->bank_id = $bank;
-        $req->bank_account = $bank_account;
-        $req->save(); 
-        
-        $hari = $input['hari'];
-        for($i=0; $i< count($hari); $i++)
-        {
-            $day = new AgentDay;
-            $day->agent_id = $id;
-            $day->day = $hari[$i];
-            $day->save();
-        }
-
         for($i=0; $i<20; $i++)
         {
-            $vl = Validator::make($request->all, [
-                $i.'-provinsi' => 'required|number',
-                $i.'-kota' => 'required|number',
-                $i.'-kecamatan' => 'required|number',
-                $i.'-alamat' => 'required|500'
+
+            $vl = Validator::make($request->all(), [
+                $i.'-provinsi' => 'required|numeric',
+                $i.'-kota' => 'required|numeric',
+                $i.'-kecamatan' => 'required|numeric',
                 ]);
 
-            if($vl->fails())
+            $check_id = AgentShip::where('agent_id', Auth::user()->id)->get();
+            
+            if(!$check_id->isEmpty())
             {
-                continue;
+                if($vl->fails())
+                {
+                    continue;
+                }
+                else
+                {
+                    $provinsi = filter_var($input[$i.'-provinsi'], FILTER_SANITIZE_STRING);
+                    $kota = filter_var($input[$i.'-kota'], FILTER_SANITIZE_STRING);
+                    $kecamatan = filter_var($input[$i.'-kecamatan'], FILTER_SANITIZE_STRING);
+                    // $alamat = filter_var($input['alamat'], FILTER_SANITIZE_STRING);
+
+                    $check = AgentShip::where('district_id', $kecamatan)->first();
+
+                    if(!is_null($check))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        $daerah = new AgentShip;
+                        $daerah->agent_id = Auth::user()->id;
+                        $daerah->province_id = $provinsi;
+                        $daerah->city_id = $kota;
+                        $daerah->district_id = $kecamatan;
+                        $daerah->save();
+                    }
+                }
             }
             else
             {
-                $provinsi = filter_var($input['provinsi'], FILTER_SANITIZE_STRING);
-                $kota = filter_var($input['kota'], FILTER_SANITIZE_STRING);
-                $kecamatan = filter_var($input['kecamatan'], FILTER_SANITIZE_STRING);
-                // $alamat = filter_var($input['alamat'], FILTER_SANITIZE_STRING);
+                if($vl->fails())
+                {
+                    return redirect('becomeanagent')->with('error', 'Data tidak valid, silahkan mendaftar ulang')->withErrors($v->errors())->withInput();
+                }
+
+                $provinsi = filter_var($input[$i.'-provinsi'], FILTER_SANITIZE_STRING);
+                $kota = filter_var($input[$i.'-kota'], FILTER_SANITIZE_STRING);
+                $kecamatan = filter_var($input[$i.'-kecamatan'], FILTER_SANITIZE_STRING);
 
                 $daerah = new AgentShip;
                 $daerah->agent_id = Auth::user()->id;
@@ -381,7 +509,20 @@ class MemberController extends Controller
                 $daerah->save();
             }
         }
-
+        
+        $hari = $input['hari'];
+        for($i=0; $i< count($hari); $i++)
+        {
+            $day = new AgentDay;
+            $day->agent_id = $id;
+            $day->day = $hari[$i];
+            $day->save();
+        }
+        $req = new Req_agent;
+        $req->member_id = $id;
+        $req->bank_id = $bank;
+        $req->bank_account = $bank_account;
+        $req->save(); 
 
         return redirect('becomeanagent')->with('success', 'Permintaan menjadi agen telah diterima, pihak Goc God akan menghubungi anda');
     }

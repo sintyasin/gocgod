@@ -5,6 +5,17 @@
   <div class="container">
     <h2>Informasi Akun</h2>
 
+    @if (session('error'))
+     <div class="alert alert-danger fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>{{ session('error') }}</strong>
+    </div>
+    @elseif(session('success'))
+    <div class="alert alert-success fade in">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>{{ session('success') }}</strong>
+    </div>
+    @endif
     <div class="col-md-3">
       
       @if(Auth::user()->status_user == 0)
@@ -282,6 +293,8 @@
       </button>
       </Center>
 
+      
+
       <Center>
       <button type="button" data-toggle="modal" data-target="#bankinformation" class="boaBtn_boa_pf">
         Ubah Informasi Bank
@@ -412,6 +425,137 @@
 
 
   </div>
+
+
+<div class="modal fade" id="agentDay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Ubah Hari
+      </div>
+      <div class="modal-body">
+        
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('change_agentday') }}">
+          {!! csrf_field() !!}     
+
+          <div class="form-group{{ $errors->has('hari') ? ' has-error' : '' }}">
+              <label class="col-md-4 control-label">Hari</label>
+              <div class="col-md-6">
+                  <select class="selectpicker form-control" id="day" name="hari[]"  multiple title="-- Pilih hari --">
+                    <option value="1">Senin</option>
+                    <option value="2">Selasa</option>
+                    <option value="3">Rabu</option>
+                    <option value="4">Kamis</option>
+                    <option value="5">Jumat</option>
+                    <option value="6">Sabtu</option>
+                    <option value="7">Minggu</option>
+                </select>
+
+                @if ($errors->has('hari'))
+                <span class="help-block">
+                  <strong>Hari harus diisi</strong>
+              </span>
+              @endif
+              </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-12">
+            <center>
+              <button type="submit" class="btn btn-primary">SUBMIT</button>     
+              &nbsp; &nbsp;
+              <a href={{ URL('profile') }} class="btn btn-default">Cancel</a>
+            </center>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="agentOrigin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal_header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Ubah Jangkauan
+      </div>
+      <div class="modal-body">
+        
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('change_agentorigin') }}">
+          {!! csrf_field() !!}     
+
+    <?php $i=0; ?>
+    <div class="input_fields_wrap">
+
+        <center>
+          <button class="add_field_button" style="width: 150px; min-height: 40px; border-radius: 5px; color:black;">Tambah Alamat</button>
+        </center>
+
+        @foreach($origin as $daerah)
+        <div class="col-md-12">
+        <div class="form-group">
+            <br>
+            <label class="col-md-4 control-label">Provinsi</label>
+            <div class="col-md-6">
+                <select id="{{$i}}-basic" name="{{$i}}-provinsi" data-id="{{$i}}" class="province selectpicker show-tick form-control" data-live-search="true" onchange="provinsi({{$i}})">
+                    <option selected="selected" value="{{$daerah->province_id}}">{{$daerah->province_name}}</option>
+                    @foreach($province_check as $data)
+                    <option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Kota</label>
+            <div class="col-md-6">
+                <select id="{{$i}}-basic_city" name="{{$i}}-kota" data-id="{{$i}}" class="city selectpicker show-tick form-control" data-live-search="true" onchange="city({{$i}})">
+                    <option selected="selected" value="{{$daerah->city_id}}">{{$daerah->city_name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-4 control-label">Kecamatan</label>
+            <div class="col-md-6">
+                <select id="{{$i}}-basic_district" name="{{$i}}-kecamatan" data-id="{{$i}}" class="district selectpicker show-tick form-control" data-live-search="true">
+                    <option selected="selected" value="{{$daerah->district_id}}">{{$daerah->district_name}}</option>
+                </select>
+            </div>
+
+            @if($i > 0)
+            <div class="col-md-2">
+                <a href="#" class="remove_first" sytle="margin-top:15px; float:right;"> Remove </a>
+            </div>
+            @endif
+
+        </div>
+        <?php $i++ ?>
+        </div>     
+    
+    @endforeach
+    </div>
+          <div class="form-group">
+            <div class="col-md-12">
+            <center>
+              <button type="submit" class="btn btn-primary">SUBMIT</button>     
+              &nbsp; &nbsp;
+              <a href={{ URL('profile') }} class="btn btn-default">Cancel</a>
+            </center>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 @push('scripts')
@@ -419,52 +563,86 @@
 
   $(document).ready(function(){
     data();
-    $(".province").change(function()
-      {
-        var id=$(this).val();
-        $(".city").find('option').remove();
-        $(".district").find('option').remove();
-        $.ajax
-        ({
-          type: "POST",
-          url: "{{ URL::to('city')}}",
-          data: {id: id},
-          beforeSend: function(request){
-            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-          },
-          cache: false,
-          success: function(html)
-          {
-            $("#basic_city").html(html)
-            .selectpicker('refresh');
+    init_multifield('.input_fields_wrap', '.add_field_button');
 
-            $("#basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
-            .selectpicker('refresh');
-          } 
+    var max_fields = 20;  //maximum input boxes allowed
+    var x = <?php echo $i; ?>+1; //initlal text box count
+    function init_multifield(wrap, butt) {
+        var wrapper = $(wrap); //Fields wrapper
+        var add_button = $(butt); //Add button class
+        
+        $(add_button).click(function (e) { //on add input button click
+            e.preventDefault();
+            if (x < max_fields) { //max input box allowed
+                x++; //text box increment
+                var provinsi= '<div class="form-group"><br><label class="col-md-4 control-label">Provinsi</label><div class="col-md-6"><select style="display:block !important;" id="'+(x-1)+'-basic" name="'+(x-1)+'-provinsi" data-id="'+(x-1)+'" class="province selectpicker show-tick form-control" data-live-search="true" onchange="provinsi(' + (x-1) + ')"><option selected="selected">-- Pilih Provinsi --</option>   @foreach($province_check as $data)<option value="{{$data->province_id}}" id="{{$data->province_id}}">{{ $data->province_name}}</option>@endforeach</select></div></div>';
+
+                var kota= '<div class="form-group"><label class="col-md-4 control-label">Kota</label><div class="col-md-6"><select style="display:block !important;" id="'+(x-1)+'-basic_city" name="'+(x-1)+'-kota" data-id="'+(x-1)+'" class="city selectpicker show-tick form-control" data-live-search="true" onchange="city('+(x-1)+')"><option selected="selected">-- Pilih Kota --</option></select></div></div>';
+
+                var kecamatan= '<div class="form-group"><label class="col-md-4 control-label">Kecamatan</label><div class="col-md-6"><select style="display:block !important;" id="'+(x-1)+'-basic_district" name="'+(x-1)+'-kecamatan" data-id="'+(x-1)+'" class="district selectpicker show-tick form-control" data-live-search="true"><option selected="selected">-- Pilih Kecamatan --</option></select></div><div class="col-md-2"><a href="#" class="remove_field" style="margin-top:15px; float:right;">Remove</a></div></div>';
+
+                $(wrapper).append('<div class="col-md-12">' + provinsi + kota + kecamatan  +'</div>');
+
+                $("#"+(x-1)+"-basic").selectpicker('refresh');
+                $("#"+(x-1)+"-basic_city").selectpicker('refresh');
+                $("#"+(x-1)+"-basic_district").selectpicker('refresh');
+            }
         });
-      });
 
+        $(wrapper).on("click", ".remove_field", function (e) { //user click on remove text
+            e.preventDefault();
+            $(this).parent('div').parent('div').parent('div').remove();
+        })
 
-      $(".city").change(function()
-      {
-        var id=$(this).val();
-        $.ajax
-        ({
-          type: "POST",
-          url: "{{ URL::to('district')}}",
-          data: {id: id},
-          beforeSend: function(request){
-            return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
-          },
-          cache: false,
-          success: function(html)
-          {
-            $("#basic_district").html(html)
-            .selectpicker('refresh');
-          } 
-        });
-      });
+        $('.remove_first').click(function (e) { //user click on remove text
+            e.preventDefault();
+            $(this).parent('div').parent('div').parent('div').remove();
+        })
+    }
   });
+
+  function provinsi(no)
+  {
+      var id = $('select[name=' + no + '-provinsi]').val();
+      $.ajax
+      ({
+        type: "POST",
+        url: "{{ URL::to('get_city')}}",
+        data: {id: id},
+        beforeSend: function(request){
+          return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      },
+      cache: false,
+      success: function(html)
+      {
+          $("#"+no+"-basic_city").html(html)
+          .selectpicker('refresh');
+
+          $("#"+no+"-basic_district").html('<option selected="selected">-- Pilih Kecamatan --</option>')
+          .selectpicker('refresh');
+      } 
+      })
+  }
+
+  function city(no)
+  {
+      var id = $('select[name=' + no + '-kota]').val();
+      $.ajax
+      ({
+        type: "POST",
+        url: "{{ URL::to('get_district')}}",
+        data: {id: id},
+        beforeSend: function(request){
+          return request.setRequestHeader('x-csrf-token', $("meta[name='_token']").attr('content'));
+      },
+      cache: false,
+      success: function(html)
+      {
+          $("#"+no+"-basic_district").html(html)
+          .selectpicker('refresh');
+      } 
+      });
+  };
 
   function balance()
    {
