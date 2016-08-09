@@ -15,6 +15,7 @@ Route::get('email', 'MemberController@a');
 Route::get('home', ['uses' => 'HomeController@index']);
 Route::get('/', 'HomeController@index');
 Route::get('menu_detail/{id}', 'ProductController@getMenuDetail');
+Route::get('testimonial_data/{id}', 'ProductController@testimonial');
 Route::get('menu/', 'ProductController@getMenu');
 
 Route::post('review/{id}', 'ProductController@giveTestimonial');
