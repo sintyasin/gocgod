@@ -187,18 +187,20 @@
 
 @push('scripts')
 <script>
-	$(document).ready()
+	$(document).ready(function()
 	{
-		$.ajax({
-			type:"GET",
-			url: "{{ URL::to('testimonial_data/'. $query->varian_id)}}",
-			success:
-			function(data)
-			{
-				$('#testimonial').html(data);
-			}
-		});
-	}
+		var url = "<?php echo URL::to('testimonial_data/'. $query->varian_id) ?>";
+		$('#testimonial').load(url);
+		// $.ajax({
+		// 	type:"GET",
+		// 	url: "{{ URL::to('testimonial_data/'. $query->varian_id)}}",
+		// 	success:
+		// 	function(data)
+		// 	{
+		// 		$('#testimonial').html(data);
+		// 	}
+		// });
+	});
 
     function addtocart(id){
       	var quantity = $('#qty').val();

@@ -1,4 +1,4 @@
-@foreach($query_testimonial as $testi)
+@foreach($data as $testi)
 	<div class="reviews_comment">
 
 		<div class="row">
@@ -14,16 +14,17 @@
 		</div>
 	</div>
 @endforeach
+<?php $data->links(); ?>
 
-<!-- <div class="reviews_comment" style="text-align:right; border-bottom: none;"> {!! $query_testimonial->render() !!} </div> -->
+<div class="reviews_comment" style="text-align:right; border-bottom: none;"> {!! $data->render() !!} </div>
 
 <script>
 $( document ).ready(function() {
 	$('.pagination a').on('click', function(event) {
-	event.preventDefault();
-	if ($(this).attr('href') != '#') {
-	$('#ajaxContent').load($(this).attr('href'));
-	}
+		event.preventDefault();
+		if ($(this).attr('href') != '#') {
+			$('#testimonial').load($(this).attr('href'));
+		}
 	});
 });
 </script>

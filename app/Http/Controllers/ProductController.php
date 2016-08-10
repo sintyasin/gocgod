@@ -23,6 +23,7 @@ use App\CutOffDate;
 
 class ProductController extends Controller
 {
+
     public function howToBuy()
     {
         $data['contact'] = AboutUs::first();
@@ -68,12 +69,6 @@ class ProductController extends Controller
     public function getMenuDetail($id, Request $request)
     {
         $data['contact'] = AboutUs::first();
-        
-        $data['query_testimonial'] = ProductTestimonial::leftJoin('master__member as mm', 'product__testimonial.id', '=', 'mm.id')
-                                                        ->where('varian_id', $id)
-                                                        ->where('approval', 1)
-                                                        ->orderBy('testimonial_id', 'desc')
-                                                        ->paginate(5);
 
     	$data['query'] = Product::leftJoin('product__category as pc', 'product__varian.category_id', '=', 'pc.category_id')
                                 ->where('varian_id', $id)
@@ -103,7 +98,7 @@ class ProductController extends Controller
                                                         ->where('approval', 1)
                                                         ->orderBy('testimonial_id', 'desc')
                                                         ->paginate(5);
-        return view::make('page.testimonial', compact('data'));
+        return view('page.testimonial', compact('data'));
     }
 
     //---------------- MENU DETAIL - Ambil testimonial -----------------
