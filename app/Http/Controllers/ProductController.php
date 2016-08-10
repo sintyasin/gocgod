@@ -53,18 +53,12 @@ class ProductController extends Controller
         
         if($request->wantsJson())
         {
-            $response = array(
+            $success = array(
                 'type' => 'OK-MENU',
-                'data' => $data['query']);
-            return Response::json(compact('response'));
-        }
-
-        if ($request->wantsJson()) {
-            $response = array(
-                'type' => 'OK-001',
-                'message' => 'sample message',
-                'data' => Product::all());
-            return Response::json(compact('response'));
+                'message' => 'success',
+                'data' => array(
+                    'productPagination' => $data['query']));
+            return Response::json(compact('success'));
         }
         
     	return view('page.menu', $data);
@@ -74,12 +68,13 @@ class ProductController extends Controller
     public function getMenuDetail($id, Request $request)
     {
         $data['contact'] = AboutUs::first();
+        
         $data['query_testimonial'] = ProductTestimonial::leftJoin('master__member as mm', 'product__testimonial.id', '=', 'mm.id')
                                                         ->where('varian_id', $id)
                                                         ->where('approval', 1)
                                                         ->orderBy('testimonial_id', 'desc')
                                                         ->paginate(5);
-                                                        
+
     	$data['query'] = Product::leftJoin('product__category as pc', 'product__varian.category_id', '=', 'pc.category_id')
                                 ->where('varian_id', $id)
                                 ->select('product__varian.description as description', 'picture', 'varian_name', 'price', 'qty' , 'weight', 'category_name', 'product__varian.varian_id as varian_id')
@@ -87,24 +82,28 @@ class ProductController extends Controller
 
         if($request->wantsJson())
         {
-            $response = array(
+            $success = array(
                 'type' => 'OK-MENU DETAIL',
-                'data' => array($data['query'], $data['query_testimonial']));
-            return Response::json(compact('response'));
-        }
-
-        if ($request->wantsJson()) {
-            $response = array(
-                'type' => 'OK-001',
-                'message' => 'sample message',
+                'message' => 'success',
                 'data' => array(
-                    'detail' => $data['query'],
-                    'testimonial' => $data['query_testimonial']
+                    'productData' => $data['query'],
+                    'productTestimonial' => $data['query_testimonial']
                     ));
-            return Response::json(compact('response'));
+            return Response::json(compact('success'));
         }
 
         return view('page.menu_detail', $data);
+    }
+
+    //---------------- MENU DETAIL - Testimonial Data -------------    
+    public function testimonial($id)
+    {
+        $data = ProductTestimonial::leftJoin('master__member as mm', 'product__testimonial.id', '=', 'mm.id')
+                                                        ->where('varian_id', $id)
+                                                        ->where('approval', 1)
+                                                        ->orderBy('testimonial_id', 'desc')
+                                                        ->paginate(5);
+        return view::make('page.testimonial', compact('data'));
     }
 
     //---------------- MENU DETAIL - Ambil testimonial -----------------
@@ -235,10 +234,10 @@ class ProductController extends Controller
 
         if($request->wantsJson())
         {
-            $response = array(
+            $success = array(
                 'type' => 'OK-SAMPLE PRODUCT - page isi data product',
                 'data' => array($data['request_data'], $data['query']));
-            return Response::json(compact('response'));
+            return Response::json(compact('success'));
         }
 
         return view('page.productsample_1', $data);
@@ -300,10 +299,10 @@ class ProductController extends Controller
         
         if($request->wantsJson())
         {
-            $response = array(
+            $success = array(
                 'type' => 'OK-SUBCRIBER - page semua produk',
                 'data' => $data['query_menu']);
-            return Response::json(compact('response'));
+            return Response::json(compact('success'));
         }
         return view('page.checkout_subcriber', $data);
     }

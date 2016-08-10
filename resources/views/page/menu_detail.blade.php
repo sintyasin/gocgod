@@ -125,25 +125,11 @@
 					</div>
 
 					<hr>
+					<div id="testimonial">
 
-					@foreach($query_testimonial as $testi)
-					<div class="reviews_comment">
-
-						<div class="row">
-							<div class="col-md-12">
-								{{$testi->name}}
-								<span class="pull-right">{{$testi->created_at}}</span>
-
-								<p style="-ms-word-break: break-all; word-break: break-all; word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto;">
-								{{$testi->testimonial}}
-								</p>
-
-							</div>
-						</div>
 					</div>
-					@endforeach
-
-					<div class="reviews_comment" style="text-align:right; border-bottom: none;"> {!! $query_testimonial->render() !!} </div>
+					
+				</div>
 
 					
 					<div class="modal fade" id="myModal_added" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
@@ -191,9 +177,6 @@
 					    </div>
 					</div>
 
-
-
-
 				</div>
 			</div>
 		</div>
@@ -204,15 +187,20 @@
 
 @push('scripts')
 <script>
-      // $(function () {
-      //   $(".rateyo").rateYo({
-      //   	fullStar: true,
-      //   });
-        
+	$(document).ready()
+	{
+		$.ajax({
+			type:"GET",
+			url: "{{ URL::to('testimonial_data/'. $query->varian_id)}}",
+			success:
+			function(data)
+			{
+				$('#testimonial').html(data);
+			}
+		});
+	}
 
-      // });
-
-      function addtocart(id){
+    function addtocart(id){
       	var quantity = $('#qty').val();
       	var name = $('#name').val();
       	var price = $('#price').val();
@@ -238,7 +226,7 @@
       		alert('error');
       	})
       	}
-      }
+    }
 </script>
 @endpush
 
