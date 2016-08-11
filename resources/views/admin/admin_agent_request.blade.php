@@ -203,7 +203,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
           var day = "<h4><b>Available day(s)</b></h4>";
           for(var i=0; i<data.day.length; i++)
           {
-            switch(data.day[i]) {
+            switch(parseInt(data.day[i])) {
               case 1:
                 day += 'Senin';
                 break;

@@ -7,15 +7,18 @@
 
 		<div class="clicktoregister">
 		<div class="col-md-12 col-xs-12">
+
+		<?php $i=1; ?>
 		@foreach($query_faq as $faq)
 			<div class="faq">
 				<div class="faq_title">
-					{{$faq->question_id}}. &nbsp{!! $faq->question !!}
+					<?php echo $i ?>. &nbsp{!! $faq->question !!}
 				</div>
 				<div class="faq_answer">
 					{!! $faq->answer !!}
 				</div>
 			</div>
+		<?php $i++;?>
 		@endforeach
 		</div>
 		</div>

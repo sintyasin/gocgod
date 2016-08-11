@@ -247,7 +247,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
             qty += ("x" + obj[i].quantity + "<br>") ;
             price += ("@Rp" + obj[i].price + "<br>");
 
-            total += (obj[i].price * obj[i].quantity);
+            total += (parseInt(obj[i].price) * parseInt(obj[i].quantity));
           }
           price += ("<hr style='border-color:black;'> Total : Rp" + total);
           $(".modal-body #name").html(name);
@@ -315,7 +315,9 @@ $(function() {
             { data: 'payment_account', name: 'payment_account', title:'Payment Account' },
             { data: 'bank_code', name: 'bank_code', title:'Bank Code' },
             { data: 'who', name: 'who', title:'Type' },
-            { data: 'city_name', name: 'city_name', title:'City' },   
+            { data: 'province_name', name: 'province_name', title:'Province' },   
+            { data: 'city_name', name: 'city_name', title:'City' },
+            { data: 'district_name', name: 'district_name', title:'District' },
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
         ],
     });

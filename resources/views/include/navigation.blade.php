@@ -31,7 +31,7 @@
 
 						<div class="col-sm-3">
 							<ul class="nav navbar-nav navbar-center">
-								<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Cari Agen</a></li>
+								<li><a href="{{ url('/findalocation') }}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Lokasi Agen</a></li>
 
 
 								<!-- Authentication Links -->

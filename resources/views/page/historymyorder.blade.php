@@ -72,7 +72,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
             qty += ("x" + obj[i].quantity + "<br>") ;
             price += ("@Rp" + obj[i].price + "<br>");
 
-            total += (obj[i].price * obj[i].quantity);
+            total += (parseInt(obj[i].price) * parseInt(obj[i].quantity));
           }
           price += ("<hr style='border-color:black;'> Total : Rp" + total);
           $(".modal-body #name").html(name);  

@@ -42,7 +42,7 @@ class MemberController extends Controller
 
       $input = $request->all();
       $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-      $data['city'] = City::where('province_id', $id)->get();
+      $data['city'] = City::where('province_id', $id)->orderBy('city_name', 'asc')->get();
       return view('page.city', $data);
     }
 
@@ -59,7 +59,7 @@ class MemberController extends Controller
 
       $input = $request->all();
       $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
-      $data['district'] = District::where('city_id', $id)->get();
+      $data['district'] = District::where('city_id', $id)->orderBy('district_name', 'asc')->get();
 
       return view ('page.district', $data);
     }
@@ -72,7 +72,7 @@ class MemberController extends Controller
                                 ->orderBy('created_at', 'desc')
                                 ->get();
         $data['bank'] = Bank::all();
-        $data['province'] = Province::all();
+        $data['province'] = Province::orderBy('province_name', 'asc')->get();
         $data['province_check'] = Province::where('status', 1)->get();
         $data['origin'] = AgentShip::leftJoin('master__province as mp', 'mp.province_id','=', 'master__agent_ship.province_id')
             ->leftJoin('master__city as mc', 'mc.city_id', '=', 'master__agent_ship.city_id')
@@ -404,7 +404,7 @@ class MemberController extends Controller
                     ->leftJoin('master__city as c', 'c.city_id', '=', 'm.city_id')
                     ->select(\DB::raw('sum(rating)/count(rating) as rate'), 'name', 'address', 'phone', 'email', 'city_name')
                     ->where('status_user', 0)
-                    ->groupBy('agent_id')
+                    ->groupBy('name')
                     ->get();
 
     	return view('page.findalocation', $data);
@@ -415,7 +415,7 @@ class MemberController extends Controller
     {
         $data['contact'] = AboutUs::first();
         $data['bank'] = Bank::All();
-        $data['province'] = Province::where('status', 1)->get();
+        $data['province'] = Province::where('status', 1)->orderBy('province_name', 'asc')->get();
 
         $query = Req_agent::where('member_id', Auth::user()->id)->first();
 

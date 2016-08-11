@@ -75,8 +75,13 @@
 
 
 				<br>
-				<p style="font-weight:bold; font-size:20px;">Cara Pembayaran </p>
-				<hr style="width: 200px; float:left;">
+				@if($order->payment_method != 4) <!-- bayar pake bank transfer / atm bersama -->
+					<p style="font-weight:bold; font-size:20px;">Cara Pembayaran </p>
+					<hr style="width: 200px; float:left;">
+				@elseif($order->payment_method == 4) <!-- ini bayar pake kartu kredit -->
+					<p style="font-weight:bold; font-size:20px;">Pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> {{$status_payment}} </p>
+				@endif
+				
 				<p>
 				<br>
 				@if($order->payment_method == 0)
@@ -125,14 +130,10 @@
 				11. Transaksi sudah selesai.<br>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anda akan menerima struk sebagai bukti transaksi.
 
-				@elseif($order->payment_method == 4)
-				Silahkan segera melakukan pembayaran melalui <span style="font-weight:bold"> KARTU KREDIT </span> dengan cara:
-				<br>
-
 				@endif
 			
 
-			</p>
+				</p>
 		</div>
 
 

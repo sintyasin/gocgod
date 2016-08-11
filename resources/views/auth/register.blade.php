@@ -126,7 +126,7 @@
                             <label class="col-md-4 control-label">Tanggal Lahir</label>
 
                             <div class="col-md-1">
-                                <input type="text" class="form-control" placeholder="dd" name="hari" value="{{ old('hari') }}" onkeypress="return isNumber(event)">
+                                <input type="text" class="form-control" maxlength="2" minlength="2" placeholder="dd" name="hari" value="{{ old('hari') }}" onkeypress="return isNumber(event)">
                                 @if ($errors->has('hari'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('hari') }}</strong>
@@ -165,7 +165,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <input type="text" class="form-control" placeholder="yyyy" name="tahun" value="{{ old('tahun') }}" onkeypress="return isNumber(event)">
+                                <input type="text" class="form-control" maxlength="4" minlength="4" placeholder="yyyy" name="tahun" value="{{ old('tahun') }}" onkeypress="return isNumber(event)">
                                 @if ($errors->has('tahun'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('tahun') }}</strong>

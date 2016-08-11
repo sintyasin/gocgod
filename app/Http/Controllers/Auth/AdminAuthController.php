@@ -120,7 +120,7 @@ class AdminAuthController extends Controller
     public function getEditProfile()
     {
         $data['query'] = auth('admin')->user();
-        $data['province'] = Province::all();
+        $data['province'] = Province::orderBy('province_name', 'asc')->get();
         $data['city'] = City::where('province_id', auth('admin')->user()->province_id)->get();
         $data['district'] = District::where('city_id', auth('admin')->user()->city_id)->get();
         
