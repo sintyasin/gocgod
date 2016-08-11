@@ -195,7 +195,7 @@ $('#datatableUser tbody').on( 'click', '.detail', function () {
             qty += ("x" + obj[i].quantity + "<br>") ;
             price += ("@Rp" + obj[i].price + "<br>");
 
-            total += (obj[i].price * obj[i].quantity);
+            total += (parseInt(obj[i].price) * parseInt(obj[i].quantity));
           }
           price += ("<hr style='border-color:black;'> Total : Rp" + total);
           $(".modal-body #name").html(name);  
@@ -371,7 +371,6 @@ $(function() {
                 return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +
                 pay +
                 get +
-                '@if(Auth::user()->status_user == 1) @endif' +
                 '<button class="btn btn-primary" id="'+ row.order_id +'sending" onclick="edit(' + row.order_id + ')" >' + 'Ubah Order' + '</button></div>';
               }
               else

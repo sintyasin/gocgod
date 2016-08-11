@@ -192,7 +192,7 @@ $("#detail").click(function(){
             qty += ("x" + obj[i].quantity + "<br>") ;
             price += ("@Rp" + obj[i].price + "<br>");
 
-            total += obj[i].price;
+            total += parseInt(obj[i].price);
           }
           price += ("<hr style='border-color:black;'> Total : Rp" + total);
           $(".modal-body #name").html(name);

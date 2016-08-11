@@ -923,7 +923,7 @@ class AdminController extends Controller
   public function getAddAdmin()
   {
     $data['active'] = 'addAdmin';
-    $data['province'] = Province::all();
+    $data['province'] = Province::orderBy('province_name', 'asc')->get();
 
     return view('admin.admin_add_admin', $data);
   }
@@ -1065,7 +1065,9 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
-                            ->get(['bank_code' ,'payment_method', 'payment_account' ,'order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->leftJoin('master__province as province', 'province.province_id', '=', 'transaction__order.province_id')
+                            ->leftJoin('master__district as district', 'district.district_id', '=', 'transaction__order.district_id')
+                            ->get(['bank_code' ,'payment_method', 'payment_account' ,'order_id', 'shipping_fee', 'total' ,'group_id', 'shipping_date', 'status_shipping', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'province_name', 'district_name', 'status_payment', 'status_confirmed', 'who']);
         
 
     return Datatables::of($data['query'])
@@ -1506,7 +1508,7 @@ class AdminController extends Controller
   {
       $data['query'] = Req_agent::leftJoin('master__member', 'member_id', '=', 'master__member.id')
                                 ->leftJoin('master__city', 'master__member.city_id', '=', 'master__city.city_id')
-                                ->leftJoin('master__bank', 'master__bank.bank_id', '=', 'master__member.bank_id')
+                                ->leftJoin('master__bank', 'master__bank.bank_id', '=', 'master__req_agent.bank_id')
                                 ->where('status_confirm', 0)
                                 ->get(['reqagent_id', 'member_id', 'name', 'date_of_birth', 'city_name', 'address', 'phone', 'email', 'bank_name', 'master__req_agent.bank_account as accno']);
         
@@ -1758,8 +1760,10 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            ->leftJoin('master__province as province', 'province.province_id', '=', 'transaction__order.province_id')
+                            ->leftJoin('master__district as district', 'district.district_id', '=', 'transaction__order.district_id')
                             ->where('transaction__order.agent_id', $id)
-                            ->get(['order_id', 'group_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'group_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'province_name', 'district_name', 'status_payment', 'status_confirmed', 'who']);
         
     return Datatables::of($data['query'])
     ->make(true);
@@ -1904,8 +1908,10 @@ class AdminController extends Controller
     $data['query'] = TxOrder::leftJoin('master__member as c', 'customer_id', '=', 'c.id')
                             ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                             ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
+                            ->leftJoin('master__province as province', 'province.province_id', '=', 'transaction__order.province_id')
+                            ->leftJoin('master__district as district', 'district.district_id', '=', 'transaction__order.district_id')
                             ->where('transaction__order.customer_id', $id)
-                            ->get(['order_id', 'group_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'status_payment', 'status_confirmed', 'who']);
+                            ->get(['order_id', 'group_id', 'a.name as agent', 'c.name as customer', 'order_date', 'ship_address', 'city_name', 'district_name', 'province_name', 'status_payment', 'status_confirmed', 'who']);
         
     return Datatables::of($data['query'])
     ->make(true);

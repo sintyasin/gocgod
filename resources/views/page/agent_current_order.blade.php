@@ -27,12 +27,15 @@ var table = $('#customerDatatable').DataTable({
             {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
 
             if(row.status_shipping == 0){
+              var buttonSend = '';
+              if(row.agentId != row.customerId) buttonSend = '<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Kirim </button>';
 
-              return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button class="btn btn-warning" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Send' + '</button></div>';
+              return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' 
+              + buttonSend + '</div>';
             }
             else
             {
-                return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>' + '<br><br>' +'<button disabled class="btn btn-warning" style="background-color:red" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Sent' + '</button></div>';
+                return '<div style="text-align:left;"><button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>' + '<br><br>' +'<button disabled class="btn btn-warning" style="background-color:red" id="'+ row.order_id +'sending" onclick="sending(' + row.order_id + ')" >' + 'Terkirim' + '</button></div>';
             } 
             }
         }
@@ -63,7 +66,7 @@ $.ajax({
         qty += ("x" + obj[i].quantity + "<br>") ;
         price += ("@Rp" + obj[i].price + "<br>");
 
-        total += obj[i].price;
+        total += parseInt(obj[i].price);
       }
       price += ("<hr style='border-color:black;'> Total : Rp" + total);
       $(".modal-body #name").html(name);

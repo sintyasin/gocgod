@@ -12,7 +12,6 @@ use Auth;
 use App\Http\Requests;
 use App\Product;
 use App\ProductCategory;
-use App\NameProduct;
 use App\ProductTestimonial;
 use App\Member;
 use App\TransactionController;

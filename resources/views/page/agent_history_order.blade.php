@@ -25,7 +25,7 @@ var table = $('#customerDatatable').DataTable({
             { data: 'who', name: 'who', title:'Tipe' },
             { data: 'status_confirmed', name: 'status_confirmed', title:'Status Konfirmasi' },
             {className: "dt-center", width:"10%", name: 'actions', title:'Action', render: function(data, type, row) {
-              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
+              return '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Rincian</button>';
             }
         }
 
@@ -55,7 +55,7 @@ $.ajax({
         qty += ("x" + obj[i].quantity + "<br>") ;
         price += ("@Rp" + obj[i].price + "<br>");
 
-        total += obj[i].price;
+        total += parseInt(obj[i].price);
       }
       price += ("<hr style='border-color:black;'> Total : Rp" + total);
       $(".modal-body #name").html(name);

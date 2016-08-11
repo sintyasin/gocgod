@@ -204,14 +204,16 @@ $(function() {
             { data: 'order_date', name: 'order_date', title:'Order Date', sType: 'date' },
             { data: 'group_id', name: 'group_id', title:'Group Id' },
             { data: 'ship_address', name: 'ship_address', title:'Ship Address' },
-            { data: 'city_name', name: 'city_name', title:'City' },            
-            { data: 'who', name: 'who', title:'Type' },
-            { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
-            { data: 'status_confirmed', name: 'status_confirmed', title:'Confirmed Status' },
+            { data: 'province_name', name: 'province_name', title:'Province' },   
+            { data: 'city_name', name: 'city_name', title:'City' },
+            { data: 'district_name', name: 'district_name', title:'District' },    
             {className: "dt-center", width:"10%", name: 'actions', render: function(data, type, row) {
               return '<a class="btn btn-warning" onclick="editOrder(' + row.order_id + ')" >' + 'Edit' + '</a> <br><br>' + 
                     '<button type="button" class="btn btn-info detail" data-id="' + row.order_id + '" data-toggle="modal" data-target="#sampleDetail">Detail</button>';
-            } }
+            } },
+            { data: 'status_payment', name: 'status_payment', title:'Payment Status' },
+            { data: 'status_confirmed', name: 'status_confirmed', title:'Confirmed Status' },
+            { data: 'who', name: 'who', title:'Type' },
         ],
     });
 });

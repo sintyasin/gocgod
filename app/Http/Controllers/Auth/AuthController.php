@@ -84,7 +84,7 @@ class AuthController extends Controller
             return view($this->registerView);
         }
         $data['contact'] = AboutUs::first();
-        $data['province'] = province::all();
+        $data['province'] = province::orderBy('province_name', 'asc')->get();
 
         return view('auth.register', $data);
     }

@@ -13,7 +13,6 @@ use App\Http\Requests;
 use App\Product;
 use App\Banner;
 use App\ProductCategory;
-use App\NameProduct;
 use App\ProductTestimonial;
 use App\Member;
 use App\Balance;
@@ -171,9 +170,9 @@ class TransactionController extends Controller
         $data['agent'] = Member::leftJoin('master__city as c', 'master__member.city_id', '=', 'c.city_id')
                         ->where('status_user', 0)
                         ->get();
-        $data['province'] = Province::where('status', 1)->get();
-        $data['city'] = City::where('province_id', Auth::user()->province_id)->get();
-        $data['district'] = District::where('city_id', Auth::user()->city_id)->get();
+        $data['province'] = Province::where('status', 1)->orderBy('province_name', 'asc')->get();
+        $data['city'] = City::where('province_id', Auth::user()->province_id)->orderBy('city_name', 'asc')->get();
+        $data['district'] = District::where('city_id', Auth::user()->city_id)->orderBy('district_name', 'asc')->get();
 
         $data['shipping_fee'] = 0;
         if(Cart::count() < 5)
@@ -449,33 +448,12 @@ class TransactionController extends Controller
 
         if($signature == $input['signature'])
         {
-            $data['orderdetail'] = \DB::table('transaction__order_detail')
-                                    ->select(\DB::raw('SUM(quantity) as quantity'))
-                                    ->groupBy('order_id')
-                                    ->get();
             $data['contact'] = AboutUs::first();
-            $data['order_a'] = TxOrder::where('group_id', $id)->get();
-            $data['orderprice'] = \DB::table('transaction__order')
-                                  ->select('total as total_price')
-                                  ->where('group_id', '=', $id)
-                                  ->get();
-
-            $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order']->order_id)
-                                    ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
-                                    ->get(['varian_name', 'price', 'quantity']);
-                
-            $data['agent'] = Member::where('id', $data['order']->agent_id)
-                              ->get(['name']);
-
-            $data['week'] = TxOrder::where('group_id', $id)->count();
-            $data['totalperweek'] = $data['order']->total / $data['week'];
 
             $payment_method = $data['order']->payment_method;
             if($payment_method == 1) 
             {
                 $data['payment_method'] = 'ATM Bersama';
-                $data['bankcode'] = $data['order']->bank_code;
-                $data['paymentaccount'] = $data['order']->payment_account;
             }
             else if($payment_method == 4) $data['payment_method'] = 'Credit Card';
 
@@ -483,13 +461,13 @@ class TransactionController extends Controller
             else if($input['payment_status'] == 2) $data['status_payment'] = 'Paid';
             else if($input['payment_status'] == 3) $data['status_payment'] = 'Failed';
 
-            $member = Member::find($data['order']->customer_id);
+            /*$member = Member::find($data['order']->customer_id);
 
             Mail::send('page.email_order', $data, function ($m) use ($member) {
                 $m->from('gocgod@gocgod.com', 'noreply-gocgod');
 
                 $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
-            });
+            });*/
 
             return view('page.summary', $data);
         }
@@ -497,9 +475,9 @@ class TransactionController extends Controller
             return redirect('home');
     }
 
-    public function getResponse(Request $data)
+    public function getResponse(Request $request)
     {
-        $xml = simplexml_load_string($data->getContent());
+        $xml = simplexml_load_string($request->getContent());
         
         $idOrder = filter_var($xml->idorder, FILTER_SANITIZE_STRING);
 
@@ -513,7 +491,7 @@ class TransactionController extends Controller
         {
             foreach ($query as $order)
             {
-              //pending
+                //pending
                 if($xml->payment_status == 1)
                 {
                     $order->payment_method = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
@@ -531,6 +509,64 @@ class TransactionController extends Controller
                 }
                 $order->save(); 
             }  
+
+            $data['order'] = TxOrder::where('group_id', $idOrder)->first();
+            $data['orderprice'] = \DB::table('transaction__order')
+                                    ->select('total as total_price')
+                                    ->groupBy('group_id')
+                                    ->having('group_id', '=', $idOrder)
+                                    ->get();
+
+            $data['contact'] = AboutUs::first();
+
+            $data['week'] = TxOrder::where('group_id', $idOrder)->count();
+            $data['totalperweek'] = $data['order']->total / $data['week'];
+
+            $data['order_a'] = TxOrder::where('group_id', $idOrder)->get();
+            $data['orderdetails'] = TxOrderDetail::where('order_id', $data['order_a'][0]->order_id)
+                                    ->leftJoin('product__varian as pv', 'transaction__order_detail.varian_id', '=', 'pv.varian_id')
+                                    ->get(['varian_name', 'price', 'quantity']);
+            $data['agent'] = Member::where('id', $data['order_a'][0]->agent_id)
+                                    ->get(['name']);
+
+            $member = Member::find($data['order']->customer_id);
+
+            $payment_method = filter_var($xml->payment_channel, FILTER_SANITIZE_STRING);
+            if($payment_method == 1) 
+            {
+                $data['bankcode'] = filter_var($xml->idbankcode, FILTER_SANITIZE_STRING);
+                $data['paymentaccount'] = filter_var($xml->idpaymentcode, FILTER_SANITIZE_STRING);
+            }
+
+            //kirim email
+            if($xml->payment_status == 1 && $data['order']->payment_method == 1) //kalo status dari firstpay pending dan bayar pake ATM bersama
+            {   
+                Mail::send('page.email_order', $data, function ($m) use ($member) {
+                    $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+
+                    $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
+                });
+            }
+            else if($xml->payment_status == 2 && $data['order']->payment_method == 4) //bayar pake kartu kredit dan berhasil
+            {
+                $data['status_payment'] = 'BERHASIL';
+
+                Mail::send('page.email_order', $data, function ($m) use ($member) {
+                    $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+
+                    $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
+                });
+            }
+            else if($xml->payment_status == 3 && $data['order']->payment_method == 4) //bayar pake kartu kredit dan gagal
+            {
+                $data['status_payment'] = 'GAGAL';
+
+                Mail::send('page.email_order', $data, function ($m) use ($member) {
+                    $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+
+                    $m->to($member->email, $member->name)->subject('Pesanan Anda Telah Didaftarkan');
+                });
+            }
             echo "CONTINUE";
         }
     }
@@ -660,9 +696,9 @@ class TransactionController extends Controller
                         ->where('status_user', 0)
                         ->get();
 
-        $data['province'] = Province::where('status', 1)->get();
-        $data['city'] = City::where('province_id', Auth::user()->province_id)->get();
-        $data['district'] = District::where('city_id', Auth::user()->city_id)->get();
+        $data['province'] = Province::where('status', 1)->orderBy('province_name', 'asc')->get();
+        $data['city'] = City::where('province_id', Auth::user()->province_id)->orderBy('city_name', 'asc')->get();
+        $data['district'] = District::where('city_id', Auth::user()->city_id)->orderBy('district_name', 'asc')->get();
 
         $start = "";
         date_default_timezone_set('Asia/Jakarta');
@@ -945,9 +981,10 @@ class TransactionController extends Controller
                         ->leftJoin('master__member as a', 'agent_id', '=', 'a.id')
                         ->leftJoin('master__city as city', 'city.city_id', '=', 'ship_city_id')
                         ->where('a.id', Auth::user()->id)
+                        ->where('status_payment', 1)
                         ->where('status_shipping', 0)
                         ->orderBy('shipping_date', 'asc')
-                        ->get(['order_id', 'c.name as customer', 'shipping_date', 'ship_address', 'c.phone as phone','city_name', 'status_confirmed', 'status_shipping' ,'who']);
+                        ->get(['order_id', 'transaction__order.agent_id as agentId', 'transaction__order.customer_id as customerId', 'c.name as customer', 'shipping_date', 'ship_address', 'c.phone as phone','city_name', 'status_confirmed', 'status_shipping' ,'who']);
       
         return Datatables::of($data['query'])
         ->editColumn('status_payment', function($data){ 
