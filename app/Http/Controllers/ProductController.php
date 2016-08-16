@@ -80,8 +80,7 @@ class ProductController extends Controller
                 'type' => 'OK-MENU DETAIL',
                 'message' => 'success',
                 'data' => array(
-                    'productData' => $data['query'],
-                    'productTestimonial' => $data['query_testimonial']
+                    'productData' => $data['query']
                     ));
             return Response::json(compact('success'));
         }

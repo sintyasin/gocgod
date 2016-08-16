@@ -112,6 +112,53 @@ class AdminController extends Controller
         $agent->save();
       }
     });
+    $this->agentConfirmTx();
+  }
+
+  public function agentConfirmTx()
+  {
+
+      date_default_timezone_set('Asia/Jakarta');
+      $today = new \DateTime(NULL);
+      $today = date_format($today,"Y-m-d");
+
+      DB::transaction(function() use ($today)
+      {
+          $query = DB::select('select * from transaction__order WHERE agent_id = customer_id and shipping_date = ? ', [$today]);
+                      // where('agent_id', '=', DB::raw('select customer_id'))
+                      //   ->Where('shipping_date', '=', $today)
+                      //   ->get();
+
+          DB::update('UPDATE transaction__order
+                  SET status_confirmed = 1, status_shipping = 1
+                  WHERE agent_id = customer_id 
+                  AND status_confirmed = 0 
+                  AND status_payment = 1 
+                  AND shipping_date = ?', [$today]);
+
+          $percent = AgentFee::first();
+
+          //INSERT DATA KE TX BALANCE DAN AGENT
+          foreach ($query as $data) {
+            $count = TxOrder::where('group_id', $data->group_id)->count();
+            $total = (($data->total - $data->shipping_fee) / $count ) * ($percent->fee / 100);
+
+            $balance = new Balance;
+            $balance->agent_id = $data->agent_id;
+            $balance->amountMoney = $total;
+            $balance->balance_type = 1;
+            $balance->order_id = $data->order_id;
+            $balance->statusTransfer = 0;
+            $balance->save();
+
+            $agent = Member::find($data->agent_id);
+            $agent->balance = $agent->balance + $total;
+            $agent->save();
+          }
+
+
+      
+      });
   }
 
   //SHIPPING SCOPE
