@@ -118,7 +118,7 @@ class AuthController extends Controller
             }
         }
 
-        $sender = 'admin@gocgod.com';
+        $sender = 'customer-care@gocgod.com';
         
 
         $user = $this->create($request->all());
@@ -230,40 +230,17 @@ class AuthController extends Controller
         //ambil data ulang tahun
         $dob = $data['tahun'] . '-' . $data['bulan'] . '-' . $data['hari'];
 
-        // if($data['kota'] == 0)
-        // {
-        //     $newcity = filter_var($data['kotabaru'], FILTER_SANITIZE_STRING);
-
-        //     $city = new City;
-        //     $city->city_name = $newcity;
-        //     $city->save();
-
-        //     return Member::create([
-        //         'name' => $data['nama'],
-        //         'address' => $data['alamat'],
-        //         'zipcode' => $data['kodepos'],
-        //         'date_of_birth' => $dob,
-        //         'phone' => $data['telepon'],
-        //         'email' => $data['email'],
-        //         'password' => bcrypt($data['passwords']),
-        //         'city_id' => $city->city_id,
-
-        //     ]);
-        // }
-        // else
-        // {
-            return Member::create([
-                'name' => $data['nama'],
-                'address' => $data['alamat'],
-                'zipcode' => $data['kodepos'],
-                'date_of_birth' => $dob,
-                'phone' => $data['telepon'],
-                'email' => $data['email'],
-                'password' => bcrypt($data['passwords']),
-                'city_id' => $data['kota'],
-                'province_id' => $data['provinsi'],
-                'district_id' => $data['kecamatan'],
-            ]);
-        // }
+        return Member::create([
+            'name' => $data['nama'],
+            'address' => $data['alamat'],
+            'zipcode' => $data['kodepos'],
+            'date_of_birth' => $dob,
+            'phone' => $data['telepon'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['passwords']),
+            'city_id' => $data['kota'],
+            'province_id' => $data['provinsi'],
+            'district_id' => $data['kecamatan'],
+        ]);
     }
 }
