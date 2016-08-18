@@ -113,7 +113,7 @@ class AdminPasswordController extends Controller
             $data['contact'] = AboutUs::first();
 
             Mail::send('admin.email_reset_password', $data, function ($m) use ($user) {
-              $m->from('gocgod@gocgod.com', 'noreply-gocgod');
+              $m->from('customer-care@gocgod.com', 'noreply-gocgod');
 
               $m->to($user->email, $user->name)->subject('Atur ulang password GoCGoD.com Anda');
             });

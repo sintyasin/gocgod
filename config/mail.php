@@ -16,8 +16,7 @@ return [
     |
     */
 
-    // 'driver' => env('MAIL_DRIVER', 'smtp'),
-    'driver' => env('MAIL_DRIVER', 'smtp'),
+    'driver' => env('MAIL_DRIVER', 'sendmail'),
     /*
     |--------------------------------------------------------------------------
     | SMTP Host Address
@@ -29,7 +28,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'mail.gocgod.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,7 +41,7 @@ return [
     |
     */
 
-    'port' => env('MAIL_PORT', 587),
+    'port' => env('MAIL_PORT', 110),
 
     /*
     |--------------------------------------------------------------------------
@@ -55,7 +54,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'luph.yo3l@gmail.com', 'name' => 'GoCGoD'],
+    'from' => ['address' => 'customer-care@gocgod.com', 'name' => 'GoCGoD'],
 
     /*
     |--------------------------------------------------------------------------
