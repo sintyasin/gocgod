@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+        <!-- <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
             <label class="col-md-1 control-label">Description</label>
 
             <div class="col-md-5">
@@ -125,7 +125,34 @@
                 </span>
                 @endif
             </div>
-        </div>
+        </div> -->
+
+        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
+            <label class="col-md-1 control-label">Description</label>
+
+            <div class="col-md-5">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <b><h3 class="box-title">Product Description</h3></b>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        </div><!-- /. tools -->
+                    </div><!-- /.box-header -->
+                    <div class="box-body pad">
+                        <textarea id="editor1" placeholder="Description" name="description" rows="10" cols="80">
+                            {{$query->description}}
+                        </textarea>
+
+                        @if ($errors->has('description'))
+                        <span class="help-block">
+                            <strong>{{ $errors->first('description') }}</strong>
+                        </span>
+                        @endif
+                    </div>
+                </div><!-- /.box -->
+            </div>
+        </div>        
 
         <div class="form-group{{ $errors->has('picture') ? ' has-error' : '' }}">
             <label class="col-md-1 control-label">Picture</label>
@@ -159,7 +186,17 @@
 </section><!-- /.content -->
 
 @push('scripts')
+<script src="{{ URL::asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}"></script>
+
 <script type="text/javascript">
+$(function () {
+    // Replace the <textarea id="editor1"> with a CKEditor
+    // instance, using default configuration.
+    CKEDITOR.replace('editor1');
+    CKEDITOR.replace('editor2');
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
+});
 
 function check() {
   var e = document.getElementById('category');
