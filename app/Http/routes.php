@@ -30,6 +30,7 @@ Route::post('addtocart', 'TransactionController@addtocart');
 Route::post('addtocartsubscribe', 'TransactionController@addtocartSubscribe');
 
 Route::get('faq', 'HomeController@faq_question');
+Route::get('faq_data', 'HomeController@faq_data');
 Route::get('findalocation', 'MemberController@readAgent');
 
 Route::get('becomeanagent', 'MemberController@bank');
