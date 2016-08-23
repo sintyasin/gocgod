@@ -49,8 +49,13 @@ class HomeController extends Controller
     public function faq_question(Request $request)
     {
         $data['contact'] = AboutUs::first();
-        $data['query_faq'] = faq::all();
 
+        return view('page.faq', $data);
+    }
+
+    public function faq_data(Request $request)
+    {
+        $data['query_faq'] = faq::all();
         if($request->wantsJson())
         {
             $response = array(
@@ -58,7 +63,6 @@ class HomeController extends Controller
                 'data' => $data['query_faq']);
             return Response::json(compact('response'));
         }
-
-        return view('page.faq', $data);
+        return view('page.faq_data', $data);
     }
 }
