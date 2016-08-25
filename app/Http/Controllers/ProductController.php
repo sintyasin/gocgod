@@ -89,13 +89,26 @@ class ProductController extends Controller
     }
 
     //---------------- MENU DETAIL - Testimonial Data -------------    
-    public function testimonial($id)
+    public function testimonial(Request $request, $id)
     {
         $data = ProductTestimonial::leftJoin('master__member as mm', 'product__testimonial.id', '=', 'mm.id')
+                                                        ->select('name', 'product__testimonial.created_at', 'testimonial')
                                                         ->where('varian_id', $id)
                                                         ->where('approval', 1)
                                                         ->orderBy('testimonial_id', 'desc')
                                                         ->paginate(5);
+        
+        if($request->wantsJson())
+        {
+            $success = array(
+                'type' => 'OK-PRODUCT TEESTIMONIAL',
+                'message' => 'success',
+                'data' => array(
+                    'productTestimonial' => $data
+                    ));
+            return Response::json(compact('success'));
+        }
+
         return view('page.testimonial', compact('data'));
     }
 
