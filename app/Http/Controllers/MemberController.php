@@ -394,7 +394,7 @@ class MemberController extends Controller
     	return view('page.myaccount', $data);
     }
 
-    public function readAgent()
+    public function readAgent(Request $request)
     {
         $data['contact'] = AboutUs::first();
 
@@ -405,7 +405,18 @@ class MemberController extends Controller
                     ->select(\DB::raw('sum(rating)/count(rating) as rate'), 'name', 'address', 'phone', 'email', 'city_name')
                     ->where('status_user', 0)
                     ->groupBy('name')
-                    ->get();
+                    ->paginate(10);
+
+        if($request->wantsJson())
+        {
+            $success = array(
+                'type' => 'OK-PRODUCT AGENTLOCATION',
+                'message' => 'success',
+                'data' => array(
+                    'agent' => $data['agent']
+                    ));
+            return Response::json(compact('success'));
+        }
 
     	return view('page.findalocation', $data);
     }
