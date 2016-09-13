@@ -9,6 +9,7 @@ use App\Faq;
 use Auth;
 use App\Banner;
 use App\AboutUs;
+use App\Province;
 
 class HomeController extends Controller
 {
@@ -33,12 +34,14 @@ class HomeController extends Controller
     {
         $data['contact'] = AboutUs::first();
         $data['query'] = Banner::all();
+        $data['province'] = Province::orderBy('province_name', 'asc')->get();
 
         if($request->wantsJson())
         {
             $response = array(
                 'type' => 'OK-CONTACT',
-                'data' => $data['contact']);
+                'contact' => $data['contact'],
+                'province' => $data['province']);
             return Response::json(compact('response'));
         }
 

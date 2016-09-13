@@ -43,6 +43,18 @@ class MemberController extends Controller
       $input = $request->all();
       $id = filter_var($input['id'], FILTER_SANITIZE_STRING);
       $data['city'] = City::where('province_id', $id)->orderBy('city_name', 'asc')->get();
+
+      if($request->wantsJson())
+      {
+        $success = array(
+            'type' => 'OK-CITY',
+            'message' => 'success',
+            'data' => array(
+                'city' => $data['city']));
+        return Response::json(compact('success'));
+      }
+
+
       return view('page.city', $data);
     }
 
@@ -413,7 +425,7 @@ class MemberController extends Controller
                 'type' => 'OK-PRODUCT AGENTLOCATION',
                 'message' => 'success',
                 'data' => array(
-                    'agent' => $data['agent']
+                    'agentLocation' => $data['agent']
                     ));
             return Response::json(compact('success'));
         }
